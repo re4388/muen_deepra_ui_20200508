@@ -3,8 +3,7 @@
     <top-navbar brandText="DeepRA"/>
     <div id="display-panel" class="d-flex flex-row">
       <sidebar/>
-      <base-panel class="flex-fill"/>
-      <!-- <base-panel/> -->
+      <router-view class="flex-fill"></router-view>
     </div>
   </div>
 </template>
