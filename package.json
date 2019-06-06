@@ -1,15 +1,33 @@
 {
   "name": "deepra_ui",
+  "main": "index.js",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "electron": "vue-cli-service build && \"./node_modules/.bin/electron\" \"./src/index.js\"",
+    "debug": "vue-cli-service build && \"./node_modules/.bin/electron\" --inspect_brk=50052 \"./src/index.js\""
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "@fortawesome/vue-fontawesome": "^0.1.6",
+    "@grpc/proto-loader": "^0.5.1",
+    "bootstrap": "^4.3.1",
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "esm": "^3.2.25",
+    "google-protobuf": "^3.8.0",
+    "grpc": "^1.21.1",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.12.0",
+    "popper.js": "^1.15.0",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.6",
+    "vue-sidebar-menu": "^3.9.0",
+    "vuesax": "^3.8.74",
+    "webpack": "^4.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
@@ -17,8 +35,10 @@
     "@vue/cli-service": "^3.8.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "electron": "^5.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10"
   }
 }

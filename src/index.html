@@ -5,13 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>deepra_ui</title>
+    <title>dejavue</title>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but deepra_ui doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>We're sorry but dejavue doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <p>
+      <h1>This is a header line.</h1>
+    </p>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script>
+      require = require('esm')(module)
+      require('./renderer.js')
+    </script>
   </body>
 </html>
