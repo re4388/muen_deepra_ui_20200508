@@ -19,6 +19,8 @@ import 'bootstrap'
 // Routing
 import BasePanel from './components/BasePanel.vue'
 import ProjectOverviewPanel from './components/ProjectOverviewPanel.vue'
+import ModelOverviewPanel from './components/ModelOverviewPanel.vue'
+
 const router = new VueRouter({
   routes: [
     {
@@ -30,6 +32,11 @@ const router = new VueRouter({
       path: '/project-overview',
       name: 'ProjectOverview',
       component: ProjectOverviewPanel
+    },
+    {
+      path: '/model-overview',
+      name: 'ModelOverview',
+      component: ModelOverviewPanel
     }
   ]
 })

@@ -31,7 +31,7 @@ export default {
       menu: [
         {
           title: 'My Projects',
-          href: '/',
+          href: '/project-overview',
           icon: {
             element: 'font-awesome-icon',
             attributes: {
@@ -41,7 +41,7 @@ export default {
         },
         {
           title: 'My Models',
-          href: '/project-overview',
+          href: '/model-overview',
           icon: {
             element: 'font-awesome-icon',
             attributes: {
