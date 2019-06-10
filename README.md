@@ -1,29 +1,16 @@
 # deepra_ui
 
-## Project setup
-```
-yarn install
+## Project setup (install requirements)
+```bash
+$ yarn install
 ```
 
 ### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
+```bash
+$ yarn run serve
 ```
 
-### Run your tests
+### Run application on `electron.js`
+```bash
+$ yarn run electron
 ```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
