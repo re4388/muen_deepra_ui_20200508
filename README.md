@@ -14,3 +14,16 @@ $ yarn run serve
 ```bash
 $ yarn run electron
 ```
+
+### Build application
+- dependency: `vue-cli-plugin-electron-builder`
+
+    If this package has not been installed, run the following command to install it
+    ```bash
+    $ vue add electron-build
+    ```
+
+- build this project into a standalone application
+    ```bash
+    $ yarn run electron:build
+    ```
