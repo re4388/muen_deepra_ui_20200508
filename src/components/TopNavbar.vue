@@ -1,7 +1,6 @@
 <template>
   <div id="top-navbar" class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap">
     <a id="brand" class="navbar-brand" href="#" @click.prevent="onClick">{{ brandText }}</a>
-
   </div>
 </template>
 
@@ -26,7 +25,7 @@ $navbar-height: 56px;
   min-height: $navbar-height;
 }
 #brand {
-  position: fixed;
+  position: relative;
   width: 136px;
   left: 0px;
 }

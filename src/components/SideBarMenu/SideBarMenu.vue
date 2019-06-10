@@ -13,20 +13,17 @@
 <script>
 import { SidebarMenu } from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const separator = {
-  template: `<hr style="border-color: rgba(255, 255, 255); margin: 20px; height: 10px;">`
+  template: `<hr style="border-color: rgba(255, 255, 255); margin: 10px;"/>`
 }
 
 export default {
   name: 'Sidebar',
   components: {
-    SidebarMenu,
-    FontAwesomeIcon
+    SidebarMenu
   },
-  data() {
+  data () {
     return {
       menu: [
         {
@@ -45,7 +42,7 @@ export default {
           icon: {
             element: 'font-awesome-icon',
             attributes: {
-              icon: 'cube',
+              icon: 'cube'
             }
           }
         },
@@ -75,16 +72,29 @@ export default {
   height: inherit;
   position: relative;
   & .collapse-btn {
-    content: '-';
+    content: '...';
+    outline: 0;
     &:after {
-      content: '-';
+      content: '...';
+    }
+    &:hover {
+      background-color: rgb(60, 60, 60);
     }
   }
   & .vsm-title {
     text-align: left;
+    &:hover {
+      color: orange;
+    }
   }
   & .vsm-header {
     text-align: center;
+  }
+  & .vsm-icon {
+    color: orange;
+  }
+  & .vsm-item.mobile-item > .vsm-link {
+    color: orange;
   }
 }
 </style>

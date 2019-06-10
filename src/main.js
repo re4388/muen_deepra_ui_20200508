@@ -18,8 +18,8 @@ import 'bootstrap'
 
 // Routing
 import BasePanel from './components/BasePanel.vue'
-import ProjectOverviewPanel from './components/ProjectOverviewPanel.vue'
-import ModelOverviewPanel from './components/ModelOverviewPanel.vue'
+import ProjectOverviewPanel from './components/ProjectPanel/ProjectOverviewPanel.vue'
+import ModelOverviewPanel from './components/ModelPanel/ModelOverviewPanel.vue'
 
 const router = new VueRouter({
   routes: [
