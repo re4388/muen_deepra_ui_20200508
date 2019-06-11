@@ -12,7 +12,8 @@ FN_CHROME_DRIVER = os.path.join(DIR_BIN, 'chromedriver.exe')
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 BIN_ELECTRON = os.path.join(THIS_DIR, '../node_modules/.bin/electron')
-DIR_PROJECT = os.path.join(THIS_DIR, '../src')
+DIR_PROJECT = os.path.join(THIS_DIR, '..')
+DIR_PROJECT_SRC = os.path.join(THIS_DIR, '../src')
 APP_PATH = os.path.join(THIS_DIR, '../dist_electron/win-unpacked/deepra_ui.exe')
 
 
@@ -52,6 +53,43 @@ class ChromeDriver(object):
             time.sleep(timeout)
 
 
+class ElectronAppSource(object):
+    def __init__(self, project_path):
+        self.project_path = os.path.realpath(project_path)
+        self.proc = None
+
+    def start(self, timeout=5):
+        if self.proc is not None:
+            raise RuntimeError('Process has been opened.')
+
+        if self._is_port_available():
+            return
+
+        cmd = 'yarn run serve'
+        try:
+            self.proc = Popen(cmd.split(), cwd=self.project_path, shell=True)
+        except:
+            raise
+
+        if timeout is not None:
+            time.sleep(timeout)
+
+    def stop(self, timeout=1):
+        if self.proc is not None:
+            self.proc.terminate()
+
+        if timeout is not None:
+            time.sleep(timeout)
+
+    def _is_port_available(self):
+        import socket
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex(('127.0.0.1', 8080))
+        result = True if result == 0 else False
+        sock.close()
+        return result
+
+
 def main_open_chrome():
     driver = webdriver.Chrome(FN_CHROME_DRIVER)
     driver.get('https://www.google.com')
@@ -67,7 +105,7 @@ def run_test_on_dist(chrome_version):
 
     chrome_options = chrome.options.Options()
     chrome_options.binary_location = os.path.abspath(os.path.abspath(APP_PATH))
-    chrome_options.add_argument(os.path.abspath(DIR_PROJECT))
+    # chrome_options.add_argument(os.path.abspath(DIR_PROJECT))
 
     capabilities = {
         'chromeOptions': {'binary': os.path.abspath(APP_PATH)}
@@ -101,6 +139,9 @@ def run_test_on_dist(chrome_version):
 
 
 def run_test_on_dev(chrome_version):
+    app_source = ElectronAppSource(DIR_PROJECT)
+    app_source.start()
+
     chrome_driver = ChromeDriver(chrome_version)
     chrome_driver.start()
 
@@ -124,7 +165,7 @@ def run_test_on_dev(chrome_version):
 
     driver.quit()
     chrome_driver.stop()
-
+    app_source.stop()
 
 def main_chrome():
     options = webdriver.ChromeOptions()
