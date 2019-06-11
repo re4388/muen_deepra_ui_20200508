@@ -90,13 +90,14 @@ def main(chrome_version):
         extracted = zip_ref.namelist()
 
     # Move files to `/usr/bin`
-    if not os.path.exists(DIR_BIN):
+    dir_dst = os.path.join(DIR_BIN, 'chromedriver', chrome_version)
+    if not os.path.exists(dir_dst):
         print('Directory {} does not exist, so that it will be created automatically.'.format(DIR_BIN))
-        os.makedirs(DIR_BIN)
+        os.makedirs(dir_dst)
 
     for f in extracted:
         fn_src = os.path.join(dir_extraction, f)
-        fn_dst = os.path.join(DIR_BIN, f)
+        fn_dst = os.path.join(dir_dst, f)
         print('Moving {} to {}'.format(fn_src, fn_dst))
         shutil.move(fn_src, fn_dst)
 
