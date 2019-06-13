@@ -34,7 +34,6 @@ export default {
   width: 100px;
   min-width: 100px;
   height: 100%;
-  // background-color: gray;
   overflow-y: hidden;
 }
 </style>

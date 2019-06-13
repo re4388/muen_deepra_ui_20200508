@@ -21,7 +21,8 @@ export default {
 
 <style lang="scss" scoped>
 .step-content {
-  padding: 5px 20px;
+  color: black;
+  padding: 20px;
 }
 .title {
   text-align: left;

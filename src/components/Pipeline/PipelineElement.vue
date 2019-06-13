@@ -1,8 +1,10 @@
 <template>
   <div class="pipeline-element">
-    <div class="number-label" @click="showMessage">
-      {{ digit }}
-    </div>
+    <!-- <div class="content">
+      <div class="outter-ring"></div>
+      <div class="number-label" @click="showMessage">{{ digit }}</div>
+    </div> -->
+    <div class="number-label" @click="showMessage">{{ digit }}</div>
   </div>
 </template>
 
@@ -21,13 +23,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$label-height: 75px;
-$label-font-size: $label-height/3;
+$content-height: 75px;
+$label-height: $content-height - 10px;
+$label-font-size: $label-height / 3;
 
 .pipeline-element {
-  padding: 5px 10px;
+  padding: 10px 10px;
+}
+.content {
+  position: static;
+  height: $content-height;
+  width: $content-height;
+}
+.outter-ring {
+  position: relative;
+  background-color: black;
+  width: $content-height;
+  height: $content-height;
+  border-radius: 50%;
 }
 .number-label {
+  position: relative;
   background-color: lightgray;
   width: $label-height;
   height: $label-height;
