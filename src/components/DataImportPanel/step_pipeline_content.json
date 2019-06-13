@@ -1,0 +1,19 @@
+{
+    "content": [
+        {
+            "id": 0,
+            "title": "Import dataset",
+            "description": "Please select a folder to be imported."
+        },
+        {
+            "id": 1,
+            "title": "Statistic report of given dataset",
+            "description": "Result: "
+        },
+        {
+            "id": 2,
+            "title": "Overview of dataset",
+            "description": "Content: "
+        }
+    ]
+}

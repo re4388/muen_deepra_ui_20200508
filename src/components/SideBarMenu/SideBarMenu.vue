@@ -47,6 +47,16 @@ export default {
           }
         },
         {
+          title: 'Import data',
+          href: '/import-data',
+          icon: {
+            element: 'font-awesome-icon',
+            attributes: {
+              icon: 'cube'
+            }
+          }
+        },
+        {
           header: true,
           component: separator,
           visiableOnCollapse: true
