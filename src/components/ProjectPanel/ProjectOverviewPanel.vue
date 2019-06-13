@@ -15,6 +15,7 @@
 
 <script>
 import ProjectCard from './ProjectCard.vue'
+import projectData from './project_data.json'
 
 export default {
   name: 'ProjectOverviewPanel',
@@ -23,24 +24,7 @@ export default {
   },
   data () {
     return {
-      projects: [
-        {
-          id: 1,
-          name: 'Project 01'
-        },
-        {
-          id: 2,
-          name: 'Project 02'
-        },
-        {
-          id: 3,
-          name: 'Project 03'
-        },
-        {
-          id: 4,
-          name: 'Project 04'
-        }
-      ]
+      projects: projectData.content
     }
   }
 }

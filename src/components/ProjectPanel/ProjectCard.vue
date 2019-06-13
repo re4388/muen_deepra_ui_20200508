@@ -2,7 +2,9 @@
   <div class="project-card d-flex flex-column">
     <div class="title-section d-flex flex-row">
       <h4 class="title flex-fill">{{ details.name }}</h4>
-      <a class="btn-more-options" href="#">...</a>
+      <a class="btn-more-options">
+        <div class="content">...</div>
+      </a>
     </div>
     <div class="content d-flex flex-row">
       <div class="image-section flex-column">
@@ -14,8 +16,10 @@
       </div>
       <div class="text-section flex-fill align-items-start flex-column">
         <p class="description flex-fill">Description: {{ details.description }}</p>
-        <p class="creation-date"> Created: {{ details.creationDate }}</p>
-        <a class="btn-open-project" href="#">Open</a>
+        <p class="creation-date">Created: {{ details.creationDate }}</p>
+        <a class="btn-open-project">
+          <div class="content">Open</div>
+        </a>
       </div>
     </div>
   </div>
@@ -60,10 +64,21 @@ $card-min-width: 600px;
     text-align: left;
   }
   & .btn-more-options {
-    margin-right: 10px;
-    width: 50px;
-    height: 25px;
-    font-size: 18px;
+    user-select: none;
+    & .content {
+      margin-right: 10px;
+      width: 25px;
+      height: 25px;
+      line-height: 25px;
+      font-size: 25px;
+      font-size: 18px;
+      &:hover {
+        color: rgb(150, 150, 150);
+      }
+      &:active {
+        color: black;
+      }
+    }
   }
 }
 .image-section {
@@ -89,23 +104,31 @@ $card-min-width: 600px;
 }
 .description {
   text-align: left;
-  height: $card-height*0.5;
+  height: $card-height*0.45;
   margin-bottom: 0px;
 }
 .creation-date {
   text-align: left;
   margin-bottom: 0px;
 }
+
+$btn-height: 30px;
 .btn-open-project {
-  background-color: rgb(185, 185, 185);
-  border: 2px;
-  box-shadow: 0 0.1rem 0.1rem $shadow;
-  float: right;
-  text-decoration: none;
-  color: rgb(25, 25, 25);
-  margin-bottom: auto;
-  &:active {
-    background-color: rgb(200, 200, 200);
+  & .content {
+    background-color: rgb(185, 185, 185);
+    color: rgb(25, 25, 25);
+    width: 50px;
+    height: $btn-height;
+    line-height: $btn-height;
+    box-shadow: 2px 2px 2px $shadow;
+    float: right;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: auto;
+    user-select: none;
+    &:active {
+      background-color: rgb(200, 200, 200);
+    }
   }
 }
 </style>
