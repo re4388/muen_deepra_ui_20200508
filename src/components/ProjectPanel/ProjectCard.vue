@@ -15,17 +15,9 @@
       <div class="text-section flex-fill align-items-start flex-column">
         <p class="description flex-fill">Description: {{ details.description }}</p>
         <p class="creation-date"> Created: {{ details.creationDate }}</p>
-        <!-- <button class="btn-open-project">Open</button> -->
         <a class="btn-open-project" href="#">Open</a>
       </div>
     </div>
-    <!-- <p id="name">{{ details.name }}</p>
-    <p id="creation-date">{{ details.creationDate }}</p>
-    <p id="description">{{ details.description }}</p>
-    <p id="path">{{ details.path }}</p>
-    <a id="link" href="#">
-      This is a link
-    </a> -->
   </div>
 </template>
 
@@ -77,7 +69,6 @@ $card-min-width: 600px;
 .image-section {
   background-color: rgb(175, 175, 175);
   width: $card-min-width*0.4;
-  // height: $card-height*0.75;
   height: auto;
   margin-bottom: 10px;
 }
