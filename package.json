@@ -30,7 +30,6 @@
     "vue": "^2.6.10",
     "vue-router": "^3.0.6",
     "vue-sidebar-menu": "^3.9.0",
-    "vuesax": "^3.8.74",
     "webpack": "^4.0.0"
   },
   "devDependencies": {
