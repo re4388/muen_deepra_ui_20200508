@@ -1,5 +1,5 @@
 <template>
-  <div class="step-content" @simpleevent="showEvent">
+  <div class="step-content">
     <p class="title">{{ content.title }}</p>
     <p class="description">{{ content.description }}</p>
   </div>
@@ -10,11 +10,6 @@ export default {
   name: 'StepContent',
   props: {
     content: Object
-  },
-  methods: {
-    showEvent (event) {
-      alert(event)
-    }
   }
 }
 </script>

@@ -57,6 +57,16 @@ export default {
           }
         },
         {
+          title: 'Train',
+          href: '/training',
+          icon: {
+            element: 'font-awesome-icon',
+            attributes: {
+              icon: 'cube'
+            }
+          }
+        },
+        {
           header: true,
           component: separator,
           visiableOnCollapse: true
@@ -93,9 +103,9 @@ export default {
   }
   & .vsm-title {
     text-align: left;
-    &:hover {
-      color: orange;
-    }
+  }
+  & .router-link-exact-active .vsm-title {
+    color: #4285f4;
   }
   & .vsm-header {
     text-align: center;

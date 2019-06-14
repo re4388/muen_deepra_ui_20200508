@@ -21,7 +21,7 @@ import BasePanel from './components/BasePanel.vue'
 import ProjectOverviewPanel from './components/ProjectPanel/ProjectOverviewPanel.vue'
 import ModelOverviewPanel from './components/ModelPanel/ModelOverviewPanel.vue'
 import DataImportPanel from './components/DataImportPanel/DataImportPanel.vue'
-
+import TrainingPanel from './components/TrainingPanel/TrainingPanel.vue'
 
 const router = new VueRouter({
   routes: [
@@ -44,6 +44,11 @@ const router = new VueRouter({
       path: '/import-data',
       name: 'ImportData',
       component: DataImportPanel
+    },
+    {
+      path: '/training',
+      name: 'Training',
+      component: TrainingPanel
     }
   ]
 })

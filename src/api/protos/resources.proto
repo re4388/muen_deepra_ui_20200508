@@ -1,0 +1,36 @@
+syntax = "proto3";
+package resourceMonitor;
+
+message DiskUsageRequest {
+  string path = 1;
+}
+
+message DiskUsageResponse {
+  string dict_report = 1;
+}
+
+message MemoryUsageRequest {
+}
+
+message MemoryUsageResponse {
+  string dict_report = 1;
+}
+
+message GPUMemoryUsageRequest {
+}
+
+message GPUMemoryUsageResponse {
+  string dict_report = 1;
+}
+
+service DiskUsageChecker {
+  rpc GetDiskUsage (DiskUsageRequest) returns (DiskUsageResponse);
+}
+
+service MemoryUsageChecker {
+  rpc GetMemoryUsage (MemoryUsageRequest) returns (MemoryUsageResponse);
+}
+
+service GPUMemoryUsageChecker {
+  rpc GetGPUMemoryUsage (GPUMemoryUsageRequest) returns (GPUMemoryUsageResponse);
+}
