@@ -9,7 +9,6 @@
 
 <script>
 import resourceMonitor from '../../../resource_monitor.js'
-import { constants } from 'fs';
 
 export default {
   name: 'ResourcesCheckStep',
@@ -22,8 +21,8 @@ export default {
     this.getGPUMemoryUsage()
   },
   methods: {
-    getDiskUsage() {
-      resourceMonitor.getDiskUsage().then((reuslt) => {
+    getDiskUsage () {
+      resourceMonitor.getDiskUsage().then((result) => {
         this.freeDiskSpace = result['free'].toFixed(2)
       })
     },
@@ -32,7 +31,7 @@ export default {
         this.freeMemory = result['free'].toFixed(2)
       })
     },
-    getGPUMemoryUsage() {
+    getGPUMemoryUsage () {
       resourceMonitor.getGPUMemoryUsage().then((result) => {
         this.freeGPUMemory = result['free'].toFixed(2)
       })

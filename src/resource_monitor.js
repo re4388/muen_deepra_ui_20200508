@@ -1,9 +1,14 @@
-let proto_path = './src/api/protos/resources.proto';
-let grpc = require('grpc');
-let protoLoader = require('@grpc/proto-loader');
+// window.nodeRequire = require
+// delete window.require
+// delete window.exports
+// delete window.module
+
+let protoPath = './src/api/protos/resources.proto'
+let grpc = require('grpc')
+let protoLoader = require('@grpc/proto-loader')
 
 var packageDefinition = protoLoader.loadSync(
-  proto_path,
+  protoPath,
   {
     keepCase: true,
     longs: String,
@@ -13,7 +18,7 @@ var packageDefinition = protoLoader.loadSync(
   }
 )
 
-let resourceMonitorProto = grpc.loadPackageDefinition(packageDefinition).resourceMonitor;
+let resourceMonitorProto = grpc.loadPackageDefinition(packageDefinition).resourceMonitor
 
 function getDiskUsage () {
   let diskUsageChecker = new resourceMonitorProto.DiskUsageChecker(
@@ -22,7 +27,7 @@ function getDiskUsage () {
   return new Promise((resolve, reject) => {
     diskUsageChecker.GetDiskUsage({}, (err, resp) => {
       console.log(`Disk usage: ${resp}`)
-      result = JSON.parse(resp.dict_report)
+      let result = JSON.parse(resp.dict_report)
       console.log(result)
       resolve(result)
     })
@@ -39,7 +44,7 @@ function getMemoryUsage () {
         alert('It seems that there are some troubles in server side, please check that.')
       }
       console.log(`Memory usage: ${resp}`)
-      result = JSON.parse(resp.dict_report)
+      let result = JSON.parse(resp.dict_report)
       console.log(result)
       resolve(result)
     })
@@ -54,7 +59,7 @@ function getGPUMemoryUsage () {
     gpuMemoryUsageChecker.GetGPUMemoryUsage({}, (err, resp) => {
       console.log(`GPU memory usage: ${resp}`)
       console.log(resp)   // <- returned value is a list
-      result = JSON.parse(resp.dict_report)[0]
+      let result = JSON.parse(resp.dict_report)[0]
       console.log(result)
       resolve(result)
     })
