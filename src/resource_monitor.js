@@ -1,8 +1,3 @@
-// window.nodeRequire = require
-// delete window.require
-// delete window.exports
-// delete window.module
-
 let protoPath = './src/api/protos/resources.proto'
 let grpc = require('grpc')
 let protoLoader = require('@grpc/proto-loader')
