@@ -65,7 +65,7 @@ class ElectronAppSource(object):
         if self._is_port_available():
             return
 
-        cmd = 'yarn run serve'
+        cmd = 'yarn run electron:serve --headless'
         try:
             self.proc = Popen(cmd.split(), cwd=self.project_path, shell=True)
         except:
@@ -145,27 +145,34 @@ def run_test_on_dev(chrome_version):
     chrome_driver = ChromeDriver(chrome_version)
     chrome_driver.start()
 
-    driver = webdriver.Chrome(chrome_driver.exec_path)
-    driver.get('http://localhost:8080')
-    time.sleep(1)
+    chrome_options = chrome.options.Options()
+    chrome_options.binary_location = os.path.abspath(APP_PATH)
+
+    remote_app = webdriver.remote.webdriver.WebDriver(
+        command_executor='http://localhost:9515',
+        proxy=None,
+        keep_alive=False,
+        options=chrome_options
+    )
 
     # For demonstration
-    driver.get('http://localhost:8080/#/project-overview')
+    remote_app.get('http://localhost:8080/#/project-overview')
     time.sleep(1)
-    driver.execute_script(
+    remote_app.execute_script(
         'obj = document.getElementById(\'project-overview-panel\');'
         'obj.scrollTo(0, obj.scrollHeight);'
     )
     time.sleep(1)
-    driver.execute_script(
+    remote_app.execute_script(
         'obj = document.getElementById(\'project-overview-panel\');'
         'obj.scrollTo(obj.scrollHeight, 0);'
     )
     time.sleep(1)
 
-    driver.quit()
+    remote_app.quit()
     chrome_driver.stop()
     app_source.stop()
+
 
 def main_chrome():
     options = webdriver.ChromeOptions()

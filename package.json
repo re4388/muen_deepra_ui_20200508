@@ -10,6 +10,8 @@
     "electron": "vue-cli-service build && \"./node_modules/.bin/electron\" \"./src/index.js\"",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
+    "electron:headless": "vue-cli-service electron:serve --headless",
+    "serve_grpc": "node \"./scripts/run_api_server_and_electron_app.js\"",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
