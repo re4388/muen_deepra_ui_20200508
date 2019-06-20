@@ -4,17 +4,18 @@
       <div class="step-navigator d-flex flex-row">
         <step-pipeline
           :contentList="stepContent"
-          @on-step-changed="onStepChanged"
+          @on-step-changed="updateStep"
         />
         <component
           class="flex-fill"
           :is="stepContent[currentStep]['contentType']"
           :content="stepContent[currentStep]"
+          @on-progress-finished="toggleBtnFlowControl"
         />
       </div>
       <div class="control-section">
-        <a class="btn-flow-control">
-          <div class="content" @click="toNextStep">
+        <a class="btn-flow-control" id="btn-flow-control">
+          <div class="content" @click="enterToNextStep">
             <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
             <p v-else>Next</p>
           </div>
@@ -28,22 +29,33 @@
 import StepPipeline from '../Pipeline/StepPipeline.vue'
 import StepContent from '../Pipeline/StepContent.vue'
 import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
+import TrainingProgress from './StepContent/TrainingProgress.vue'
 
 export default {
   name: 'TrainingPanel',
   components: {
     StepPipeline,
     StepContent,
-    ResourcesCheckStep
+    ResourcesCheckStep,
+    TrainingProgress
   },
   methods: {
-    onStepChanged (stepId) {
+    updateStep (stepId) {
       this.currentStep = stepId
     },
-    toNextStep () {
+    enterToNextStep () {
       if (this.currentStep < this.stepContent.length - 1) {
+        if (this.currentStep === 1 && !this.isTrainingFinished) {
+          return
+        }
         this.currentStep += 1
+        this.toggleBtnFlowControl(this.currentStep !== 1)
       }
+    },
+    toggleBtnFlowControl (enable) {
+      this.isTrainingFinished = enable
+      let el = document.getElementById('btn-flow-control').getElementsByClassName('content')[0]
+      el.style.backgroundColor = enable ? 'rgba(0, 150, 150, 0.75)' : 'rgb(175, 175, 175)'
     }
   },
   data () {
@@ -65,7 +77,8 @@ export default {
           contentType: 'StepContent'
         }
       ],
-      currentStep: 0
+      currentStep: 0,
+      isTrainingFinished: false
     }
   }
 }
