@@ -41,28 +41,28 @@ export default {
       this.currentStep = stepId
     },
     toNextStep () {
-      if (this.currentStep < this.stepContent.length-1) {
+      if (this.currentStep < this.stepContent.length - 1) {
         this.currentStep += 1
       }
-    },
+    }
   },
   data () {
     return {
       stepContent: [
         {
           id: 0,
-          title: "Computing resources check",
-          contentType: "ResourcesCheckStep"
+          title: 'Computing resources check',
+          contentType: 'ResourcesCheckStep'
         },
         {
           id: 1,
-          title: "Training",
-          contentType: "StepContent"
+          title: 'Training',
+          contentType: 'TrainingProgress'
         },
         {
           id: 2,
-          title: "Done",
-          contentType: "StepContent"
+          title: 'Done',
+          contentType: 'StepContent'
         }
       ],
       currentStep: 0
