@@ -54,3 +54,8 @@ $ yarn run electron
         ```bash
         $ chmod +x ~/bin/chromedriver
         ```
+
+### Run test example
+```bash
+$ python -m pytest ./tests
+```

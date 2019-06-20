@@ -30,6 +30,10 @@ On Windows, open `cmd.exe` and enter the following command to open environment v
 
     > rundll32 sysdm.cpl,EditEnvironmentVariables
 
+    Recommanded setting for windows user:
+
+        Append this string: "%userprofile%\\bin\chromedriver\{version}" to the `Path` variable.
+
 On Linux, you may need to make downloaded chromedriver be an executable by
 
     $ chmod +x ~/bin/chromedriver
@@ -101,7 +105,7 @@ def main(chrome_version):
         print('Moving {} to {}'.format(fn_src, fn_dst))
         shutil.move(fn_src, fn_dst)
 
-    print(DOC_SET_ENV.format(dir_bin=DIR_BIN))
+    print(DOC_SET_ENV.format(dir_bin=DIR_BIN, version=chrome_version))
 
 
 if __name__ == '__main__':
