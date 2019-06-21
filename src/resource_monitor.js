@@ -1,26 +1,10 @@
 let protoPath = './src/api/protos/resources.proto'
-let grpc = require('grpc')
-let protoLoader = require('@grpc/proto-loader')
-
-let backendConfig = require('./backend.json')
-let grpcServerAddress = `${backendConfig.server.ip}:${backendConfig.server.port}`
-
-var packageDefinition = protoLoader.loadSync(
-  protoPath,
-  {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    defaults: true,
-    oneofs: true
-  }
-)
-
-let resourceMonitorProto = grpc.loadPackageDefinition(packageDefinition).resourceMonitor
+let protoUtils = require('./proto_utils.js')
+let protoPackageName = 'resourceMonitor'
 
 function getDiskUsage () {
-  let diskUsageChecker = new resourceMonitorProto.DiskUsageChecker(
-    grpcServerAddress, grpc.credentials.createInsecure()
+  let diskUsageChecker = protoUtils.getServicer(
+    protoPath, protoPackageName, 'DiskUsageChecker'
   )
   return new Promise((resolve, reject) => {
     diskUsageChecker.GetDiskUsage({}, (err, resp) => {
@@ -33,8 +17,8 @@ function getDiskUsage () {
 }
 
 function getMemoryUsage () {
-  let memoryUsageChecker = new resourceMonitorProto.MemoryUsageChecker(
-    grpcServerAddress, grpc.credentials.createInsecure()
+  let memoryUsageChecker = protoUtils.getServicer(
+    protoPath, protoPackageName, 'MemoryUsageChecker'
   )
   return new Promise((resolve, reject) => {
     memoryUsageChecker.GetMemoryUsage({}, (err, resp) => {
@@ -50,8 +34,8 @@ function getMemoryUsage () {
 }
 
 function getGPUMemoryUsage () {
-  let gpuMemoryUsageChecker = new resourceMonitorProto.GPUMemoryUsageChecker(
-    grpcServerAddress, grpc.credentials.createInsecure()
+  let gpuMemoryUsageChecker = protoUtils.getServicer(
+    protoPath, protoPackageName, 'GPUMemoryUsageChecker'
   )
   return new Promise((resolve, reject) => {
     gpuMemoryUsageChecker.GetGPUMemoryUsage({}, (err, resp) => {
