@@ -20,6 +20,13 @@
             <p v-else>Next</p>
           </div>
         </a>
+        <p v-if="this.currentStep == this.stepOfTraining">
+          <a class="btn-flow-control" id="btn-stop-training">
+            <div class="content">
+              <p>Stop</p>
+            </div>
+          </a>
+        </p>
       </div>
     </div>
   </div>
@@ -45,11 +52,11 @@ export default {
     },
     enterToNextStep () {
       if (this.currentStep < this.stepContent.length - 1) {
-        if (this.currentStep === 1 && !this.isTrainingFinished) {
+        if (this.currentStep === this.stepOfTraining && !this.isTrainingFinished) {
           return
         }
         this.currentStep += 1
-        this.toggleBtnFlowControl(this.currentStep !== 1)
+        this.toggleBtnFlowControl(this.currentStep !== this.stepOfTraining)
       }
     },
     toggleBtnFlowControl (enable) {
@@ -78,6 +85,7 @@ export default {
         }
       ],
       currentStep: 0,
+      stepOfTraining: 1,
       isTrainingFinished: false
     }
   }
@@ -118,6 +126,11 @@ $btn-height: 50px;
       transform: translate3D(2px, 2px, 0px);
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
+  }
+}
+#btn-stop-training {
+  & .content {
+    background-color: rgba(200, 0, 0, 0.75);
   }
 }
 </style>

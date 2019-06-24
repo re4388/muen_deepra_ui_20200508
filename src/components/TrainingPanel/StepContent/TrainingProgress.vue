@@ -15,40 +15,57 @@
 </template>
 
 <script>
+import trainingService from '../../../training_service.js'
+
 export default {
   name: 'TrainingProgress',
   props: {
     content: Object
   },
   created: function () {
-    // For testing in prototype only
-    this.demoForUpdateProgress()
+    this.startTraining()
   },
   methods: {
+    setProgressRange (rngMin, rngMax) {
+      this.progressValueMin = rngMin
+      this.progressValueMax = rngMax
+    },
     updateProgressBar (val) {
       if (val > this.progressValueMax) {
         return
       }
-      this.progressValue = val
-      if (val === this.progressValueMax) {
-        console.log('Training is finished')
-        this.$emit('on-progress-finished', true)
-      }
+      this.progressValue = (val * this.progressValueMax).toFixed(2)
     },
-    // For testing in prototype only
-    demoForUpdateProgress () {
-      let val = 0
-      setInterval(() => {
-        val += 1
-        this.updateProgressBar(val)
-      }, 100)
+    startTraining () {
+      if (this.isTrainingStarted) {
+        return
+      }
+      this.isTrainingStarted = true
+
+      let handler_progress = (resp) => {
+        console.log(resp)
+        let epoch_info = resp['epoch_info']
+        let curr_epoch = epoch_info['curr_epoch']
+        let total_epoch = epoch_info['total_epoch']
+        this.updateProgressBar(curr_epoch / total_epoch)
+      }
+      let handler_end = (resp) => {
+        this.finishTraining()
+      }
+      // For demonstration
+      let call = trainingService.runMNIST('foo', handler_progress, handler_end)
+    },
+    finishTraining () {
+      console.log('Training is finished')
+      this.$emit('on-progress-finished', true)
     }
   },
   data () {
     return {
       progressValue: 0,
       progressValueMin: 0,
-      progressValueMax: 100
+      progressValueMax: 100,
+      isTrainingStarted: false,
     }
   }
 }
