@@ -2,9 +2,9 @@
   <div class="pipeline-element">
     <!-- <div class="content">
       <div class="outter-ring"></div>
-      <div class="number-label" @click="showMessage">{{ digit }}</div>
+      <div class="number-label" @click="emitClickedEvent">{{ digit }}</div>
     </div> -->
-    <div class="number-label" @click="showMessage">{{ digit }}</div>
+    <div class="number-label" @click="emitClickedEvent">{{ digit }}</div>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
     digit: Number
   },
   methods: {
-    showMessage () {
+    emitClickedEvent () {
       this.$emit('on-label-selected', this.digit)
     }
   }

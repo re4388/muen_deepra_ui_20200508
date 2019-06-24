@@ -4,7 +4,7 @@
       <div class="step-navigator d-flex flex-row">
         <step-pipeline
           :contentList="stepContent"
-          @on-step-changed="onStepChanged"
+          @on-step-changed="updateCurrentStep"
         />
         <step-content
           class="flex-fill"
@@ -13,7 +13,7 @@
       </div>
       <div class="control-section">
         <a class="btn-flow-control">
-          <div class="content" @click="toNextStep">
+          <div class="content" @click="progressToNextStep">
             <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
             <p v-else>Next</p>
           </div>
@@ -35,14 +35,14 @@ export default {
     StepContent
   },
   methods: {
-    onStepChanged (stepId) {
+    updateCurrentStep (stepId) {
       this.currentStep = stepId
     },
-    toNextStep () {
-      if (this.currentStep < this.stepContent.length-1) {
+    progressToNextStep () {
+      if (this.currentStep < this.stepContent.length - 1) {
         this.currentStep += 1
       }
-    },
+    }
   },
   data () {
     return {

@@ -4,7 +4,7 @@
       <pipeline-element
         :key="index"
         :digit="item.id"
-        @on-label-selected="onStepChanged"
+        @on-label-selected="notifySelection"
       />
     </template>
   </div>
@@ -22,7 +22,7 @@ export default {
     contentList: Array
   },
   methods: {
-    onStepChanged (selectedId) {
+    notifySelection (selectedId) {
       this.$emit('on-step-changed', selectedId)
     }
   }
