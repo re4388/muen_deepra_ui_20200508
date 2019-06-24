@@ -5,14 +5,10 @@
 $ yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Run application on electron (with hot-reloads for development)
+(require dependency: `vue-cli-plugin-electron-builder`)
 ```bash
-$ yarn run serve
-```
-
-### Run application on `electron.js`
-```bash
-$ yarn run electron
+$ yarn run electron:serve
 ```
 
 ### Build application
