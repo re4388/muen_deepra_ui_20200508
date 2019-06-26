@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import StepPipeline from '../Pipeline/StepPipeline.vue'
-import StepContent from '../Pipeline/StepContent.vue'
-import stepContentData from './step_pipeline_content.json'
+import StepPipeline from '@/components/Pipeline/StepPipeline.vue'
+import StepContent from '@/components/Pipeline/StepContent.vue'
+import stepContentData from './step_pipeline_content.json'  // for demonstration
 
 export default {
   name: 'DataImportPanel',

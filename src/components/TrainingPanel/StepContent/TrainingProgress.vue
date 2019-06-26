@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import trainingService from '../../../training_service.js'
+import trainingService from '@/api/training_service.js'
 
 export default {
   name: 'TrainingProgress',

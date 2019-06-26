@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import StepPipeline from '../Pipeline/StepPipeline.vue'
-import StepContent from '../Pipeline/StepContent.vue'
+import StepPipeline from '@/components/Pipeline/StepPipeline.vue'
+import StepContent from '@/components/Pipeline/StepContent.vue'
 import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
 import TrainingProgress from './StepContent/TrainingProgress.vue'
 

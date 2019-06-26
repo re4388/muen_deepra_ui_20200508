@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import TopNavbar from './components/TopNavbar.vue'
-import Sidebar from './components/SideBarMenu/SideBarMenu.vue'
-import BasePanel from './components/BasePanel.vue'
+import TopNavbar from '@/components/TopNavbar.vue'
+import Sidebar from '@/components/SideBarMenu/SideBarMenu.vue'
+import BasePanel from '@/components/BasePanel.vue'
 
 export default {
   name: 'App',

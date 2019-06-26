@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import resourceMonitor from '../../../resource_monitor.js'
+import resourceMonitor from '@/api/resource_monitor.js'
 
 export default {
   name: 'ResourcesCheckStep',
