@@ -11,7 +11,8 @@ __all__ = ['ChromeDriverProcess', 'ElectronAppProcess']
 
 class ChromeDriverProcess(object):
     def __init__(self, version):
-        self.exec_path = os.path.join(AppConfig.DIR_BIN, 'chromedriver', version, 'chromedriver.exe')
+        exec_name = 'chromedriver' if AppConfig.PLATFORM_SYS == 'Linux' else 'chromedriver.exe'
+        self.exec_path = os.path.join(AppConfig.DIR_BIN, 'chromedriver', version, exec_name)
         self.proc = None
 
     def start(self, timeout=1):
@@ -20,7 +21,7 @@ class ChromeDriverProcess(object):
 
         cmd = '{}'.format(self.exec_path)
         try:
-            self.proc = Popen(cmd)
+            self.proc = Popen(cmd.split())
         except:
             raise
 
@@ -74,10 +75,12 @@ class ElectronAppProcess(object):
 
 class RemoteDriver(object):
     @classmethod
-    def create(cls, command_executor='http://localhost:9515', chrome_options=None):
+    def create(cls, command_executor='http://localhost:9515', chrome_options=None, headless=False):
         if chrome_options is None:
             chrome_options = chrome.options.Options()
             chrome_options.binary_location = AppConfig.APP_PATH
+            if headless:
+                chrome_options.add_argument('--headless')
         elif not isinstance(chrome_options, chrome.options.Options):
             raise TypeError('Given `chrome_options` should be a instance of {}'.format(
                 chrome.options.Options
