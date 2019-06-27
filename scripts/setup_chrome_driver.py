@@ -36,7 +36,7 @@ On Windows, open `cmd.exe` and enter the following command to open environment v
 
 On Linux, you may need to make downloaded chromedriver be an executable by
 
-    $ chmod +x ~/bin/chromedriver
+    $ chmod +x ~/bin/chromedriver/{version}/chromedriver
 
 """
 
@@ -86,7 +86,7 @@ def main(chrome_version):
         print('File already exist in {}, step of download will be skipped.'.format(fo))
 
     # Extract file
-    dir_extraction = os.path.join(DOWNLOAD_DIR, 'chorme_driver')
+    dir_extraction = os.path.join(DOWNLOAD_DIR, 'chrome_driver')
     print('Extracting files to {}'.format(dir_extraction))
     extracted = None
     with zipfile.ZipFile(fo, 'r') as zip_ref:
