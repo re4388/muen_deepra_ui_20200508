@@ -18,7 +18,7 @@ class XvfbServer(object):
             raise RuntimeError('Process has been opened.')
 
         cmd = 'Xvfb :{} -screen {} {}'.format(
-            display, screen, 'x'.join(map(str, resolution))
+            self.display, self.screen, 'x'.join(map(str, self.resolution))
         )
         try:
             self.proc = Popen(cmd.split())

@@ -30,6 +30,8 @@ class TestPageNavigation:
         time.sleep(1)
         assert app.find_element_by_id('project-overview-panel') is not None
 
+    @pytest.mark.skip(reason='some functionalities in training panel requires to '
+    'interactive with grpc server, so that this test case is temporary skipped.')
     def test_nav_to_train_panel(self, app):
         app.get('http://localhost:8080/#/training')
         time.sleep(1)

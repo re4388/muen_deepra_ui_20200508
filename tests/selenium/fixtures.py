@@ -9,7 +9,8 @@ from .env import XvfbServer
 def app(request):
     headless = request.config.getoption('headless')
     if headless and AppConfig.PLATFORM_SYS == 'Linux':
-        proc_xvfb = XvfbServer.start()
+        proc_xvfb = XvfbServer(42)
+        proc_xvfb.start()
 
     proc_electron = ElectronAppProcess(AppConfig.DIR_PROJECT)
     proc_electron.start()
@@ -22,4 +23,5 @@ def app(request):
     # teardown
     proc_chrome.stop()
     proc_electron.stop()
-    proc_xvfb.stop()
+    if headless and AppConfig.PLATFORM_SYS == 'Linux':
+        proc_xvfb.stop()
