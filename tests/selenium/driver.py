@@ -50,7 +50,7 @@ class ElectronAppProcess(object):
 
         cmd = 'yarn run electron:headless'
         try:
-            self.proc = Popen(cmd.split(), cwd=self.project_path)
+            self.proc = Popen(cmd, cwd=self.project_path, shell=True)
         except:
             raise
 
