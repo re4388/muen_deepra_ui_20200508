@@ -48,9 +48,9 @@ class ElectronAppProcess(object):
         if self._is_port_available():
             return
 
-        cmd = 'yarn run electron:serve --headless'
+        cmd = 'yarn run electron:headless'
         try:
-            self.proc = Popen(cmd.split(), cwd=self.project_path, shell=True)
+            self.proc = Popen(cmd.split(), cwd=self.project_path)
         except:
             raise
 
@@ -80,6 +80,7 @@ class RemoteDriver(object):
             chrome_options = chrome.options.Options()
             chrome_options.binary_location = AppConfig.APP_PATH
             if headless:
+                chrome_options.add_argument('--whitelisted-ips')
                 chrome_options.add_argument('--headless')
         elif not isinstance(chrome_options, chrome.options.Options):
             raise TypeError('Given `chrome_options` should be a instance of {}'.format(
