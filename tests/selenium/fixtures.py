@@ -18,10 +18,13 @@ def app(request):
     proc_chrome = ChromeDriverProcess(AppConfig.CHROME_VERSION)
     proc_chrome.start()
 
-    yield RemoteDriver.create(headless=headless)
-
-    # teardown
-    proc_chrome.stop()
-    proc_electron.stop()
-    if headless and AppConfig.PLATFORM_SYS == 'Linux':
-        proc_xvfb.stop()
+    try:
+        yield RemoteDriver.create(headless=headless)
+    except:
+        raise
+    finally:
+        # teardown
+        proc_chrome.stop()
+        proc_electron.stop()
+        if headless and AppConfig.PLATFORM_SYS == 'Linux':
+            proc_xvfb.stop()
