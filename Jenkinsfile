@@ -62,6 +62,9 @@ pipeline {
 		stage('Generate report') {
 			steps {
 				// publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'report_cov/html', reportFiles: 'index.html', reportName: 'code-coverage-report', reportTitles: ''])
+				script {
+					sh """echo ${currentBuild.result}"""
+				}
 			}
 			post {
 				always {
