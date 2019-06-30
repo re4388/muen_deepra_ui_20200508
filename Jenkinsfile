@@ -2,7 +2,7 @@ pipeline {
 	environment {
 		CHANNEL_ACCESS_TOKEN = credentials('line-channel-access-token')
 		CHANNEL_SECRET = credentials('line-channel-secret')
-		TARGET_GROUP_ID = credentials('line-target-group-id-test')
+		TARGET_GROUP_ID = credentials('line-target-group-id-deepra-ui')
 		SkipRemainingSteps = 'false'
 	}
 	agent {
