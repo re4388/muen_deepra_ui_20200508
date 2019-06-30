@@ -82,6 +82,8 @@ class RemoteDriver(object):
             if headless:
                 chrome_options.add_argument('--whitelisted-ips')
                 chrome_options.add_argument('--headless')
+                chrome_options.add_argument('--no-sandbox')
+                chrome_options.add_argument('--disable-dev-shm-usage')
         elif not isinstance(chrome_options, chrome.options.Options):
             raise TypeError('Given `chrome_options` should be a instance of {}'.format(
                 chrome.options.Options
