@@ -9,7 +9,8 @@
         images were divided in 5 fold for training dataset and validation dataset. It is take 10hr for training . The
         prediction performance of model are shown in following table.
       </p>
-
+      <metrics-display />
+      <graph-display />
 
     </div>
   </div>
@@ -22,7 +23,11 @@
   import GraphDisplay from './GraphDisplay.vue'
 
   export default {
-    name: 'EvaluationPanel'
+    name: 'EvaluationPanel',
+    components:{
+      MetricsDisplay,
+      GraphDisplay
+    }
   }
 
 </script>
