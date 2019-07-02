@@ -8,7 +8,7 @@
       <li><a href="#" @click="getLabel3">Label 3</a></li>
 
     </ul>
-    <table class="table table-bordered table-sm ">
+    <table class="table table-bordered table-sm mb-1">
       <thead class="thead-dark">
         <tr>
           <th>Sensitivity</th>
@@ -24,7 +24,7 @@
         </tr>
       </tbody>
     </table>
-    <p class="small text-left mt-1">We use test dataset to evaluate the model. This table shows sensitivity ,
+    <p class="table-anotation text-left">We use test dataset to evaluate the model. This table shows sensitivity ,
       specificity, precision, F1 score, AUC.
       F1 score : 2*Precision*Sensitivity/(Precision Sensitivity). AUC: Area under ROC curve
     </p>
@@ -103,6 +103,10 @@
 </script>
 
 <style scoped>
+
+  .table-anotation{
+    font-size: 12px;
+  }
   ul.breadcrumb {
     padding: 1px 10px;
     list-style: none;
