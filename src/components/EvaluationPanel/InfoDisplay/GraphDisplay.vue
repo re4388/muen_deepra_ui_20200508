@@ -1,16 +1,17 @@
 <template>
-  <div class="small">
-    <line-chart :chart-data="datacollection"></line-chart>
+  <div class="middle ml-5 mt-1">
+    <graph-display-line-chart :chart-data="datacollection"></graph-display-line-chart>
+      </line-chart>
     <button @click="fillData()">Randomize</button>
   </div>
 </template>
 
 <script>
-  import LineChart from './LineChart.js'
+  import GraphDisplayLineChart from './GraphDisplayLineChart.js'
   export default {
     name: 'GraphDisplay',
     components: {
-      LineChart
+      GraphDisplayLineChart
     },
     data() {
       return {

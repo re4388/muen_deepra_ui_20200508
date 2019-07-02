@@ -15,21 +15,7 @@
       </div>
     </header>
     <main>
-      <div class="item">
-        <metrics-display />
-      </div>
-
-      <div class="mb-5 row">
-
-        <div class="col-md-6">
-          <graph-display />
-        </div>
-
-        <div class="col-md-6">
-          <threshold-adjustment />
-        </div>
-
-      </div>
+      <EvaluationPanelTabs />
     </main>
 
     <footer class="text-center text-muted py-4">
@@ -42,16 +28,11 @@
 </template>
 
 <script>
-  import MetricsDisplay from './MetricsDisplay.vue'
-  import GraphDisplay from './GraphDisplay.vue'
-  import ThresholdAdjustment from './ThresholdAdjustment.vue'
-
+  import EvaluationPanelTabs from './EvaluationPanelTabs.vue'
   export default {
     name: 'EvaluationPanel',
     components: {
-      MetricsDisplay,
-      GraphDisplay,
-      ThresholdAdjustment
+      EvaluationPanelTabs
     }
   }
 
