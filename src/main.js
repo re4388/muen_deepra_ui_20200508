@@ -4,6 +4,10 @@ Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
+// Chart.js
+import 'chart.js'
+import 'vue-chartjs'
+
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faFolder, faCube } from '@fortawesome/free-solid-svg-icons'
@@ -15,6 +19,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 // Bootstrap
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap'
+
+
 
 // Routing
 import BasePanel from './components/BasePanel.vue'
