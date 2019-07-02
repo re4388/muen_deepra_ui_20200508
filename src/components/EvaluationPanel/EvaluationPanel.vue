@@ -20,6 +20,10 @@
       <graph-display />
     </div>
 
+    <div class="item">
+      <threshold-adjustment />
+    </div>
+
   </div>
 
 
@@ -28,12 +32,14 @@
 <script>
   import MetricsDisplay from './MetricsDisplay.vue'
   import GraphDisplay from './GraphDisplay.vue'
+  import ThresholdAdjustment from './ThresholdAdjustment.vue'
 
   export default {
     name: 'EvaluationPanel',
     components: {
       MetricsDisplay,
-      GraphDisplay
+      GraphDisplay,
+      ThresholdAdjustment
     }
   }
 
