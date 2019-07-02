@@ -29,3 +29,5 @@ class AppConfig(object):
     APP_PATH = os.path.join(DIST_PATH, DIST_OS_DIR, DIST_EXEC)
 
     CHROME_VERSION = '73'
+
+    SELENIUM_EXECUTION_INTERVAL = 0.5
