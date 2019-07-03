@@ -1,7 +1,9 @@
 <template>
   <div class="small">
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
+    <!-- {{ newValue }} -->
   </div>
+
 </template>
 
 <script>
@@ -11,38 +13,38 @@
     components: {
       GraphDisplayLineChart
     },
-    props: ['graphData'],  //  fake data: { "x": [ 12, 22, 32, 4, 5 ], "y": [ 1, 2, 3, 4, 5 ] }
+    props: ['graphData', 'newValue'], // fake data: { "x": [ 12, 22, 32, 4, 5 ], "y": [ 1, 2, 3, 4, 5 ] }
 
     // need to define the data that we are going to use in html
     data() {
       return {
-        datacollection: {}
+        datacollection: {},
       }
     },
 
     // get data after DOM is mounted
-    mounted(){
-      this.getData()
+    created() {
+      this.getChatData()
+      console.log(this.newValue)
     },
 
     // methods defined here
     // we will get part of the props, token from parent, inside charJS graph data strcuture
     methods: {
-      getData() {
+      getChatData() {
         this.datacollection = {
-          labels: this.graphData["x"],
+          labels: [...this.graphData["x"], ...this.graphData["y"]],
           datasets: [{
-            label: 'Data 1',
+            label: 'Taiwan',
             // backgroundColor: '#f87979',
-            data: this.graphData["x"]
+            data: this.graphData["x"].map(x => x + this.newValue) //=> "x": [12, 22, 32, 4, 5]
           }, {
-            label: 'Data 2',
+            label: 'Global',
             // backgroundColor: 'blue',
-            data: this.graphData["y"]
+            data: this.graphData["y"] //=> "y": [1, 2, 3, 4, 5]
           }]
         }
-      },
-
+      }
     }
   }
 

@@ -11,6 +11,8 @@
       </li>
     </ul>
 
+    
+
 
     <!-- individual tab component -->
     <tab v-for="tab in data" :tab-info="tab" :name="tab.name" :current-view="currentView">
@@ -19,11 +21,16 @@
       <MetricsDisplay :metrics-data=" tab.metrics"></MetricsDisplay>
 
       <div class="mb-5 row">
+
         <div class="col-md-6">
-          <GraphDisplay :graph-data="tab.grpah"></GraphDisplay>
+          <GraphDisplay :graph-data="tab.grpah" :new-value="newThreshold"></GraphDisplay>
         </div>
+
         <div class="col-md-6">
-          <ThresholdAdjustment :threshold-data="tab.threshold"></ThresholdAdjustment>
+          <ThresholdAdjustment 
+          :threshold-data="tab.threshold" 
+          @threshold-change="ThresholdChange">
+          </ThresholdAdjustment>
         </div>
       </div>
 
@@ -51,7 +58,8 @@
       return {
         data: TabsData.content,
         views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
-        currentView: ''
+        currentView: '',
+        newThreshold:0,
       }
     },
     mounted() {
@@ -67,6 +75,10 @@
       changeView(obj) {
         this.currentView = obj.name
       },
+      ThresholdChange(obj){
+        this.newThreshold = obj.result
+        // console.log(typeof(this.newThreshold))
+      }
     },
     components: {
       Tab,
