@@ -10,22 +10,19 @@
         "AUC": "0.938±0.02"
       },
       "grpah": {
-        "day1": "25",
-        "day2": "12",
-        "day3": "9",
-        "day4": "23",
-        "day5": "12"
+        "x": [12, 22, 32, 4, 5],
+        "y": [1, 2, 3, 4, 5]
       },
       "threshold": {
-        "score": "0.3",
-        "image": "100",
-        "precision": "98.5",
-        "recall": "91.4"
+        "score": 0.3,
+        "image": 100,
+        "precision": 98.5,
+        "recall": 91.4
       }
     },
     {
       "id": 1,
-      "name": "Tab1info",
+      "name": "Tab-1info",
       "metrics": {
         "Sensitivity": "29.2%±0.02",
         "Specificity": "24.3%±0.02",
@@ -34,22 +31,19 @@
         "AUC": "0.938±0.02"
       },
       "grpah": {
-        "day1": "35",
-        "day2": "32",
-        "day3": "39",
-        "day4": "13",
-        "day5": "32"
+        "x": [13, 2, 3, 4, 5],
+        "y": [32, 22, 32, 4, 5]
       },
       "threshold": {
-        "score": "0.5",
-        "image": "300",
-        "precision": "90.5",
-        "recall": "99.4"
+        "score": 0.5,
+        "image": 300,
+        "precision": 90.5,
+        "recall": 99.4
       }
     },
     {
       "id": 2,
-      "name": "Tab2info",
+      "name": "Tab-2info",
       "metrics": {
         "Sensitivity": "39.2%±0.02",
         "Specificity": "34.3%±0.02",
@@ -58,22 +52,19 @@
         "AUC": "0.938±0.02"
       },
       "grpah": {
-        "day1": "45",
-        "day2": "42",
-        "day3": "22",
-        "day4": "43",
-        "day5": "42"
+        "x": [1, 2, 3, 4, 5],
+        "y": [1, 2, 3, 4, 5]
       },
       "threshold": {
-        "score": "0.9",
-        "image": "120",
-        "precision": "88.5",
-        "recall": "81.4"
+        "score": 0.9,
+        "image": 120,
+        "precision": 88.5,
+        "recall": 81.4
       }
     },
     {
       "id": 3,
-      "name": "Tab3info",
+      "name": "Tab-3info",
       "metrics": {
         "Sensitivity": "49.2%±0.02",
         "Specificity": "44.3%±0.02",
@@ -82,17 +73,35 @@
         "AUC": "0.438±0.02"
       },
       "grpah": {
-        "day1": "95",
-        "day2": "22",
-        "day3": "19",
-        "day4": "3",
-        "day5": "2"
+        "x": [15, 2, 5, 4, 5],
+        "y": [15, 2, 3, 45, 5]
       },
       "threshold": {
-        "score": "0.1",
-        "image": "600",
-        "precision": "91.5",
-        "recall": "94.4"
+        "score": 0.1,
+        "image": 600,
+        "precision": 91.5,
+        "recall": 94.4
+      }
+    },
+    {
+      "id": 4,
+      "name": "Tab-4info",
+      "metrics": {
+        "Sensitivity": "29.2%±0.02",
+        "Specificity": "24.3%±0.02",
+        "Precision": "41.8%±0.02",
+        "F1score": "0.454±0.02",
+        "AUC": "0.438±0.02"
+      },
+      "grpah": {
+        "x": [99, 2, 5, 4, 5],
+        "y": [15, 2, 3, 45, 5]
+      },
+      "threshold": {
+        "score": 0.1,
+        "image": 900,
+        "precision": 91.5,
+        "recall": 94.4
       }
     }
   ]

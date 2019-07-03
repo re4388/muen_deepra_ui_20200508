@@ -1,6 +1,5 @@
 <template>
   <div class="small">
-    {{ graphData }}
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
   </div>
 </template>
@@ -12,31 +11,38 @@
     components: {
       GraphDisplayLineChart
     },
-    props: ['graphData'],
+    props: ['graphData'],  //  fake data: { "x": [ 12, 22, 32, 4, 5 ], "y": [ 1, 2, 3, 4, 5 ] }
+
+    // need to define the data that we are going to use in html
     data() {
       return {
         datacollection: null
       }
     },
-    // call data after DOM mounted
+
+    // get data after DOM is mounted
     mounted() {
-      this.fillData()
+      this.getData()
     },
+
+    // methods defined here
+    // we will get part of the props, token from parent, inside charJS graph data strcuture
     methods: {
-      fillData() {
-        this.graphData = {
-          labels: [1, 2, 3, 4, 5],
+      getData() {
+        this.datacollection = {
+          labels: this.graphData["x"],
           datasets: [{
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [1, 2, 3, 4, 5]
+            label: 'Data 1',
+            // backgroundColor: '#f87979',
+            data: this.graphData["x"]
           }, {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [1, 2, 3, 4, 5]
+            label: 'Data 2',
+            // backgroundColor: 'blue',
+            data: this.graphData["y"]
           }]
         }
       },
+
     }
   }
 
@@ -44,8 +50,8 @@
 
 <style>
   .small {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 400px;
+    max-height: 400px;
     /* margin: 150px auto; */
   }
 

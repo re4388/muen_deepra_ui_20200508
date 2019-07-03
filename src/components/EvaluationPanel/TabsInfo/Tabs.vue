@@ -1,39 +1,29 @@
 <template>
 
   <div class="d-flex flex-column">
-    <template v-for="tab in data"  class="container">
-      
-        {{ tab.name }}
-        <MetricsDisplay :metrics-data=" tab.metrics"></MetricsDisplay>
+    <template v-for="tab in data" class="container">
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+      {{ tab.name }}
+      <MetricsDisplay :metrics-data=" tab.metrics"></MetricsDisplay>
 
-        <!-- {{ tab.position }} -->
-        <GraphDisplay :graph-data="tab.grpah"></GraphDisplay>
+      <br>
 
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+      <GraphDisplay :graph-data="tab.grpah"></GraphDisplay>
 
-        {{ tab.threshold }}
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+      <br>
 
-      
+
+      <ThresholdAdjustment :threshold-data="tab.threshold"></ThresholdAdjustment>
+
+      <br>
+
+
+
     </template>
 
-    
+
 
   </div>
 </template>
@@ -56,9 +46,6 @@
       ThresholdAdjustment
     }
   }
-
-
-
 
 </script>
 
