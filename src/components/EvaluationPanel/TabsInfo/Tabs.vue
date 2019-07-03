@@ -15,7 +15,7 @@
     <!-- individual tab component -->
     <tab v-for="tab in data" :tab-info="tab" :name="tab.name" :current-view="currentView">
 
-      <h2>{{ tab.name }}</h2>
+      <h3 class="text-left ml-2">{{ tab.name }}</h3>
       <MetricsDisplay :metrics-data=" tab.metrics"></MetricsDisplay>
 
       <div class="mb-5 row">

@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+
     <header>
       <div class="container text-light bg-color">
         <div class="item border mt-3 ">
@@ -14,8 +15,9 @@
         </p>
       </div>
     </header>
+
     <main>
-      <EvaluationPanelTabs />
+      <Tabs></Tabs>
     </main>
 
     <footer class="text-center text-muted py-4">
@@ -26,13 +28,12 @@
 
 
 </template>
-
 <script>
-  import EvaluationPanelTabs from './EvaluationPanelTabs.vue'
+  import Tabs from './TabsInfo/Tabs.vue'
   export default {
     name: 'EvaluationPanel',
     components: {
-      EvaluationPanelTabs
+      Tabs
     }
   }
 
