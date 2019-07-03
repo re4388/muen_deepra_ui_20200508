@@ -1,8 +1,15 @@
 <template>
   <div class="small">
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
-    <!-- {{ newValue }} -->
+    Threshold Value: {{ newValue }}
+    <br>
+    <button @click="fillData()">Change Threshold</button>
+
+
+    <!-- <button @click="echo">xx</button> -->
+
   </div>
+  <!-- 有沒有辦法newValue一改變，就可以讓fillData重新跑一次-->
 
 </template>
 
@@ -19,33 +26,55 @@
     data() {
       return {
         datacollection: {},
+        // threshold: this.newValue
       }
     },
 
     // get data after DOM is mounted
-    created() {
-      this.getChatData()
-      console.log(this.newValue)
+    mounted() {
+      this.fillData()
+      // console.log(this.newValue)
     },
 
-    // methods defined here
-    // we will get part of the props, token from parent, inside charJS graph data strcuture
-    methods: {
-      getChatData() {
-        this.datacollection = {
-          labels: [...this.graphData["x"], ...this.graphData["y"]],
-          datasets: [{
-            label: 'Taiwan',
-            // backgroundColor: '#f87979',
-            data: this.graphData["x"].map(x => x + this.newValue) //=> "x": [12, 22, 32, 4, 5]
-          }, {
-            label: 'Global',
-            // backgroundColor: 'blue',
-            data: this.graphData["y"] //=> "y": [1, 2, 3, 4, 5]
-          }]
-        }
-      }
+
+    // computed:{
+    //   threshold(){
+    //     this.fillData()
+    //   }
+    // },
+  
+
+  watch: {
+    // whenever question changes, this function will run
+    newValue: function () {
+      this.fillData()
     }
+  },
+
+  // methods defined here
+  // we will get part of the props, token from parent, inside charJS graph data strcuture
+  methods: {
+    fillData() {
+      this.datacollection = {
+        labels: [...this.graphData["x"]],
+        datasets: [{
+          label: 'Taiwan',
+          // backgroundColor: '#f87979',
+          data: this.graphData["x"].map(i => i * (this.newValue +0.2) * 10) //=> "x": [1, 2, 3, 2, 1]
+        }, {
+          label: 'Global',
+          // backgroundColor: 'blue',
+          data: this.graphData["y"].map(i => i + (this.newValue +0.2) * 10) //=> "y": [3, 2, 1, 4, 5]
+        }]
+      }
+    },
+    // changeThreshold() {
+    //   return this.newValue
+    // },
+    // echo(){
+    //   console.log(this.threshold)
+    // }
+  }
   }
 
 </script>
