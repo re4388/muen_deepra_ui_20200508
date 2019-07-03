@@ -16,12 +16,12 @@
     // need to define the data that we are going to use in html
     data() {
       return {
-        datacollection: null
+        datacollection: {}
       }
     },
 
     // get data after DOM is mounted
-    mounted() {
+    mounted(){
       this.getData()
     },
 
