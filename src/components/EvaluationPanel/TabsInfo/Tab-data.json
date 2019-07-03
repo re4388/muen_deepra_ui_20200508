@@ -3,11 +3,11 @@
       "id": 0,
       "name": "AllTabInfo",
       "metrics": {
-        "Sensitivity": "99.2%±0.02",
-        "Specificity": "94.3%±0.02",
+        "Sensitivity": "99.2%±0.01",
+        "Specificity": "94.3%±0.09",
         "Precision": "91.8%±0.02",
-        "F1score": "0.854±0.02",
-        "AUC": "0.938±0.02"
+        "F1score": "0.854±0.08",
+        "AUC": "0.938±0.04"
       },
       "grpah": {
         "x": [1, 2, 3, 2, 1],
@@ -24,11 +24,11 @@
       "id": 1,
       "name": "Tab-1info",
       "metrics": {
-        "Sensitivity": "29.2%±0.02",
+        "Sensitivity": "29.2%±0.03",
         "Specificity": "24.3%±0.02",
-        "Precision": "21.8%±0.02",
+        "Precision": "21.8%±0.05",
         "F1score": "0.854±0.02",
-        "AUC": "0.938±0.02"
+        "AUC": "0.938±0.06"
       },
       "grpah": {
         "x": [1, 4, 3, 4, 5],
@@ -45,11 +45,11 @@
       "id": 2,
       "name": "Tab-2info",
       "metrics": {
-        "Sensitivity": "39.2%±0.02",
+        "Sensitivity": "39.2%±0.04",
         "Specificity": "34.3%±0.02",
-        "Precision": "31.8%±0.02",
-        "F1score": "0.854±0.02",
-        "AUC": "0.938±0.02"
+        "Precision": "31.8%±0.01",
+        "F1score": "0.854±0.09",
+        "AUC": "0.938±0.03"
       },
       "grpah": {
         "x": [3, 2, 3, 4, 0],
@@ -67,10 +67,10 @@
       "name": "Tab-3info",
       "metrics": {
         "Sensitivity": "49.2%±0.02",
-        "Specificity": "44.3%±0.02",
-        "Precision": "41.8%±0.02",
-        "F1score": "0.454±0.02",
-        "AUC": "0.438±0.02"
+        "Specificity": "44.3%±0.29",
+        "Precision": "41.8%±0.05",
+        "F1score": "0.454±2.01",
+        "AUC": "0.438±0.03"
       },
       "grpah": {
         "x": [1, 2, 5, 4, 5],
@@ -87,11 +87,11 @@
       "id": 4,
       "name": "Tab-4info",
       "metrics": {
-        "Sensitivity": "29.2%±0.02",
-        "Specificity": "24.3%±0.02",
-        "Precision": "41.8%±0.02",
-        "F1score": "0.454±0.02",
-        "AUC": "0.438±0.02"
+        "Sensitivity": "29.2%±0.01",
+        "Specificity": "24.3%±2.02",
+        "Precision": "41.8%±0.01",
+        "F1score": "0.454±1.07",
+        "AUC": "0.438±0.03"
       },
       "grpah": {
         "x": [9, 2, 5, 4, 5],

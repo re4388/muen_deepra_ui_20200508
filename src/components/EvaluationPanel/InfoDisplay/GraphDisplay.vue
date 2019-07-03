@@ -3,7 +3,7 @@
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
     Threshold Value: {{ newValue }}
     <br>
-    <button @click="fillData()">Change Threshold</button>
+    <!-- <button @click="fillData()">Change Threshold</button> -->
 
 
     <!-- <button @click="echo">xx</button> -->
@@ -59,11 +59,11 @@
         labels: [...this.graphData["x"]],
         datasets: [{
           label: 'Taiwan',
-          // backgroundColor: '#f87979',
+          backgroundColor: 'rgba(238,238,238,0.2)',
           data: this.graphData["x"].map(i => i * (this.newValue +0.2) * 10) //=> "x": [1, 2, 3, 2, 1]
         }, {
           label: 'Global',
-          // backgroundColor: 'blue',
+          backgroundColor: 'rgba(119,119,119,0.8)',
           data: this.graphData["y"].map(i => i + (this.newValue +0.2) * 10) //=> "y": [3, 2, 1, 4, 5]
         }]
       }

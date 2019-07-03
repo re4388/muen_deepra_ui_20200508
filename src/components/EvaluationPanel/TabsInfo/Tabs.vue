@@ -11,8 +11,6 @@
       </li>
     </ul>
 
-    
-
 
     <!-- individual tab component -->
     <tab v-for="tab in data" :tab-info="tab" :name="tab.name" :current-view="currentView">
@@ -37,6 +35,7 @@
     </tab>
 
 
+  <!-- 我的想法是， 要在這一層直接丟給:threshold-data已經調整過的-->
 
 
   </div>
