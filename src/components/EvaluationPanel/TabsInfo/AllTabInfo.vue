@@ -19,6 +19,7 @@
   import MetricsDisplay from '../InfoDisplay/MetricsDisplay.vue'
   import GraphDisplay from '../InfoDisplay/GraphDisplay.vue'
   import ThresholdAdjustment from '../InfoDisplay/ThresholdAdjustment.vue'
+  import allTableData from './All-table-data.json'
 
   export default {
     name: 'AllTabInfo',
@@ -30,12 +31,8 @@
     data() {
       return {
         data1: {
-          Sensitivity: '99.2%±0.02',
-          Specificity: '94.3%±0.02',
-          Precision: '91.8%±0.02',
-          F1score: '0.854±0.02',
-          AUC: '0.938±0.02',
-        },
+          ...allTableData.metrics
+        }
       }
     }
   }

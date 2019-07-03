@@ -1,8 +1,7 @@
 <template>
-  <div class="middle ml-5 mt-1">
-    <graph-display-line-chart :chart-data="datacollection"></graph-display-line-chart>
-      </line-chart>
-    <button @click="fillData()">Randomize</button>
+  <div class="small">
+    {{ graphData }}
+    <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
   </div>
 </template>
 
@@ -13,32 +12,31 @@
     components: {
       GraphDisplayLineChart
     },
+    props: ['graphData'],
     data() {
       return {
         datacollection: null
       }
     },
+    // call data after DOM mounted
     mounted() {
       this.fillData()
     },
     methods: {
       fillData() {
-        this.datacollection = {
-          labels: [this.getRandomInt(), this.getRandomInt()],
+        this.graphData = {
+          labels: [1, 2, 3, 4, 5],
           datasets: [{
             label: 'Data One',
             backgroundColor: '#f87979',
-            data: [this.getRandomInt(), this.getRandomInt()]
+            data: [1, 2, 3, 4, 5]
           }, {
             label: 'Data One',
             backgroundColor: '#f87979',
-            data: [this.getRandomInt(), this.getRandomInt()]
+            data: [1, 2, 3, 4, 5]
           }]
         }
       },
-      getRandomInt() {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      }
     }
   }
 

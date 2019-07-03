@@ -13,16 +13,13 @@
       </thead>
       <tbody>
         <tr>
-          <td v-for="(value, key) in data1" :key="key"> {{ value }} </td>
+          <td v-for="(value, key) in metricsData" :key="key"> {{ value }} </td>
         </tr>
       </tbody>
     </table>
     <p class="table-anotation text-left">
-      We use test dataset to evaluate the model.
-      This table shows sensitivity ,
-      specificity, precision, F1 score, AUC.
-      F1 score : 2*Precision*Sensitivity/(Precision Sensitivity).
-      AUC: Area under ROC curve
+      We use test dataset to evaluate the model.This table shows sensitivity ,specificity, precision, F1 score, AUC. F1
+      score : 2*Precision*Sensitivity/(Precision Sensitivity). AUC: Area under ROC curve
     </p>
   </div>
 </template>
@@ -30,10 +27,7 @@
 <script>
   export default {
     name: 'MetricDisplay',
-    props:{
-      data1:Object,
-    }
-
+    props: ['metricsData']
 
   }
 

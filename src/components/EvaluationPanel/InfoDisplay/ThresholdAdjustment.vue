@@ -2,11 +2,17 @@
   <div>
     <div class="m-3">
       <h2>All table</h2>
+
+
       <table class="table table-dark table-borderless">
         <tbody>
           <tr>
             <td>Score Threshold</td>
-            <td>Scroll bar here</td>
+            <td>
+              <form class="range-field my-1 w-25">
+                <input type="range" min="0" max="1" step="0.01" />
+              </form>
+            </td>
           </tr>
           <tr>
             <td>Total Image</td>
