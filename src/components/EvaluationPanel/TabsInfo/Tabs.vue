@@ -11,8 +11,8 @@
       </li>
     </ul>
 
-    <!-- individual tab component -->
 
+    <!-- individual tab component -->
     <tab v-for="tab in data" :tab-info="tab" :name="tab.name" :current-view="currentView">
 
       <h2>{{ tab.name }}</h2>
@@ -57,10 +57,6 @@
     mounted() {
       this.getView()
       this.currentView = this.views[0]
-      console.log(this.currentView)
-    },
-    created() {
-      this.echo()
     },
     methods: {
       getView() {
@@ -71,9 +67,6 @@
       changeView(obj) {
         this.currentView = obj.name
       },
-      echo() {
-        console.log('hi')
-      }
     },
     components: {
       Tab,

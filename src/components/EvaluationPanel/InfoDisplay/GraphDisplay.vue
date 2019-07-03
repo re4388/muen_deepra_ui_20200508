@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import GraphDisplayLineChart from './GraphDisplayLineChart.js'
+  import GraphDisplayLineChart from './GraphDisplayLineChart.vue'
   export default {
     name: 'GraphDisplay',
     components: {
