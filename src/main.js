@@ -16,12 +16,17 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap'
 
+// Picture Swipe Gallery
+import VuePictureSwipe from './components/VuePictureSwipe/VuePictureSwipe.vue'
+Vue.component('vue-picture-swipe', VuePictureSwipe)
+
 // Routing
 import BasePanel from './components/BasePanel.vue'
 import ProjectOverviewPanel from './components/ProjectPanel/ProjectOverviewPanel.vue'
 import ModelOverviewPanel from './components/ModelPanel/ModelOverviewPanel.vue'
 import DataImportPanel from './components/DataImportPanel/DataImportPanel.vue'
 import TrainingPanel from './components/TrainingPanel/TrainingPanel.vue'
+import ViewerOverviewPanel from './components/ViewerPanel/ViewerOverviewPanel.vue'
 
 const router = new VueRouter({
   routes: [
@@ -49,6 +54,11 @@ const router = new VueRouter({
       path: '/training',
       name: 'Training',
       component: TrainingPanel
+    },
+    {
+      path: '/viewer-overview',
+      name: 'ViewerOverview',
+      component: ViewerOverviewPanel
     }
   ]
 })
@@ -59,3 +69,5 @@ new Vue({
   router,
   render: h => h(App)
 })
+
+

@@ -67,6 +67,16 @@ export default {
           }
         },
         {
+          title: 'Viewer',
+          href: '/viewer-overview',
+          icon: {
+            element: 'font-awesome-icon',
+            attributes: {
+              icon: 'cube'
+            }
+          }
+        },
+        {
           header: true,
           component: separator,
           visiableOnCollapse: true
