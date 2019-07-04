@@ -37,6 +37,7 @@ pipeline {
 				script {
 					try {
 						sh """echo ${currentBuild.result}"""
+						sh """yarn run test:unit """
 					}
 					catch (ex) {
 						SkipRemainingSteps = 'true'
@@ -64,6 +65,7 @@ pipeline {
 				// publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'report_cov/html', reportFiles: 'index.html', reportName: 'code-coverage-report', reportTitles: ''])
 				script {
 					sh """echo ${currentBuild.result}"""
+					cleanWs notFailBuild: true
 				}
 			}
 			post {
