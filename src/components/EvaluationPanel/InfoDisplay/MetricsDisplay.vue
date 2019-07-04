@@ -1,6 +1,6 @@
 <template>
 
-  <div class="px-2 ">
+  <div class="px-2">
     <table class="table table-bordered table-sm mb-1">
       <thead class="thead-dark">
         <tr>

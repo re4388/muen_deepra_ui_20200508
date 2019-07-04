@@ -103,6 +103,27 @@
         "precision": 91.5,
         "recall": 94.4
       }
+    },
+    {
+      "id": 5,
+      "name": "Tab-5info",
+      "metrics": {
+        "Sensitivity": "59.2%±0.01",
+        "Specificity": "54.3%±2.02",
+        "Precision": "41.8%±0.01",
+        "F1score": "0.454±1.07",
+        "AUC": "0.438±0.03"
+      },
+      "grpah": {
+        "x": [5, 2, 5, 4, 5],
+        "y": [1, 2, 3, 0, 5]
+      },
+      "threshold": {
+        "score": 0.1,
+        "image": 900,
+        "precision": 91.5,
+        "recall": 94.4
+      }
     }
   ]
 }

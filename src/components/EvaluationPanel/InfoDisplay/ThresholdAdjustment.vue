@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pr-5">
     <div class="mt-5">
       <form class="range-field my-1 w-40">
         <label for="">Threshold Value</label> <br>
@@ -13,10 +13,10 @@
         </li>
       </ul> -->
 
-    <div class="pt-5">
-      <h2>Image: {{ imageNumber}} <br>
+    <div class="pt-2">
+      <h3>Image: {{ imageNumber}} <br>
       Presison: {{precision}} <br>
-      Recall: {{recall}} <br></h2>
+      Recall: {{recall}} <br></h3>
       
     </div>
 

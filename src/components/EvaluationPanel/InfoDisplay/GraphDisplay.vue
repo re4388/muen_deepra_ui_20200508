@@ -1,12 +1,8 @@
 <template>
-  <div class="small">
+  <div class="small pl-5">
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
     Threshold Value: {{ newValue }}
     <br>
-    <!-- <button @click="fillData()">Change Threshold</button> -->
-
-
-    <!-- <button @click="echo">xx</button> -->
 
   </div>
   <!-- 有沒有辦法newValue一改變，就可以讓fillData重新跑一次-->
@@ -20,7 +16,7 @@
     components: {
       GraphDisplayLineChart
     },
-    props: ['graphData', 'newValue'], // fake data: { "x": [ 12, 22, 32, 4, 5 ], "y": [ 1, 2, 3, 4, 5 ] }
+    props: ['graphData', 'newValue'], 
 
     // need to define the data that we are going to use in html
     data() {
@@ -52,6 +48,7 @@
   },
 
   // methods defined here
+  // we will use newValue
   // we will get part of the props, token from parent, inside charJS graph data strcuture
   methods: {
     fillData() {
@@ -60,11 +57,13 @@
         datasets: [{
           label: 'Taiwan',
           backgroundColor: 'rgba(238,238,238,0.2)',
-          data: this.graphData["x"].map(i => i * (this.newValue +0.2) * 10) //=> "x": [1, 2, 3, 2, 1]
+          //=> "x": [1, 2, 3, 2, 1]
+          data: this.graphData["x"].map(i => i * (this.newValue +0.2) * 10) 
         }, {
           label: 'Global',
           backgroundColor: 'rgba(119,119,119,0.8)',
-          data: this.graphData["y"].map(i => i + (this.newValue +0.2) * 10) //=> "y": [3, 2, 1, 4, 5]
+          //=> "y": [3, 2, 1, 4, 5]
+          data: this.graphData["y"].map(i => i + (this.newValue +0.2) * 10) 
         }]
       }
     },
