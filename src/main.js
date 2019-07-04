@@ -16,10 +16,6 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap'
 
-// Picture Swipe Gallery
-import VuePictureSwipe from './components/VuePictureSwipe/VuePictureSwipe.vue'
-Vue.component('vue-picture-swipe', VuePictureSwipe)
-
 // Routing
 import BasePanel from './components/BasePanel.vue'
 import ProjectOverviewPanel from './components/ProjectPanel/ProjectOverviewPanel.vue'

@@ -18,7 +18,7 @@ export default {
   components: {
     Sidebar,
     TopNavbar,
-    BasePanel
+    BasePanel,
   }
 }
 </script>
