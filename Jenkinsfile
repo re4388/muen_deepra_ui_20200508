@@ -37,6 +37,7 @@ pipeline {
 				script {
 					try {
 						sh """echo ${currentBuild.result}"""
+						sh """yarn run test:unit """
 					}
 					catch (ex) {
 						SkipRemainingSteps = 'true'
