@@ -1,15 +1,6 @@
-// Component Spec I/O
-//
-// I/O definition (refer to Edd Yerburgh, Vue Test Utils core member): 
-//   input: user input / props / store
-//   output: rendered output / Vue event / function call
-// 
-// EvaluationPanel
-//
 // Input: 
 // none
-//
-// Output:
+// Output: 
 // 1. render out the tabs component
 // 2. Model Title
 // 3. Model Desc
@@ -28,11 +19,13 @@ describe('EvaluationPanel.vue', () => {
     expect(wrapper.find(Tabs).exists()).toBe(true)
   })
 
+  // "Dataset_Model" shall be a word that alwayes render or this variable will link to backend 
   it('renders the key part of the model title', () => {
     const wrapper = shallowMount(EvaluationPanel)
     expect(wrapper.text()).toMatch("Dataset_Model")
   })
 
+  // "The Model evaluation report is created at" shall be a word that alwayes render or this variable will link to backend 
   it('renders the key part of the model description', () => {
     const wrapper = shallowMount(EvaluationPanel)
     expect(wrapper.text()).toMatch('The Model evaluation report is created at')

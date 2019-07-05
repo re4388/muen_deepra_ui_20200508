@@ -1,29 +1,43 @@
 <template>
-
   <div class="d-flex flex-column">
-
     <!-- tabs -->
     <ul class="d-flex flex-row breadcrumb">
-      <li v-for="tab in data">
-        <a href="#" @click.prevent="changeView(tab)">
-          {{ tab.name}}
+      <li v-for="tab in tabs" :key="tab.id">
+        <a href="#" 
+          @click.prevent="changeView(tab)"
+        >
+          {{ tab.name }}
         </a>
       </li>
     </ul>
-
-
     <!-- individual tab component -->
-    <tab v-for="tab in data" :tab-info="tab" :name="tab.name" :current-view="currentView">
-
+    <Tab v-for="tab in tabs"
+        :key="tab.id" 
+        :tab-info="tab" 
+        :name="tab.name" 
+        :current-view="currentView"
+        class="currentView">
+      
+      <!-- render individual tab name -->
       <h3 class="text-left ml-2">{{ tab.name }}</h3>
-      <MetricsDisplay :metrics-data=" tab.metrics"></MetricsDisplay>
 
+      <!-- render MetricsDisplay component -->
+      <MetricsDisplay 
+      :metrics-data=" tab.metrics">
+      </MetricsDisplay>
+
+      <!-- render GraphDisplay component -->
       <div class="mb-5 row">
-
         <div class="col-md-6">
-          <GraphDisplay :graph-data="tab.grpah" :new-value="newThreshold"></GraphDisplay>
+          <GraphDisplay 
+          :graph-data="tab.grpah" 
+          :new-value="newThreshold"
+          class="newThreshold"
+          >
+          </GraphDisplay>
         </div>
-
+      
+      <!-- ThresholdAdjustment component -->
         <div class="col-md-6">
           <ThresholdAdjustment 
           :threshold-data="tab.threshold" 
@@ -31,19 +45,13 @@
           </ThresholdAdjustment>
         </div>
       </div>
-
-    </tab>
-
-
-  <!-- 我的想法是， 要在這一層直接丟給:threshold-data已經調整過的-->
-
-
+    </Tab>
   </div>
 </template>
 
 <script>
   // import the fake data 
-  import TabsData from './Tab-data.json'
+  import tabData from './Tab-data.json'
 
   // import components
   import Tab from './Tab'
@@ -55,10 +63,10 @@
     name: 'Tabs',
     data() {
       return {
-        data: TabsData.content,
+        tabs: tabData.content,
         views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
         currentView: '',
-        newThreshold:0,
+        newThreshold:'',
       }
     },
     mounted() {
@@ -67,7 +75,7 @@
     },
     methods: {
       getView() {
-        this.views = this.data.map(key => {
+        this.views = this.tabs.map(key => {
           return key.name
         })
       },
@@ -88,7 +96,6 @@
   }
 
 </script>
-
 
 <style scoped>
   ul.breadcrumb {
