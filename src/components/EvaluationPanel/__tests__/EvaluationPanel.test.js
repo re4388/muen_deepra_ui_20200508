@@ -1,31 +1,40 @@
+// Component Spec I/O
+//
+// I/O definition (refer to Edd Yerburgh, Vue Test Utils core member): 
+//   input: user input / props / store
+//   output: rendered output / Vue event / function call
+// 
+// EvaluationPanel
+//
+// Input: 
+// none
+//
+// Output:
+// 1. render out the tabs component
+// 2. Model Title
+// 3. Model Desc
+
+
 import {
   shallowMount
 } from '@vue/test-utils'
 import EvaluationPanel from '@/components/EvaluationPanel/EvaluationPanel.vue'
+import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
+
 
 describe('EvaluationPanel.vue', () => {
-  it('renders a title', () => {
+  it('renders the "tabs" component', () => {
     const wrapper = shallowMount(EvaluationPanel)
-    expect(wrapper.isVueInstance()).toBeTruthy()
-    // console.log(wrapper.html())
+    expect(wrapper.find(Tabs).exists()).toBe(true)
+  })
+
+  it('renders the key part of the model title', () => {
+    const wrapper = shallowMount(EvaluationPanel)
+    expect(wrapper.text()).toMatch("Dataset_Model")
+  })
+
+  it('renders the key part of the model description', () => {
+    const wrapper = shallowMount(EvaluationPanel)
+    expect(wrapper.text()).toMatch('The Model evaluation report is created at')
   })
 })
-
-
-
-
-
-
-// first, we need to write the description I think...
-
-
-// describe('EvaluationPanel.vue', () => {
-//   it('renders a title', () => {
-//     const wrapper = shallowMount(EvaluationPanel)
-//     // Jest writing
-//     // expect(wrapper.html().includes("Vue and TDD")).toBe(true)
-//     expect(wrapper.text()).toMatch('<h2>My first image Dataset_Model 1</h2>')
-//     // try other stuff in html to see how .text to what extent it cover
-
-//   })
-// })
