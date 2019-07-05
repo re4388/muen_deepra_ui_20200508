@@ -14,7 +14,7 @@
     "serve_grpc": "node \"./scripts/run_api_server_and_electron_app.js\"",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "test:unit": "jest",
+    "test:unit": "jest --no-cache",
     "test:integration": "python -m pytest ./tests --headless"
   },
   "main": "background.js",
@@ -37,6 +37,7 @@
     "webpack": "^4.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
@@ -45,6 +46,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
+    "babel-preset-env": "^1.7.0",
     "electron": "^5.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
