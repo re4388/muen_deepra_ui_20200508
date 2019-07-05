@@ -1,6 +1,6 @@
 <template>
   <div class="viewer-card d-flex flex-column">
-    <!-- <div class="title-section d-flex flex-row">
+    <div class="title-section d-flex flex-row">
       <h4 class="title flex-fill">{{ details.name }}</h4>
       <a class="btn-more-options">
         <div class="content">...</div>
@@ -21,7 +21,7 @@
           <div class="content">Open</div>
         </a>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -42,20 +42,21 @@ export default {
 
 <style lang="scss" scoped>
 $shadow: rgba(0, 0, 0, 0.2);
-$card-height: 30px;
-$card-min-width: 100%;
+$card-height: 200px;
+$card-min-width: 600px;
 
 .viewer-card {
   display: block;
   max-width: 80%;
   min-width: $card-min-width;
   height: $card-height;
-  // margin: 20px;
+  margin: 20px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
   padding: 5px 15px;
-  background-color: rgb(185, 185, 185);
+  background-color: rgb(225, 225, 225);
+  box-shadow: 0 0.1875rem 1.5rem $shadow;
 }
 .title-section {
   & .title {

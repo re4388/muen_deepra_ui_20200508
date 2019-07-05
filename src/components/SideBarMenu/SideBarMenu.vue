@@ -84,7 +84,7 @@ export default {
         {
           header: true,
           title: 'Tags'
-        }
+        },
       ],
       collapsed: false,
       width: '150px',

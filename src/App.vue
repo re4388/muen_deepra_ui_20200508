@@ -4,6 +4,7 @@
     <div id="display-panel" class="d-flex flex-row">
       <sidebar/>
       <router-view class="flex-fill"></router-view>
+      <sidebar__right/>
     </div>
   </div>
 </template>
