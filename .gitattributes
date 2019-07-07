@@ -4,6 +4,7 @@
 # Files related to Javascript, Vue
 *.js text eol=lf
 *.vue text eol=lf
+*.proto text eol=lf
 
 # Files are truely binary and should not be modified
 *.png binary
