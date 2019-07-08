@@ -18,8 +18,7 @@
       </tbody>
     </table>
     <p class="table-anotation text-left">
-      We use test dataset to evaluate the model.This table shows sensitivity ,specificity, precision, F1 score, AUC. F1
-      score : 2*Precision*Sensitivity/(Precision Sensitivity). AUC: Area under ROC curve
+      {{ anotationText }}
     </p>
   </div>
 </template>
@@ -27,7 +26,20 @@
 <script>
   export default {
     name: 'MetricDisplay',
-    props: ['metricsData']
+    props: {
+      metricsData:{
+        type:Object
+      }
+    },
+    data(){
+      return {
+        anotationText:`
+        We use test dataset to evaluate the model.
+        This table shows sensitivity ,specificity, precision, F1 score, AUC. F1
+        score : 2*Precision*Sensitivity/(Precision Sensitivity). AUC: Area under ROC curve
+        `
+      }
+    }
 
   }
 
