@@ -1,10 +1,5 @@
-// Input: 
-// none
-// Output: 
-// 1. render out the tabs component
-// 2. Model Title
-// 3. Model Desc
-
+// Input: none
+// Output: 1. render out the tabs component 2. Model Title 3. Model Desc
 
 import {
   shallowMount
@@ -19,15 +14,37 @@ describe('EvaluationPanel.vue', () => {
     expect(wrapper.find(Tabs).exists()).toBe(true)
   })
 
-  // "Dataset_Model" shall be a word that alwayes render or this variable will link to backend 
-  it('renders the key part of the model title', () => {
+  it('renders out the title from data title', () => {
     const wrapper = shallowMount(EvaluationPanel)
-    expect(wrapper.text()).toMatch("Dataset_Model")
+    wrapper.setData({
+      title: 'here are the title'
+    })
+    expect(wrapper.vm.title).toBe('here are the title') 
   })
 
-  // "The Model evaluation report is created at" shall be a word that alwayes render or this variable will link to backend 
-  it('renders the key part of the model description', () => {
+  it('renders out the description from data description', () => {
     const wrapper = shallowMount(EvaluationPanel)
-    expect(wrapper.text()).toMatch('The Model evaluation report is created at')
+    wrapper.setData({
+      description: 'here are the description'
+    })
+    expect(wrapper.vm.description).toBe('here are the description')
   })
 })
+
+
+
+
+
+// temp code
+
+// "Dataset_Model" shall be a word that alwayes render or this variable will link to backend 
+// it('renders the key part of the model title', () => {
+//   const wrapper = shallowMount(EvaluationPanel)
+//   expect(wrapper.text()).toMatch("Dataset_Model")
+// })
+
+// "The Model evaluation report is created at" shall be a word that alwayes render or this variable will link to backend 
+// it('renders the key part of the model description', () => {
+//   const wrapper = shallowMount(EvaluationPanel)
+//   expect(wrapper.text()).toMatch('The Model evaluation report is created at')
+// })

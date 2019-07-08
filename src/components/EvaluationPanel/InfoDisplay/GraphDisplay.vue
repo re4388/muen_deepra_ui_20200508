@@ -1,7 +1,9 @@
 <template>
   <div class="small pl-5">
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
-    Threshold Value: {{ newValue }}
+    <div class="thresholdValue">
+      Threshold Value: <span>{{ newValue }}</span>
+    </div>
     <br>
   </div>
 </template>
@@ -14,9 +16,17 @@
     components: {
       GraphDisplayLineChart
     },
+    props:{
+      graphData:{
+        type:Object,
+        required:true,
+      },
+      newValue:{
+        type:Number,
+        required:true,
+      }
+    },
     
-    props: ['graphData', 'newValue'],
-
     data() {
       return {
         datacollection: {},
@@ -25,11 +35,9 @@
     
     mounted() {
       this.fillData()
-      // console.log(this.newValue)
     },
 
     watch: {
-      // whenever newValue changes, it will run
       newValue() {
         this.fillData()
       }
@@ -38,10 +46,11 @@
     methods: {
       fillData() {
         // code if we can't use spread operator:
-          // let label = []
-          // this.graphData["x"].forEach(i => label.push(i))
+        // let label = []
+        // this.graphData["x"].forEach(i => label.push(i))
         this.datacollection = {
           labels: [...this.graphData["x"]],
+          // labels:label,
           datasets: [{
             label: 'Taiwan',
             backgroundColor: 'rgba(238,238,238,0.2)',

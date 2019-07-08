@@ -1,30 +1,32 @@
-// Test GuideLines
-// Input: user input, props received
-// Output: render out any key part of html / child component? function invocation? / Vue event?
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-// HTML render parts
-
-// 1. render <a>
-// 2. render <h3>
-// 3. render Tab component
-// 4. render MetricsDisplay component
-// 5. render GraphDisplay component
-// 6. ThresholdAdjustment component
-// 7. renders necessay number of Tab
+// GuideLines
 // 
-
+// Input: 
+// user input
+// props received
+// 
+// Output: 
+// render out any key part of html 
+// child component? 
+// function invocation? 
+// Vue event?
+//
+/////////////////////////////////////////////////////////////
+//
+// Output: HTML render parts
+//
+// render Tab component
+// render MetricsDisplay component
+// render GraphDisplay component
+// ThresholdAdjustment component
+// renders necessay number of Tab
+// render <a>'s content
+// render <h3>'s content
+// 
 // received props -> no
-
+//
 // function/methods call
-
-// getView() -> shall get the tab name to view-switch -> internal implement, no render -> no test needed
-// @click.prevent="changeView(tab) -> shall receive an object and return a new view(String) to currentView
-// ThresholdChange -> shall receive an obj and assign a number to newThreshold -> internal implement
-// -> instead I think we need to test newThreshold, which will be rendered out
-
+// currentView shall render the first tab name
+// newThreshold shall render from newThreshold data
 
 
 
@@ -67,28 +69,31 @@ describe('Tabs.vue', () => {
     expect(wrapper.findAll(Tab).length).toBe(6)
   })
 
-  it("render <a> ", () => {
+  // assume first tab-name is 'AllTabInfo'
+  it("render <a>'s content ", () => {
     const wrapper = shallowMount(Tabs)
-    expect(wrapper.find("a").exists()).toBe(true)
+    expect(wrapper.find("a").text()).toContain("AllTabInfo")
   })
 
-  // h3 tag shall be style fixed
-  it("render <h3> ", () => {
+  // assume first tab-name is 'AllTabInfo'
+  it("render <h3>'s content", () => {
     const wrapper = shallowMount(Tabs)
-    expect(wrapper.find("h3").exists()).toBe(true)
+    expect(wrapper.find("h3").text()).toContain("AllTabInfo")
   })
 
-  // first tab-name is 'AllTabInfo'
+  // assume first tab-name is 'AllTabInfo'
   it('currentView shall render the first tab name', () => {
     const wrapper = shallowMount(Tabs)
     expect(wrapper.find('.currentView').text()).toEqual("AllTabInfo")
   })
 
-  // init newThreshold shall be ""
-  it('newThreshold shall render', () => {
+  it('newThreshold shall render from newThreshold data', () => {
     const wrapper = shallowMount(Tabs)
-    expect(wrapper.find('.newThreshold').text()).toEqual('')
+    wrapper.setData({
+      newThreshold:23
+    })
+    expect(wrapper.vm.newThreshold).toBe(23)
   })
-
 })
+
 

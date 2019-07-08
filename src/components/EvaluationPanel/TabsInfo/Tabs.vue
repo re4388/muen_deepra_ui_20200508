@@ -10,10 +10,10 @@
         </a>
       </li>
     </ul>
+
     <!-- individual tab component -->
     <Tab v-for="tab in tabs"
         :key="tab.id" 
-        :tab-info="tab" 
         :name="tab.name" 
         :current-view="currentView"
         class="currentView">
@@ -32,7 +32,6 @@
           <GraphDisplay 
           :graph-data="tab.grpah" 
           :new-value="newThreshold"
-          class="newThreshold"
           >
           </GraphDisplay>
         </div>
@@ -66,7 +65,7 @@
         tabs: tabData.content,
         views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
         currentView: '',
-        newThreshold:'',
+        newThreshold:0,
       }
     },
     mounted() {
@@ -84,7 +83,6 @@
       },
       ThresholdChange(obj){
         this.newThreshold = obj.result
-        // console.log(typeof(this.newThreshold))
       }
     },
     components: {
