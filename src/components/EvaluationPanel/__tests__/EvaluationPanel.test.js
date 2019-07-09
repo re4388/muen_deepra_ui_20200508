@@ -14,20 +14,15 @@ describe('EvaluationPanel.vue', () => {
     expect(wrapper.find(Tabs).exists()).toBe(true)
   })
 
-  it('renders out the title from data title', () => {
+  it('renders out the data', () => {
     const wrapper = shallowMount(EvaluationPanel)
     wrapper.setData({
-      title: 'here are the title'
-    })
-    expect(wrapper.vm.title).toBe('here are the title') 
-  })
-
-  it('renders out the description from data description', () => {
-    const wrapper = shallowMount(EvaluationPanel)
-    wrapper.setData({
+      title: 'here are the title',
       description: 'here are the description'
+
     })
-    expect(wrapper.vm.description).toBe('here are the description')
+    expect(wrapper.text()).toContain('here are the title')
+    expect(wrapper.text()).toContain('here are the description')
   })
 })
 
@@ -48,3 +43,15 @@ describe('EvaluationPanel.vue', () => {
 //   const wrapper = shallowMount(EvaluationPanel)
 //   expect(wrapper.text()).toMatch('The Model evaluation report is created at')
 // })
+
+
+///
+
+
+// it('renders out the description from data description', () => {
+//   const wrapper = shallowMount(EvaluationPanel)
+//   wrapper.setData({
+//     description: 'here are the description'
+//   })
+// expect(wrapper.text()).toContain('here are the description')
+// expect(wrapper.vm.description).toBe('here are the description')

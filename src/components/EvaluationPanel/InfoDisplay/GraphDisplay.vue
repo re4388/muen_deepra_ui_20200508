@@ -1,9 +1,7 @@
 <template>
   <div class="small pl-5">
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
-    <div class="thresholdValue">
-      Threshold Value: <span>{{ newValue }}</span>
-    </div>
+    <div>Threshold Value: <span> {{ newValue }} </span></div>
     <br>
   </div>
 </template>
@@ -19,11 +17,11 @@
     props:{
       graphData:{
         type:Object,
-        required:true,
+        // required:true,
       },
       newValue:{
         type:Number,
-        required:true,
+        // required:true,
       }
     },
     
@@ -64,9 +62,6 @@
           }]
         }
       },
-      // changeThreshold() {
-      //   return this.newValue
-      // },
     }
   }
 
