@@ -13,7 +13,8 @@
       </thead>
       <tbody>
         <tr>
-          <td v-for="(value, key) in metricsData" :key="key"> {{ value }} </td>
+          <td class="td" v-for="(value, key) in metricsData" 
+          :key="key"> {{ value }} </td>
         </tr>
       </tbody>
     </table>
