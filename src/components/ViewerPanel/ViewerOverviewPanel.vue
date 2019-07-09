@@ -4,7 +4,10 @@
       <div class="toolBar">
         <button class="btn" id="zoom_in" @click="zoomIn"><img class="img__icon" src="../../assets/zoom_in.png"></button>
         <button class="btn" id="zoom_out" @click="zoomOut"><img class="img__icon" src="../../assets/zoom_out.png"></button>
-        <button class="btn" id="settings_brightness"><img class="img__icon" src="../../assets/settings_brightness.png"></button>
+        <button class="btn" id="contrast"><img class="img__icon" src="../../assets/settings_brightness.png"></button>
+        <button class="btn" id="brightness"><img class="img__icon" src="../../assets/brightness.png"></button>
+        <button class="btn" id="grayscale"><img class="img__icon" src="../../assets/invert_colors.png"></button>
+        <button class="btn" id="opacity"><img class="img__icon" src="../../assets/opacity.png"></button>
         <button class="btn" id="grid_on"><img class="img__icon" src="../../assets/grid_on.png"></button>
         <button class="btn" id="crop_free"><img class="img__icon" src="../../assets/crop_free.png"></button>
         <button class="btn" id="crop"><img class="img__icon" src="../../assets/crop.png"></button>
@@ -16,10 +19,10 @@
     </template>
 
     <template>
-        <div class="content">
-          <img id="img__example" src="../../assets/x-ray1.jpg" />
-          <div class="regulator">
-         </div>
+      <div class="content">
+        <imag-vue-panel class="wrap"></imag-vue-panel>
+        <!-- <img id="img__example" src="../../assets/x-ray1.jpg" /> -->
+        <div class="regulator"></div>
       </div>
     </template>
 
@@ -41,7 +44,7 @@
         </div>
 
         <div class="edit__log">
-          <h6>Edit Log & note</h6></br>
+          <h6>Edit Log & Note</h6></br>
           <p>20190523</p>
           <p>Model 1 Predict as Label1</p>
         </div>
@@ -49,8 +52,8 @@
     </template>
 
     <div class="box">
-        <div class="title">
-            <div class="imgList" id="imgList">
+      <div class="title">
+          <div class="imgList" id="imgList">
                 <ul>
                     <li>
                         <div class="x-rayFilms"></div>
@@ -215,40 +218,61 @@
                     </li>
                 </ul>
             </div>
-        </div>
+      </div>
     </div>
-
-  </div> 
-    
-
-
-
-
-
-
-
+ </div> 
 </template>
+
+
 
 <script>
 // import ViewerCard from './ViewerCard.vue'
 import viewerData from "./viewer_data.json";
 import Vue from "vue";
 import Sidebar from '@/components/SideBarMenu__right/SideBarMenu__right.vue'
+// import imagvue from 'imagvue';
+import ImagVuePanel from '@/components/ImagVuePanel/ImagVuePanel.vue'
 
 
-new Vue({
-  el: '#app',
-})
+// new Vue({
+//   el: '#app',
+// })
 
 export default {
   name: "ViewerOverviewPanel",
   components: {
     Sidebar,
+    // imagvue,
+    ImagVuePanel
     // ViewerCard,
   },
   data() {
     return {
       projects: viewerData.content,
+      filters: {
+        blur: 5,
+        contrast: 100,
+        brightness: 100,
+        grayscale: 0,
+        rotate: 0,
+        opacity: 100,
+        invert: 0,
+        saturate: 100,
+        sepia: 0,
+        dropShadow:{ 
+          offset: 16,
+          blurRadius: 10, 
+          spreadRadius: 10, 
+          color: 'black'
+        }
+      },
+      errorURL:'https://cdn.browshot.com/static/images/not-found.png',
+      loadUrls:[
+        {url:'https://goo.gl/PxTSno' , lazy:'https://goo.gl/aiwqia'},
+        // {url:'https://goo.gl/K1kZWk' , lazy:'https://goo.gl/vnHTAh'},
+        // {url:'https://goo.gl/gTZMkF' , lazy:'https://goo.gl/K1Mheq'},
+        // {url:'https://goo.gl/PxTSno1' , lazy:'https://goo.gl/aiwqia'},
+      ]
     }
   },
   methods: {
@@ -265,6 +289,16 @@ export default {
     showImgList: function(){
       let el = document.querySelector('.title')
       el.classList.toggle('show')
+    },
+    onLoadEvent(){
+      console.log("Image on load!");
+    },
+    customData(){
+      return {
+        on: {
+          load: this.onLoadEvent,
+        }
+      }
     }
   }  
 };
@@ -282,8 +316,6 @@ export default {
   margin-bottom: 0px;
 }
 
-
-
 #viewer-overview-panel {
   box-sizing: border-box;
   min-height: 100%;
@@ -297,7 +329,7 @@ export default {
   max-height: 100%;
   background-color: rgb(0, 0, 0);
   margin-right: 150px;
-  margin-top: 96px;
+  padding-top: 40px;
 }
 
 
@@ -351,14 +383,14 @@ export default {
   width: 150px;
   min-height: 100%;
   margin-top: 96px;
-  padding: 0 15px;
+  padding: 0 8px;
   color: white;
 }
 
 .addLabel {
   box-sizing: border-box;
   height: 300px;
-  padding: 20px 10px;
+  padding: 55px 10px 20px 10px;
   border-bottom: 1px solid white;
 }
 
@@ -369,7 +401,7 @@ export default {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  border-radius: 2px; 
+  // border-radius: 2px; 
   margin: 10px 0 20px 0;
 }
 
@@ -494,6 +526,11 @@ export default {
 
 .show {
   right: 0px;
+}
+
+imag-vue-panel {
+  width: auto;
+  height: auto;
 }
 
 </style>
