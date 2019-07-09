@@ -58,17 +58,19 @@ $ python ./scripts/setup_api_protos.py
 
 ### Run test
 - Unit tests of javascript stuff
-```bash
-$ yarn run test:unit
-```
+
+    ```bash
+    $ yarn run test:unit
+    ```
 
 - Intergration test (GUI test)
-```bash
-# Install requirements if this is the first run (for Python 3.6, 3.7)
-$ pip install -r ./tests/requirements.txt
 
-# Run tests
-$ python ./scripts/run_pytest_bdd.py
-# or run tests with showing BDD-style scenario
-$ python ./scripts/run_pytest_bdd.py --show_scenario
-```
+    ```bash
+    # Install requirements if this is the first run (for Python 3.6, 3.7)
+    $ pip install -r ./tests/requirements.txt
+
+    # Run tests
+    $ python ./scripts/run_pytest_bdd.py
+    # or run tests with showing BDD-style scenario
+    $ python ./scripts/run_pytest_bdd.py --show_scenario
+    ```
