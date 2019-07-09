@@ -2,23 +2,25 @@
   <div id="viewer-overview-panel" class="container-main">
     <template>
       <div class="toolBar">
-        <button class="btn"><img class="img__icon" src="../../assets/zoom_in.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/zoom_out.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/settings_brightness.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/grid_on.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/crop_free.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/crop.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/rotate_left.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/rotate_right.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/file_copy.png"></button>
-        <button class="btn"><img class="img__icon" src="../../assets/undo.png"></button>
+        <button class="btn" id="zoom_in" @click="zoomIn"><img class="img__icon" src="../../assets/zoom_in.png"></button>
+        <button class="btn" id="zoom_out" @click="zoomOut"><img class="img__icon" src="../../assets/zoom_out.png"></button>
+        <button class="btn" id="settings_brightness"><img class="img__icon" src="../../assets/settings_brightness.png"></button>
+        <button class="btn" id="grid_on"><img class="img__icon" src="../../assets/grid_on.png"></button>
+        <button class="btn" id="crop_free"><img class="img__icon" src="../../assets/crop_free.png"></button>
+        <button class="btn" id="crop"><img class="img__icon" src="../../assets/crop.png"></button>
+        <button class="btn" id="rotate_left"><img class="img__icon" src="../../assets/rotate_left.png"></button>
+        <button class="btn" id="rotate_right"><img class="img__icon" src="../../assets/rotate_right.png"></button>
+        <button class="btn" id="file_copy"><img class="img__icon" src="../../assets/file_copy.png"></button>
+        <button class="btn" id="undo"><img class="img__icon" src="../../assets/undo.png"></button>
       </div>
     </template>
 
     <template>
         <div class="content">
           <img id="img__example" src="../../assets/x-ray1.jpg" />
-        </div>
+          <div class="regulator">
+         </div>
+      </div>
     </template>
 
     <template>
@@ -35,7 +37,7 @@
         <div class="data__set">
           <h5>DataSet</h5>
           <div class="img__dataSet"><img src="../../assets/dataset-1-img.png"></div>
-          <div class="img__dataSet"><img src="../../assets/dataset-2-img.png"></div>
+          <div class="img__dataSet" id="show__list" @click="showImgList"><img src="../../assets/dataset-2-img.png"></div>
         </div>
 
         <div class="edit__log">
@@ -48,7 +50,7 @@
 
     <div class="box">
         <div class="title">
-            <div class="imgList">
+            <div class="imgList" id="imgList">
                 <ul>
                     <li>
                         <div class="x-rayFilms"></div>
@@ -216,8 +218,15 @@
         </div>
     </div>
 
-
   </div> 
+    
+
+
+
+
+
+
+
 </template>
 
 <script>
@@ -226,25 +235,39 @@ import viewerData from "./viewer_data.json";
 import Vue from "vue";
 import Sidebar from '@/components/SideBarMenu__right/SideBarMenu__right.vue'
 
+
 new Vue({
   el: '#app',
-  
 })
 
 export default {
   name: "ViewerOverviewPanel",
-  name: "app",
   components: {
     Sidebar,
     // ViewerCard,
   },
   data() {
     return {
-      projects: viewerData.content
-    };
-  }
+      projects: viewerData.content,
+    }
+  },
+  methods: {
+    zoomIn: function() {
+      this.isActive = !this.isActive;
+      let el = document.getElementById('img__example')
+      el.classList.add('zoom__in')
+    },
+    zoomOut: function() {
+      this.isHidden = !this.isHidden;
+      let el = document.getElementById('img__example')
+      el.classList.add('zoom__out')
+    },
+    showImgList: function(){
+      let el = document.querySelector('.title')
+      el.classList.toggle('show')
+    }
+  }  
 };
-
 
 
 </script>
@@ -314,38 +337,6 @@ export default {
 .img__icon {
   width: 60%;
 }
-
-// .rightSideMenu {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   flex-direction: column;
-//   background: #2d2d31;
-//   position: fixed;
-//   top: 0;
-//   right: 0;
-//   width: 150px;
-//   min-height: 100%;
-//   margin-top: 96px;
-//   padding: 0 5px;
-// }
-
-// .section {
-//   display: flex;
-//   justify-content: space-between;
-//   background: #2d2d31;
-//   width: 100%;
-//   height: 300px;
-//   border-bottom: 2px solid rgb(197, 197, 197);
-// }
-
-// #section__labels > h2 {
-//   color: white;
-//   display: flex;
-//   text-align: center;
-//   justify-content: center;
-//   flex-direction: column;
-// }
 
 .right__sideMenu {
   display: flex;
@@ -460,10 +451,6 @@ export default {
     padding: 0px;
 }
 
-.box:hover .title{
-  right: 0px;
-}
-
 .sp1 {
     display: inline-block;
     width:10px;
@@ -489,9 +476,24 @@ export default {
   background: #000;
   width: 100%;
   position: absolute;
-  right: -300px;
+  right: -400px;
   transition: all 1s;
   overflow: hidden;
   }
+
+
+.zoom__in {
+  max-height: 100%;  
+  max-width: 100%;
+}
+
+.zoom__out {
+  max-height: 50%;  
+  max-width: 50%;
+}
+
+.show {
+  right: 0px;
+}
 
 </style>
