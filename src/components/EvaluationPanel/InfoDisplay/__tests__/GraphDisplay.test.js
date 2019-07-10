@@ -1,77 +1,65 @@
-// GuideLines
-// 
-// Input: 
-// user input
-// props received
-// 
-// Output: 
-// render out any key part of html 
-// child component? 
-// function invocation? 
-// Vue event?
-//
-/////////////////////////////////////////////////////////////
-//
-// Output: 
-// render out GraphDisplayLineChart component
-// render out newValue by received props, newValue
-//  
-// received props -> test on parent side
-//  1.graphData
-//  2.newValue
-// 
-// 3.function/methods call
-//  only internal function call...maybe we can just test if we can properly render out the component
-
-
-
-
 import {
   mount,
   shallowMount,
 } from '@vue/test-utils'
 import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.vue'
-import GraphDisplayLineChart from '@/components/EvaluationPanel/InfoDisplay/GraphDisplayLineChart.vue'
-import {JestEnvironment} from '@jest/environment';
+import GraphDisplayLineChart from '@/components/EvaluationPanel/InfoDisplay/GraphDisplayLineChart.js'
+
+describe('GraphDisplay', function () {
+
+  it('shall mount GraphDisplay component', () => {
+    let wrapper = shallowMount(GraphDisplay, {
+      propsData: {
+        graphData: {
+          "x": [1, 2, 3, 2, 1],
+          "y": [3, 2, 1, 4, 5]
+        },
+      }
+    })
+    expect(wrapper.find(GraphDisplayLineChart).exists()).toBe(true)
+  })
 
 
-
-
-describe('GraphDisplay.vue', () => {
-
-  // var wrapper;
-  // beforeEach(() => {
-  //   wrapper = mount(GraphDisplay)
-  // })
-
-  it('description', () => {
-    // let wrapper = mount(GraphDisplay,{
-    //   propsData:{
-    //     fillData: jest.fn( () => true)
-    //   }
-    // })
-    // expect(wrapper.find(GraphDisplayLineChart).exists()).toBe(true)
+  it('shall call fillData method', () => {
+    let testMethod = jest.fn()
+    let wrapper = shallowMount(GraphDisplay, {
+      propsData: {
+        graphData: {
+          "x": [1, 2, 3, 2, 1],
+          "y": [3, 2, 1, 4, 5]
+        },
+        newThreshold: 0.5
+      },
+      methods: {
+        fillData: testMethod
+      }
+    })
+    expect(testMethod).toHaveBeenCalled()
 
   })
+
+  it('fillData shall be called again when newThreshold value change', () => {
+    let testMethod = jest.fn()
+    let wrapper = shallowMount(GraphDisplay, {
+      propsData: {
+        graphData: {
+          "x": [1, 2, 3, 2, 1],
+          "y": [3, 2, 1, 4, 5]
+        },
+        newThreshold: 0.2
+      },
+      methods: {
+        fillData: testMethod
+      }
+    })
+
+    wrapper.setProps({
+      newThreshold: 0.3
+    })
+
+    //  the first fn called is when vue mounted, the second time will be props changed
+    expect(testMethod).toHaveBeenCalledTimes(2)
+
+  })
+
 })
-
-
-
-
-// describe('GraphDisplay.vue', () => {
-
-
-//   it('make a sanity check', () => {
-
-//   })
-
-//   it('shall have child GraphDisplayLineChart', () => {
-//     // expect(wrapper.find(GraphDisplayLineChart).exists()).toBe(true)
-//     // expect(wrapper.contains(GraphDisplayLineChart)).toBe(true);
-//   })
-
-
-
-
-
-// })

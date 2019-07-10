@@ -31,7 +31,7 @@
         <div class="col-md-6">
           <GraphDisplay 
           :graph-data="tab.grpah" 
-          :new-value="newThreshold"
+          :new-threshold="newThreshold"
           >
           </GraphDisplay>
         </div>
@@ -50,7 +50,6 @@
 
 <script>
   // import the fake data 
-  // import tabData from './Tab-data.json'
   import tabData from '@/components/EvaluationPanel/TabsInfo/Tab-data.json'
   // import tabData from '@/components/EvaluationPanel/TabsInfo/Tab-data.js'
 

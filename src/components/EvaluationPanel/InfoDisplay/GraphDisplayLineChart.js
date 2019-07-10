@@ -1,4 +1,4 @@
-<script>
+
   import {
     Line,
     mixins
@@ -18,4 +18,4 @@
     }
   }
 
-</script>
+
