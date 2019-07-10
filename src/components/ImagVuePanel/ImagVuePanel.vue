@@ -1,28 +1,51 @@
 <template>
   <div id="imag-vue-panel" class="container">
       <div style="display:flex; flex-direction:column; align-items: center; flex-direction: column;" class="imageProcessing">
-        <div style="display:flex; margin-bottom:15px; justify-content: flex-start;" class="toolList">
+
+        <ul class="drop-down-menu">
+        <div style="display:flex; margin-bottom:50px; justify-content: flex-start;">
+          
           <!-- <h1><input type="checkbox" v-model="isOpenFilters" />Open Filters</h1> -->
-          <button class="filterBtn">width: {{filters.width}}%<input type="range" name="width" min="200" max="760" v-model="filters.width"/></button>
-          <button class="filterBtn">height: {{filters.height}}% <input type="range" name="height" min="200" max="760" v-model="filters.height"/></button>
-          <button class="filterBtn">Contrast: {{filters.contrast}}% <input type="range" name="contrast" min="0" max="100" v-model="filters.contrast"/></button>
-          <button class="filterBtn">Brightness: {{filters.brightness}}% <input type="range" name="brightness" min="0" max="1000" v-model="filters.brightness"/></button>
-          <button class="filterBtn">Grayscale: {{filters.grayscale}}% <input type="range" name="grayscale" min="0" max="100" v-model="filters.grayscale"/></button>
-          <!-- <button class="filterBtn">Hue-rotate: {{filters.rotate}}deg <input type="range" name="rotate" min="0" max="360" v-model="filters.rotate"/></button> -->
-          <button class="filterBtn">Opacity: {{filters.opacity}}% <input type="range" name="opacity" min="0" max="100" v-model="filters.opacity"/></button>
-          <!-- <button class="filterBtn">Invert: {{filters.invert}}% <input type="range" name="invert" min="0" max="100" v-model="filters.invert"/></button> -->
-          <!-- <button class="filterBtn">Saturate: {{filters.saturate}}% <input type="range" name="saturate" min="0" max="100" v-model="filters.saturate"/></button> -->
-          <!-- <button class="filterBtn">Sepia: {{filters.sepia}}% <input type="range" name="sepia" min="0" max="100" v-model="filters.sepia"/></button> -->
-          <!-- drop-shadow<textarea name="" id="" cols="30" rows="10" v-model="dropShadowJson"></textarea> -->
-          <!-- <button>Click me</button> -->
-          <button class="filterBtn">Brightness: {{filters.brightness}}% <input type="range" name="brightness" min="0" max="100" v-model="filters.brightness"/></button>
-          <button class="filterBtn">Grayscale: {{filters.grayscale}}% <input type="range" name="grayscale" min="0" max="100"/></button>
-          <button class="filterBtn">Grayscale: {{filters.grayscale}}% <input type="range" name="grayscale" min="0" max="100"/></button>
-          <button class="filterBtn">Grayscale: {{filters.grayscale}}% <input type="range" name="grayscale" min="0" max="100"/></button>
-          <button class="filterBtn">Grayscale: {{filters.grayscale}}% <input type="range" name="grayscale" min="0" max="100"/></button>
-          <button class="filterBtn">Grayscale: {{filters.grayscale}}% <input type="range" name="grayscale" min="0" max="100"/></button>
-          <button class="filterBtn">Grayscale: {{filters.grayscale}}% <input type="range" name="grayscale" min="0" max="100"/></button>
+          <li><a href="#" @click="clickBtn"><img class="img__icon" src="../../assets/zoom_in.png"></a>
+            <ul>
+              <li><button class="filterBtn">{{filters.width}}% </br><input type="range" name="width" min="200" max="760" v-model="filters.width"/></button></li>
+            </ul>
+          </li>
+          <li><a href="#"><img class="img__icon" src="../../assets/zoom_out.png"></a>
+            <ul>
+              <li><button class="filterBtn">{{filters.height}}% </br><input type="range" name="height" min="200" max="760" v-model="filters.height"/></button></li>
+            </ul>
+          </li>
+          <li><a href="#"><img class="img__icon" src="../../assets/settings_brightness.png"></a>
+            <ul>
+              <li><button class="filterBtn">{{filters.contrast}}% </br><input type="range" name="contrast" min="0" max="150" v-model="filters.contrast"/></button></li>
+            </ul>
+          </li>
+          <li><a href="#"><img class="img__icon" src="../../assets/brightness.png"></a>
+            <ul>
+              <li><button class="filterBtn">{{filters.brightness}}% </br><input type="range" name="brightness" min="0" max="150" v-model="filters.brightness"/></button></li>
+            </ul>
+          </li>
+          <li><a href="#"><img class="img__icon" src="../../assets/invert_colors.png"></a>
+            <ul>
+              <li><button class="filterBtn">{{filters.grayscale}}% </br><input type="range" name="grayscale" min="0" max="100" v-model="filters.grayscale"/></button></li>
+            </ul>
+          </li>
+          <li><a href="#"><img class="img__icon" src="../../assets/grid_on.png"></a></li>
+          <li><a href="#"><img class="img__icon" src="../../assets/crop_free.png"></a></li>
+          <li><a href="#"><img class="img__icon" src="../../assets/crop.png"></a></li>
+          <li><a href="#"><img class="img__icon" src="../../assets/rotate_left.png"></a></li>
+          <li><a href="#"><img class="img__icon" src="../../assets/rotate_right.png"></a></li>
+          <li><a href="#"><img class="img__icon" src="../../assets/file_copy.png"></a></li>
+          <li><a href="#"><img class="img__icon" src="../../assets/undo.png"></a></li>
+            <!-- <button class="filterBtn">Invert: {{filters.invert}}% <input type="range" name="invert" min="0" max="100" v-model="filters.invert"/></button> -->
+            <!-- <button class="filterBtn">Saturate: {{filters.saturate}}% <input type="range" name="saturate" min="0" max="100" v-model="filters.saturate"/></button> -->
+            <!-- <button class="filterBtn">Sepia: {{filters.sepia}}% <input type="range" name="sepia" min="0" max="100" v-model="filters.sepia"/></button> -->
+            <!-- drop-shadow<textarea name="" id="" cols="30" rows="10" v-model="dropShadowJson"></textarea> -->
+            <!-- <button>Click me</button> -->
         </div>
+        </ul>
+
         <imagvue
           v-model="url"
           :filters="isOpenFilters"
@@ -109,6 +132,11 @@ export default {
           load: this.onLoadEvent,
         }
       }
+    },
+    clickBtn() {
+      let el = document.querySelector('.toolList > li > a')
+      this.parent().siblings().find('ul').slideUp();
+      this.parent().find('ul').slideToggle();
     }
   }
 }
@@ -119,7 +147,6 @@ h1{
 }
 
 #imag-vue-panel {
-  // border: 1px solid red;  
   margin: 0px;
   padding: 0px;
 }
@@ -127,15 +154,16 @@ h1{
 .filterBtn {
   box-sizing: border-box;
   background: rgb(231, 231, 231);
-  padding: 15px;
+  padding: 10px;
   text-align: center;
   border-style: none;
   align-items: center;
   flex-direction: column;
+  justify-items: center;
   border-radius: 2px;
-  display: hidden;
-  width: 137px;
+  // width: 137px;
   z-index: 15;
+  justify-content: center;
 }
 
 .filterBtn:hover{
@@ -147,11 +175,86 @@ h1{
   flex-direction: column;
 }
 
-.toolList{
-  background: white;
-}
-
 .imageProcessing {
   margin-left: 630px;
+  margin-top :0px;
 }
+
+.img { 
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+.img__icon {
+  display: flex;
+  padding: 6px 10px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-down-menu {
+  z-index: 16;
+}
+
+ul { /* 取消ul預設的內縮及樣式 */
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    ul.drop-down-menu {
+        display: inline-block;
+    }
+
+    ul.drop-down-menu li {
+        position: relative;
+        white-space: nowrap;
+    }
+
+    ul.drop-down-menu > li:last-child {
+        border-right: none;
+    }
+
+    ul.drop-down-menu > li {
+        float: left; /* 只有第一層是靠左對齊*/
+    }
+
+     ul.drop-down-menu a {
+        background-color: #fff;
+        color: #333;
+        display: block;
+        padding: 0 46px;
+        text-decoration: none;
+        line-height: 40px;
+        text-align: center;
+
+    }
+    ul.drop-down-menu a:hover { /* 滑鼠滑入按鈕變色*/
+        background-color: rgb(194, 194, 194);
+    }
+    ul.drop-down-menu li:hover > a { /* 滑鼠移入次選單上層按鈕保持變色*/
+        background-color: rgb(194, 194, 194);
+    }
+
+    ul.drop-down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
+        display: block;
+    }
+
+    ul.drop-down-menu ul { /*隱藏次選單*/
+        display: none;
+    }
+
+    ul.drop-down-menu ul li:last-child {
+        border-bottom: none;
+    }
+
+    ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不同*/
+        z-index: 10;
+        top: 10px;
+        left: 90%;
+    }
+    
 </style>

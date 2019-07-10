@@ -1,6 +1,6 @@
 <template>
   <div id="viewer-overview-panel" class="container-main">
-    <template>
+    <!-- <template>
       <div class="toolBar">
         <button class="btn" id="zoom_in" @click="zoomIn"><img class="img__icon" src="../../assets/zoom_in.png"></button>
         <button class="btn" id="zoom_out" @click="zoomOut"><img class="img__icon" src="../../assets/zoom_out.png"></button>
@@ -16,7 +16,7 @@
         <button class="btn" id="file_copy"><img class="img__icon" src="../../assets/file_copy.png"></button>
         <button class="btn" id="undo"><img class="img__icon" src="../../assets/undo.png"></button>
       </div>
-    </template>
+    </template> -->
 
     <template>
       <div class="content">
@@ -329,7 +329,6 @@ export default {
   max-height: 100%;
   background-color: rgb(0, 0, 0);
   margin-right: 150px;
-  padding-top: 40px;
 }
 
 
@@ -342,33 +341,33 @@ export default {
 
 }
 
-.toolBar {
-  display: flex;
-  float: left;
-  height: 40px;
-  background: rgb(255, 255, 255);
-  width: 100%;
-  margin-right: 150px;
-}
+// .toolBar {
+//   display: flex;
+//   float: left;
+//   height: 40px;
+//   background: rgb(255, 255, 255);
+//   width: 100%;
+//   margin-right: 150px;
+// }
 
-.btn {
-  background: rgb(231, 231, 231);
-  width: 100%;
-  display: flex;
-  padding: 10px;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
+// .btn {
+//   background: rgb(231, 231, 231);
+//   width: 100%;
+//   display: flex;
+//   padding: 10px;
+//   text-align: center;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: flex-start;
+// }
 
-.btn:hover{
-  background: rgb(194, 194, 194);
-}
+// .btn:hover{
+//   background: rgb(194, 194, 194);
+// }
 
-.img__icon {
-  width: 60%;
-}
+// .img__icon {
+//   width: 60%;
+// }
 
 .right__sideMenu {
   display: flex;
