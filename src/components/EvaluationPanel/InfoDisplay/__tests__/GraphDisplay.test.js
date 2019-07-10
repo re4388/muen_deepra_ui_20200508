@@ -27,20 +27,51 @@
 
 
 import {
+  mount,
   shallowMount,
 } from '@vue/test-utils'
 import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.vue'
 import GraphDisplayLineChart from '@/components/EvaluationPanel/InfoDisplay/GraphDisplayLineChart.vue'
+import {JestEnvironment} from '@jest/environment';
+
 
 
 
 describe('GraphDisplay.vue', () => {
-  it('fillData method is called When mounted', () => {
-  //   const wrapper = shallowMount(GraphDisplay,{
-  //     mocks: {
-  //       fillData: jest.fn()
-  //     }
-  //   })
-  //   expect(fillData).toHaveBeenCalledTimes(1)
+
+  // var wrapper;
+  // beforeEach(() => {
+  //   wrapper = mount(GraphDisplay)
+  // })
+
+  it('description', () => {
+    // let wrapper = mount(GraphDisplay,{
+    //   propsData:{
+    //     fillData: jest.fn( () => true)
+    //   }
+    // })
+    // expect(wrapper.find(GraphDisplayLineChart).exists()).toBe(true)
+
   })
 })
+
+
+
+
+// describe('GraphDisplay.vue', () => {
+
+
+//   it('make a sanity check', () => {
+
+//   })
+
+//   it('shall have child GraphDisplayLineChart', () => {
+//     // expect(wrapper.find(GraphDisplayLineChart).exists()).toBe(true)
+//     // expect(wrapper.contains(GraphDisplayLineChart)).toBe(true);
+//   })
+
+
+
+
+
+// })

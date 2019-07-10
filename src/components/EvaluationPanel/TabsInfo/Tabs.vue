@@ -50,7 +50,9 @@
 
 <script>
   // import the fake data 
-  import tabData from './Tab-data.json'
+  // import tabData from './Tab-data.json'
+  import tabData from '@/components/EvaluationPanel/TabsInfo/Tab-data.json'
+  // import tabData from '@/components/EvaluationPanel/TabsInfo/Tab-data.js'
 
   // import components
   import Tab from './Tab'

@@ -3,6 +3,7 @@
     <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
     <div>Threshold Value: <span> {{ newValue }} </span></div>
     <br>
+
   </div>
 </template>
 
