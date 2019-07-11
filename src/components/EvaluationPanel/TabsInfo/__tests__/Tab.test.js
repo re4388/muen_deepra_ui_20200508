@@ -34,7 +34,7 @@ import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.
 import ThresholdAdjustment from '@/components/EvaluationPanel/InfoDisplay/ThresholdAdjustment.vue'
 
 describe('Tab.vue', () => {
-  it('renders tab when v-if return true', () => {
+  it('renders tab component when v-if return true', () => {
     const wrapper = shallowMount(Tab, {
       propsData: {
         name: 'AllTabInfo',
