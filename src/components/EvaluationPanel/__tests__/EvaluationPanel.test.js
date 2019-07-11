@@ -1,6 +1,3 @@
-// Input: none
-// Output: 1. render out the tabs component 2. Model Title 3. Model Desc
-
 import {
   shallowMount
 } from '@vue/test-utils'
@@ -9,6 +6,12 @@ import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
 
 
 describe('EvaluationPanel.vue', () => {
+
+  it('is a Vue instance', () => {
+    const wrapper = shallowMount(EvaluationPanel)
+    expect(wrapper.isVueInstance).toBeTruthy()
+  })
+
   it('renders the "tabs" component', () => {
     const wrapper = shallowMount(EvaluationPanel)
     expect(wrapper.find(Tabs).exists()).toBe(true)

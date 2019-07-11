@@ -3,7 +3,7 @@ import {
   shallowMount,
 } from '@vue/test-utils'
 import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.vue'
-import GraphDisplayLineChart from '@/components/EvaluationPanel/InfoDisplay/GraphDisplayLineChart.js'
+import GraphDisplayLineChart from '@/components/EvaluationPanel/InfoDisplay/GraphDisplayLineChart.vue'
 
 describe('GraphDisplay', function () {
 

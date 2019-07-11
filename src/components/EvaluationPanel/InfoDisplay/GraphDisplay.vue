@@ -1,14 +1,16 @@
 <template>
   <div class="small pl-5">
-    <GraphDisplayLineChart :chart-data="datacollection"></GraphDisplayLineChart>
+    <GraphDisplayLineChart 
+    :chart-data="datacollection"
+    :options="options"
+    ></GraphDisplayLineChart>
   </div>
 </template>
 
 <script>
-  import GraphDisplayLineChart from './GraphDisplayLineChart.js'
+  import GraphDisplayLineChart from './GraphDisplayLineChart.vue'
   export default {
     name: 'GraphDisplay',
-
     components: {
       GraphDisplayLineChart
     },
@@ -27,6 +29,11 @@
     data() {
       return {
         datacollection: {},
+        options:{
+          animation:{
+            duration:0
+          }
+        }
       }
     },
     

@@ -63,37 +63,53 @@ describe('Tabs.vue', () => {
     expect(wrapper.find(ThresholdAdjustment).exists()).toBe(true)
   })
 
-  // the number of Tab could link to backend
   it("renders necessay number of Tab", () => {
     const wrapper = shallowMount(Tabs)
-    expect(wrapper.findAll(Tab).length).toBe(6)
+    let num_of_views = wrapper.vm._data.views.length
+    expect(wrapper.findAll(Tab).length).toBe(num_of_views)
   })
 
-  // assume first tab-name is 'AllTabInfo'
-  it("render <a>'s content ", () => {
+  it("render correct <a>'s content ", () => {
     const wrapper = shallowMount(Tabs)
-    expect(wrapper.find("a").text()).toContain("AllTabInfo")
+    let first_views_name = wrapper.vm._data.views[0]
+    expect(wrapper.find("a").text()).toContain(first_views_name)
   })
 
-  // assume first tab-name is 'AllTabInfo'
-  it("render <h3>'s content", () => {
+  it("render correct <h3>'s content", () => {
     const wrapper = shallowMount(Tabs)
-    expect(wrapper.find("h3").text()).toContain("AllTabInfo")
+    let first_views_name = wrapper.vm._data.views[0]
+    expect(wrapper.find("h3").text()).toContain(first_views_name)
   })
 
-  // assume first tab-name is 'AllTabInfo'
   it('currentView shall render the first tab name', () => {
     const wrapper = shallowMount(Tabs)
-    expect(wrapper.find('.currentView').text()).toEqual("AllTabInfo")
+    let first_tab_name = wrapper.vm._data.views[0]
+    expect(wrapper.find('.currentView').text()).toEqual(first_tab_name)
   })
 
   it('newThreshold shall render from newThreshold data', () => {
     const wrapper = shallowMount(Tabs)
     wrapper.setData({
-      newThreshold:23
+      newThreshold: 23
     })
     expect(wrapper.vm.newThreshold).toBe(23)
   })
+
+  it('shall call changeView() when click the <a> tag', () => {
+    const spy = jest.spyOn(Tabs.methods, "changeView")
+    const wrapper = shallowMount(Tabs)
+    wrapper.find('a').trigger('click');
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('shall call testMethod when event emitted from ThresholdAdjustment', () => {
+    let testMethod = jest.fn()
+    const wrapper = shallowMount(Tabs,{
+      methods:{
+        ThresholdChange: testMethod
+      }
+    })
+    wrapper.find(ThresholdAdjustment).vm.$emit('threshold-change');
+    expect(testMethod).toHaveBeenCalledTimes(1)
+  })
 })
-
-
