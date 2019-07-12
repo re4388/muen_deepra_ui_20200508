@@ -1,81 +1,58 @@
 <template>
   <div id="viewer-overview-panel" class="container-main">
-    <!-- <template>
-      <div class="toolBar">
-        <button class="btn" id="zoom_in" @click="zoomIn"><img class="img__icon" src="../../assets/zoom_in.png"></button>
-        <button class="btn" id="zoom_out" @click="zoomOut"><img class="img__icon" src="../../assets/zoom_out.png"></button>
-        <button class="btn" id="contrast"><img class="img__icon" src="../../assets/settings_brightness.png"></button>
-        <button class="btn" id="brightness"><img class="img__icon" src="../../assets/brightness.png"></button>
-        <button class="btn" id="grayscale"><img class="img__icon" src="../../assets/invert_colors.png"></button>
-        <button class="btn" id="opacity"><img class="img__icon" src="../../assets/opacity.png"></button>
-        <button class="btn" id="grid_on"><img class="img__icon" src="../../assets/grid_on.png"></button>
-        <button class="btn" id="crop_free"><img class="img__icon" src="../../assets/crop_free.png"></button>
-        <button class="btn" id="crop"><img class="img__icon" src="../../assets/crop.png"></button>
-        <button class="btn" id="rotate_left"><img class="img__icon" src="../../assets/rotate_left.png"></button>
-        <button class="btn" id="rotate_right"><img class="img__icon" src="../../assets/rotate_right.png"></button>
-        <button class="btn" id="file_copy"><img class="img__icon" src="../../assets/file_copy.png"></button>
-        <button class="btn" id="undo"><img class="img__icon" src="../../assets/undo.png"></button>
-      </div>
-    </template> -->
-
-    <template>
-      <div class="content">
-        <imag-vue-panel class="wrap"></imag-vue-panel>
-        <!-- <img id="img__example" src="../../assets/x-ray1.jpg" /> -->
-        <div class="regulator"></div>
-      </div>
-    </template>
-
+    <imag-vue-panel></imag-vue-panel>
     <template>
       <div class="right__sideMenu">
-        <div class="addLabel">
-          <h2>Labels</h2>
-          <button class="addLabel-btn">+NewLabel</button>
-          <label><input type="checkbox" id="Nofinding"> Nofinding</label>
-          <label><input type="checkbox" id="Label1"> Label 1</label>
-          <label><input type="checkbox" id="Label2"> Label 2</label>
-          <label><input type="checkbox" id="Label3"> Label 3</label>
-        </div>
+          <div class="addLabel">
+            <h2>Labels</h2>
+            <button class="addLabel-btn">+NewLabel</button>
+            <label><input type="checkbox" id="Nofinding"> Nofinding</label>
+            <label><input type="checkbox" id="Label1"> Label 1</label>
+            <label><input type="checkbox" id="Label2"> Label 2</label>
+            <label><input type="checkbox" id="Label3"> Label 3</label>
+          </div>
 
-        <div class="data__set">
-          <h5>DataSet</h5>
-          <div class="img__dataSet"><img src="../../assets/people.png"></div>
-          <div class="img__dataSet" id="show__list" @click="showImgList"><img src="../../assets/collections.png"></div>
-        </div>
+          <div class="data__set">
+            <h5>DataSet</h5>
+            <div class="img__dataSet"><img src="../../assets/people.png"></div>
+            <div class="img__dataSet" id="show__list" @click="showImgList"><img src="../../assets/collections.png"></div>
+          </div>
 
-        <div class="edit__log">
-          <h6>Edit Log & Note</h6></br>
-          <p>20190523</p>
-          <p>Model 1 Predict as Label1</p>
+          <div class="edit__log">
+            <h6>Edit Log & Note</h6></br>
+            <p>20190523</p>
+            <p>Model 1 Predict as Label1</p>
+          </div>
+        </div>          
+      
+        <div class="box">
+          <div class="title">
+              <div class="imgList" id="imgList">
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="30px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+              </div>
+          </div>
         </div>
-      </div>          
     </template>
 
-    <div class="box">
-      <div class="title">
-          <div class="imgList" id="imgList">
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="30px"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-          </div>
-      </div>
-    </div>
- </div> 
+
+  </div>
 </template>
 
 
@@ -173,29 +150,23 @@ export default {
 
 #viewer-overview-panel {
   box-sizing: border-box;
-  height: auto;
-  background-color: rgb(255, 255, 255);
-  // overflow-y: scroll;
+  background-color: rgb(0, 0, 0);
 }
-
-.content {
-  // display: flex;
-  box-sizing: border-box;
-  height: auto;
-  background-color: rgb(255, 255, 255);
-  margin-right: 150px;
-}
-
 
 #img__example {
   // display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 800px;
-
+  // min-height: 800px;
 }
 
+.main__viewer {
+  margin-right: 150px;
+  display: flex;
+  height: 100%;
+
+}
 // .toolBar {
 //   display: flex;
 //   float: left;
@@ -225,27 +196,23 @@ export default {
 // }
 
 .right__sideMenu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-align: left;
-  flex-direction: column;
   background: #2d2d31;
   position: fixed;
   top: 0;
   right: 0;
   width: 150px;
-  // margin-top: 96px;
   padding: 0 8px;
   color: white;
   height: 100%;
   z-index: 15;
+  margin-top: 56px;
 }
 
 .addLabel {
   box-sizing: border-box;
   height: 400px;
-  padding: 100px 20px 20px 20px;
+  padding: 50px 20px 20px 20px;
   border-bottom: 1px solid white;
 }
 

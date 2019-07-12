@@ -1,46 +1,61 @@
-
-
-
-
 <template>
   <div id="imag-vue-panel" class="container">
-    <div style="display:flex; flex-direction:column;" class="imageProcessing">
-        <div class="toolBar">
-          <button class="btn" id="zoom_in"><img class="img__icon" src="../../assets/zoom_in.png">{{filters.width}}% <input type="range" name="width" min="200" max="760" v-model="filters.width"/></button>
-          <button class="btn" id="zoom_out"><img class="img__icon" src="../../assets/zoom_out.png">{{filters.height}}%<input type="range" name="height" min="200" max="760" v-model="filters.height"/></button>
-          <button class="btn" id="contrast"><img class="img__icon" src="../../assets/settings_brightness.png">{{filters.contrast}}%<input type="range" name="contrast" min="0" max="150" v-model="filters.contrast"/></button>
-          <button class="btn" id="brightness"><img class="img__icon" src="../../assets/brightness.png">{{filters.brightness}}%<input type="range" name="brightness" min="0" max="150" v-model="filters.brightness"/></button>
-          <button class="btn" id="grayscale"><img class="img__icon" src="../../assets/invert_colors.png">{{filters.grayscale}}%<input type="range" name="grayscale" min="0" max="100" v-model="filters.grayscale"/></button>
-          <button class="btn" id="opacity"><img class="img__icon" src="../../assets/opacity.png">{{filters.opacity}}%<input type="range" name="opacity" min="0" max="100" v-model="filters.opacity"/></button>
-          <!-- <button class="btn" id="grid_on"><img class="img__icon" src="../../assets/grid_on.png"></button>
-          <button class="btn" id="crop_free"><img class="img__icon" src="../../assets/crop_free.png"></button>
-          <button class="btn" id="crop"><img class="img__icon" src="../../assets/crop.png"></button> -->
-          <button class="btn" id="rotate_left"><img class="img__icon" src="../../assets/rotate_left.png"></button>
-          <button class="btn" id="rotate_right"><img class="img__icon" src="../../assets/rotate_right.png"></button>
-          <button class="btn" id="file_copy"><img class="img__icon" src="../../assets/file_copy.png"></button>
-          <button class="btn" id="undo"><img class="img__icon" src="../../assets/undo.png"></button>
-        </div>
+    <div class="d-flex bd-highlight">
+      <div class="p-2 flex-fill bd-highlight">Flex item with a lot of content</div>
+      <div class="p-2 flex-fill bd-highlight">Flex item</div>
+      <div class="p-2 flex-fill bd-highlight">Flex item</div>
+    </div>
+
+
+
+
+    <div class="main__viewer d-flex-clumn">
+      <div><ul class="drop-down-menu d-flex">
+            <li><a href="#"><img class="img__icon" src="../../assets/zoom_in.png"></a>
+              <ul>
+                <li><button class="filterBtn">{{filters.width}}% </br><input type="range" name="width" min="100" max="200" v-model="filters.width"/></button></li>
+              </ul>
+            </li>
+            <li><a href="#"><img class="img__icon" src="../../assets/zoom_out.png"></a>
+              <ul>
+                <li><button class="filterBtn">{{filters.height}}% </br><input type="range" name="height" min="100" max="200" v-model="filters.height"/></button></li>
+              </ul>
+            </li>
+            <li><a href="#"><img class="img__icon" src="../../assets/settings_brightness.png"></a>
+              <ul>
+                <li><button class="filterBtn">{{filters.contrast}}% </br><input type="range" name="contrast" min="0" max="150" v-model="filters.contrast"/></button></li>
+              </ul>
+            </li>
+            <li><a href="#"><img class="img__icon" src="../../assets/brightness.png"></a>
+              <ul>
+                <li><button class="filterBtn">{{filters.brightness}}% </br><input type="range" name="brightness" min="0" max="150" v-model="filters.brightness"/></button></li>
+              </ul>
+            </li>
+            <li><a href="#"><img class="img__icon" src="../../assets/invert_colors.png"></a>
+              <ul>
+                <li><button class="filterBtn">{{filters.grayscale}}% </br><input type="range" name="grayscale" min="0" max="100" v-model="filters.grayscale"/></button></li>
+              </ul>
+            </li>
+          <li><a href="#"><img class="img__icon" src="../../assets/opacity.png"></a>
+              <ul>
+                <li><button class="filterBtn">{{filters.opacity}}%<input type="range" name="opacity" min="0" max="100" v-model="filters.opacity"/></button></li>
+              </ul>
+            </li>
+            <li><a href="#"><img class="img__icon" src="../../assets/grid_on.png"></a></li>
+            <li><a href="#"><img class="img__icon" src="../../assets/crop_free.png"></a></li>
+            <li><a href="#"><img class="img__icon" src="../../assets/crop.png"></a></li>
+            <li><a href="#"><img class="img__icon" src="../../assets/rotate_left.png"></a></li>
+            <li><a href="#"><img class="img__icon" src="../../assets/rotate_right.png"></a></li>
+            <li><a href="#"><img class="img__icon" src="../../assets/file_copy.png"></a></li>
+            <li><a href="#"><img class="img__icon" src="../../assets/undo.png"></a></li>
+              <!-- <button class="filterBtn">Invert: {{filters.invert}}% <input type="range" name="invert" min="0" max="100" v-model="filters.invert"/></button>
+              <button class="filterBtn">Saturate: {{filters.saturate}}% <input type="range" name="saturate" min="0" max="100" v-model="filters.saturate"/></button>
+              <button class="filterBtn">Sepia: {{filters.sepia}}% <input type="range" name="sepia" min="0" max="100" v-model="filters.sepia"/></button>
+              <drop-shadow<textarea name="" id="" cols="30" rows="10" v-model="dropShadowJson"></textarea>
+              <button>Click me</button> -->
+        </ul>       
       </div>
-
-        <!-- <div style="display:flex; margin-bottom:0px; justify-content:center;"> -->
-          <!-- <h1><input type="checkbox" v-model="isOpenFilters" />Open Filters</h1> -->
-          <!-- <li><button class="btn" id="zoom_in"><img class="img__icon" src="../../assets/zoom_in.png">{{filters.width}}% <input type="range" name="width" min="200" max="760" v-model="filters.width"/></button></li>
-          <li><button class="btn" id="zoom_out"><img class="img__icon" src="../../assets/zoom_out.png">{{filters.height}}%<input type="range" name="height" min="200" max="760" v-model="filters.height"/></button></li>
-          <li><button class="btn" id="contrast"><img class="img__icon" src="../../assets/settings_brightness.png">{{filters.contrast}}%<input type="range" name="contrast" min="0" max="150" v-model="filters.contrast"/></button></li>
-          <li><button class="btn" id="brightness"><img class="img__icon" src="../../assets/brightness.png">{{filters.brightness}}%<input type="range" name="brightness" min="0" max="150" v-model="filters.brightness"/></button></li>
-          <li><button class="btn" id="grayscale"><img class="img__icon" src="../../assets/invert_colors.png">{{filters.grayscale}}%<input type="range" name="grayscale" min="0" max="100" v-model="filters.grayscale"/></button></li>
-          <li><button class="btn" id="grid_on"><img class="img__icon" src="../../assets/opacity.png"><a href="#"><img class="img__icon" src="../../assets/grid_on.png"></a></button></li>
-          <li><button class="btn" id="crop_free"><img class="img__icon" src="../../assets/grid_on.png"><a href="#"><img class="img__icon" src="../../assets/crop_free.png"></a></button></li>
-          <li><button class="btn" id="crop"><a href="#"><img class="img__icon" src="../../assets/crop.png"></a></button></li>
-          <li><button class="btn" id="rotate_left"><a href="#"><img class="img__icon" src="../../assets/rotate_left.png"></a></button></li>
-          <li><button class="btn" id="rotate_right"><a href="#"><img class="img__icon" src="../../assets/rotate_right.png"></a></button></li>
-          <li><button class="btn" id="file_copy"><a href="#"><img class="img__icon" src="../../assets/file_copy.png"></a></button></li>
-          <li><button class="btn" id="undo"><a href="#"><img class="img__icon" src="../../assets/undo.png"></a></button></li>
-          <li><button class="btn">Invert: {{filters.invert}}% <input type="range" name="invert" min="0" max="100" v-model="filters.invert"/></button></li>
-          <li><button class="btn">Saturate: {{filters.saturate}}% <input type="range" name="saturate" min="0" max="100" v-model="filters.saturate"/></button></li>
-          <li><button class="btn">Sepia: {{filters.sepia}}% <input type="range" name="sepia" min="0" max="100" v-model="filters.sepia"/></button></li> -->
-       
-
+   <div class="imageProcessing d-flex">
         <imagvue class="imgExample"
           v-model="url"
           :filters="isOpenFilters"
@@ -59,8 +74,8 @@
         >
           <transition-group src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" :lazy="1000"></transition-group>
         </imagvue>
-      <!-- </div> -->
-      
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -90,8 +105,8 @@ export default {
         color: "#000000"
       },
       filters: {
-        width: 700,
-        height: 700,
+        width: 150,
+        height: 150,
         contrast: 100,
         brightness: 100,
         grayscale: 0,
@@ -132,158 +147,166 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 h1{
   color: royalblue;
 }
 
 #imag-vue-panel {
-  margin: 0px auto;
+  margin: 0px;
   padding: 0px;
-  // width: 100%;
+  height: 100%;
 }
 
-.toolBar {
-  display: flex;
-  float: left;
-  background: rgb(255, 255, 255);
+.container {
+  flex-direction: column;
+  margin-right: 150px;
+  justify-content: center;
+  width: 1800px;
+}
+
+.main__viewer {
   width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.btn {
-  background: rgb(231, 231, 231);
-  display: flex;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 20px;
-  z-index: 12;
-  box-sizing: border-box;
-  
-  // align-content: flex-end;
-}
-
-.btn:hover{
-  background: rgb(194, 194, 194);
-}
-
-.img__icon {
-  display: flex;
-  padding: 6px 10px;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .imgExample {
   border: 1px solid red;
+}
+
+.filterBtn {
+  box-sizing: border-box;
+  background: rgb(231, 231, 231);
+  border-style: none;
+  justify-items: center;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.imageProcessing {
+  flex-direction:column; 
+  align-items: center; 
+}
+
+.drop-down-menu {
+  border: 1px solid red;
+  height: 50px;
+}
+
+.btn__tool {
+  display: flex;
+  border: 1px solid red;
+  justify-content: flex-start; 
+  width: auto;
+}
+
+ul { 
+/* 取消ul預設的內縮及樣式 */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.drop-down-menu {
+  display: flex;
+  background: rgb(231, 231, 231);
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+ul.drop-down-menu li {
   position: relative;
+  width: 100%;
+
 }
 
-@media (min-width: 1200px) {
-  .container {
-    min-width: 1140px;
-  }
+ul.drop-down-menu > li:last-child {
+  border-right: none;
 }
 
-// .filterBtn {
-//   box-sizing: border-box;
+ul.drop-down-menu > li {
+  float: left; /* 只有第一層是靠左對齊*/
+}
+
+ul.drop-down-menu a {
+  background-color: #fff;
+  color: #333;
+  display: block;
+  padding: 0px 30px;
+  text-decoration: none;
+  line-height: 50px;
+  text-align: center;
+}
+
+ul.drop-down-menu a:hover { /* 滑鼠滑入按鈕變色*/
+  background-color: rgb(194, 194, 194);
+  border-radius: 3px;
+}
+    
+ul.drop-down-menu li:hover > a { /* 滑鼠移入次選單上層按鈕保持變色*/
+  background-color: rgb(194, 194, 194);
+}
+
+ul.drop-down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
+  display: block;
+}
+
+ul.drop-down-menu ul { /*隱藏次選單*/
+  display: none;
+}
+
+ul.drop-down-menu ul li:last-child {
+  border-bottom: none;
+}
+
+ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不同*/
+  z-index: 10;
+  top: 10px;
+  left: 90%;
+}
+    
+// @media (min-width: 1760px) {
+//   .container {
+//     min-width: 1760px;
+//   }
+// }
+
+// .toolBar {
+//   display: flex;
+//   float: left;
+//   background: rgb(255, 255, 255);
+//   width: 100%;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .btn {
 //   background: rgb(231, 231, 231);
-//   padding: 10px;
+//   display: flex;
 //   text-align: center;
-//   border-style: none;
-//   align-items: center;
 //   flex-direction: column;
-//   justify-items: center;
-//   border-radius: 2px;
-//   // width: 137px;
-//   z-index: 15;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 5px 50px;
+//   z-index: 12;
+//   box-sizing: border-box;  
+//   justify-content: space-between;
+// }
+
+// .btn:hover{
+//   background: rgb(194, 194, 194);
+// }
+
+// .img__icon {
+//   display: flex;
+//   padding: 6px 10px;
+//   text-align: center;
+//   flex-direction: column;
+//   align-items: center;
 //   justify-content: center;
 // }
 
-.imageProcessing {
-  margin-left: 0px;
-  margin-top: 0px;
-  align-items: left;
-}
 
-// .imageProcessing {
-//   border: 1px solid red;
-//   position: relative;
-//   left: 25%;
-//   top: 50%;
-// }
-
-// .img { 
-//   position: fixed;
-//   top: 50%;
-//   left: 50%;
-// }
-
-// .drop-down-menu {
-//   border: 1px solid red;
-//   margin-left: 500px;
-// }
-
-// ul { /* 取消ul預設的內縮及樣式 */
-//         margin: 0;
-//         padding: 0;
-//         list-style: none;
-//     }
-
-//     ul.drop-down-menu {
-//         display: inline-block;
-//     }
-
-//     ul.drop-down-menu li {
-//         position: relative;
-//         white-space: nowrap;
-//     }
-
-//     ul.drop-down-menu > li:last-child {
-//         border-right: none;
-//     }
-
-//     ul.drop-down-menu > li {
-//         float: left; /* 只有第一層是靠左對齊*/
-//     }
-
-//      ul.drop-down-menu a {
-//         background-color: #fff;
-//         color: #333;
-//         display: block;
-//         padding: 0 46px;
-//         text-decoration: none;
-//         line-height: 40px;
-//         text-align: center;
-
-//     }
-//     ul.drop-down-menu a:hover { /* 滑鼠滑入按鈕變色*/
-//         background-color: rgb(194, 194, 194);
-//     }
-//     ul.drop-down-menu li:hover > a { /* 滑鼠移入次選單上層按鈕保持變色*/
-//         background-color: rgb(194, 194, 194);
-//     }
-
-//     ul.drop-down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
-//         display: block;
-//     }
-
-//     ul.drop-down-menu ul { /*隱藏次選單*/
-//         display: none;
-//     }
-
-//     ul.drop-down-menu ul li:last-child {
-//         border-bottom: none;
-//     }
-
-//     ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不同*/
-//         z-index: 10;
-//         top: 10px;
-//         left: 90%;
-//     }
-    
 </style>
