@@ -30,7 +30,7 @@
       <div class="right__sideMenu">
         <div class="addLabel">
           <h2>Labels</h2>
-          <button class="addLabel-btn"> + NewLabel</button>
+          <button class="addLabel-btn">+NewLabel</button>
           <label><input type="checkbox" id="Nofinding"> Nofinding</label>
           <label><input type="checkbox" id="Label1"> Label 1</label>
           <label><input type="checkbox" id="Label2"> Label 2</label>
@@ -39,8 +39,8 @@
 
         <div class="data__set">
           <h5>DataSet</h5>
-          <div class="img__dataSet"><img src="../../assets/dataset-1-img.png"></div>
-          <div class="img__dataSet" id="show__list" @click="showImgList"><img src="../../assets/dataset-2-img.png"></div>
+          <div class="img__dataSet"><img src="../../assets/people.png"></div>
+          <div class="img__dataSet" id="show__list" @click="showImgList"><img src="../../assets/collections.png"></div>
         </div>
 
         <div class="edit__log">
@@ -54,170 +54,25 @@
     <div class="box">
       <div class="title">
           <div class="imgList" id="imgList">
-                <ul>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp2"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp2"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp2"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp2"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp2"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp2"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                        <div class="sp1"></div>
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                    <li>
-                        <div class="x-rayFilms"></div>
-                        <img src="../../assets/viewer-img.png" height="60" width="40">
-                    </li>
-                </ul>
-            </div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="30px"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+            <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+          </div>
       </div>
     </div>
  </div> 
@@ -269,9 +124,9 @@ export default {
       errorURL:'https://cdn.browshot.com/static/images/not-found.png',
       loadUrls:[
         {url:'https://goo.gl/PxTSno' , lazy:'https://goo.gl/aiwqia'},
-        // {url:'https://goo.gl/K1kZWk' , lazy:'https://goo.gl/vnHTAh'},
-        // {url:'https://goo.gl/gTZMkF' , lazy:'https://goo.gl/K1Mheq'},
-        // {url:'https://goo.gl/PxTSno1' , lazy:'https://goo.gl/aiwqia'},
+        {url:'https://goo.gl/K1kZWk' , lazy:'https://goo.gl/vnHTAh'},
+        {url:'https://goo.gl/gTZMkF' , lazy:'https://goo.gl/K1Mheq'},
+        {url:'https://goo.gl/PxTSno1' , lazy:'https://goo.gl/aiwqia'},
       ]
     }
   },
@@ -318,16 +173,16 @@ export default {
 
 #viewer-overview-panel {
   box-sizing: border-box;
-  min-height: 100%;
-  background-color: rgb(0, 0, 0);
+  height: auto;
+  background-color: rgb(255, 255, 255);
   // overflow-y: scroll;
 }
 
 .content {
   // display: flex;
   box-sizing: border-box;
-  max-height: 100%;
-  background-color: rgb(0, 0, 0);
+  height: auto;
+  background-color: rgb(255, 255, 255);
   margin-right: 150px;
 }
 
@@ -380,23 +235,24 @@ export default {
   top: 0;
   right: 0;
   width: 150px;
-  min-height: 100%;
-  margin-top: 96px;
+  // margin-top: 96px;
   padding: 0 8px;
   color: white;
+  height: 100%;
+  z-index: 15;
 }
 
 .addLabel {
   box-sizing: border-box;
-  height: 300px;
-  padding: 55px 10px 20px 10px;
+  height: 400px;
+  padding: 100px 20px 20px 20px;
   border-bottom: 1px solid white;
 }
 
 .addLabel-btn {
   background-color: rgb(194, 194, 194);
   border: none;
-  padding: 2px 15xp;
+  padding: 5px 15xp;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -429,7 +285,7 @@ export default {
 
 .img__dataSet {
   width: 100%;
-  padding: 40px 40px;
+  padding: 40px;
 }
 
 .img__dataSet:hover{
@@ -451,56 +307,37 @@ export default {
 // imageList
 .imgList {
     width: 300px;
-    height: 272px;
+    height: 300px;
     overflow: scroll;
     margin: 0 auto;
+    list-style-type: none;
 }
 
-.imgList li {
-    position: relative;
-    display: inline-block;
-    float: left;
-    width: 40px;
-    height: 60px;
-    box-sizing: border-box;
-    margin: 2px;
+.imgList::-webkit-scrollbar { 
+    display: none; 
 }
-
-.imgList li:hover{
-   border: 2px solid red;
-   z-index: 11;
-}
-
 
 .box {
     width: 300px;
-    height: 272px;
+    height: 300px;
     overflow: hidden;
     position: fixed;
-    top: 460px;
+    top: 385px;
     right: 150px;
     padding: 0px;
 }
 
-.sp1 {
-    display: inline-block;
-    width:10px;
-    height:10px;
-    background: green;
-    position: absolute;
-    top: 0;
-    right: 0;
+.x-rayFilms {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 5px;
 }
 
-.sp2 {
-    display: inline-block;
-    width: 40px;
-    height: 60px;
-    background: rgba(131, 197, 131, 0.527);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
+.x-rayFilms:hover{
+  background: rgba(144, 192, 144, 0.616);
+  z-index: 20;
 }
 
 .title {
@@ -510,8 +347,7 @@ export default {
   right: -400px;
   transition: all 1s;
   overflow: hidden;
-  }
-
+}
 
 .zoom__in {
   max-height: 100%;  
