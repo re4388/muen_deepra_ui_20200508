@@ -53,7 +53,7 @@ export default {
     },
     finishTraining () {
       console.log('Training is finished')
-      this.$emit('on-progress-finished', true)
+      this.$emit('onProgressFinished', true)
     }
   },
   data () {

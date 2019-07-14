@@ -1,5 +1,5 @@
 <template>
-  <div class="resources-check-step">
+  <div class="resources-check-step step-content">
     <p class="title text-content">{{ content.title }}</p>
     <p class="resource-disk-space text-content">Available disk space: {{ freeDiskSpace }} MB</p>
     <p class="resource-memory text-content">Available memory: {{ freeMemory }} MB</p>
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.resources-check-step {
+.step-content {
   color: black;
   padding: 20px;
 }
