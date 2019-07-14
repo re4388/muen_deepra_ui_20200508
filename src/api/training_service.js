@@ -27,10 +27,9 @@ class ProgressInfo {
     let stage_curr = this.stageInfo['current']
     let stage_total = this.stageInfo['total']
 
-    console.log(this.stageInfo)
-    stage_curr = stage_curr === 0 ? 1 : stage_curr
-    stage_total = stage_total === 0 ? 1 : stage_total
-    return (stage_curr * (ep_curr - 1) + (it_curr / it_total)) / (ep_total * stage_total)
+    let p_stage = ((stage_curr - 1) / stage_total)
+    let p_epoch = (((ep_curr - 1) + (it_curr / it_total)) / (ep_total * stage_total))
+    return p_stage + p_epoch
   }
 }
 
