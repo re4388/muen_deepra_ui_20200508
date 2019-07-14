@@ -16,6 +16,11 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap'
 
+// BootstrapVue
+import BoostrapVue from 'bootstrap-vue'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(BoostrapVue)
+
 // Routing
 import BasePanel from './components/BasePanel.vue'
 import ProjectOverviewPanel from './components/ProjectPanel/ProjectOverviewPanel.vue'
