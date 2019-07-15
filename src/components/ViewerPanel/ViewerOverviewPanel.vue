@@ -114,24 +114,34 @@
         <div class="box">
           <div class="title">
               <div class="imgList" id="imgList">
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="30px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="20%"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/viewer-img.png" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/viewer-img.png" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
               </div>
           </div>
         </div>
@@ -249,7 +259,7 @@ export default {
 .imageProcessing {
   flex-direction:column; 
   padding: 0px;
-  margin: 62px;
+  margin: 60px;
   align-items: center; 
   border: 1px solid red;
 }
@@ -432,20 +442,23 @@ ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不�
 }
 
 .box {
-    width: 300px;
-    height: 300px;
-    overflow: hidden;
-    position: fixed;
-    top: 385px;
-    right: 150px;
-    padding: 0px;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  position: fixed;
+  top: 400px;
+  right: 150px;
+  padding: 0px;
+  position: absolute;
 }
 
 .x-rayFilms {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: flex-start;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 5px;
   padding: 5px;
 }
 
