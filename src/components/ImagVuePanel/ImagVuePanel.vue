@@ -1,14 +1,5 @@
 <template>
   <div id="imag-vue-panel" class="container">
-    <div class="d-flex bd-highlight">
-      <div class="p-2 flex-fill bd-highlight">Flex item with a lot of content</div>
-      <div class="p-2 flex-fill bd-highlight">Flex item</div>
-      <div class="p-2 flex-fill bd-highlight">Flex item</div>
-    </div>
-
-
-
-
     <div class="main__viewer d-flex-clumn">
       <div><ul class="drop-down-menu d-flex">
             <li><a href="#"><img class="img__icon" src="../../assets/zoom_in.png"></a>
