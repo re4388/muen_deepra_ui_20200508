@@ -1,7 +1,8 @@
 <template>
   <div id="imag-vue-panel" class="container">
     <div class="main__viewer d-flex-clumn">
-      <div><ul class="drop-down-menu d-flex">
+      <div>
+        <ul class="drop-down-menu d-flex">
             <li><a href="#"><img class="img__icon" src="../../assets/zoom_in.png"></a>
               <ul>
                 <li><button class="filterBtn">{{filters.width}}% </br><input type="range" name="width" min="100" max="200" v-model="filters.width"/></button></li>
