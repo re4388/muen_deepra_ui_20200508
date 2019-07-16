@@ -35,19 +35,23 @@
               <li><div class="filter">{{filters.opacity}}% </br><input type="range" name="opacity" min="0" max="100" v-model="filters.opacity"/></div></li>
             </ul>
           </li>
-          <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/rotate_left.png"></div></a>
-          </li>
-          <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/rotate_right.png"></div></a>
-          <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/file_copy.png"></div></a>
-          </li>
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/undo.png"></div></a>
           </li>
         </ul> 
       </div>
       <div class="imageProcessing d-flex">
-        <VueDragResize :isActive="true" :w="200" :h="200" v-on:resizing="resize" v-on:dragging="resize">
-            <!-- <p>{{ top }} х {{ left }} </p>
-            <p>{{ width }} х {{ height }}</p> -->
+        <VueDragResize 
+        :isActive="true"
+        :isResizable="true"
+        :isDraggable="true"
+        :aspectRatio="true"
+        :w="200" 
+        :h="200" 
+        :x="800"
+        :y="300"
+        v-on:resizing="resize" 
+        v-on:dragging="resize">
+        <img src="../../assets/people.png">
         <imagvue class="imgExample"
           v-model="url"
           :filters="isOpenFilters"
@@ -67,14 +71,8 @@
           <transition-group src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" :lazy="1000"></transition-group>
         </imagvue>
         </VueDragResize>
-
       </div>
     </div>
-
-      
-      </VueDragResize>
-
-
     </template>
 
      <template>
@@ -178,7 +176,6 @@ export default {
     imagvue,
     VueDragResize
     // ImagVuePanel,
-    // ViewerCard,
   },
   computed: {
     fixedRatioHeight () {
@@ -191,16 +188,10 @@ export default {
       height: 0,
       top: 0,
       left: 0,
-      // imageUrl: "../../assets/x-ray1_backup.jpg",
-      // otherImage: "../../assets/x-ray1_backup.jpg",
       // projects: viewerData.content,
             isOpenFilters: true ,
       dropShadowJson:
       {
-        // "offset": 16,
-        // "blurRadius": 16,
-        // "spreadRadius": 10,
-        // "color": "#54bf8e"
         offset: 16,
         blurRadius: 16,
         spreadRadius: 10,
@@ -219,7 +210,7 @@ export default {
         sepia: 0,
       },
       tooltip: false,
-      url: 'https://www.displaydaily.com/images/2017/October/SID_Vehicle_Displays/XRay.jpg',
+      url: 'https://www.sandlakeimaging.com/wp-content/uploads/2016/12/Xray-300x247.jpg',
       errorURL:'https://cdn.browshot.com/static/images/not-found.png',
       loadUrls:[
         {url:'https://goo.gl/PxTSno' , lazy:'https://goo.gl/aiwqia'},
@@ -293,9 +284,9 @@ export default {
   // border: 1px solid red;
 }
 
-.vdr active {
-  outline: none;
-}
+// .vdr.active:before {
+//   outline: 1px dashed black;
+// }
 
 // 上方 toolbar
 .filterbtn {
