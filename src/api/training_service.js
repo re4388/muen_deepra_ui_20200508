@@ -61,7 +61,7 @@ function runMNIST (model_name, handler_progress, handler_end) {
   return call
 }
 
-module.exports = {
-  startTraining: startTraining,
-  runMNIST: runMNIST
+export default {
+  startTraining,
+  runMNIST
 }
