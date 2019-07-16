@@ -9,9 +9,10 @@ function initializeState (target, defaults) {
 const defaultState = {
   currentStage: null,
   isCurrentStageLocked: true,
+  completedStageIndex: 0,
   selectedFolder: '',
   selectedTaskType: null,
-  datasetInfo: null,
+  datasetInfo: { details: {} }
 }
 
 const state = {}
@@ -24,6 +25,9 @@ const getters = {
   },
   isCurrentStageLocked() {
     return state.isCurrentStageLocked
+  },
+  completedStageIndex() {
+    return state.completedStageIndex
   },
   selectedFolder() {
     return state.selectedFolder
@@ -49,6 +53,10 @@ const mutations = {
   RESET_STAGE_LOCK(state) {
     state.isCurrentStageLocked = true
   },
+  SET_COMPLETED_STAGE_INDEX(state, payload) {
+    if (payload < state.completedStageIndex) return
+    state.completedStageIndex = payload
+  },
   SET_SELECTED_FOLDER(state, payload) {
     state.selectedFolder = payload
   },
@@ -72,6 +80,9 @@ const actions = {
   },
   resetStageLock({ commit }) {
     commit('RESET_STAGE_LOCK')
+  },
+  setCompletedStageIndex({ commit }, payload) {
+    commit('SET_COMPLETED_STAGE_INDEX', payload)
   },
   setSelectedFolder({ commit }, payload) {
     commit('SET_SELECTED_FOLDER', payload)

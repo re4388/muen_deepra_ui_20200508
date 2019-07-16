@@ -8,6 +8,7 @@
         />
         <step-content
           class="flex-fill"
+          ref="stepContent"
           :is="stepContent[currentStep]['contentType']"
           :content="stepContent[currentStep]"
         />
@@ -29,6 +30,7 @@ import StepPipeline from '@/components/Pipeline/StepPipeline.vue'
 import StepContent from '@/components/Pipeline/StepContent.vue'
 import ImportDatasetStep from './StepContent/ImportDatasetStep.vue'
 import DatasetReportStep from './StepContent/DatasetReportStep.vue'
+import FinalizationStep from './StepContent/FinalizationStep.vue'
 
 export default {
   name: 'DataImportPanel',
@@ -36,22 +38,35 @@ export default {
     StepPipeline,
     StepContent,
     ImportDatasetStep,
-    DatasetReportStep
+    DatasetReportStep,
+    FinalizationStep
+  },
+  created: function () {
+    this.initializeComponent()
   },
   methods: {
+    initializeComponent () {
+      this.$store.dispatch('resetAllState')
+    },
     updateCurrentStep (stepId) {
-      this.currentStep = stepId
+      // NOTE: remove current implementation to avoid user switching stage
     },
     progressToNextStep () {
+      // Notify child component to check the content
+      this.$refs.stepContent.checkContent()
+      if (this.$store.getters.isCurrentStageLocked) return
+
       if (this.currentStep == this.stepContent.length - 1) {
         this.finializeProjectCreation()
         this.$router.push('/project-overview')
       }
       if (this.currentStep < this.stepContent.length - 1) {
         this.currentStep += 1
+        this.$store.dispatch('resetStageLock')
       }
     },
     finializeProjectCreation () {
+      // TODO: save meta data by backend
       alert('Project is created')
     }
   },
@@ -71,7 +86,7 @@ export default {
         {
           id: 2,
           title: 'Overview of dataset',
-          contentType: 'StepContent'
+          contentType: 'FinalizationStep'
         }
       ],
       currentStep: 0
