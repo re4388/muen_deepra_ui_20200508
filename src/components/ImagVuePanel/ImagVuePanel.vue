@@ -82,6 +82,11 @@ export default {
   components:{
     imagvue,
   },
+  computed: {
+    fixedRatioHeight () {
+      return this.filters['width']
+    }
+  },
   data(){
     return{
       isOpenFilters: true ,

@@ -7,17 +7,17 @@
         <ul class="drop-down-menu d-flex">
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/zoom_in.png"></div></a>
             <ul>
-              <li><div class="filter">{{filters.width}}% </br><input type="range" name="width" min="100" max="600" v-model="filters.width"/></div></li>
+              <li><div class="filter">{{filters.width}}% </br><input type="range" name="width" min="100" max="800" v-model="filters.width" onchange="console.log(this.value)"/></div></li>
             </ul>
           </li>
-          <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/zoom_out.png"></div></a>
+          <!-- <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/zoom_out.png"></div></a>
             <ul>
               <li><div class="filter">{{filters.height}}% </br><input type="range" name="height" min="100" max="600" v-model="filters.height"/></div></li>
             </ul>
-          </li>
+          </li> -->
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/settings_brightness.png"></div></a>
             <ul>
-              <li><div class="filter">{{filters.contrast}}% </br><input type="range" name="contrast" min="0" max="150" v-model="filters.contrast"/></div></li>
+              <li><div class="filter">{{filters.contrast}}% </br><input class="inputControl" type="range" name="contrast" min="0" max="150" v-model="filters.contrast"/></div></li>
             </ul>
           </li>
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/brightness.png"></div></a>
@@ -32,43 +32,28 @@
           </li>
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/opacity.png"></div></a>
             <ul>
-              <li><div class="filter">{{filters.opacity}}%<input type="range" name="opacity" min="0" max="100" v-model="filters.opacity"/></div></li>
+              <li><div class="filter">{{filters.opacity}}% </br><input type="range" name="opacity" min="0" max="100" v-model="filters.opacity"/></div></li>
             </ul>
           </li>
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/rotate_left.png"></div></a>
-            <ul>
-              <li><div class="filter"></div></li>
-            </ul>
           </li>
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/rotate_right.png"></div></a>
-            <ul>
-              <li><div class="filter"></div></li>
-            </ul>
-          </li>
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/file_copy.png"></div></a>
-            <ul>
-              <li><div class="filter"></div></li>
-            </ul>
           </li>
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/undo.png"></div></a>
-            <ul>
-              <li><div class="filter"></div></li>
-            </ul>
-          </li>
-          <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/undo.png"></div></a>
-            <ul>
-              <li><div class="filter"></div></li>
-            </ul>
           </li>
         </ul> 
       </div>
       <div class="imageProcessing d-flex">
+        <VueDragResize :isActive="true" :w="200" :h="200" v-on:resizing="resize" v-on:dragging="resize">
+            <!-- <p>{{ top }} х {{ left }} </p>
+            <p>{{ width }} х {{ height }}</p> -->
         <imagvue class="imgExample"
           v-model="url"
           :filters="isOpenFilters"
           :onerror="()=>url='https://i.stack.imgur.com/cl91I.png'"
           :width="filters.width" 
-          :height="filters.height"
+          :height="fixedRatioHeight"
           :brightness="filters.brightness"
           :contrast="filters.contrast"
           :grayscale="filters.grayscale"
@@ -81,8 +66,13 @@
         >
           <transition-group src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" :lazy="1000"></transition-group>
         </imagvue>
+        </VueDragResize>
+
       </div>
     </div>
+
+      
+      </VueDragResize>
 
 
     </template>
@@ -113,65 +103,97 @@
       
         <div class="box">
           <div class="title">
+            <!-- <template v-for="(item, index) in imageList">
+              <div class="x-rayFilms" :key="index">
+                <img class="overlay" src="item.src" height="40px">
+              </div>
+            </template> -->
+            <!-- <template v-for="(item, index) in imageList">
+              <div :key="index">
+                <p>{{ item.src }}</p>
+                <img :src="item.src"/>
+              </div>
+            </template> -->
               <div class="imgList" id="imgList">
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/viewer-img.png" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/viewer-img.png" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1_backup.jpg" width="50px"></div>
-                <div class="x-rayFilms"><img src="../../assets/x-ray1.jpg" width="50px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/viewer-img.png" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/viewer-img.png"height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1.jpg" height="40px"></div>
+                <div class="x-rayFilms"><img class="overlay" src="../../assets/x-ray1_backup.jpg" height="40px"></div>
               </div>
           </div>
         </div>
     </template>
-
-
   </div>
 </template>
 
 
 
 <script>
-import viewerData from "./viewer_data.json";
 import Vue from "vue";
-import Sidebar from '@/components/SideBarMenu__right/SideBarMenu__right.vue'
+import Sidebar from '@/components/SideBarMenu__right/SideBarMenu__right.vue';
 // import imagvue from 'imagvue';
-import ImagVuePanel from '@/components/ImagVuePanel/ImagVuePanel.vue'
+// import ImagVuePanel from '@/components/ImagVuePanel/ImagVuePanel.vue';
+// import viewerData from "./viewer_data.json";
 import imagvue from "imagvue";
+import imageData from './image_data.json'
+console.log(imageData.content[0])
+import VueDragResize from 'vue-drag-resize'
+
+// console.log(imagvue)
+console.log(imagvue.props.value)
 
 export default {
   name:"ViewerOverviewPanel",
   components: {
     Sidebar,
     imagvue,
-    ImagVuePanel
+    VueDragResize
+    // ImagVuePanel,
     // ViewerCard,
+  },
+  computed: {
+    fixedRatioHeight () {
+      return this.filters['width']
+    }
   },
   data() {
     return {
-      projects: viewerData.content,
+      width: 0,
+      height: 0,
+      top: 0,
+      left: 0,
+      // imageUrl: "../../assets/x-ray1_backup.jpg",
+      // otherImage: "../../assets/x-ray1_backup.jpg",
+      // projects: viewerData.content,
             isOpenFilters: true ,
       dropShadowJson:
       {
@@ -204,7 +226,8 @@ export default {
         {url:'https://goo.gl/K1kZWk' , lazy:'https://goo.gl/vnHTAh'},
         {url:'https://goo.gl/gTZMkF' , lazy:'https://goo.gl/K1Mheq'},
         {url:'https://goo.gl/PxTSno1' , lazy:'https://goo.gl/aiwqia'},
-      ]
+      ],
+      imageList: imageData.content
     }
   },
   computed:{
@@ -226,6 +249,12 @@ export default {
           load: this.onLoadEvent,
         }
       }
+    },
+    resize(newRect) {
+      this.width = newRect.width;
+      this.height = newRect.height;
+      this.top = newRect.top;
+      this.left = newRect.left;
     }
   }  
 };
@@ -238,30 +267,34 @@ export default {
 #viewer-overview-panel {
   box-sizing: border-box;
   background-color: rgb(0, 0, 0);
+  padding-right: 150px;
 }
 
 #imag-vue-panel {
-  margin: 0px;
-  padding: 0px;
+  padding: 0;
+  margin: 0;
 }
 
 // viewer
 .container {
   max-width: 100%;
-  padding-right: 150px;
+  height: 100%;
   flex-direction: column;
-  padding-right: 150px;
   justify-content: center;
-  border: 1px solid red;
+  // border: 1px solid red;
 }
 
 // 匯入圖片處
 .imageProcessing {
   flex-direction:column; 
   padding: 0px;
-  margin: 60px;
+  margin-top: 78px;
   align-items: center; 
-  border: 1px solid red;
+  // border: 1px solid red;
+}
+
+.vdr active {
+  outline: none;
 }
 
 // 上方 toolbar
@@ -271,7 +304,6 @@ export default {
   height: 56px;
   display: flex;
   padding: 10px;
-  text-align: center;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
@@ -290,11 +322,12 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  padding: 10px;
 }
 
 // 下拉式選取區塊
 .drop-down-menu {
-  border: 1px solid red;
+  // border: 1px solid red;
   height: 50px;
 }
 
@@ -435,6 +468,7 @@ ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不�
     overflow: scroll;
     margin: 0 auto;
     list-style-type: none;
+    text-align: left;
 }
 
 .imgList::-webkit-scrollbar { 
@@ -454,17 +488,22 @@ ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不�
 
 .x-rayFilms {
   box-sizing: border-box;
+  width: 60px;
+  height: 60px;
   display: inline-flex;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 5px;
-  padding: 5px;
+  justify-content: center;
+  padding: 3px;
+  z-index: 9;
 }
 
 .x-rayFilms:hover{
-  background: rgba(144, 192, 144, 0.616);
-  z-index: 20;
+  background: rgba(103, 189, 103, 0.5);
+}
+
+.overlay:hover{
+  opacity: 0.5;
 }
 
 .title {
