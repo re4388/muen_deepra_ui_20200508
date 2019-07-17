@@ -4,6 +4,7 @@
       <div class="step-navigator d-flex flex-row">
         <step-pipeline
           :contentList="stepContent"
+          :indexActivated="currentStep"
           @onStepChanged="updateStep"
         />
         <component
