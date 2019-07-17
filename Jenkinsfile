@@ -25,6 +25,7 @@ pipeline {
 					}
 					catch (ex) {
 						SkipRemainingSteps = 'true'
+						currentBuild.result = 'FAILURE'
 					}
 				}
 			}
@@ -37,10 +38,11 @@ pipeline {
 				script {
 					try {
 						sh """echo ${currentBuild.result}"""
-						sh """yarn run test:unit """
+						sh """yarn run test:unit -u """
 					}
 					catch (ex) {
 						SkipRemainingSteps = 'true'
+						currentBuild.result = 'FAILURE'
 					}
 				}
 			}
@@ -56,6 +58,7 @@ pipeline {
 					}
 					catch (ex) {
 						SkipRemainingSteps = 'true'
+						currentBuild.result = 'FAILURE'
 					}
 				}
 			}

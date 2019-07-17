@@ -24,6 +24,11 @@ $ yarn run electron:serve
     $ yarn run electron:build
     ```
 
+### Setup `.proto` files from backend repository (permission of accessing repository is required)
+```bash
+$ python ./scripts/setup_api_protos.py
+```
+
 ## Test setup
 ### Install chrome driver
 1. You can download and setup driver by executing the following script
@@ -51,7 +56,21 @@ $ yarn run electron:serve
         $ chmod +x ~/bin/chromedriver
         ```
 
-### Run test example
-```bash
-$ python -m pytest ./tests
-```
+### Run test
+- Unit tests of javascript stuff
+
+    ```bash
+    $ yarn run test:unit
+    ```
+
+- Intergration test (GUI test)
+
+    ```bash
+    # Install requirements if this is the first run (for Python 3.6, 3.7)
+    $ pip install -r ./tests/requirements.txt
+
+    # Run tests
+    $ python ./scripts/run_pytest_bdd.py
+    # or run tests with showing BDD-style scenario
+    $ python ./scripts/run_pytest_bdd.py --show_scenario
+    ```

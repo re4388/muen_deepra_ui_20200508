@@ -21,6 +21,10 @@ import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap'
 
 
+// BootstrapVue
+import BoostrapVue from 'bootstrap-vue'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(BoostrapVue)
 
 // Routing
 import BasePanel from './components/BasePanel.vue'
@@ -67,8 +71,10 @@ const router = new VueRouter({
 })
 
 import App from './App.vue'
+import store from './store'
 new Vue({
   el: '#app',
+  store,
   router,
   render: h => h(App)
 })

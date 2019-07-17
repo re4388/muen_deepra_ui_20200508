@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     emitClickedEvent () {
-      this.$emit('on-label-selected', this.digit)
+      this.$emit('onLabelSelected', this.digit)
     }
   }
 }
