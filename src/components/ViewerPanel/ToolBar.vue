@@ -1,0 +1,260 @@
+<template>
+  <div id="tool-bar">
+    <ul class="drop-down-menu d-flex justify-content-end">
+      <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/zoom_in.png"></div></a>
+        <ul>
+          <li><div class="filter">{{filters.width}}% </br>
+            <input 
+              type="range" 
+              name="width" 
+              min="100" 
+              max="800" 
+              v-model="filters.width" 
+              onchange="console.log(this.value)"
+            /></div>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/settings_brightness.png"></div></a>
+        <ul>
+          <li><div class="filter">{{filters.contrast}}% </br>
+            <input 
+              class="inputControl" 
+              type="range" 
+              name="contrast" 
+              min="0" 
+              max="150" 
+              v-model="filters.contrast"
+            /></div>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/brightness.png"></div></a>
+        <ul>
+          <li><div class="filter">{{filters.brightness}}% </br>
+            <input 
+              type="range" 
+              name="brightness" 
+              min="0" 
+              max="150" 
+              v-model="filters.brightness"
+            /></div>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/invert_colors.png"></div></a>
+        <ul>
+          <li><div class="filter">{{filters.invert}}% </br>
+            <input 
+              type="range" 
+              name="invert" 
+              min="0" 
+              max="100" 
+              v-model="filters.invert"
+            /></div>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/opacity.png"></div></a>
+        <ul>
+          <li><div class="filter">{{filters.opacity}}% </br>
+            <input 
+              type="range" 
+              name="opacity" 
+              min="0" 
+              max="100" 
+              v-model="filters.opacity"
+            /></div>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/undo.png"></div></a>
+      </li>
+    </ul> 
+    <div class="imageProcessing d-flex">
+      <VueDragResize 
+        :isActive="true"
+        :isResizable="true"
+        :isDraggable="true"
+        :aspectRatio="true"
+        :w="filters.width"
+        :x="800"
+        :y="300"
+        v-on:resizing="resize" 
+        v-on:dragging="resize">
+        <p>{{ top }} х {{ left }} </p>
+        <p>{{ width }} х {{ height }}</p>
+        <imagvue class="imgExample" 
+          style="width: 100%;"
+          v-model="url"
+          :filters="isOpenFilters"
+          :onerror="()=>url='https://i.stack.imgur.com/cl91I.png'"
+          :width="filters.width" 
+          :height="fixedRatioHeight"
+          :brightness="filters.brightness"
+          :contrast="filters.contrast"
+          :grayscale="filters.grayscale"
+          :hue-rotate="filters.rotate"
+          :opacity="filters.opacity"
+          :invert="filters.invert"
+          :saturate="filters.saturate"
+          :sepia="filters.sepia"
+          :customData="customData()"
+        >
+        <transition-group 
+        src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" 
+        :lazy="1000"
+        >
+        </transition-group>
+        </imagvue>
+      </VueDragResize>
+    </div>
+  </div>
+</template>
+
+<script>
+import VueDragResize from 'vue-drag-resize';
+import imagvue from 'imagvue'
+
+export default {
+  name: 'ToolBar',
+  components: {
+    imagvue,
+    VueDragResize
+  },
+  methods: {
+    showImgList: function() {
+      let el = document.querySelector('.title')
+      el.classList.toggle('show')
+    },
+    onLoadEvent() {
+      console.log("Image on load!");
+    },
+    customData() {
+      return {
+        on: {
+          load: this.onLoadEvent,
+        }
+      }
+    },
+    resize(newRect) {
+      this.width = newRect.width;
+      this.height = newRect.height;
+      this.top = newRect.top;
+      this.left = newRect.left;
+    }
+  },
+  computed: {
+    fixedRatioHeight () {
+      return this.filters['width']
+    },
+    dropShadow() {
+      return this.dropShadowJson
+    }
+  },
+  data() {
+    return {
+      width: 0,
+      height: 0,
+      top: 0,
+      left: 0,
+      // projects: viewerData.content,
+      isOpenFilters: true ,
+      dropShadowJson:
+      {
+        offset: 16,
+        blurRadius: 16,
+        spreadRadius: 10,
+        color: "#000000"
+      },
+      filters: {
+        width: 150,
+        height: 150,
+        contrast: 100,
+        brightness: 100,
+        grayscale: 0,
+        rotate: 0,
+        opacity: 100,
+        invert: 0,
+        saturate: 100,
+        sepia: 0,
+      },
+      tooltip: false,
+      url: 'https://media.mnn.com/assets/images/2012/05/XrayExposure.jpg.653x0_q80_crop-smart.jpg',
+      errorURL:'https://cdn.browshot.com/static/images/not-found.png',
+      loadUrls:[
+        {url:'https://goo.gl/PxTSno' , lazy:'https://goo.gl/aiwqia'},
+        {url:'https://goo.gl/K1kZWk' , lazy:'https://goo.gl/vnHTAh'},
+        {url:'https://goo.gl/gTZMkF' , lazy:'https://goo.gl/K1Mheq'},
+        {url:'https://goo.gl/PxTSno1' , lazy:'https://goo.gl/aiwqia'},
+      ],
+      // imageList: imageData.content
+    }
+  }    
+}
+</script>
+
+<style lang="scss">
+#tool-bar {
+  position: relative;
+  margin-right: 150px;
+}
+// 下拉式選取區塊
+.drop-down-menu {
+  height: 50px;
+}
+ul { 
+/* 取消ul預設的內縮及樣式 */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul.drop-down-menu {
+  background: rgb(231, 231, 231);
+  // margin-bottom: 20px;
+}
+ul.drop-down-menu li {
+  position: relative;
+}
+ul.drop-down-menu > li:last-child {
+  border-right: none;
+}
+ul.drop-down-menu a {
+  background: rgb(231, 231, 231);
+  display: block;
+  padding: 0 50px;
+  line-height: 50px;
+}
+ul.drop-down-menu a:hover { /* 滑鼠滑入按鈕變色*/
+  background: rgb(231, 231, 231);
+  border-radius: 3px;
+} 
+ul.drop-down-menu li:hover > a { /* 滑鼠移入次選單上層按鈕保持變色*/
+  background: rgb(255, 255, 255);
+}
+ul.drop-down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
+  display: block;
+  background: rgb(255, 255, 255);
+  padding: 5px 10px;
+}
+ul.drop-down-menu ul { /*隱藏次選單*/
+  display: none;
+}
+ul.drop-down-menu ul li:last-child {
+  border-bottom: none;
+}
+ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不同*/
+  z-index: 10;
+  top: 10px;
+  left: 90%;
+}
+
+// .vdr.active:before {
+//   outline: none;
+// }
+
+// .vdr-stick {
+//   display: none;
+// }
+</style>
