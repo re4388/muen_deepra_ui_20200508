@@ -4,7 +4,12 @@
       <div class="outter-ring"></div>
       <div class="number-label" @click="emitClickedEvent">{{ digit }}</div>
     </div> -->
-    <div class="number-label" @click="emitClickedEvent">{{ digit }}</div>
+    <div class="number-label"
+      @click="emitClickedEvent"
+      :style="labelStyle"
+    >
+      {{ digit }}
+    </div>
   </div>
 </template>
 
@@ -14,9 +19,26 @@ export default {
   props: {
     digit: Number
   },
+  watch: {
+    isSelected (val) {
+      return val
+    }
+  },
+  computed:{
+    labelStyle () {
+      return {
+        background: this.isSelected ? 'orange' : 'lightgray',
+      }
+    }
+  },
   methods: {
     emitClickedEvent () {
       this.$emit('onLabelSelected', this.digit)
+    }
+  },
+  data() {
+    return {
+      isSelected: false
     }
   }
 }
