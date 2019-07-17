@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     updateStep (stepId) {
-      this.currentStep = stepId
+      // NOTE: remove current implementation to avoid user switching stage
     },
     enterToNextStep () {
       if (this.currentStep < this.stepContent.length - 1) {
