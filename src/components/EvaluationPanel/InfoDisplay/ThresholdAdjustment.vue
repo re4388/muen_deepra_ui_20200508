@@ -17,7 +17,7 @@
     </div>
 
     <div>
-      <h3>
+      <h4>
         Image:
         <span>{{ imageNumber}}</span>
         <br />
@@ -25,7 +25,7 @@
         <br />
         Recall: {{recall}}
         <br />
-      </h3>
+      </h4>
     </div>
   </div>
 </template>

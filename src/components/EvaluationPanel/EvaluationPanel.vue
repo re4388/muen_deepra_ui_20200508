@@ -1,5 +1,5 @@
 <template>
-  <div class="container ">
+  <div class="container-fluid ">
     <!-- 標題 -->
     <header class="row ">
       <div class="col-12 ">
@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      title: "My first image Dataset_Model 1",
+      title: "First Image Dataset Model 1",
       description: `The Model evaluation report is created at 09:21, 2019/05/17. 
         In this analysis, We analyzed 4463 image, and these images were divided in 5 fold for training dataset and validation dataset. 
         It is take 10hr for training .
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.container-fluid {
   // min-height: 100%;
   background-color: gray;
   overflow-y: scroll;
