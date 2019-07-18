@@ -1,33 +1,29 @@
 <template>
   <div id="viewer-container" class="container">
-    <div class="wrap">
-      <div v-if="!image">
-        <h2>Select an image</h2>
-        <input type="file" @change="onFileChange">
-      </div>
-      <div v-else>
-        <img :src="image" />
-        <button @click="removeImage">Remove image</button>
-      </div>
+    <div v-if="!image">
+      <h2>Select an image</h2>
+      <input type="file" @change="onFileChange">
     </div>
+    <div v-else>
+      <img :src="image" />
+      <button @click="removeImage">Remove image</button>
+    </div>
+    <!-- <ImagePreview/> -->
   </div>
 </template>
 
 <script>
-import Vue from "vue";
+// import ImagePreview from '@/components/ViewerPanel/ImageProcessing.vue';
 
 export default {
-  el: '#viewer-container',
   name:"ViewerContainer",
   components: {
+    // ImagePreview
   },
-  data() {
-    return {
-    }
+  data: {
+    image: ''
   },
-  computed:{
-  },
-   methods: {
+  methods: {
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length)
@@ -47,23 +43,33 @@ export default {
     removeImage: function (e) {
       this.image = '';
     }
-  }  
+  }
 };
+// export default {
+//   name:"ViewerContainer",
+//   components: {
+//   },
+//   data() {
+//     return {
+//     }
+//   },
+//   computed:{
+//   }  
+// };
 </script>
 
 <style lang="scss" scoped>
 .container {
-  max-width: 100%;
-  // max-height: 100%;
-  padding-right: 150px;
+  min-width: 100%;
+  height: 100%;
+  padding-right: 0px;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid red;
-}
-#app {
+  border: 1px solid green;
   text-align: center;
 }
+
 img {
   width: 30%;
   margin: auto;

@@ -80,8 +80,8 @@
         :aspectRatio="true"
         :w="filters.width"
         :h="filters.height"
-        :x="0"
-        :y="50"
+        :x="300"
+        :y="300"
         v-on:resizing="resize" 
         v-on:dragging="resize">
         <!-- <p>{{ top }} х {{ left }} </p> -->
@@ -156,8 +156,8 @@ export default {
   },
   data() {
     return {
-      width: 0,
-      height: 0,
+      width: 500,
+      height: 500,
       top: 0,
       left: 0,
       // projects: viewerData.content,
@@ -172,7 +172,7 @@ export default {
       filters: {
         // maintain the aspect ratio
         width: 500,
-        // height: 500,
+        height: "auto",
         contrast: 100,
         brightness: 100,
         grayscale: 0,
@@ -184,7 +184,7 @@ export default {
       },
       tooltip: false,
       url: 'https://media.mnn.com/assets/images/2012/05/XrayExposure.jpg.653x0_q80_crop-smart.jpg',
-      errorURL:'https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif',
+      errorURL:'https://i.stack.imgur.com/cl91I.png',
       loadUrls:[
         {url:'https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif' , lazy:'https://goo.gl/aiwqia'}
       ],
@@ -252,17 +252,21 @@ ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不�
   top: 10px;
   left: 90%;
 }
-.vdr.active:before {
-  outline: none;
+// .vdr.active:before {
+//   outline: none;
+// }
+.vdr-stick {
+  border: 6px solid #6c6c6c;
+  // display: none;
 }
 
-.vdr-stick {
-  display: none;
-}
+// .vdr-stick-tm, .vdr-stick-mr, .vdr-stick-bm, .vdr-stick-ml{
+//   display: none;
+// }
 
 .imgExample {
-  position: absolute;
-  top: 25%;
-  left: 15%;
+  box-sizing: border-box;
+  padding: 50px;
+  // overflow: hidden;
 }
 </style>
