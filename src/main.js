@@ -66,7 +66,8 @@ const router = new VueRouter({
       path: '/viewer-overview',
       name: 'ViewerOverview',
       component: ViewerOverviewPanel
-    }
+    },
+    {
       path: '/evaluation',
       name: 'Evaluate',
       component: EvaluationPanel
