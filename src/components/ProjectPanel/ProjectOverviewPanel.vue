@@ -18,6 +18,7 @@
 
 <script>
 import ProjectCard from './ProjectCard.vue'
+import projectManager from '@/api/projects_service.js'
 
 export default {
   name: 'ProjectOverviewPanel',
@@ -41,18 +42,11 @@ export default {
       this.$router.push('/import-data')
     },
     fetchProjectData () {
-      let projectInfo = this.$store.getters.newProjectInfo
-      if (!this.$store.getters.isCreatingProject) return
-
-      let newContent = {
-        id: this.projects.length + 1,
-        name: projectInfo.name,
-        uuid: projectInfo.uuid
-      }
-      console.log('----- newContent ----')
-      console.log(newContent)
-      this.projects.push(newContent)
-      console.log(this.projectInfo)
+      projectManager.getProjectList().then((result) => {
+        if (result.project_list.length == 0) return
+        this.projects = result.project_list
+        console.log(this.projects)
+      })
     }
   },
   data () {
