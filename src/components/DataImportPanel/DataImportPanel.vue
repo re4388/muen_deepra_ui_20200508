@@ -55,21 +55,25 @@ export default {
     },
     progressToNextStep () {
       // Notify child component to check the content
-      this.$refs.stepContent.checkContent()
-      if (this.$store.getters.isCurrentStageLocked) return
+      let call = this.$refs.stepContent.checkContent()
+      // Handling empty returned response while the child component is not ready
+      if (call === undefined) return
 
-      if (this.currentStep == this.stepContent.length - 1) {
-        this.finializeProjectCreation()
-        this.$router.push('/project-overview')
-      }
-      if (this.currentStep < this.stepContent.length - 1) {
-        this.currentStep += 1
-        this.$store.dispatch('resetStageLock')
-      }
+      call.then((result) => {
+        if (this.$store.getters.isCurrentStageLocked) return
+
+        if (this.currentStep == this.stepContent.length - 1) {
+          this.finializeProjectCreation()
+          this.$router.push('/project-overview')
+        }
+        if (this.currentStep < this.stepContent.length - 1) {
+          this.currentStep += 1
+          this.$store.dispatch('resetStageLock')
+        }
+      })
     },
     finializeProjectCreation () {
       // TODO: save meta data by backend
-      alert('Project is created')
     }
   },
   data () {

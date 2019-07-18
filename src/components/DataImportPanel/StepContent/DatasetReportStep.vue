@@ -9,6 +9,7 @@
       </p>
       <p class="text-content">
         Total labels: {{ datasetInfo.totalLabels }} <br>
+        Labels: <br>
         Labeled file counts: {{ datasetInfo.details.labeledFileCounts }} <br>
         Unlabeled file counts: {{ datasetInfo.details.unlabeledFileCounts }} <br>
         Missed file counts: {{ datasetInfo.details.missedFileCounts }} <br>
@@ -57,8 +58,11 @@ export default {
     },
     checkContent () {
       if (this.dataRecieved) {
-        this.$store.dispatch('unlockStage')
-        this.$store.dispatch('setCompletedStageIndex', this.content.id)
+        return new Promise((resolve, reject) => {
+          this.$store.dispatch('unlockStage')
+          this.$store.dispatch('setCompletedStageIndex', this.content.id)
+          resolve(true)
+        })
       }
     }
   },

@@ -12,7 +12,9 @@ const defaultState = {
   completedStageIndex: 0,
   selectedFolder: '',
   selectedTaskType: null,
-  datasetInfo: { details: {} }
+  datasetInfo: { details: {} },
+  newProjectInfo: {},
+  isCreatingProject: false
 }
 
 const state = {}
@@ -37,6 +39,12 @@ const getters = {
   },
   datasetInfo() {
     return state.datasetInfo
+  },
+  newProjectInfo() {
+    return state.newProjectInfo
+  },
+  isCreatingProject() {
+    return state.isCreatingProject
   }
 }
 
@@ -65,6 +73,12 @@ const mutations = {
   },
   SET_DATASET_INFO(state, payload) {
     state.datasetInfo = payload
+  },
+  SET_NEW_PROJECT_INFO(state, payload) {
+    state.newProjectInfo = payload
+  },
+  SET_IS_CREATING_PROJECT(state, payload) {
+    state.isCreatingProject = payload
   }
 }
 
@@ -92,6 +106,12 @@ const actions = {
   },
   setDatasetInfo({ commit }, payload) {
     commit('SET_DATASET_INFO', payload)
+  },
+  setNewProjectInfo({ commit }, payload) {
+    commit('SET_NEW_PROJECT_INFO', payload)
+  },
+  setIsCreatingProject({ commit }, payload) {
+    commit('SET_IS_CREATING_PROJECT', payload)
   }
 }
 

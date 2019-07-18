@@ -18,7 +18,6 @@
 
 <script>
 import ProjectCard from './ProjectCard.vue'
-import projectData from './project_data.json'
 
 export default {
   name: 'ProjectOverviewPanel',
@@ -31,14 +30,34 @@ export default {
     // created project card after they finish the data import phase from
     // `DataImportPanel`)
   },
+  mounted () {
+    this.fetchProjectData()
+  },
+  watch: {
+    '$route': 'fetchProjectData'
+  },
   methods: {
     createProject () {
       this.$router.push('/import-data')
+    },
+    fetchProjectData () {
+      let projectInfo = this.$store.getters.newProjectInfo
+      if (!this.$store.getters.isCreatingProject) return
+
+      let newContent = {
+        id: this.projects.length + 1,
+        name: projectInfo.name,
+        uuid: projectInfo.uuid
+      }
+      console.log('----- newContent ----')
+      console.log(newContent)
+      this.projects.push(newContent)
+      console.log(this.projectInfo)
     }
   },
   data () {
     return {
-      projects: projectData.content
+      projects: []
     }
   }
 }

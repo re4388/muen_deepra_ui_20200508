@@ -74,8 +74,11 @@ export default {
     },
     checkContent () {
       if (this.selectedFolder === null || this.selectedTaskType === null) return
-      this.$store.dispatch('unlockStage')
-      this.$store.dispatch('setCompletedStageIndex', this.content.id)
+      return new Promise((resolve, reject) => {
+        this.$store.dispatch('unlockStage')
+        this.$store.dispatch('setCompletedStageIndex', this.content.id)
+        resolve(true)
+      })
     }
   },
   data () {

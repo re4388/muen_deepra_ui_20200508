@@ -12,17 +12,23 @@ class DatasetInfo {
     let info = resp.dataset_info
     content.folderPath = info.folder_path
     content.taskType = info.task_type
+    content.labelFile = info.label_file
+    content.datasetSize = info.dataset_size
 
     let details = info.details.fields
-    let labelCounts = details.label_counts.structValue.fields
+    let labelReport = details.label_report.structValue.fields
     content.fileCounts = info.details.fields.file_counts.numberValue
     content.details = {
-      labeledFileCounts: labelCounts.normal.numberValue,
-      missedFileCounts: labelCounts.missed.numberValue,
-      unlabeledFileCounts: labelCounts.unlabeled.numberValue
+      labels: labelReport.labels,
+      labeledFileCounts: labelReport.normal.numberValue,
+      missedFileCounts: labelReport.missed.numberValue,
+      unlabeledFileCounts: labelReport.unlabeled.numberValue
     }
-    content.totalLabels = (content.details.labeledFileCounts + 
-      content.details.missedFileCounts + content.details.unlabeledFileCounts)
+    content.totalLabels = (
+      content.details.labeledFileCounts +
+      content.details.missedFileCounts +
+      content.details.unlabeledFileCounts
+    )
     return new DatasetInfo(content)
   }
 }
