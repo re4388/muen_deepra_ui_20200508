@@ -46,7 +46,14 @@ export default {
 
 <style lang="scss" scoped>
 #viewer-overview-panel {
-  // box-sizing: border-box;
+  box-sizing: border-box;
   background-color: rgb(0, 0, 0);
+  max-width: 100%;
+  padding-right: 150px;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid red;
 }
+
 </style>

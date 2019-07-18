@@ -1,10 +1,23 @@
 <template>
   <div id="viewer-container" class="container">
+    <div class="wrap">
+      <div v-if="!image">
+        <h2>Select an image</h2>
+        <input type="file" @change="onFileChange">
+      </div>
+      <div v-else>
+        <img :src="image" />
+        <button @click="removeImage">Remove image</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
+
 export default {
+  el: '#viewer-container',
   name:"ViewerContainer",
   components: {
   },
@@ -14,18 +27,50 @@ export default {
   },
   computed:{
   },
-  methods: {
+   methods: {
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function (e) {
+      this.image = '';
+    }
   }  
 };
 </script>
 
 <style lang="scss" scoped>
 .container {
-  // max-width: 100%;
+  max-width: 100%;
   // max-height: 100%;
   padding-right: 150px;
   flex-direction: column;
   justify-content: center;
+  overflow: hidden;
   border: 1px solid red;
+}
+#app {
+  text-align: center;
+}
+img {
+  width: 30%;
+  margin: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+button {
+  
 }
 </style>

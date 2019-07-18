@@ -62,7 +62,7 @@
               type="range" 
               name="opacity" 
               min="0" 
-              max="100" 
+              max="200" 
               v-model="filters.opacity"
             /></div>
           </li>
@@ -71,7 +71,7 @@
       <li>
         <a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/undo.png"></div></a>
       </li>
-    </ul> 
+    </ul>
     <div class="imageProcessing d-flex">
       <VueDragResize 
         :isActive="true"
@@ -79,19 +79,20 @@
         :isDraggable="true"
         :aspectRatio="true"
         :w="filters.width"
-        :x="800"
-        :y="300"
+        :h="filters.height"
+        :x="0"
+        :y="50"
         v-on:resizing="resize" 
         v-on:dragging="resize">
-        <p>{{ top }} х {{ left }} </p>
-        <p>{{ width }} х {{ height }}</p>
+        <!-- <p>{{ top }} х {{ left }} </p> -->
+        <!-- <p>{{ width }} х {{ height }}</p> -->
         <imagvue class="imgExample" 
           style="width: 100%;"
           v-model="url"
           :filters="isOpenFilters"
           :onerror="()=>url='https://i.stack.imgur.com/cl91I.png'"
           :width="filters.width" 
-          :height="fixedRatioHeight"
+          :height="filters.height"
           :brightness="filters.brightness"
           :contrast="filters.contrast"
           :grayscale="filters.grayscale"
@@ -146,9 +147,9 @@ export default {
     }
   },
   computed: {
-    fixedRatioHeight () {
-      return this.filters['width']
-    },
+    // fixedRatioHeight () {
+    //   return this.filters['width']
+    // },
     dropShadow() {
       return this.dropShadowJson
     }
@@ -169,8 +170,9 @@ export default {
         color: "#000000"
       },
       filters: {
-        width: 150,
-        height: 150,
+        // maintain the aspect ratio
+        width: 500,
+        // height: 500,
         contrast: 100,
         brightness: 100,
         grayscale: 0,
@@ -182,12 +184,9 @@ export default {
       },
       tooltip: false,
       url: 'https://media.mnn.com/assets/images/2012/05/XrayExposure.jpg.653x0_q80_crop-smart.jpg',
-      errorURL:'https://cdn.browshot.com/static/images/not-found.png',
+      errorURL:'https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif',
       loadUrls:[
-        {url:'https://goo.gl/PxTSno' , lazy:'https://goo.gl/aiwqia'},
-        {url:'https://goo.gl/K1kZWk' , lazy:'https://goo.gl/vnHTAh'},
-        {url:'https://goo.gl/gTZMkF' , lazy:'https://goo.gl/K1Mheq'},
-        {url:'https://goo.gl/PxTSno1' , lazy:'https://goo.gl/aiwqia'},
+        {url:'https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif' , lazy:'https://goo.gl/aiwqia'}
       ],
       // imageList: imageData.content
     }
@@ -197,8 +196,13 @@ export default {
 
 <style lang="scss">
 #tool-bar {
-  position: relative;
-  margin-right: 150px;
+  // position: relative;
+  // margin-right: 150px;
+  box-sizing: border-box;
+  background-color: rgb(0, 0, 0);
+  max-width: 100%;
+  border: 1px solid red;
+  height: 114px;
 }
 // 下拉式選取區塊
 .drop-down-menu {
@@ -212,7 +216,6 @@ ul {
 }
 ul.drop-down-menu {
   background: rgb(231, 231, 231);
-  // margin-bottom: 20px;
 }
 ul.drop-down-menu li {
   position: relative;
@@ -245,16 +248,21 @@ ul.drop-down-menu ul li:last-child {
   border-bottom: none;
 }
 ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不同*/
-  z-index: 10;
+  z-index: 25;
   top: 10px;
   left: 90%;
 }
+.vdr.active:before {
+  outline: none;
+}
 
-// .vdr.active:before {
-//   outline: none;
-// }
+.vdr-stick {
+  display: none;
+}
 
-// .vdr-stick {
-//   display: none;
-// }
+.imgExample {
+  position: absolute;
+  top: 25%;
+  left: 15%;
+}
 </style>
