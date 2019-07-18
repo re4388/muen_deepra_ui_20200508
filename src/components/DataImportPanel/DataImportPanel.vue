@@ -4,16 +4,20 @@
       <div class="step-navigator d-flex flex-row">
         <step-pipeline
           :contentList="stepContent"
-          @on-step-changed="updateCurrentStep"
+          :indexActivated="currentStep"
+          :enableSelectionOnClicked="false"
+          @onStepChanged="updateCurrentStep"
         />
         <step-content
           class="flex-fill"
+          ref="stepContent"
+          :is="stepContent[currentStep]['contentType']"
           :content="stepContent[currentStep]"
         />
       </div>
       <div class="control-section">
-        <a class="btn-flow-control">
-          <div class="content" @click="progressToNextStep">
+        <a class="btn-flow-control" @click="progressToNextStep">
+          <div class="content">
             <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
             <p v-else>Next</p>
           </div>
@@ -26,27 +30,71 @@
 <script>
 import StepPipeline from '@/components/Pipeline/StepPipeline.vue'
 import StepContent from '@/components/Pipeline/StepContent.vue'
-import stepContentData from './step_pipeline_content.json'  // for demonstration
+import ImportDatasetStep from './StepContent/ImportDatasetStep.vue'
+import DatasetReportStep from './StepContent/DatasetReportStep.vue'
+import FinalizationStep from './StepContent/FinalizationStep.vue'
 
 export default {
   name: 'DataImportPanel',
   components: {
     StepPipeline,
-    StepContent
+    StepContent,
+    ImportDatasetStep,
+    DatasetReportStep,
+    FinalizationStep
+  },
+  created: function () {
+    this.initializeComponent()
   },
   methods: {
+    initializeComponent () {
+      this.$store.dispatch('resetAllState')
+    },
     updateCurrentStep (stepId) {
-      this.currentStep = stepId
+      // NOTE: remove current implementation to avoid user switching stage
     },
     progressToNextStep () {
-      if (this.currentStep < this.stepContent.length - 1) {
-        this.currentStep += 1
-      }
+      // Notify child component to check the content
+      let call = this.$refs.stepContent.checkContent()
+      // Handling empty returned response while the child component is not ready
+      if (call === undefined) return
+
+      call.then((result) => {
+        if (this.$store.getters.isCurrentStageLocked) return
+
+        if (this.currentStep == this.stepContent.length - 1) {
+          this.finializeProjectCreation()
+          this.$router.push('/project-overview')
+        }
+        if (this.currentStep < this.stepContent.length - 1) {
+          this.currentStep += 1
+          this.$store.dispatch('resetStageLock')
+        }
+      })
+    },
+    finializeProjectCreation () {
+      // TODO: save meta data by backend
     }
   },
   data () {
     return {
-      stepContent: stepContentData.content,
+      stepContent: [
+        {
+          id: 0,
+          title: 'Import dataset',
+          contentType: 'ImportDatasetStep'
+        },
+        {
+          id: 1,
+          title: 'Statistic report',
+          contentType: 'DatasetReportStep'
+        },
+        {
+          id: 2,
+          title: 'Overview of dataset',
+          contentType: 'FinalizationStep'
+        }
+      ],
       currentStep: 0
     }
   }

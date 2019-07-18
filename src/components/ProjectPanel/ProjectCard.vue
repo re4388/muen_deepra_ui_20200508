@@ -15,8 +15,8 @@
         </div>
       </div>
       <div class="text-section flex-fill align-items-start flex-column">
-        <p class="description flex-fill">Description: {{ details.description }}</p>
-        <p class="creation-date">Created: {{ details.creationDate }}</p>
+        <p class="description flex-fill">Description: {{ description }}</p>
+        <p class="creation-date">Created: {{ creationDate }}</p>
         <a class="btn-open-project">
           <div class="content">Open</div>
         </a>
@@ -32,9 +32,19 @@ export default {
   props: {
     details: Object
   },
+  computed: {
+    description: function () {
+      return this.details.description
+    },
+    creationDate: function () {
+      let date = new Date()
+      let ts = this.details.creation_timestamp
+      date.setTime(ts.seconds + String(ts.nanos/1000000))
+      return date.toUTCString().split(' ').slice(0, 5).join(' ')
+    }
+  },
   data () {
     return {
-      name: 'foo'
     }
   }
 }

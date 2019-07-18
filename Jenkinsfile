@@ -73,17 +73,18 @@ pipeline {
 			}
 			post {
 				always {
-					sh """
-					docker run -p 3050:5000 --rm \
-					-e CHANNEL_ACCESS_TOKEN=$CHANNEL_ACCESS_TOKEN \
-					-e CHANNEL_SECRET=$CHANNEL_SECRET \
-					-e TARGET_GROUP_ID=$TARGET_GROUP_ID \
-					-e ONE_SHOT_MESSAGE="Job Name: ${JOB_NAME}
-					Build number: ${BUILD_NUMBER}
-					Build status: ${currentBuild.result}
-					URL: ${env.RUN_DISPLAY_URL}" \
-					--name linemsg_service linemsg
-					"""
+					// sh """
+					// docker run -p 3050:5000 --rm \
+					// -e CHANNEL_ACCESS_TOKEN=$CHANNEL_ACCESS_TOKEN \
+					// -e CHANNEL_SECRET=$CHANNEL_SECRET \
+					// -e TARGET_GROUP_ID=$TARGET_GROUP_ID \
+					// -e ONE_SHOT_MESSAGE="Job Name: ${JOB_NAME}
+					// Build number: ${BUILD_NUMBER}
+					// Build status: ${currentBuild.result}
+					// URL: ${env.RUN_DISPLAY_URL}" \
+					// --name linemsg_service linemsg
+					// """
+					echo 'LINE bot is disabled currently.'
 				}
 			}
 		}

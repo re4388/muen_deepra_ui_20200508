@@ -4,18 +4,19 @@
       <div class="step-navigator d-flex flex-row">
         <step-pipeline
           :contentList="stepContent"
-          @on-step-changed="updateStep"
+          :indexActivated="currentStep"
+          @onStepChanged="updateStep"
         />
         <component
           class="flex-fill"
           :is="stepContent[currentStep]['contentType']"
           :content="stepContent[currentStep]"
-          @on-progress-finished="toggleBtnFlowControl"
+          @onProgressFinished="toggleBtnFlowControl"
         />
       </div>
       <div class="control-section">
-        <a class="btn-flow-control" id="btn-flow-control">
-          <div class="content" @click="enterToNextStep">
+        <a class="btn-flow-control" id="btn-flow-control" @click="enterToNextStep">
+          <div class="content">
             <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
             <p v-else>Next</p>
           </div>
@@ -48,7 +49,7 @@ export default {
   },
   methods: {
     updateStep (stepId) {
-      this.currentStep = stepId
+      // NOTE: remove current implementation to avoid user switching stage
     },
     enterToNextStep () {
       if (this.currentStep < this.stepContent.length - 1) {

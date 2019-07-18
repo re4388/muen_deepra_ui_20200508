@@ -11,7 +11,7 @@
 
 <script>
 import TopNavbar from '@/components/TopNavbar.vue'
-import Sidebar from '@/components/SideBarMenu/SideBarMenu.vue'
+import Sidebar from '@/components/SidebarMenu/SidebarMenu.vue'
 import BasePanel from '@/components/BasePanel.vue'
 
 export default {

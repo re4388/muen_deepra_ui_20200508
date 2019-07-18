@@ -10,6 +10,10 @@ export default {
   name: 'StepContent',
   props: {
     content: Object
+  },
+  methods: {
+    checkContent () {
+    }
   }
 }
 </script>

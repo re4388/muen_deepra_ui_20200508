@@ -4,6 +4,10 @@ Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
+// Chart.js
+import 'chart.js'
+import 'vue-chartjs'
+
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faFolder, faCube } from '@fortawesome/free-solid-svg-icons'
@@ -16,6 +20,12 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap'
 
+
+// BootstrapVue
+import BoostrapVue from 'bootstrap-vue'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(BoostrapVue)
+
 // Routing
 import BasePanel from './components/BasePanel.vue'
 import ProjectOverviewPanel from './components/ProjectPanel/ProjectOverviewPanel.vue'
@@ -23,6 +33,7 @@ import ModelOverviewPanel from './components/ModelPanel/ModelOverviewPanel.vue'
 import DataImportPanel from './components/DataImportPanel/DataImportPanel.vue'
 import TrainingPanel from './components/TrainingPanel/TrainingPanel.vue'
 import ViewerOverviewPanel from './components/ViewerPanel/ViewerOverviewPanel.vue'
+import EvaluationPanel from './components/EvaluationPanel/EvaluationPanel.vue'
 
 const router = new VueRouter({
   routes: [
@@ -56,12 +67,19 @@ const router = new VueRouter({
       name: 'ViewerOverview',
       component: ViewerOverviewPanel
     }
+      path: '/evaluation',
+      name: 'Evaluate',
+      component: EvaluationPanel
+    },
+
   ]
 })
 
 import App from './App.vue'
+import store from './store'
 new Vue({
   el: '#app',
+  store,
   router,
   render: h => h(App)
 })

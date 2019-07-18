@@ -43,11 +43,7 @@ export default {
       this.isTrainingStarted = true
 
       let handler_progress = (resp) => {
-        console.log(resp)
-        let epoch_info = resp['epoch_info']
-        let curr_epoch = epoch_info['curr_epoch']
-        let total_epoch = epoch_info['total_epoch']
-        this.updateProgressBar(curr_epoch / total_epoch)
+        this.updateProgressBar(resp.currentProgress)
       }
       let handler_end = (resp) => {
         this.finishTraining()
@@ -57,7 +53,7 @@ export default {
     },
     finishTraining () {
       console.log('Training is finished')
-      this.$emit('on-progress-finished', true)
+      this.$emit('onProgressFinished', true)
     }
   },
   data () {

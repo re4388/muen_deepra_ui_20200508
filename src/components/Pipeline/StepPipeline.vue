@@ -2,9 +2,10 @@
   <div class="step-pipeline">
     <template v-for="(item, index) in contentList">
       <pipeline-element
+        ref="pipelineElement"
         :key="index"
         :digit="item.id"
-        @on-label-selected="notifySelection"
+        @onLabelSelected="notifySelection"
       />
     </template>
   </div>
@@ -19,11 +20,39 @@ export default {
     PipelineElement
   },
   props: {
-    contentList: Array
+    contentList: Array,
+    enableSelectionOnClicked: Boolean,
+    indexActivated: Number
+  },
+  mounted: function () {
+    this.initializeComponent()
+  },
+  watch: {
+    indexActivated () {
+      this.activatePipelineElement(this.indexActivated)
+    }
   },
   methods: {
+    initializeComponent () {
+      this.activatePipelineElement(this.indexActivated)
+    },
     notifySelection (selectedId) {
-      this.$emit('on-step-changed', selectedId)
+      if (!this.enableSelectionOnClicked) return
+      this.$emit('onStepChanged', selectedId)
+      this.indexSelected = selectedId;
+      this.activatePipelineElement(selectedId)
+    },
+    activatePipelineElement (selectedId) {
+      // reset state of all elements
+      this.$refs.pipelineElement.forEach((item, index) => {
+        item._data.isSelected = false
+      })
+      this.$refs.pipelineElement[selectedId]._data.isSelected = true
+    }
+  },
+  data() {
+    return {
+      indexSelected: null,
     }
   }
 }
