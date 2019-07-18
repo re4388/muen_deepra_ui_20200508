@@ -1,15 +1,19 @@
 <template>
-  <div class="small pl-5">
-    <GraphDisplayLineChart :chart-data="lineData" :options="options"></GraphDisplayLineChart>
+  <div class="container mt-3">
+    <vue-c3 :handler="handler"></vue-c3>
   </div>
 </template>
 
 <script>
-import GraphDisplayLineChart from "./GraphDisplayLineChart.vue";
+import Vue from "vue";
+import VueC3 from "vue-c3";
+import "c3/c3.min.css";
+
+import { CLIENT_RENEG_LIMIT } from "tls";
 export default {
   name: "GraphDisplay",
   components: {
-    GraphDisplayLineChart
+    VueC3
   },
 
   props: {
@@ -25,74 +29,82 @@ export default {
 
   data() {
     return {
-      lineData: {},
-      options: {
-        title: {
-          display: true,
-          text: "Precission & Recall ",
-          fontSize: 14,
-          fontColor: "black"
-        },
-        tooltips: {
-          enabled: true,
-          mode: "index",
-          axis: "x"
-        },
-        animation: {
-          duration: 0,
-          // easing: "easeInOutBack"
-          // easing: 'linear',
-          // easing: "easeInOutElastic"
-        },
-        legend: {
-          labels: {
-            // This more specific font property overrides the global property
-            fontColor: "black",
-            fontSize: 16,
-            fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-            fontStyle: "italic"
-          }
-        }
-      }
+      handler: new Vue() // C3 handler
     };
   },
 
   mounted() {
-    this.fillData();
-    // console.log(...this.graphData["x"])
+    this.handler.$emit("init", this.options); // C3, need to init first
+  },
+  computed: {
+    // c3 options, data和各種設定都在這邊，動態的所以放在computed
+    options() {
+      return {
+        data: {
+          columns: [
+            ["Precision", ...this.graphData["x"]],
+            ["Recall", ...this.graphData["y"]]
+          ]
+        },
+        axis: {
+          x: {
+            show: true,
+
+            label: {
+              text: "Score threshold",
+              position: "outer-center"
+            }
+          },
+          y: {
+            show: true,
+            label: {
+              text: "Precision / Recall",
+              position: "outer-middle"
+            }
+          }
+        },
+        tooltip: {
+          format: {
+            title(d) {
+              // return `第 ${d + 1} 個資料點`;
+              return;
+            },
+            value(value, ratio, id) {
+              return `${value} `;
+            }
+          }
+        },
+        point: {
+          show: false
+        },
+        grid: {
+          x: {
+            show: false
+          },
+          y: {
+            show: false
+          }
+        },
+        legend: {
+          position: "bottom"
+        }
+      };
+    }
   },
 
   watch: {
     newThreshold() {
-      this.fillData();
+      this.showAnnotation();
     }
   },
 
   methods: {
-    fillData() {
-      this.lineData = {
-        labels: [0, 0.2, 0.4, 0.6, 0.8, 1],
-        datasets: [
-          {
-            label: "Precision",
-            // fill: false,
-            borderColor: "rgba(51, 116, 237, 0.5)",
-            // backgroundColor: 'rgba(238,238,238,0.2)',  //=> "x": [1, 2, 3, 2, 1]
-            // data: [0.45, 0.5, 0.6, 0.7, 0.8, 1],
-            data: [...this.graphData["x"]]
-            // data: this.graphData["x"].map(i => i * (this.newThreshold) * 10)
-          },
-          {
-            label: "Recall",
-            // fill: false,
-            borderColor: "rgba(213, 240, 213, 0.8)",
-            // backgroundColor: 'rgba(213, 224, 213, 0.5)',   //=> "y": [3, 2, 1, 4, 5]
-            // data:[1, 0.75, 0.5, 0.25, 0.1, 0],
-            data: [...this.graphData["y"]]
-            // data: this.graphData["y"].map(i => i + (this.newThreshold) * 10)
-          }
-        ]
-      };
+    showAnnotation() {
+      this.handler.$emit("dispatch", chart => {
+        chart.tooltip.show({
+          x: this.newThreshold
+        });
+      });
     }
   }
 };

@@ -2,18 +2,18 @@
   <div class="container">
     <ConfusionMatrix id="modal" v-if="showModal" @close-event="closeModal" />
 
-    <!-- Modal 混淆矩陣 部分 -->
+    <!-- Modal 跳出 混淆矩陣 -->
     <div>
       <!-- <b-button v-b-modal.modal-1>Launch demo modal</b-button> -->
       <b-modal hide-footer id="modal-lg" size="lg" title="Confusion Matrix">
         <table>
           <thead>
             <tr>
-              <th v-for="category in categories" :key="category.id">{{category}}</th>
+              <th v-for="category in selectedCategories" :key="category.id">{{category}}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="row in rows" :key="row.id">
+            <tr v-for="row in selectedRows" :key="row.id">
               <td
                 v-for=" item in row"
                 :key="item.id"
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <!-- 每一個lable/tab 的元件們 -->
+    <!-- 每一個lable/Tab 的元件們 -->
     <Tab
       v-for="tab in tabs"
       :key="tab.id"
@@ -76,10 +76,10 @@
           <ThresholdAdjustment
             class="mt-3"
             :threshold-data="tab.threshold"
+            :graph-data="tab.grpah"
             @threshold-change="ThresholdChange"
           ></ThresholdAdjustment>
-          <b-button class="mt-5" v-b-modal.modal-lg variant="outline-dark">Confusion Matrix</b-button>
-          <!-- <b-button class="mt-5" variant="outline-dark" @click="openModal">Confusion Matrix</b-button> -->
+          <b-button class="mt-3" v-b-modal.modal-lg variant="dark">Confusion Matrix</b-button>
         </div>
       </div>
     </Tab>
@@ -90,7 +90,9 @@
 // import the fake data
 import {
   confusion_matrix,
-  confusion_matrix_caterogies
+  confusion_matrix_caterogies,
+  confusion_matrix2,
+  confusion_matrix_caterogies2,
 } from "../InfoDisplay/data4";
 import tabData from "@/components/EvaluationPanel/TabsInfo/Tab-data.json";
 // import tabData from '@/components/EvaluationPanel/TabsInfo/Tab-data.js'
@@ -117,6 +119,8 @@ export default {
     return {
       rows: confusion_matrix,
       categories: confusion_matrix_caterogies,
+      rows2: confusion_matrix2,
+      categories2: confusion_matrix_caterogies2,
       tabs: tabData.content,
       views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
       currentView: "",
@@ -128,6 +132,23 @@ export default {
   mounted() {
     this.getView();
     this.currentView = this.views[0];
+  },
+  computed:{
+    selectedCategories(){
+      if(this.currentView === 'AllTabInfo'){
+        return this.categories
+      } else if (this.currentView === 'Tab-1info') {
+        return this.categories2
+      }
+    },
+    selectedRows(){
+      if(this.currentView === 'AllTabInfo'){
+        return this.rows
+      } else if (this.currentView === 'Tab-1info') {
+        return this.rows2
+      }
+    },
+
   },
   methods: {
     getView() {

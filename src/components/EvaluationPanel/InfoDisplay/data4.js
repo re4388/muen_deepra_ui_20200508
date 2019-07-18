@@ -122,6 +122,35 @@ const confusion_matrix = {
 }
 
 
+const confusion_matrix2 = {
+  row1: [{
+      data: '甲',
+      // annotation: 'no file'
+    },
+    {
+      data: 2,
+      annotation: 'File Name: 11, 12'
+    },
+    {
+      data: 0,
+      annotation: 'no file'
+    },
+  ],
+  row2: [{
+      data: '乙',
+      // annotation: null
+    },
+    {
+      data: 1,
+      annotation: 'File Name: 13'
+    },
+    {
+      data: 5,
+      annotation: 'File Name: 2,67,12,32,56'
+    },
+  ],
+}
+
 
 
 
@@ -140,11 +169,16 @@ function getLabels(Obj) {
   return labels
 }
 
+// get labels from confusion_matrix
+// ex. const confusion_matrix_caterogies = ["", '甲', '乙', '丙']
 const confusion_matrix_caterogies = getLabels(confusion_matrix)
-// const confusion_matrix_caterogies = ["", '甲', '乙', '丙']
+const confusion_matrix_caterogies2 = getLabels(confusion_matrix2)
+
 
 
 export {
   confusion_matrix,
-  confusion_matrix_caterogies
+  confusion_matrix_caterogies,
+  confusion_matrix2,
+  confusion_matrix_caterogies2,
 }

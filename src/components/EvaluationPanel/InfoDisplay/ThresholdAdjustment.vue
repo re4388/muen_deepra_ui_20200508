@@ -1,32 +1,32 @@
 <template>
-  <div>
-    <div>
-      <form class="range-field">
-        <label for>Threshold Value</label>
-        <br />
-        <input
+  <div class="container m-0">
+
+  
+      <b-list-group>
+  <b-list-group-item variant="dark"> <form class="range-field">
+        <label for>Score threshold</label>
+        <div> 
+          <input
           type="range"
           min="0"
-          max="1"
-          step="0.1"
+          max="5"
+          step="1"
           v-model.lazy.number="slider"
           @change="ThresholdChange"
         />
-        <h2 class="slider">{{ slider }}</h2>
-      </form>
-    </div>
-
-    <div>
-      <h4>
-        Image:
-        <span>{{ imageNumber}}</span>
-        <br />
-        Presison: {{precision}}
-        <br />
-        Recall: {{recall}}
-        <br />
-      </h4>
-    </div>
+        <p class="slider">{{ slider }}</p>
+        </div>
+    
+        
+      </form></b-list-group-item>
+  <b-list-group-item  variant="dark">Total images: {{ imageNumber }}</b-list-group-item>
+  <b-list-group-item  variant="dark">Precision : {{ precision }}</b-list-group-item>
+  <b-list-group-item  variant="dark">Recall: {{ recall }}</b-list-group-item>
+</b-list-group>
+      <!-- <div>
+        <b-table class="align-left" small hover :items="myProvider" stacked Outlined ></b-table>
+      </div> -->
+    
   </div>
 </template>
 
@@ -36,38 +36,45 @@ export default {
   props: {
     thresholdData: {
       type: Object
+    },
+    graphData: {
+      ype: Object
     }
   },
 
   data() {
     return {
       slider: 0,
-      imageNumber: 0,
-      precision: 0,
-      recall: 0
+      imageNumber: this.graphData["image"]
     };
   },
 
   created() {
-    this.updateData();
+    console.log(this.graphData["x"]);
   },
   methods: {
+    myProvider(ctx) {
+      let items = [{
+          "Total images": this.imageNumber,
+          Precision: this.precision,
+          Recall: this.recall,
+        }];
+
+      return items || [];
+    },
     ThresholdChange() {
       let val = this.slider;
       this.$emit("threshold-change", {
         result: val
       });
-    },
-    updateData() {
-      this.imageNumber = this.thresholdData.image;
-      this.precision = this.thresholdData.precision;
-      this.recall = this.thresholdData.recall;
     }
   },
-  watch: {
-    slider() {
-      this.precision = this.precision - this.slider * 20;
-      this.recall = this.recall + this.slider * 5;
+  computed: {
+    precision() {
+      return this.graphData["x"][this.slider] * 100 + "%";
+    },
+    recall() {
+      return this.graphData["y"][this.slider] * 100 + "%";
     }
   }
 };
