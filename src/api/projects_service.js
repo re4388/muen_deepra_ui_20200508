@@ -1,6 +1,7 @@
 let protoPackageName = 'projects'
 let protoPath = `./src/api/protos/${protoPackageName}.proto`
 let protoUtils = require('./proto_utils.js')
+let vue_utils = require('./vue_utils.js')
 
 class ProjectInfo {
   constructor(content) {
@@ -8,6 +9,9 @@ class ProjectInfo {
   }
   static parseFromResponse(resp) {
   }
+}
+
+class ProjectList {
 }
 
 function createProject (name, description, datasetInfo) {
@@ -20,7 +24,7 @@ function createProject (name, description, datasetInfo) {
       {
         name: name,
         description: description,
-        dataset_info_json: JSON.stringify(datasetInfo)
+        dataset_info_json: JSON.stringify(vue_utils.clone(datasetInfo))
       },
       (err, resp) => {
         if (err !== null) {
@@ -32,7 +36,25 @@ function createProject (name, description, datasetInfo) {
   })
 }
 
+function getProjectList () {
+  let projectManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ProjectManagement'
+  )
+
+  return new Promise((resolve, reject) => {
+    projectManagementService.GetProjectList(
+      null, (err, resp) => {
+        if (err != null) {
+          console.log(err)
+        }
+        resolve(resp)
+      }
+    )
+  })
+}
+
 export default {
   createProject,
+  getProjectList,
   ProjectInfo
 }

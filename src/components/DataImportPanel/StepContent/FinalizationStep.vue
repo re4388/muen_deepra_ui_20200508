@@ -43,7 +43,9 @@ export default {
       this.$store.dispatch('setCurrentStage', 'finalization')
     },
     sendRequestForProjectCreation () {
+      // let datasetInfo = JSON.parse(JSON.stringify(this.$store.getters.datasetInfo))
       let datasetInfo = this.$store.getters.datasetInfo
+      console.log(datasetInfo)
       return new Promise((resolve, reject) => {
         projectManager.createProject(
           this.newProjectName,
