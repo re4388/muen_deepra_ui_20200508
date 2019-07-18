@@ -77,6 +77,16 @@
             }
           },
           {
+            title: 'ProjectProfile',
+            href: '/project-profile',
+            icon: {
+              element: 'font-awesome-icon',
+              attributes: {
+                icon: 'cube'
+              }
+            }
+          },
+          {
             header: true,
             component: separator,
             visiableOnCollapse: true

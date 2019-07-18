@@ -17,7 +17,7 @@
       <div class="text-section flex-fill align-items-start flex-column">
         <p class="description flex-fill">Description: {{ description }}</p>
         <p class="creation-date">Created: {{ creationDate }}</p>
-        <a class="btn-open-project">
+        <a class="btn-open-project" @click="openProject">
           <div class="content">Open</div>
         </a>
       </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'ProjectCard',
@@ -41,6 +42,15 @@ export default {
       let ts = this.details.creation_timestamp
       date.setTime(ts.seconds + String(ts.nanos/1000000))
       return date.toUTCString().split(' ').slice(0, 5).join(' ')
+    }
+  },
+  methods: {
+    openProject () {
+      this.$store.dispatch('setCurrentProject', this.details)
+      console.log('---- saved project info : ')
+      console.log(this.$store.getters.currentProject)
+      EventBus.$emit('entryChanged', 'project')
+      this.$router.push('/project-profile')
     }
   },
   data () {
