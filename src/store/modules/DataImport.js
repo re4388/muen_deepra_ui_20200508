@@ -1,10 +1,4 @@
-import { localStore } from './index'
-
-function initializeState (target, defaults) {
-  for (var key in defaults) {
-    target[key] = defaults[key]
-  }
-}
+import { localStore, initializeState } from './index'
 
 const defaultState = {
   currentStage: null,
