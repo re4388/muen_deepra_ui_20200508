@@ -19,6 +19,7 @@
 <script>
 import ProjectCard from './ProjectCard.vue'
 import projectManager from '@/api/projects_service.js'
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'ProjectOverviewPanel',
@@ -33,6 +34,7 @@ export default {
   },
   mounted () {
     this.fetchProjectData()
+    EventBus.$emit('pageChanged', 'ProjectOverview')
   },
   watch: {
     '$route': 'fetchProjectData'
@@ -40,6 +42,8 @@ export default {
   methods: {
     createProject () {
       this.$router.push('/import-data')
+      this.$store.dispatch('setCurrentEntry', 'project')
+      EventBus.$emit('entryChanged', 'project')
     },
     fetchProjectData () {
       projectManager.getProjectList().then((result) => {

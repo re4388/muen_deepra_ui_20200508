@@ -2,7 +2,11 @@
   <div id="app">
     <top-navbar brandText="DeepRA"/>
     <div id="display-panel" class="d-flex flex-row">
-      <sidebar/>
+      <component
+        class="sidebar"
+        :is="sidebarType[currentEntry]"
+      >
+      </component>
       <router-view class="flex-fill"></router-view>
     </div>
   </div>
@@ -11,14 +15,49 @@
 <script>
 import TopNavbar from '@/components/TopNavbar.vue'
 import Sidebar from '@/components/SidebarMenu/SidebarMenu.vue'
+import ProjectSidebar from '@/components/SidebarMenu/ProjectSidebar.vue'
 import BasePanel from '@/components/BasePanel.vue'
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'App',
   components: {
     Sidebar,
+    ProjectSidebar,
     TopNavbar,
     BasePanel
+  },
+  watch: {
+    currentEntry () {
+      console.log('currentEntry:')
+      console.log(this.$store.getters.currentEntry)
+      return this.$store.getters.currentEntry
+    }
+  },
+  created () {
+    this.initializeComponent()
+    EventBus.$on('entryChanged', (entry) => {
+      this.currentEntry = entry
+    })
+  },
+  mounted () {
+    console.log(this.$store.getters.currentEntry)
+  },
+  methods: {
+    initializeComponent () {
+      this.currentEntry = this.$store.getters.currentEntry
+      console.log('----- initializing component -----')
+      console.log(this.currentEntry)
+    }
+  },
+  data () {
+    return {
+      currentEntry: 'main',
+      sidebarType: {
+        main: 'Sidebar',
+        project: 'ProjectSidebar'
+      }
+    }
   }
 }
 </script>
@@ -43,7 +82,7 @@ export default {
 #top-navbar {
   position: absolute;
 }
-#sidebar {
+.sidebar {
   position: relative;
   height: 100%;
   margin-left: 0px;

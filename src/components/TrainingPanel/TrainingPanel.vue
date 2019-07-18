@@ -38,6 +38,7 @@ import StepPipeline from '@/components/Pipeline/StepPipeline.vue'
 import StepContent from '@/components/Pipeline/StepContent.vue'
 import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
 import TrainingProgress from './StepContent/TrainingProgress.vue'
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'TrainingPanel',
@@ -46,6 +47,9 @@ export default {
     StepContent,
     ResourcesCheckStep,
     TrainingProgress
+  },
+  mounted () {
+    EventBus.$emit('pageChanged', 'Training')
   },
   methods: {
     updateStep (stepId) {
