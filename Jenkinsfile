@@ -84,7 +84,7 @@ pipeline {
 					// URL: ${env.RUN_DISPLAY_URL}" \
 					// --name linemsg_service linemsg
 					// """
-					sh 'LINE bot is disabled currently.'
+					echo 'LINE bot is disabled currently.'
 				}
 			}
 		}
