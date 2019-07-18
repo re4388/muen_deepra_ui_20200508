@@ -39,6 +39,10 @@ def check_page_y_position_is_changed(app, request):
     assert el.rect['y'] < prev_rect['y']
 
 
+@pytest.mark.skip(reason=
+    'No pre-existing project list for rendering, so that this page'
+    'should not be scrollable.'
+)
 @scenario('./features/example.feature', 'Scroll down page of project overview')
 def test_scroll_page_in_project_overview_panel():
     pass
