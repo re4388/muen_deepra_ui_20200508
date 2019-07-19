@@ -74,3 +74,67 @@ $ python ./scripts/setup_api_protos.py
     # or run tests with showing BDD-style scenario
     $ python ./scripts/run_pytest_bdd.py --show_scenario
     ```
+
+- Manual test
+
+    Make sure that there is not pre-installed python package: `autodl` and `deepra` on the machine.
+
+    Or you have to make sure that the version of those package is the latest.
+
+    1. Install backend server and its requirements
+
+        ```bash
+        # Install `autodl`
+        $ git clone http://10.0.4.52:3000/muen/autodl.git
+        $ cd autodl
+        $ pip install .
+        $ cd ..
+
+        # Install `deepra`
+        $ git clone http://10.0.4.52:3000/muen/deepra.git
+        $ cd deepra
+        $ pip install .  # TODO: add setup.py
+        $ cd ..
+        ```
+
+    2. Clone source of this application (`deepra_ui`) and install requirements
+
+        NOTE: make sure that you have `node.js` and `yarn` installed on your machine
+        
+        - if you don't have `node.js (v10.15.3)`, please download and install it from [here](https://nodejs.org/zh-tw/download/releases/)
+
+        - if you don't have `yarn`, please download and install it from [here](https://yarnpkg.com/lang/en/docs/install/#windows-stable)
+
+        ```bash
+        $ git clone http://10.0.4.52:3000/muen/deepra_ui.git
+        $ cd deepra_ui
+        $ yarn install
+        ```
+
+    3. Launch backend server
+
+        ```bash
+        $ cd deepra
+        $ python -m deepra.api.api_server
+        ```
+
+    4. Launch this application (`deepra_ui`)
+
+        ```bash
+        $ cd deerpa_ui
+        $ yarn run electron:serve
+        ```
+
+    5. Start your test
+
+    6. If you want to remove all installed packages, you can
+
+        ```bash
+        # remove `autodl`
+        $ pip uninstall autodl
+
+        # remove `deepra`
+        $ pip uninstall deepra
+        ```
+
+        - To remove `deepra_ui`, you just have to remove the `deepra_ui` folder
