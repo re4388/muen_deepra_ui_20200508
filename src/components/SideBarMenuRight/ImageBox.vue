@@ -19,20 +19,7 @@
 </template>   
      
 <script>
-<<<<<<< Updated upstream
-import imageList from '@/static/image_data.json'
-=======
-// import imageList from '@/assets/image_data.json'
-// console.log('--- ImageBox ---')
-// console.log(imageList.images)
-
-// imageList.images.map((item) => {
-//   item.src = require(item.src)
-//   console.log(item)
-//   return item
-// })
-// console.log(imageList)
->>>>>>> Stashed changes
+import imageList from './image_data.json'
 
 export default {
   name: 'ImageBox',
@@ -78,11 +65,6 @@ export default {
         { src: require('../../assets/viewer-img.png')},
         { src: require('../../assets/x-ray1.jpg')}
       ]
-<<<<<<< Updated upstream
-=======
-      // images: imageList.images
-      // imageList: []
->>>>>>> Stashed changes
     }
   }
 }
