@@ -1,0 +1,19 @@
+{
+    "images": [
+        { 
+            "src": "../../assets/viewer-img.png" 
+        },
+        { 
+            "src": "../../assets/viewer-img.png" 
+        },
+        { 
+            "src": "../../assets/viewer-img.png" 
+        },
+        { 
+            "src": "../../assets/viewer-img.png" 
+        },
+        { 
+            "src": "../../assets/viewer-img.png" 
+        }
+    ]
+}

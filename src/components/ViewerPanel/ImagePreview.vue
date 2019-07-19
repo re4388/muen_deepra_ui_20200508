@@ -1,125 +1,55 @@
 <template>
-  <div id="image-preview" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-      <!-- Container that holds slides.
-          PhotoSwipe keeps only 3 of them in the DOM to save memory.
-          Don't modify these 3 pswp__item elements, data is added later on. -->
-      <div class="pswp__container">
-        <div class="pswp__item"></div>
-        <div class="pswp__item"></div>
-        <div class="pswp__item"></div>
-      </div>
-
-      <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-      <div class="pswp__ui pswp__ui--hidden">
-
-        <div class="pswp__top-bar">
-
-          <!--  Controls are self-explanatory. Order can be changed. -->
-
-          <div class="pswp__counter"></div>
-
-          <button class="pswp__button pswp__button--close" title="退出"></button>
-
-          <button class="pswp__button pswp__button--share" title="Share"></button>
-
-          <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-          <button class="pswp__button pswp__button--zoom" title="放大/还原"></button>
-
-          <!--20180414 xj add-->
-          <button class="pswp__button pswp__button--rotate" title="旋转" @click="imgRotateFn"></button>
-
-          <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-          <!-- element will get class pswp__preloader--active when preloader is running -->
-          <div class="pswp__preloader">
-            <div class="pswp__preloader__icn">
-              <div class="pswp__preloader__cut">
-                <div class="pswp__preloader__donut"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-          <div class="pswp__share-tooltip"></div>
-        </div>
-
-        <!--xj edit Previous (arrow left)改为上一张-->
-        <button class="pswp__button pswp__button--arrow--left" title="上一张" @click="initRotateFn">
-        </button>
-
-        <!--xj edit Next (arrow right)改为下一张-->
-        <button class="pswp__button pswp__button--arrow--right" title="下一张" @click="initRotateFn">
-        </button>
-
-        <div class="pswp__caption">
-          <div class="pswp__caption__center"></div>
-        </div>
-
-      </div>
-
-    </div>
-
+  <div id="image-preview">
+    <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'ImagePreview'
-      data () {
-          return{
-            xjAngle: 0
+import VuePreview from 'vue-preview'
+
+// defalut install
+Vue.use(VuePreview)
+
+// with parameters install
+Vue.use(preview, {
+  mainClass: 'pswp--minimal--dark',
+  barsSize: {top: 0, bottom: 0},
+  captionEl: false,
+  fullscreenEl: false,
+  shareEl: false,
+  bgOpacity: 0.85,
+  tapToClose: true,
+  tapToToggleControls: false
+})
+
+export default {
+  name: "ImagePreview",
+    data () {
+      return {
+        slide1: [
+          {
+            src: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_b.jpg',
+            msrc: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
+            alt: 'picture1',
+            title: 'Image Caption 1',
+            w: 600,
+            h: 400
+          },
+          {
+            src: 'https://farm4.staticflickr.com/3902/14985871946_86abb8c56f_b.jpg',
+            msrc: 'https://farm4.staticflickr.com/3902/14985871946_86abb8c56f_m.jpg',
+            alt: 'picture2',
+            title: 'Image Caption 2',
+            w: 1200,
+            h: 900
           }
-      },
+        ]
+      }
+    },
     methods: {
-      open (index, list, params = {
-        captionEl: false,
-        fullscreenEl: false,
-        history: false,
-        shareEl: false,
-        tapToClose: true
-      }) {
-        let options = Object.assign({
-          index: index,
-          getThumbBoundsFn (index) {
-            let thumbnail = document.querySelectorAll('.preview-img')[index]
-            let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
-            let rect = thumbnail.getBoundingClientRect()
-            return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
-          }
-        }, params)
-        this.photoswipe = new PhotoSwipe(this.$el, UI, list, options)
-        this.photoswipe.init()
-      },
-      close () {
-        this.photoswipe.close()
-      },
-        // 20180414 xj add imgRotateFn
-        imgRotateFn () {
-          // let current;
-          // document.getElementById('xjqbcd').style.WebkitTransform = 'rotate('+current+'deg)';
-          this.xjAngle+=90;
-          let imgNode = document.getElementsByClassName('pswp__img');
-          for (let i = 0; i<imgNode.length; i++) {
-              imgNode[i].style.WebkitTransform = 'rotate('+this.xjAngle+'deg)';
-          }
-        },
-        initRotateFn () {
-            this.xjAngle = 0;
-            let imgNode = document.getElementsByClassName('pswp__img');
-            for (let i = 0; i<imgNode.length; i++) {
-                imgNode[i].style.WebkitTransform = 'rotate('+this.xjAngle+'deg)';
-            }
-        }
-        // 20180414 xj add end
+      handleClose () {
+        console.log('close event')
+      }
     }
   }
 </script>

@@ -12,39 +12,8 @@
       <h3>DataSet</h3>
       <div><img class="datasetImg" src="../../assets/people.png"></div>
       <div id="show__list">
-        <img class="datasetImg" src="../../assets/collections.png"  @click="showImgList">
-          <div class="box">
-            <div class="title">
-              <div class="imgList" id="imgList">
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-                <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-              </div>
-            </div>
-          </div>
+        <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
+        <ImageBox/>
       </div>
     </div>
     <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
@@ -52,7 +21,6 @@
       <div class="note"><p>20190523</p></div>
       <div class="note"><p>Model 1 Predict as Label1</p></div>
     </div>
-    
   </div>
 </template>   
 <!-- <template v-for="(item, index) in imageList">
@@ -67,21 +35,29 @@
   </div>
 </template> -->        
 <script>
+import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
+
 const separator = {
   template: `<hr style="border-color: rgba(255, 255, 255); margin: 10px;"/>`
 }
 
 export default {
   name: 'SidebarRight',
-
   components: {
+    ImageBox
+  },
+  watch: {
+    isShowingImgList() {}
   },
   data () {
     return {
+      isShowingImgList: false
     }
   },
   methods: {
     showImgList() {
+      this.isShowingImgList = !this.isShowingImgList
+      console.log(this.isShowingImgList)
       let el = document.querySelector('.title')
       el.classList.toggle('show')
     }
@@ -128,8 +104,6 @@ export default {
 .noteTitle {
   padding-bottom: 20px;
 }
-
-// ImageList
 .imgList {
   width: 300px;
   height: 300px;
@@ -165,29 +139,5 @@ export default {
 
 .show {
   right: 0px;
-}
-
-.x-rayFilms {
-  box-sizing: border-box;
-  width: 60px;
-  height: 60px;
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  justify-content: center;
-  padding: 3px;
-  z-index: 9;
-  position: relative;
-}
-
-.x-rayFilms:hover::after {
-  content: "";
-  display: inline-flex;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: #42ab427d;
 }
 </style>

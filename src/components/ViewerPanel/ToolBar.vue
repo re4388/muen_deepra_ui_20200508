@@ -80,8 +80,8 @@
         :aspectRatio="true"
         :w="filters.width"
         :h="filters.height"
-        :x="300"
-        :y="300"
+        :x="150"
+        :y="250"
         v-on:resizing="resize" 
         v-on:dragging="resize">
         <!-- <p>{{ top }} х {{ left }} </p> -->
@@ -156,8 +156,8 @@ export default {
   },
   data() {
     return {
-      width: 500,
-      height: 500,
+      width: 0,
+      height: 0,
       top: 0,
       left: 0,
       // projects: viewerData.content,
@@ -173,6 +173,7 @@ export default {
         // maintain the aspect ratio
         width: 500,
         height: "auto",
+        
         contrast: 100,
         brightness: 100,
         grayscale: 0,

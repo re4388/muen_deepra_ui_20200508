@@ -3,28 +3,13 @@
     <div class="box">
       <div class="title">
         <div class="imgList" id="imgList">
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/viewer-img.png" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1_backup.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
-          <div class="x-rayFilms"><div class="overlayer"></div><img src="../../assets/x-ray1.jpg" height="40px"></div>
+
+          <div class="x-rayFilms" v-for="(item,index) in images" :key="index">
+            <!-- <img class="thumb" width="40px" :src="getThumb(item.type)" /> -->
+            <!-- <img :src="require('../../assets/x-ray1.jpg')" v-for="image in image" height="40px" /> -->
+            <img :src="item.src" style="width:40px"/>
+          </div>
+
         </div>
       </div>
     </div>
@@ -32,10 +17,70 @@
 </template>   
      
 <script>
+import imageList from '@/static/image_data.json'
+console.log('--- ImageBox ---')
+// console.log(imageList.images)
+
+imageList.images.map((item) => {
+  item.src = require(item.src)
+  console.log(item)
+  return item
+})
+console.log(imageList)
+
 export default {
   name: 'ImageBox',
   components: {
   },
+  created () {
+    this.initializeComponent()
+  },
+  methods: {
+    initializeComponent () {
+      if (this.imageList.length == 0) return
+      this.currentImageSrc = this.imageList[0]
+    }
+  },
+  props: {
+    currentImageSrc: String
+  },
+  computed: {
+    // images () {
+      
+    // }
+  },
+  data () {
+    return {
+      // imageGroups: json.images
+      // images: [
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1.jpg')},
+      //   { src: require('../../assets/x-ray1_backup.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1_backup.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1.jpg')},
+      //   { src: require('../../assets/x-ray1_backup.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1_backup.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1_backup.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1.jpg')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/viewer-img.png')},
+      //   { src: require('../../assets/x-ray1.jpg')}
+      // ]
+      images: imageList.images
+      // imageList: []
+    }
+  }
 }
 </script>
 
