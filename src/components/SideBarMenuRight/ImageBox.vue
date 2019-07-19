@@ -3,15 +3,9 @@
     <div class="box">
       <div class="title">
         <div class="imgList" id="imgList">
-
-          <div class="x-rayFilms" v-for="(item,index) in images" :key="index">
-            <!-- <img class="thumb" width="40px" :src="getThumb(item.type)" /> -->
-            <!-- <img :src="require('../../assets/x-ray1.jpg')" v-for="image in image" height="40px" /> -->
-            <img :src="item.src" style="width:40px"/>
-            <!-- <img :src="require(`@/assets/${images.src}`)" /> -->
-            <!-- <img :src="require(`@/assets/${topnews.img}`)" alt="Top News" /> -->
+          <div class="x-rayFilms" v-for="(item, index) in images" :key="index">
+            <thumbnail :root="item.root" :filename="item.filename"/>
           </div>
-
         </div>
       </div>
     </div>
@@ -19,11 +13,13 @@
 </template>   
      
 <script>
-import imageList from './image_data.json'
+import thumbnail from './Thumbnail.vue'
+import imageData from './image_data.json'
 
 export default {
   name: 'ImageBox',
   components: {
+    thumbnail
   },
   created () {
     this.initializeComponent()
@@ -39,32 +35,7 @@ export default {
   },
   data () {
     return {
-      // imageGroups: json.images
-      images: [
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1.jpg')},
-        { src: require('../../assets/x-ray1_backup.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1_backup.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1.jpg')},
-        { src: require('../../assets/x-ray1_backup.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1_backup.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1_backup.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1.jpg')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/viewer-img.png')},
-        { src: require('../../assets/x-ray1.jpg')}
-      ]
+      images: imageData.images
     }
   }
 }

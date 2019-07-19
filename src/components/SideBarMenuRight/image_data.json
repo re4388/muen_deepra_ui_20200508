@@ -1,19 +1,32 @@
 {
     "images": [
-        { 
-            "src": "../../assets/viewer-img.png" 
-        },
-        { 
-            "src": "../../assets/viewer-img.png" 
-        },
-        { 
-            "src": "../../assets/viewer-img.png" 
-        },
-        { 
-            "src": "../../assets/viewer-img.png" 
-        },
-        { 
-            "src": "../../assets/viewer-img.png" 
-        }
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1_backup.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1_backup.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1_backup.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1_backup.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1_backup.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1.jpg" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "viewer-img.png" },
+        { "root": "src/assets/", "filename": "x-ray1_backup.jpg" }
     ]
 }
