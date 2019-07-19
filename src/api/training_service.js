@@ -33,30 +33,30 @@ class ProgressInfo {
   }
 }
 
-function startTraining (model_name, handler_progress, handler_end) {
+function startTraining (projectInfo, handlerProgress, handlerEnd) {
   let trainingService = protoUtils.getServicer(
     protoPath, protoPackageName, 'TrainingService'
   )
-  let call = trainingService.StartTraining({'model_name': model_name})
+  let call = trainingService.StartTraining({'project_info_json': JSON.stringify(projectInfo)})
   call.on('data', (resp) => {
-    handler_progress(new ProgressInfo(resp))
+    handlerProgress(new ProgressInfo(resp))
   })
   call.on('end', (resp) => {
-    handler_end(resp)
+    handlerEnd(resp)
   })
   return call
 }
 
-function runMNIST (model_name, handler_progress, handler_end) {
+function runMNIST (projectInfo, handlerProgress, handlerEnd) {
   let trainingService = protoUtils.getServicer(
     protoPath, protoPackageName, 'TrainingService'
   )
-  let call = trainingService.RunMNIST({'model_name': model_name})
+  let call = trainingService.RunMNIST({'project_info': projectInfo})
   call.on('data', (resp) => {
-    handler_progress(new ProgressInfo(resp))
+    handlerProgress(new ProgressInfo(resp))
   })
   call.on('end', (resp) => {
-    handler_end(resp)
+    handlerEnd(resp)
   })
   return call
 }

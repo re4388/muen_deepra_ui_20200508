@@ -42,14 +42,15 @@ export default {
       }
       this.isTrainingStarted = true
 
-      let handler_progress = (resp) => {
+      let handlerProgress = (resp) => {
         this.updateProgressBar(resp.currentProgress)
       }
-      let handler_end = (resp) => {
+      let handlerEnd = (resp) => {
         this.finishTraining()
       }
-      // For demonstration
-      let call = trainingService.runMNIST('foo', handler_progress, handler_end)
+      let projectInfo = this.$store.getters.currentProject
+      console.log(projectInfo)
+      let call = trainingService.startTraining(projectInfo, handlerProgress, handlerEnd)
     },
     finishTraining () {
       console.log('Training is finished')
