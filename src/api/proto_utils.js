@@ -30,7 +30,7 @@ function getServicer (protoPath, packageName, serviceName) {
   )
 }
 
-module.exports = {
-  getProtoBufObject: getProtoBufObject,
-  getServicer: getServicer
+export default {
+  getProtoBufObject,
+  getServicer
 }

@@ -1,7 +1,8 @@
+import protoUtils from './proto_utils.js'
+import vueUtils from './vue_utils.js'
+
 let protoPackageName = 'projects'
 let protoPath = `./src/api/protos/${protoPackageName}.proto`
-let protoUtils = require('./proto_utils.js')
-let vue_utils = require('./vue_utils.js')
 
 class ProjectInfo {
   constructor(content) {
@@ -24,7 +25,7 @@ function createProject (name, description, datasetInfo) {
       {
         name: name,
         description: description,
-        dataset_info_json: JSON.stringify(vue_utils.clone(datasetInfo))
+        dataset_info_json: JSON.stringify(vueUtils.clone(datasetInfo))
       },
       (err, resp) => {
         if (err !== null) {

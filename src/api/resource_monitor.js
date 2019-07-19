@@ -1,5 +1,5 @@
+import protoUtils from './proto_utils.js'
 let protoPath = './src/api/protos/resources.proto'
-let protoUtils = require('./proto_utils.js')
 let protoPackageName = 'resourceMonitor'
 
 function getDiskUsage () {
@@ -48,8 +48,8 @@ function getGPUMemoryUsage () {
   })
 }
 
-module.exports = {
-  getDiskUsage: getDiskUsage,
-  getMemoryUsage: getMemoryUsage,
-  getGPUMemoryUsage: getGPUMemoryUsage
+export default {
+  getDiskUsage,
+  getMemoryUsage,
+  getGPUMemoryUsage
 }

@@ -20,6 +20,6 @@ function clone(from) {
   }
 }
 
-module.exports = {
-  clone: clone
+export default {
+  clone
 }

@@ -1,5 +1,5 @@
+import protoUtils from './proto_utils.js'
 let protoPath = './src/api/protos/training.proto'
-let protoUtils = require('./proto_utils.js')
 let protoPackageName = 'training'
 
 class ProgressInfo {
