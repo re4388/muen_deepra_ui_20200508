@@ -35,6 +35,17 @@
         >
         </b-form-select>
       </p>
+      <p class="description text-content">
+        Label file (optional for multiclass / binary classification task):
+        <b-form-file
+          id="input-label-file"
+          v-model="selectedLabelFile"
+          :state="Boolean(selectedLabelFile)"
+          :file-name-formatter="formatPath"
+          @input="checkLabelFile"
+        >
+        </b-form-file>
+      </p>
     </div>
   </div>
 </template>
@@ -72,8 +83,19 @@ export default {
       this.$store.dispatch('setSelectedTaskType', value)
       this.selectedTaskType = value
     },
+    checkLabelFile (pathInfo) {
+      this.$store.dispatch('setSelectedLabelFile', pathInfo)
+      this.selectedLabelFile = pathInfo
+    },
     checkContent () {
-      if (this.selectedFolder === null || this.selectedTaskType === null) return
+      if (this.selectedFolder === '' || this.selectedFolder === null) return
+      if (this.selectedTaskType === '' || this.selectedTaskType === null) return
+      if (['binary', 'multiclass'].indexOf(this.selectedTaskType) === -1) {
+        if (this.selectedLabelFile === '' || this.selectedLabelFile === null) {
+          alert('Please select a label file.')
+          return
+        }
+      }
       return new Promise((resolve, reject) => {
         this.$store.dispatch('unlockStage')
         this.$store.dispatch('setCompletedStageIndex', this.content.id)
@@ -83,10 +105,11 @@ export default {
   },
   data () {
     return {
-      selectedFolder: null,
-      selectedTaskType: null,
+      selectedFolder: '',
+      selectedTaskType: '',
+      selectedLabelFile: '',
       taskTypes: [
-        { value: null, text: 'Please select an type of task' },
+        { value: '', text: 'Please select an type of task' },
         { value: 'binary', text: 'binary' },
         { value: 'multiclass', text: 'multiclass' },
         { value: 'multilabel', text: 'multilabel' },
@@ -104,6 +127,7 @@ export default {
 }
 .text-content {
   text-align: left;
+  user-select: none;
 }
 .description {
   text-align: left;

@@ -5,7 +5,8 @@ const defaultState = {
   isCurrentStageLocked: true,
   completedStageIndex: 0,
   selectedFolder: '',
-  selectedTaskType: null,
+  selectedTaskType: '',
+  selectedLabelFile: '',
   datasetInfo: { details: {} },
   newProjectInfo: {},
   isCreatingProject: false
@@ -30,6 +31,9 @@ const getters = {
   },
   selectedTaskType() {
     return state.selectedTaskType
+  },
+  selectedLabelFile() {
+    return state.selectedLabelFile
   },
   datasetInfo() {
     return state.datasetInfo
@@ -65,6 +69,9 @@ const mutations = {
   SET_SELECTED_TASK_TYPE(state, payload) {
     state.selectedTaskType = payload
   },
+  SET_SELECTED_LABEL_FILE(state, payload) {
+    state.selectedLabelFile = payload
+  },
   SET_DATASET_INFO(state, payload) {
     state.datasetInfo = payload
   },
@@ -97,6 +104,9 @@ const actions = {
   },
   setSelectedTaskType({ commit }, payload) {
     commit('SET_SELECTED_TASK_TYPE', payload)
+  },
+  setSelectedLabelFile({ commit }, payload) {
+    commit('SET_SELECTED_LABEL_FILE', payload)
   },
   setDatasetInfo({ commit }, payload) {
     commit('SET_DATASET_INFO', payload)
