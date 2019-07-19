@@ -1,6 +1,6 @@
 <template>
   <div id="tool-bar">
-    <ul class="drop-down-menu d-flex justify-content-end">
+    <ul class="drop-down-menu d-flex justify-content-center">
       <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/zoom_in.png"></div></a>
         <ul>
           <li><div class="filter">{{filters.width}}% </br>
@@ -68,12 +68,18 @@
           </li>
         </ul>
       </li>
-      <li>
-        <a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/undo.png"></div></a>
+      <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/undo.png"></div></a>
+        
       </li>
     </ul>
+
     <div class="imageProcessing d-flex">
-      <VueDragResize 
+      <!-- <v-zoomer style="width: 500px; height: 500px; border: solid 1px silver;">
+        <img
+          src="https://media.mnn.com/assets/images/2012/05/XrayExposure.jpg.653x0_q80_crop-smart.jpg"
+          style="object-fit: contain; width: 100%; height: 100%;"
+        > -->
+      <!-- <VueDragResize 
         :isActive="true"
         :isResizable="true"
         :isDraggable="true"
@@ -83,46 +89,58 @@
         :x="150"
         :y="250"
         v-on:resizing="resize" 
-        v-on:dragging="resize">
+        v-on:dragging="resize"> -->
         <!-- <p>{{ top }} х {{ left }} </p> -->
         <!-- <p>{{ width }} х {{ height }}</p> -->
-        <imagvue class="imgExample" 
-          style="width: 100%;"
-          v-model="url"
-          :filters="isOpenFilters"
-          :onerror="()=>url='https://i.stack.imgur.com/cl91I.png'"
-          :width="filters.width" 
-          :height="filters.height"
-          :brightness="filters.brightness"
-          :contrast="filters.contrast"
-          :grayscale="filters.grayscale"
-          :hue-rotate="filters.rotate"
-          :opacity="filters.opacity"
-          :invert="filters.invert"
-          :saturate="filters.saturate"
-          :sepia="filters.sepia"
-          :customData="customData()"
+      <v-zoomer class="zoomer" style="width: 1000px; height: 500px; border: solid 1px silver;">
+      <imagvue 
+        id="imgExample"
+        class="imgExample" 
+        
+        v-model="url"
+        :filters="isOpenFilters"
+        :onerror="()=>alert('Please try again')"
+        :width="filters.width" 
+        :height="filters.height"
+        :brightness="filters.brightness"
+        :contrast="filters.contrast"
+        :grayscale="filters.grayscale"
+        :hue-rotate="filters.rotate"
+        :opacity="filters.opacity"
+        :invert="filters.invert"
+        :saturate="filters.saturate"
+        :sepia="filters.sepia"
+        :customData="customData()"
         >
         <transition-group 
         src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" 
         :lazy="1000"
         >
-        </transition-group>
-        </imagvue>
-      </VueDragResize>
+        </transition-group>        
+      </imagvue>
+      </v-zoomer>
+
+      <!-- </VueDragResize> -->
+      
     </div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import VueDragResize from 'vue-drag-resize';
 import imagvue from 'imagvue'
+import VueZoomer from 'vue-zoomer'
+import 'vue-zoomer/dist/vue-zoomer.css' 
+
+Vue.use(VueZoomer)
 
 export default {
   name: 'ToolBar',
   components: {
     imagvue,
-    VueDragResize
+    VueDragResize,
+    VueZoomer
   },
   methods: {
     showImgList: function() {
@@ -147,9 +165,9 @@ export default {
     }
   },
   computed: {
-    // fixedRatioHeight () {
-    //   return this.filters['width']
-    // },
+    fixedRatioHeight () {
+      return this.filters['width']
+    },
     dropShadow() {
       return this.dropShadowJson
     }
@@ -171,8 +189,7 @@ export default {
       },
       filters: {
         // maintain the aspect ratio
-        width: 500,
-        
+        // width: 500,
         contrast: 100,
         brightness: 100,
         grayscale: 0,
@@ -226,7 +243,7 @@ ul.drop-down-menu > li:last-child {
 ul.drop-down-menu a {
   background: rgb(231, 231, 231);
   display: block;
-  padding: 0 50px;
+  padding: 0 40px;
   line-height: 50px;
 }
 ul.drop-down-menu a:hover { /* 滑鼠滑入按鈕變色*/
@@ -252,21 +269,29 @@ ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不�
   top: 10px;
   left: 90%;
 }
-// .vdr.active:before {
-//   outline: none;
-// }
+.vdr.active:before {
+  // outline: none;
+}
 .vdr-stick {
   border: 6px solid #6c6c6c;
   // display: none;
 }
-
-// .vdr-stick-tm, .vdr-stick-mr, .vdr-stick-bm, .vdr-stick-ml{
-//   display: none;
-// }
-
-.imgExample {
+#imgExample {
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  // box-sizing: border-box;
+  // object-fit: contain; 
+  // width: 100%; 
+  // height: 100%;
+}
+.vue-zoomer {
+  // 扣除 toolbar and sideBarMenu 寬度
   box-sizing: border-box;
-  padding: 50px;
-  // overflow: hidden;
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  top: 116px;
+  left: 150px;
 }
 </style>

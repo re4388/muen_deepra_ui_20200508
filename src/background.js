@@ -22,8 +22,10 @@ function createWindow () {
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
-    nodeIntegration: true
-  } })
+      nodeIntegration: true,
+      webSecurity: false
+    }
+  })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
