@@ -8,6 +8,8 @@
             <!-- <img class="thumb" width="40px" :src="getThumb(item.type)" /> -->
             <!-- <img :src="require('../../assets/x-ray1.jpg')" v-for="image in image" height="40px" /> -->
             <img :src="item.src" style="width:40px"/>
+            <!-- <img :src="require(`@/assets/${images.src}`)" /> -->
+            <!-- <img :src="require(`@/assets/${topnews.img}`)" alt="Top News" /> -->
           </div>
 
         </div>
@@ -17,7 +19,20 @@
 </template>   
      
 <script>
+<<<<<<< Updated upstream
 import imageList from '@/static/image_data.json'
+=======
+// import imageList from '@/assets/image_data.json'
+// console.log('--- ImageBox ---')
+// console.log(imageList.images)
+
+// imageList.images.map((item) => {
+//   item.src = require(item.src)
+//   console.log(item)
+//   return item
+// })
+// console.log(imageList)
+>>>>>>> Stashed changes
 
 export default {
   name: 'ImageBox',
@@ -63,6 +78,11 @@ export default {
         { src: require('../../assets/viewer-img.png')},
         { src: require('../../assets/x-ray1.jpg')}
       ]
+<<<<<<< Updated upstream
+=======
+      // images: imageList.images
+      // imageList: []
+>>>>>>> Stashed changes
     }
   }
 }
