@@ -20,8 +20,10 @@ export default {
   components: {
     // ImagePreview
   },
-  data: {
-    image: ''
+  data () {
+    return {
+      image: null
+    }
   },
   methods: {
     onFileChange(e) {

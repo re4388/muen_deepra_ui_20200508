@@ -172,7 +172,6 @@ export default {
       filters: {
         // maintain the aspect ratio
         width: 500,
-        height: "auto",
         
         contrast: 100,
         brightness: 100,

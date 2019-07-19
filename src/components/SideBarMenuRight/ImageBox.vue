@@ -18,15 +18,6 @@
      
 <script>
 import imageList from '@/static/image_data.json'
-console.log('--- ImageBox ---')
-// console.log(imageList.images)
-
-imageList.images.map((item) => {
-  item.src = require(item.src)
-  console.log(item)
-  return item
-})
-console.log(imageList)
 
 export default {
   name: 'ImageBox',
@@ -37,48 +28,41 @@ export default {
   },
   methods: {
     initializeComponent () {
-      if (this.imageList.length == 0) return
-      this.currentImageSrc = this.imageList[0]
     }
   },
   props: {
     currentImageSrc: String
   },
   computed: {
-    // images () {
-      
-    // }
   },
   data () {
     return {
       // imageGroups: json.images
-      // images: [
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1.jpg')},
-      //   { src: require('../../assets/x-ray1_backup.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1_backup.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1.jpg')},
-      //   { src: require('../../assets/x-ray1_backup.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1_backup.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1_backup.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1.jpg')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/viewer-img.png')},
-      //   { src: require('../../assets/x-ray1.jpg')}
-      // ]
-      images: imageList.images
-      // imageList: []
+      images: [
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1.jpg')},
+        { src: require('../../assets/x-ray1_backup.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1_backup.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1.jpg')},
+        { src: require('../../assets/x-ray1_backup.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1_backup.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1_backup.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1.jpg')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/viewer-img.png')},
+        { src: require('../../assets/x-ray1.jpg')}
+      ]
     }
   }
 }
