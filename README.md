@@ -109,12 +109,17 @@ $ python ./scripts/setup_api_protos.py
         $ git clone http://10.0.4.52:3000/muen/deepra_ui.git
         $ cd deepra_ui
         $ yarn install
+
+        # the last thing:
+        # copy all `.proto` files from `deepra/deepra/api/protos` into `deepra_ui/src/api/protos`
+        # This step will be simplified in the future.
         ```
 
     3. Launch backend server
 
         ```bash
         $ cd deepra
+        $ python gen_api.py
         $ python -m deepra.api.api_server
         ```
 
