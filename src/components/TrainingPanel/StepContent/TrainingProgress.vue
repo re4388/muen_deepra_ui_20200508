@@ -54,6 +54,11 @@ export default {
     },
     finishTraining () {
       console.log('Training is finished')
+
+      // Get training output (e.g. output directory)
+      trainingService.getTrainingOutput().then((result) => {
+        this.$store.dispatch('setTrainingOutput', result)
+      })
       this.$emit('onProgressFinished', true)
     }
   },
