@@ -8,7 +8,7 @@
 
       <!-- D3.js V3 -->
       
-      <b-modal hide-footer id="modal-lg" centered size="lg" title="Confusion Matrix">
+      <b-modal hide-footer id="modal-lg" centered title="Confusion Matrix">
         
         <h1>
           <ConfusionMatrix2 />
