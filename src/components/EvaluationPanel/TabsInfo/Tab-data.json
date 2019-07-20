@@ -13,12 +13,6 @@
         "x": [0.45, 0.5, 0.6, 0.7, 0.8, 1],
         "y": [1, 0.75, 0.5, 0.25, 0.1, 0],
         "image": 100
-      },
-      "threshold": {
-        "score": 0.3,
-        "image": 100,
-        "precision": 98.5,
-        "recall": 91.4
       }
     },
     {
@@ -49,12 +43,6 @@
           0
         ],
         "image": 140
-      },
-      "threshold": {
-        "score": 0.5,
-        "image": 300,
-        "precision": 90.5,
-        "recall": 99.4
       }
     },
     {
@@ -85,12 +73,6 @@
           0.05
         ],
         "image": 150
-      },
-      "threshold": {
-        "score": 0.9,
-        "image": 120,
-        "precision": 88.5,
-        "recall": 81.4
       }
     },
     {
@@ -121,12 +103,6 @@
           0
         ],
         "image": 200
-      },
-      "threshold": {
-        "score": 0.1,
-        "image": 600,
-        "precision": 91.5,
-        "recall": 94.4
       }
     },
     {
@@ -157,12 +133,6 @@
           0
         ],
         "image": 300
-      },
-      "threshold": {
-        "score": 0.1,
-        "image": 900,
-        "precision": 91.5,
-        "recall": 94.4
       }
     },
     {
@@ -193,12 +163,6 @@
           0.2
         ],
         "image": 50
-      },
-      "threshold": {
-        "score": 0.1,
-        "image": 900,
-        "precision": 91.5,
-        "recall": 94.4
       }
     }
   ]

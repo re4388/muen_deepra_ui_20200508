@@ -1,32 +1,28 @@
 <template>
   <div class="container m-0">
-
-  
-      <b-list-group>
-  <b-list-group-item variant="dark"> <form class="range-field">
-        <label for>Score threshold</label>
-        <div> 
-          <input
-          type="range"
-          min="0"
-          max="5"
-          step="1"
-          v-model.lazy.number="slider"
-          @change="ThresholdChange"
-        />
-        <p class="slider">{{ slider }}</p>
-        </div>
-    
-        
-      </form></b-list-group-item>
-  <b-list-group-item  variant="dark">Total images: {{ imageNumber }}</b-list-group-item>
-  <b-list-group-item  variant="dark">Precision : {{ precision }}</b-list-group-item>
-  <b-list-group-item  variant="dark">Recall: {{ recall }}</b-list-group-item>
-</b-list-group>
-      <!-- <div>
-        <b-table class="align-left" small hover :items="myProvider" stacked Outlined ></b-table>
-      </div> -->
-    
+    <b-list-group  class="rounded-pill">
+      <b-list-group-item class="list-group text-light text-left">
+        <!-- <form class="range-field"> -->
+          <!-- <label for>Score threshold</label> -->
+          <div>
+            <p style="display:inline" class="pr-3">Score threshold   </p>
+            <input
+            class="mt-1"
+            type="range"
+            min="0"
+            max="1"
+            step="0.2"
+            v-model.lazy.number="slider"
+            @change="ThresholdChange"
+            />
+            <p class="slider p-5" style=" display:inline">{{ slider }}</p>
+          </div>
+        <!-- </form> -->
+      </b-list-group-item>
+      <b-list-group-item class="list-group text-light text-left">Total images: {{ imageNumber }}</b-list-group-item>
+      <b-list-group-item class="list-group text-light text-left">Precision : {{ precision }}</b-list-group-item>
+      <b-list-group-item class="list-group text-light text-left" >Recall: {{ recall }}</b-list-group-item>
+    </b-list-group>   
   </div>
 </template>
 
@@ -54,11 +50,13 @@ export default {
   },
   methods: {
     myProvider(ctx) {
-      let items = [{
+      let items = [
+        {
           "Total images": this.imageNumber,
           Precision: this.precision,
-          Recall: this.recall,
-        }];
+          Recall: this.recall
+        }
+      ];
 
       return items || [];
     },
@@ -71,16 +69,21 @@ export default {
   },
   computed: {
     precision() {
-      return this.graphData["x"][this.slider] * 100 + "%";
+      return this.graphData["x"][this.slider * 5] * 100 + "%";
     },
     recall() {
-      return this.graphData["y"][this.slider] * 100 + "%";
+      return this.graphData["y"][this.slider * 5] * 100 + "%";
     }
   }
 };
 </script>
 
 <style scoped>
+
+.list-group {
+  background-color: #696969;
+}
+
 ul li {
   list-style-type: none;
 }

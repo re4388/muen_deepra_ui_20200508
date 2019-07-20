@@ -3,7 +3,7 @@
     <!-- 標題 -->
     <header class="row ">
       <div class="col-12 ">
-        <h2 class="text-light bg-color border p-2 m-3">{{ title }}</h2>
+        <h2 class="text-light bg-color rounded-pill border p-2 m-3">{{ title }}</h2>
         <p id="page-content" class="px-3 m-2 text-light text-left">{{ description }}</p>
       </div>
     </header>
@@ -13,7 +13,7 @@
     </main>
     <!-- footer -->
     <footer class="row ">
-      <div class="col-12 text-center text-muted py-4">opyright @muenai</div>C
+      <div class="col-12 text-center text-muted py-4">opyright @muenai</div>
     </footer>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
 .container-fluid {
   // min-height: 100%;
-  background-color: gray;
+  background-color:#808080;
   overflow-y: scroll;
 }
 

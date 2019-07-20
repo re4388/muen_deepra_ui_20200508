@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-3">
-    <vue-c3 :handler="handler"></vue-c3>
+    <vue-c3 :handler="handler" class="bg-color2 rounded"></vue-c3>
   </div>
 </template>
 
@@ -41,15 +41,29 @@ export default {
     options() {
       return {
         data: {
+          x: "x_axis_format",
           columns: [
+            ["x_axis_format", "0", "0.2", "0.4", "0.6", "0.8", "1"],
             ["Precision", ...this.graphData["x"]],
             ["Recall", ...this.graphData["y"]]
           ]
         },
+        // https://primer.style/css/support/color-system
+        color: {
+          pattern: ["#24292e", "#d1d5da"]
+        },
         axis: {
           x: {
+            padding: {
+              left: 0,
+              right: 0.1
+            },
+            // height: 50,
             show: true,
-
+            tick: {
+              //  values: [0, 0.2, 0.4, 0.6, 0.8, 1],
+              outer: false
+            },
             label: {
               text: "Score threshold",
               position: "outer-center"
@@ -57,6 +71,11 @@ export default {
           },
           y: {
             show: true,
+            max: 1,
+            min: 0,
+            tick: {
+              outer: false
+            },
             label: {
               text: "Precision / Recall",
               position: "outer-middle"
@@ -111,9 +130,7 @@ export default {
 </script>
 
 <style>
-.small {
-  max-width: 400px;
-  max-height: 400px;
-  /* margin: 150px auto; */
+.bg-color2 {
+  background-color: #696969;
 }
 </style>

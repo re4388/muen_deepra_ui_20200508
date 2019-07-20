@@ -4,9 +4,25 @@
 
     <!-- Modal 跳出 混淆矩陣 -->
     <div>
+
+
+      <!-- D3.js V3 -->
+      
+      <b-modal hide-footer id="modal-lg" centered size="lg" title="Confusion Matrix">
+        
+        <h1>
+          <ConfusionMatrix2 />
+        </h1>
+
+
+      <!-- b-button V2 -->
       <!-- <b-button v-b-modal.modal-1>Launch demo modal</b-button> -->
-      <b-modal hide-footer id="modal-lg" size="lg" title="Confusion Matrix">
-        <table>
+      <!-- <b-modal hide-footer id="modal-lg" centered size="lg" title="Confusion Matrix">
+        <b-table striped hover :items="items"></b-table> -->
+
+
+        <!-- HTML TABLE V1 -->
+        <!-- <table>
           <thead>
             <tr>
               <th v-for="category in selectedCategories" :key="category.id">{{category}}</th>
@@ -25,19 +41,19 @@
                           }"
               >
                 {{ item.data }}
-                <!-- <br>
-                {{ item.annotation | withAnnotation }}-->
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> -->
+
+
       </b-modal>
     </div>
 
     <!-- tabs 麵包屑 -->
     <div class="row align-self-center">
       <div class="col-12 pl-1 pt-2">
-        <ul class="pt-0 breadcrumb text-black-50 mb-1 pb-1">
+        <ul class="pt-0 breadcrumb rounded text-black-50 m-0 p-3">
           <li v-for="tab in tabs" :key="tab.id">
             <a href="#" @click.prevent="changeView(tab)">{{ tab.name }}</a>
           </li>
@@ -53,9 +69,9 @@
       :current-view="currentView"
       class="currentView container"
     >
-      <!-- tab / label的 標題 -->
+      <!-- tab 標題 -->
       <div class="row">
-        <h3 class="col-12 text-center mt-0 p-2">{{ tab.name }}</h3>
+        <h5 class="col-12 text-left text-light m-0 mt-4">{{ tab.name }}</h5>
       </div>
 
       <!-- MetricsDisplay -->
@@ -79,14 +95,23 @@
             :graph-data="tab.grpah"
             @threshold-change="ThresholdChange"
           ></ThresholdAdjustment>
-          <b-button class="mt-3" v-b-modal.modal-lg variant="dark">Confusion Matrix</b-button>
+          <b-button pill block class="mt-5" v-b-modal.modal-lg variant="outline-dark">Confusion Matrix</b-button>
         </div>
       </div>
     </Tab>
+    
+
+    
   </div>
+  
 </template>
 
 <script>
+
+
+import * as d3 from 'd3';
+
+
 // import the fake data
 import {
   confusion_matrix,
@@ -103,6 +128,7 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
+import ConfusionMatrix2 from "../InfoDisplay/ConfusionMatrix2";
 
 export default {
   name: "Tabs",
@@ -112,11 +138,16 @@ export default {
     MetricsDisplay,
     GraphDisplay,
     ThresholdAdjustment,
-    ConfusionMatrix
+    ConfusionMatrix,
+    ConfusionMatrix2
   },
 
   data() {
     return {
+      items: [
+          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+        ],
       rows: confusion_matrix,
       categories: confusion_matrix_caterogies,
       rows2: confusion_matrix2,
@@ -132,6 +163,20 @@ export default {
   mounted() {
     this.getView();
     this.currentView = this.views[0];
+    var p = d3
+        .select(".d3")
+        .data([4, 8, 15,20])
+        .text(function (d) {
+            return d * 2;
+        });
+
+        // Enter… 
+        // p
+        // .enter()
+        // .append("p")
+        // .text(function(d) { 
+        //     return d; 
+        // });
   },
   computed:{
     selectedCategories(){
@@ -195,21 +240,24 @@ export default {
 
 ul.breadcrumb {
   list-style: none;
-  background-color: rgb(128, 128, 128);
+  padding: 50px;
+  margin: 10px;
+  background-color: #696969;
   li {
     // display: inline;
     font-size: 18px;
     + li:before {
-      padding: 5px;
+      padding: 15px;
       color: rgb(8, 8, 8);
-      content: " | ";
+      content: "   ";
     }
     a {
-      color: #080808;
+      font-size: 20px;
+      color:rgba(255, 255, 255, 0.5);
       text-decoration: none;
       &:hover {
-        color: #01447e;
-        text-decoration: underline;
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
       }
     }
   }
