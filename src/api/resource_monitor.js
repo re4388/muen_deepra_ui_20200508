@@ -10,7 +10,6 @@ function getDiskUsage () {
     diskUsageChecker.GetDiskUsage({}, (err, resp) => {
       console.log(`Disk usage: ${resp}`)
       let result = JSON.parse(resp.dict_report)
-      console.log(result)
       resolve(result)
     })
   })
@@ -27,7 +26,6 @@ function getMemoryUsage () {
       }
       console.log(`Memory usage: ${resp}`)
       let result = JSON.parse(resp.dict_report)
-      console.log(result)
       resolve(result)
     })
   })
@@ -42,7 +40,6 @@ function getGPUMemoryUsage () {
       console.log(`GPU memory usage: ${resp}`)
       console.log(resp)   // <- returned value is a list
       let result = JSON.parse(resp.dict_report)[0]
-      console.log(result)
       resolve(result)
     })
   })
