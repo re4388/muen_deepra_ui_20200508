@@ -211,7 +211,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #tool-bar {
   // position: relative;
   // margin-right: 150px;
