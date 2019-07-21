@@ -1,5 +1,5 @@
 <template>
-  <div class="training-progress">
+  <div class="validation-step">
     <div class="title text-content">{{ content.title }}</div>
     <div class="progress">
       <div class="progress-bar" role="progressbar"
@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import trainingService from '@/api/training_service.js'
+import validationService from '@/api/validation_service.js'
 
 export default {
-  name: 'TrainingProgress',
+  name: 'ValidationStep',
   props: {
     content: Object
   },
   created: function () {
-    this.startTraining()
+    this.startValidation()
   },
   methods: {
     setProgressRange (rngMin, rngMax) {
@@ -36,7 +36,7 @@ export default {
       }
       this.progressValue = (val * this.progressValueMax).toFixed(2)
     },
-    startTraining () {
+    startValidation () {
       if (this.isTrainingStarted) {
         return
       }
@@ -49,16 +49,24 @@ export default {
         this.finishTraining()
       }
       let projectInfo = this.$store.getters.currentProject
+      let trainingOutput = this.$store.getters.trainingOutput
       console.log(projectInfo)
-      let call = trainingService.startTraining(projectInfo, handlerProgress, handlerEnd)
+      console.log(trainingOutput)
+      let call = validationService.startValidation(
+        projectInfo,
+        trainingOutput,
+        handlerProgress,
+        handlerEnd
+      )
     },
     finishTraining () {
-      console.log('Training is finished')
+      console.log('Validation is finished')
 
       // Get training output (e.g. output directory)
       let projectInfo = this.$store.getters.currentProject
-      trainingService.getTrainingOutput(projectInfo).then((result) => {
-        this.$store.dispatch('setTrainingOutput', result)
+      validationService.getValidationOutput(projectInfo).then((result) => {
+        // this.$store.dispatch('setTrainingOutput', result)
+        console.log(result)
       })
       this.$emit('onProgressFinished', true)
     }

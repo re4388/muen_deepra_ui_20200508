@@ -61,12 +61,14 @@ function runMNIST (projectInfo, handlerProgress, handlerEnd) {
   return call
 }
 
-function getTrainingOutput () {
+function getTrainingOutput (projectInfo) {
   let trainingService = protoUtils.getServicer(
     protoPath, protoPackageName, 'TrainingService'
   )
   return new Promise((resolve, reject) => {
-    trainingService.GetTrainingOutput({}, (err, resp) => {
+    trainingService.GetTrainingOutput({
+      'project_info_json': JSON.stringify(projectInfo)
+    }, (err, resp) => {
       console.log(resp.output_json)
       let result = JSON.parse(resp.output_json)
       console.log(result)

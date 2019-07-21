@@ -5,6 +5,7 @@
         <step-pipeline
           :contentList="stepContent"
           :indexActivated="currentStep"
+          :enableSelectionOnClicked="Boolean(true)"
           @onStepChanged="updateStep"
         />
         <component
@@ -38,6 +39,7 @@ import StepPipeline from '@/components/Pipeline/StepPipeline.vue'
 import StepContent from '@/components/Pipeline/StepContent.vue'
 import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
 import TrainingProgress from './StepContent/TrainingProgress.vue'
+import ValidationStep from './StepContent/ValidationStep.vue'
 import { EventBus } from '@/event_bus.js'
 
 export default {
@@ -46,7 +48,8 @@ export default {
     StepPipeline,
     StepContent,
     ResourcesCheckStep,
-    TrainingProgress
+    TrainingProgress,
+    ValidationStep
   },
   mounted () {
     EventBus.$emit('pageChanged', 'Training')
@@ -56,6 +59,7 @@ export default {
   methods: {
     updateStep (stepId) {
       // NOTE: remove current implementation to avoid user switching stage
+      this.currentStep = stepId
     },
     enterToNextStep () {
       if (this.currentStep < this.stepContent.length - 1) {
@@ -87,8 +91,8 @@ export default {
         },
         {
           id: 2,
-          title: 'Done',
-          contentType: 'StepContent'
+          title: 'Validation',
+          contentType: 'ValidationStep'
         }
       ],
       currentStep: 0,
