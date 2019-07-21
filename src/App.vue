@@ -89,3 +89,12 @@ export default {
   margin-bottom: 0px;
 }
 </style>
+
+<style lang="scss">
+// Syntax for prevent dragging HTML element, this is disabled currently.
+// *, *::after, *::before {
+//   -webkit-user-select: none;
+// 	-webkit-user-drag: none;
+// 	-webkit-app-region: no-drag;
+// }
+</style>
