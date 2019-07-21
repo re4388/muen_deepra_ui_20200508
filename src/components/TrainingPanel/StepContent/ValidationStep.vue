@@ -43,7 +43,7 @@ export default {
       this.isTrainingStarted = true
 
       let handlerProgress = (resp) => {
-        this.updateProgressBar(resp.currentProgress)
+        this.updateProgressBar(resp)
       }
       let handlerEnd = (resp) => {
         this.finishTraining()
@@ -65,7 +65,7 @@ export default {
       // Get training output (e.g. output directory)
       let projectInfo = this.$store.getters.currentProject
       validationService.getValidationOutput(projectInfo).then((result) => {
-        // this.$store.dispatch('setTrainingOutput', result)
+        this.$store.dispatch('setValidationOutput', result)
         console.log(result)
       })
       this.$emit('onProgressFinished', true)

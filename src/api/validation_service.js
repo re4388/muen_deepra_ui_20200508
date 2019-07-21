@@ -8,8 +8,6 @@ function startValidation (projectInfo, trainingOutput, handlerProgress, handlerE
   let validationService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ValidationService'
   )
-  let covertedObject = vueUtils.clone(trainingOutput)
-  let selectedProjectOutput = covertedObject[projectInfo.uuid]
 
   let call = validationService.StartValidation({
     project_info_json: JSON.stringify(projectInfo),
@@ -17,8 +15,9 @@ function startValidation (projectInfo, trainingOutput, handlerProgress, handlerE
   })
   call.on('data', (resp) => {
     console.log(resp)
-    // handlerProgress(new ProgressInfo(resp))
-    handlerProgress(resp)
+    let pIter = (resp.iteration_info.current + 1) / resp.iteration_info.total
+    let pProg =  (resp.tta_info.current / resp.tta_info.total) + pIter
+    handlerProgress(pProg)
   })
   call.on('end', (resp) => {
     console.log(resp)
