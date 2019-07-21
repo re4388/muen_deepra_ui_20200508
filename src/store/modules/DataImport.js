@@ -9,6 +9,7 @@ const defaultState = {
   selectedLabelFile: '',
   datasetInfo: { details: {} },
   newProjectInfo: {},
+  newProjectLocation: {},
   isCreatingProject: false
 }
 
@@ -40,6 +41,9 @@ const getters = {
   },
   newProjectInfo() {
     return state.newProjectInfo
+  },
+  newProjectLocation() {
+    return state.newProjectLocation
   },
   isCreatingProject() {
     return state.isCreatingProject
@@ -78,6 +82,9 @@ const mutations = {
   SET_NEW_PROJECT_INFO(state, payload) {
     state.newProjectInfo = payload
   },
+  SET_NEW_PROJECT_LOCATION(state, payload) {
+    state.newProjectLocation = payload
+  },
   SET_IS_CREATING_PROJECT(state, payload) {
     state.isCreatingProject = payload
   }
@@ -113,6 +120,9 @@ const actions = {
   },
   setNewProjectInfo({ commit }, payload) {
     commit('SET_NEW_PROJECT_INFO', payload)
+  },
+  setNewProjectLocation({ commit }, payload) {
+    commit('SET_NEW_PROJECT_LOCATION', payload)
   },
   setIsCreatingProject({ commit }, payload) {
     commit('SET_IS_CREATING_PROJECT', payload)

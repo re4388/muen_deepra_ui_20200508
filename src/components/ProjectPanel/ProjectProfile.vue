@@ -14,6 +14,10 @@
           <span class="text-title">Created at: </span>
           <span class="text-value">{{ creationDatetime }}</span>
         </div>
+        <div class="location text-content">
+          <span class="text-title">Location: </span>
+          <span class="text-value">{{ project.location }}</span>
+        </div>
         <div class="label-list text-content">
           <span class="text-title">Labels: </span>
           <span class="text-value">{{ labelList }}</span>
@@ -82,13 +86,13 @@ export default {
       return parsedList.join(', ')
     },
     labeledFileCounts() {
-      return this.details.labeledFileCounts
+      return this.details.labeled_file_counts
     },
     unlabeledFileCounts() {
-      return this.details.unlabeledFileCounts
+      return this.details.unlabeled_file_counts
     },
     missedFileCounts() {
-      return this.details.missedFileCounts
+      return this.details.missed_file_counts
     }
   },
   data () {

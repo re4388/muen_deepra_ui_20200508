@@ -3,7 +3,21 @@
     <div class="title-section">
       <h4 class="title text-content">{{ content.title }}</h4>
       <p class="description text-content">
-        Overview of dataset<br>
+        Any generated output will be stored in this project<br>
+      </p>
+      <p class="text-content">
+        Project location:
+        <b-form-file
+          id="input-project-location"
+          ref="projectLocationBrowser"
+          v-model="newProjectLocation"
+          :state="Boolean(newProjectLocation)"
+          :directory="true"
+          :file-name-formatter="formatPath"
+          @input="checkFolderContent"
+          placeholder="Choose a folder..."
+        >
+        </b-form-file>
       </p>
       <p class="text-content">
         Project name:
@@ -42,6 +56,21 @@ export default {
     initializeContent () {
       this.$store.dispatch('setCurrentStage', 'finalization')
     },
+    formatPath (pathInfo) {
+      if (pathInfo === null) return
+      if (pathInfo.length > 1) throw new Error('There should be only one path selected.')
+      return pathInfo[0].path
+    },
+    checkFolderContent (pathInfo) {
+      // TODO: send `pathInfo` to backend, and set the status of
+      // `b-form-file` as valid or invalid by the returned response.
+      // TODO: check whether selected folder is under the folder of dataset,
+      // warn user if it is.
+
+      if (pathInfo === null) return
+      this.$store.dispatch('setNewProjectLocation', pathInfo)
+      this.newProjectLocation = pathInfo
+    },
     sendRequestForProjectCreation () {
       let datasetInfo = this.$store.getters.datasetInfo
       console.log(datasetInfo)
@@ -49,6 +78,7 @@ export default {
         projectManager.createProject(
           this.newProjectName,
           this.newProjectDescription,
+          this.newProjectLocation.path,
           datasetInfo
         ).then((result) => {
           this.newProjectInfo = result
@@ -77,6 +107,7 @@ export default {
       newProjectName: '',
       newProjectDescription: '',
       newProjectInfo: null,
+      newProjectLocation: '',
       isCheckingContent: false
     }
   }
