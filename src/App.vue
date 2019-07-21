@@ -78,6 +78,7 @@ export default {
   top: 0px;
   bottom: 0px;
   width: 100%;
+  overflow: hidden;
 }
 #top-navbar {
   position: absolute;

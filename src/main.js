@@ -32,6 +32,7 @@ import ProjectOverviewPanel from './components/ProjectPanel/ProjectOverviewPanel
 import ModelOverviewPanel from './components/ModelPanel/ModelOverviewPanel.vue'
 import DataImportPanel from './components/DataImportPanel/DataImportPanel.vue'
 import TrainingPanel from './components/TrainingPanel/TrainingPanel.vue'
+import ViewerOverviewPanel from './components/ViewerPanel/ViewerOverviewPanel.vue'
 import EvaluationPanel from './components/EvaluationPanel/EvaluationPanel.vue'
 import ProjectProfile from './components/ProjectPanel/ProjectProfile.vue'
 
@@ -61,6 +62,11 @@ const router = new VueRouter({
       path: '/training',
       name: 'Training',
       component: TrainingPanel
+    },
+    {
+      path: '/viewer-overview',
+      name: 'ViewerOverview',
+      component: ViewerOverviewPanel
     },
     {
       path: '/evaluation',
