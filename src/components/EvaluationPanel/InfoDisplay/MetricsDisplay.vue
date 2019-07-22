@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="td" v-for="(value, key) in metricsData" 
+          <td class="td text-light" v-for="(value, key) in metricsData" 
           :key="key"> {{ value }} </td>
         </tr>
       </tbody>
@@ -48,34 +48,6 @@
 
 <style scoped>
   .table-anotation {
-    font-size: 12px;
+    font-size: 14px;
   }
-
-  ul.breadcrumb {
-    padding: 1px 10px;
-    list-style: none;
-    background-color: rgb(128, 128, 128);
-  }
-
-  ul.breadcrumb li {
-    display: inline;
-    font-size: 15px;
-  }
-
-  ul.breadcrumb li+li:before {
-    padding: 8px;
-    color: black;
-    content: "/\00a0";
-  }
-
-  ul.breadcrumb li a {
-    color: #000508;
-    text-decoration: none;
-  }
-
-  ul.breadcrumb li a:hover {
-    color: #01447e;
-    text-decoration: underline;
-  }
-
 </style>

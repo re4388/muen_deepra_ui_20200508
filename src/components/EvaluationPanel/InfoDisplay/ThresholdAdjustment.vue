@@ -1,72 +1,90 @@
 <template>
-  <div class="pr-5">
-
-    <div class="mt-5">
-      <form class="range-field my-1 w-40">
-        <label for="">Threshold Value</label> <br>
-        <input type="range" min="0" max="1" step="0.1" v-model.lazy.number="slider"
-          @change="ThresholdChange" />
-        <h2 class="slider">{{ slider }}</h2>
-      </form>
-    </div>
-
-    <div class="pt-2">
-      <h3>
-        Image: <span> {{ imageNumber}} </span><br>
-        Presison: {{precision}} <br>
-        Recall: {{recall}} <br></h3>
-    </div>
-
+  <div class="container m-0">
+    <b-list-group  class="rounded-pill">
+      <b-list-group-item class="list-group text-light text-left">
+        <!-- <form class="range-field"> -->
+          <!-- <label for>Score threshold</label> -->
+          <div>
+            <p style="display:inline" class="pr-3">Score threshold   </p>
+            <input
+            class="mt-1"
+            type="range"
+            min="0"
+            max="1"
+            step="0.2"
+            v-model.lazy.number="slider"
+            @change="ThresholdChange"
+            />
+            <p class="slider p-5" style=" display:inline">{{ slider }}</p>
+          </div>
+        <!-- </form> -->
+      </b-list-group-item>
+      <b-list-group-item class="list-group text-light text-left">Total images: {{ imageNumber }}</b-list-group-item>
+      <b-list-group-item class="list-group text-light text-left">Precision : {{ precision }}</b-list-group-item>
+      <b-list-group-item class="list-group text-light text-left" >Recall: {{ recall }}</b-list-group-item>
+    </b-list-group>   
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'ThresholdAdjustment',
-    props: {
-      thresholdData: {
-        type: Object,
-      }
+export default {
+  name: "ThresholdAdjustment",
+  props: {
+    thresholdData: {
+      type: Object
     },
+    graphData: {
+      ype: Object
+    }
+  },
 
-    data() {
-      return {
-        slider: 0,
-        imageNumber: 0,
-        precision: 0,
-        recall: 0
-      }
-    },
+  data() {
+    return {
+      slider: 0,
+      imageNumber: this.graphData["image"]
+    };
+  },
 
-    created() {
-      this.updateData()
+  created() {
+    // console.log(this.graphData["x"]);
+  },
+  methods: {
+    myProvider(ctx) {
+      let items = [
+        {
+          "Total images": this.imageNumber,
+          Precision: this.precision,
+          Recall: this.recall
+        }
+      ];
+
+      return items || [];
     },
-    methods: {
-      ThresholdChange() {
-        let val = this.slider
-        this.$emit('threshold-change', {
-          result: val
-        })
-      },
-      updateData(){
-        this.imageNumber = this.thresholdData.image
-        this.precision = this.thresholdData.precision
-        this.recall = this.thresholdData.recall
-      }
+    ThresholdChange() {
+      let val = this.slider;
+      this.$emit("threshold-change", {
+        result: val
+      });
+    }
+  },
+  computed: {
+    precision() {
+      return this.graphData["x"][this.slider * 5] * 100 + "%";
     },
-    watch: {
-      slider() {
-        this.precision = this.precision - this.slider * 20
-        this.recall = this.recall + this.slider * 5
-      }
+    recall() {
+      return this.graphData["y"][this.slider * 5] * 100 + "%";
     }
   }
-
+};
 </script>
 
 <style scoped>
-  ul li {
-    list-style-type: none;
-  }
 
+.list-group {
+  background-color: #696969;
+}
+
+ul li {
+  list-style-type: none;
+}
 </style>

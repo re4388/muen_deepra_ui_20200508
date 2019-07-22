@@ -20,6 +20,12 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap'
 
+// VueTippy
+import VueTippy, {
+  VueComponent
+} from 'vue-tippy'
+Vue.use(VueTippy)
+
 
 // BootstrapVue
 import BoostrapVue from 'bootstrap-vue'
