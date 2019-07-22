@@ -4,11 +4,11 @@
       <div class="project-info flex-fill">
         <div class="name text-content">
           <span class="text-title">Name: </span>
-          <span class="text-value">{{ project.name }}</span>
+          <span class="text-value">{{ name }}</span>
         </div>
         <div class="description text-content">
           <span class="text-title">Description: </span>
-          <span class="text-value">{{ project.description }}</span>
+          <span class="text-value">{{ description }}</span>
         </div>
         <div class="creation-datetime text-content">
           <span class="text-title">Created at: </span>
@@ -16,7 +16,7 @@
         </div>
         <div class="location text-content">
           <span class="text-title">Location: </span>
-          <span class="text-value">{{ project.location }}</span>
+          <span class="text-value">{{ location }}</span>
         </div>
         <div class="label-list text-content">
           <span class="text-title">Labels: </span>
@@ -25,13 +25,13 @@
         <div class="label-report text-content">
           <span class="text-title">Label report: </span>
           <div class="label-total">
-            - labeled: {{ labeledFileCounts }}
+            - labeled: {{ labeledFiles }}
           </div>
           <div class="label-unlabeled">
-            - unlabeled: {{ unlabeledFileCounts }}
+            - unlabeled: {{ unlabeledFiles }}
           </div>
           <div class="label-missed">
-            - missed: {{ missedFileCounts }}
+            - missed: {{ missedFiles }}
           </div>
         </div>
         <!-- <div calss="label-list-view">
@@ -54,50 +54,84 @@
 </template>
 
 <script>
+import projectService from '@/api/projects_service.js'
+
 export default {
   name: 'ProjectProfile',
   props: {
   },
   created () {
-    this.initializeComponent()
+    this.fetechProjectData().then((result) => {
+      console.log('--- initializing ---')
+      this.initializeComponent()
+    })
   },
   methods: {
     initializeComponent () {
       console.log('--- initializing project profile ---')
-      this.project = this.$store.getters.currentProject
       console.log(this.project)
-      console.log(JSON.parse(this.project.details_json))
+      console.log(this.dataset)
+      this.isLoading = false
+      this.name = this.project.name
+      this.description = this.project.description
+      this.location = this.project.location
+    },
+    fetechProjectData () {
+      return new Promise((resolve, reject) => {
+        this.project = this.$store.getters.currentProject
+        projectService.getProject(this.project.uuid).then((result) => {
+          this.project = result.project
+          this.dataset = result.dataset
+          resolve(result)
+        })
+      })
     }
   },
   computed: {
     creationDatetime() {
-      if (this.project === null) return ''
+      if (this.project === {}) return ''
       let date = new Date()
       let ts = this.project.creation_timestamp
-      date.setTime(ts.seconds + String(ts.nanos/1000000))
+      console.log(this.project.creation_timestamp)
+      // date.setTime(ts.seconds + String(ts.nanos/1000000))
+      date.setTime(ts.seconds + String(ts.nanos/100000))
+      console.log(date)
       return date.toUTCString().split(' ').slice(0, 5).join(' ')
     },
-    details() {
-      return JSON.parse(this.project.details_json)
+    datasetDetails() {
+      if (this.isLoading) return null
+      let parsed = JSON.parse(this.dataset.details_json).label_report
+      return parsed
     },
     labelList() {
-      let parsedList = this.details.labels
-      console.log(parsedList)
+      if (this.datasetDetails === null) return ''
+      let parsedList = this.datasetDetails.labels
       return parsedList.join(', ')
     },
-    labeledFileCounts() {
-      return this.details.labeled_file_counts
+    labeledFiles() {
+      if (this.datasetDetails === null) return ''
+      return this.datasetDetails.normal
     },
-    unlabeledFileCounts() {
-      return this.details.unlabeled_file_counts
+    unlabeledFiles() {
+      if (this.datasetDetails === null) return ''
+      return this.datasetDetails.unlabeled
     },
-    missedFileCounts() {
-      return this.details.missed_file_counts
+    missedFiles() {
+      if (this.datasetDetails === null) return ''
+      return this.datasetDetails.missed
     }
+  },
+  watch: {
   },
   data () {
     return {
-      project: null
+      isLoading: true,
+      project: {},
+      dataset: {},
+      name: '',
+      description: '',
+      timestamp: '',
+      location: '',
     }
   }
 }

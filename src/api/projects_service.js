@@ -55,8 +55,28 @@ function getProjectList () {
   })
 }
 
+function getProject (uuid) {
+  let projectManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ProjectManagement'
+  )
+
+  return new Promise((resolve, reject) => {
+    projectManagementService.GetProject(
+      {uuid: uuid}, (err, resp) => {
+        if (err != null) {
+          console.log(err)
+        }
+        console.log('------ got project from backend -----')
+        console.log(resp)
+        resolve(resp)
+      }
+    )
+  })
+}
+
 export default {
   createProject,
   getProjectList,
+  getProject,
   ProjectInfo
 }

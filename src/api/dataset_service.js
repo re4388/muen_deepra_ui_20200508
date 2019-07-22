@@ -21,7 +21,7 @@ class DatasetInfo {
     content.uuid = details.uuid4
     content.timestamp = details.creation_timestamp
     content.details = {
-      '@DatasetClass': details['@DatasetClass'],
+      '__DatasetClass': details['__DatasetClass'],
       labelReport: details.label_report,
     }
     content.fileCounts = details.file_counts
