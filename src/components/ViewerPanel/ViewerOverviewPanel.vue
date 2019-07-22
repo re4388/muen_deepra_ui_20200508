@@ -2,7 +2,7 @@
   <div id="viewer-overview-panel" class="container-main">
     <ToolBar/>    
     <SidebarRight/>
-    <ViewerContainer/>
+    <!-- <ViewerContainer/> -->
     <!-- <imag-vue-panel></imag-vue-panel> -->
   </div>
 </template>
@@ -52,7 +52,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid red;
+  // border: 1px solid red;
   // max-height: 100%;
   // max-width: 100%;
 }
