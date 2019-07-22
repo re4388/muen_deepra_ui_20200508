@@ -46,7 +46,7 @@ export default {
   },
 
   created() {
-    console.log(this.graphData["x"]);
+    // console.log(this.graphData["x"]);
   },
   methods: {
     myProvider(ctx) {

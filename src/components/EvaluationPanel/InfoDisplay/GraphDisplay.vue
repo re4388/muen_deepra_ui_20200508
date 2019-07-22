@@ -67,6 +67,7 @@ export default {
             label: {
               text: "Score threshold",
               position: "outer-center"
+              // textColor: 'white',
             }
           },
           y: {
@@ -105,7 +106,8 @@ export default {
           }
         },
         legend: {
-          position: "bottom"
+          show: true,
+          position: "bottom",
         }
       };
     }
@@ -133,4 +135,19 @@ export default {
 .bg-color2 {
   background-color: #696969;
 }
+
+.c3-axis-x-label {
+  /* background-color: white; */
+  /* color: white; */
+  /* stroke:yellowgreen;  */
+  /* stroke-width: 0.5px */
+  fill: white;
+}
+
+.c3-axis-y-label {
+  fill: white;
+}
+
+/* .c3-text { stroke:yellow !important; 
+} */
 </style>

@@ -4,49 +4,11 @@
 
     <!-- Modal 跳出 混淆矩陣 -->
     <div>
-
-
-      <!-- D3.js V3 -->
-      
-      <b-modal hide-footer id="modal-lg" centered title="Confusion Matrix">
-        
+      <!-- D3.js-->
+      <b-modal hide-footer id="modal-lg" centered title="Confusion Matrix"> 
         <h1>
-          <ConfusionMatrix2 />
+          <ConfusionMatrix :data="selectedData"/>
         </h1>
-
-
-      <!-- b-button V2 -->
-      <!-- <b-button v-b-modal.modal-1>Launch demo modal</b-button> -->
-      <!-- <b-modal hide-footer id="modal-lg" centered size="lg" title="Confusion Matrix">
-        <b-table striped hover :items="items"></b-table> -->
-
-
-        <!-- HTML TABLE V1 -->
-        <!-- <table>
-          <thead>
-            <tr>
-              <th v-for="category in selectedCategories" :key="category.id">{{category}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in selectedRows" :key="row.id">
-              <td
-                v-for=" item in row"
-                :key="item.id"
-                :title="item.annotation"
-                v-tippy="{ 
-                          arrow: true, 
-                          animation : 'fade', 
-                          interactive : true,
-                          }"
-              >
-                {{ item.data }}
-              </td>
-            </tr>
-          </tbody>
-        </table> -->
-
-
       </b-modal>
     </div>
 
@@ -107,20 +69,8 @@
 </template>
 
 <script>
-
-
-import * as d3 from 'd3';
-
-
-// import the fake data
-import {
-  confusion_matrix,
-  confusion_matrix_caterogies,
-  confusion_matrix2,
-  confusion_matrix_caterogies2,
-} from "../InfoDisplay/data4";
+import {data} from "../InfoDisplay/confusionMatrixData.js";
 import tabData from "@/components/EvaluationPanel/TabsInfo/Tab-data.json";
-// import tabData from '@/components/EvaluationPanel/TabsInfo/Tab-data.js'
 
 // import components
 import Tab from "./Tab";
@@ -128,7 +78,6 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
-import ConfusionMatrix2 from "../InfoDisplay/ConfusionMatrix2";
 
 export default {
   name: "Tabs",
@@ -138,45 +87,22 @@ export default {
     MetricsDisplay,
     GraphDisplay,
     ThresholdAdjustment,
-    ConfusionMatrix,
-    ConfusionMatrix2
+    ConfusionMatrix
   },
 
   data() {
     return {
-      items: [
-          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        ],
-      rows: confusion_matrix,
-      categories: confusion_matrix_caterogies,
-      rows2: confusion_matrix2,
-      categories2: confusion_matrix_caterogies2,
       tabs: tabData.content,
       views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
       currentView: "",
       newThreshold: 0,
-      showModal: false
+      showModal: false,
     };
   },
 
   mounted() {
     this.getView();
     this.currentView = this.views[0];
-    var p = d3
-        .select(".d3")
-        .data([4, 8, 15,20])
-        .text(function (d) {
-            return d * 2;
-        });
-
-        // Enter… 
-        // p
-        // .enter()
-        // .append("p")
-        // .text(function(d) { 
-        //     return d; 
-        // });
   },
   computed:{
     selectedCategories(){
@@ -184,6 +110,21 @@ export default {
         return this.categories
       } else if (this.currentView === 'Tab-1info') {
         return this.categories2
+      }
+    },
+    selectedData(){
+      if(this.currentView === 'AllTabInfo'){
+        return data[0]
+      } else if (this.currentView === 'Tab-1info') {
+        return data[1]
+      } else if (this.currentView === 'Tab-2info'){
+        return data[2]
+      } else if (this.currentView === 'Tab-3info'){
+        return data[3]
+      } else if (this.currentView === 'Tab-4info'){
+        return data[4]
+      } else if (this.currentView === 'Tab-5info'){
+        return data[5]
       }
     },
     selectedRows(){
@@ -212,7 +153,11 @@ export default {
     },
     closeModal() {
       this.showModal = false;
-    }
+    },
+    // async fetchData() {
+    //   let data = await d3.json("../InfoDisplay/confusionMatrixData");
+    //   this.loadData = data;
+    // }
   }
 };
 </script>
@@ -227,14 +172,6 @@ export default {
   position: absolute;
   left: calc(20% - 50px);
   top: calc(30% - 50px);
-  // width: 200px;
-  // height: 200px;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-  // background: grey;
-  // color:white;
-  // flex-direction: column;
   z-index: 2;
 }
 
@@ -253,10 +190,12 @@ ul.breadcrumb {
     }
     a {
       font-size: 20px;
-      color:rgba(255, 255, 255, 0.5);
+      // color:rgba(255, 255, 255, 0.5);
+      color: #343a40;
       text-decoration: none;
       &:hover {
-        color: rgba(255, 255, 255, 0.75);
+        // color: rgba(255, 255, 255, 0.75);
+        color:#121416;
         text-decoration: none;
       }
     }
