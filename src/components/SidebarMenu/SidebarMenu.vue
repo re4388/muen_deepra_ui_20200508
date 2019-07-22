@@ -118,42 +118,41 @@
 </script>
 
 <style lang="scss">
-  .v-sidebar-menu {
-    height: inherit;
-    position: relative;
+.v-sidebar-menu {
+  height: inherit;
+  position: relative;
 
-    & .collapse-btn {
+  & .collapse-btn {
+    content: '...';
+    outline: 0;
+
+    &:after {
       content: '...';
-      outline: 0;
-
-      &:after {
-        content: '...';
-      }
-
-      &:hover {
-        background-color: rgb(60, 60, 60);
-      }
     }
 
-    & .vsm-title {
-      text-align: left;
-    }
-
-    & .router-link-exact-active .vsm-title {
-      color: #4285f4;
-    }
-
-    & .vsm-header {
-      text-align: center;
-    }
-
-    & .vsm-icon {
-      color: orange;
-    }
-
-    & .vsm-item.mobile-item>.vsm-link {
-      color: orange;
+    &:hover {
+      background-color: rgb(60, 60, 60);
     }
   }
 
+  & .vsm-title {
+    text-align: left;
+  }
+
+  & .router-link-exact-active .vsm-title {
+    color: #4285f4;
+  }
+
+  & .vsm-header {
+    text-align: center;
+  }
+
+  & .vsm-icon {
+    color: orange;
+  }
+
+  & .vsm-item.mobile-item>.vsm-link {
+    color: orange;
+  }
+}
 </style>
