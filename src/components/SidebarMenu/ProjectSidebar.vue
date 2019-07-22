@@ -29,7 +29,7 @@
         menu: [
           {
             title: 'Images',
-            href: '/viewer',
+            href: '/viewer-overview',
             icon: {
               element: 'font-awesome-icon',
               attributes: {
