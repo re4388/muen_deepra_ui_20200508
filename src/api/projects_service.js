@@ -15,7 +15,7 @@ class ProjectInfo {
 class ProjectList {
 }
 
-function createProject (name, description, location, datasetInfo) {
+function createProject (name, description, location, datatsetUuid) {
   let projectManagementService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ProjectManagement'
   )
@@ -26,7 +26,7 @@ function createProject (name, description, location, datasetInfo) {
         name: name,
         description: description,
         location: location,
-        dataset_info_json: JSON.stringify(vueUtils.clone(datasetInfo))
+        dataset_uuid: datatsetUuid
       },
       (err, resp) => {
         if (err !== null) {

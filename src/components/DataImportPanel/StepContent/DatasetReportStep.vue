@@ -3,16 +3,17 @@
     <h4 class="title text-content">{{ content.title }}</h4>
     <div class="content-section flex-fill">
       <p class="text-content">
-        Folder path: {{ datasetInfo.folderPath }} <br>
-        Task type: {{ datasetInfo.taskType }} <br>
-        File counts (in folder): {{ datasetInfo.fileCounts }} <br>
+        Folder path: {{ folderPath }} <br>
+        Label file: {{ labelFile }} <br>
+        Task type: {{ taskType }} <br>
+        File counts (in folder): {{ fileCounts }} <br>
       </p>
       <p class="text-content">
-        Total labels: {{ datasetInfo.totalLabels }} <br>
         Labels: <br>
-        Labeled file counts: {{ datasetInfo.details.labeledFileCounts }} <br>
-        Unlabeled file counts: {{ datasetInfo.details.unlabeledFileCounts }} <br>
-        Missed file counts: {{ datasetInfo.details.missedFileCounts }} <br>
+        Total labels: {{ totalLabels }} <br>
+        Labeled file counts: {{ normalFiles }} <br>
+        Unlabeled file counts: {{ unlabeledFiles }} <br>
+        Missed file counts: {{ missedFiles }} <br>
       </p>
     </div>
   </div>
@@ -51,10 +52,13 @@ export default {
       this.folderPath = newContent.folderPath
       this.taskType = newContent.taskType
       this.fileCounts = newContent.fileCounts
-      this.labeledFileCounts = newContent.details.labeledFileCounts
-      this.missedFileCounts = newContent.details.missedFileCounts
-      this.unlabeledFileCounts = newContent.details.unlabeledFileCounts
+      this.labelFile = newContent.labelFile
       this.totalLabels = newContent.totalLabels
+
+      let labelReport = newContent.details.labelReport
+      this.normalFiles = labelReport.normal
+      this.unlabeledFiles = labelReport.unlabeled
+      this.missedFiles = labelReport.missed
     },
     checkContent () {
       if (this.dataRecieved) {
@@ -69,6 +73,14 @@ export default {
   data () {
     return {
       datasetInfo: { details: {} },
+      folderPath: '',
+      taskType: '',
+      fileCounts: 0,
+      labelFile: '',
+      totalLabels: '',
+      normalFiles: 0,
+      unlabeledFiles: 0,
+      missedFiles: 0
     }
   }
 }

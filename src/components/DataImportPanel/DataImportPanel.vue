@@ -86,12 +86,12 @@ export default {
         },
         {
           id: 1,
-          title: 'Statistic report',
+          title: 'Overview of dataset',
           contentType: 'DatasetReportStep'
         },
         {
           id: 2,
-          title: 'Overview of dataset',
+          title: 'Project settings',
           contentType: 'FinalizationStep'
         }
       ],

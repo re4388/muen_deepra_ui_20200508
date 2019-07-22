@@ -79,7 +79,7 @@ export default {
           this.newProjectName,
           this.newProjectDescription,
           this.newProjectLocation.path,
-          datasetInfo
+          datasetInfo.uuid
         ).then((result) => {
           this.newProjectInfo = result
           resolve(true)
