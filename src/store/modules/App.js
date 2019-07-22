@@ -1,5 +1,7 @@
 import { initializeState } from './index'
 
+const namespaced = false;
+
 const defaultState = {
   currentEntry: 'main',
   currentPage: 'base'
@@ -37,6 +39,7 @@ const actions = {
 }
 
 export default {
+  namespaced,
   state,
   getters,
   mutations,

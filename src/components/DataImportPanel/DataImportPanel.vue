@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     initializeComponent () {
-      this.$store.dispatch('resetAllState')
+      this.$store.dispatch('DataImport/resetAllState')
     },
     updateCurrentStep (stepId) {
       // NOTE: remove current implementation to avoid user switching stage
@@ -60,7 +60,7 @@ export default {
       if (call === undefined) return
 
       call.then((result) => {
-        if (this.$store.getters.isCurrentStageLocked) return
+        if (this.$store.getters['DataImport/isCurrentStageLocked']) return
 
         if (this.currentStep == this.stepContent.length - 1) {
           this.finializeProjectCreation()
@@ -68,7 +68,7 @@ export default {
         }
         if (this.currentStep < this.stepContent.length - 1) {
           this.currentStep += 1
-          this.$store.dispatch('resetStageLock')
+          this.$store.dispatch('DataImport/resetStageLock')
         }
       })
     },

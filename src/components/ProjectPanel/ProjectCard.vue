@@ -46,9 +46,9 @@ export default {
   },
   methods: {
     openProject () {
-      this.$store.dispatch('setCurrentProject', this.details)
+      this.$store.dispatch('Project/setCurrentProject', this.details)
       console.log('---- saved project info : ')
-      console.log(this.$store.getters.currentProject)
+      console.log(this.$store.getters['Project/currentProject'])
       EventBus.$emit('entryChanged', 'project')
       this.$router.push('/project-profile')
     }

@@ -1,5 +1,7 @@
 import { localStore, initializeState } from './index'
 
+const namespaced = true;
+
 const defaultState = {
   currentStage: null,
   isCurrentStageLocked: true,
@@ -130,6 +132,7 @@ const actions = {
 }
 
 export default {
+  namespaced,
   state,
   getters,
   mutations,

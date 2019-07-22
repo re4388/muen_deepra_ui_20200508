@@ -48,8 +48,8 @@ export default {
       let handlerEnd = (resp) => {
         this.finishTraining()
       }
-      let projectInfo = this.$store.getters.currentProject
-      let trainingOutput = this.$store.getters.trainingOutput
+      let projectInfo = this.$store.getters['Project/currentProject']
+      let trainingOutput = this.$store.getters['Training/trainingOutput']
       console.log(projectInfo)
       console.log(trainingOutput)
       let call = validationService.startValidation(
@@ -63,9 +63,9 @@ export default {
       console.log('Validation is finished')
 
       // Get training output (e.g. output directory)
-      let projectInfo = this.$store.getters.currentProject
+      let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
-        this.$store.dispatch('setValidationOutput', result)
+        this.$store.dispatch('Training/setValidationOutput', result)
         console.log(result)
       })
       this.$emit('onProgressFinished', true)

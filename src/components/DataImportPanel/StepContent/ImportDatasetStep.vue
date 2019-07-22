@@ -61,10 +61,10 @@ export default {
   },
   methods: {
     initializeContent () {
-      this.$store.dispatch('setCurrentStage', 'importDataset')
-      this.selectedFolder = this.$store.getters.selectedFolder
+      this.$store.dispatch('DataImport/setCurrentStage', 'importDataset')
+      this.selectedFolder = this.$store.getters['DataImport/selectedFolder']
       this.$refs.inputFolderBrowser.setFiles([this.selectedFolder])
-      this.selectedTaskType = this.$store.getters.selectedTaskType
+      this.selectedTaskType = this.$store.getters['DataImport/selectedTaskType']
     },
     formatPath (pathInfo) {
       if (pathInfo === null) return
@@ -75,16 +75,16 @@ export default {
       // TODO: send `pathInfo` to backend, and set the status of
       // `b-form-file` as valid or invalid by the returned response.
       if (pathInfo === null) return
-      this.$store.dispatch('setSelectedFolder', pathInfo)
+      this.$store.dispatch('DataImport/setSelectedFolder', pathInfo)
       this.selectedFolder = pathInfo
     },
     checkTaskType (value) {
       if (value === null) return
-      this.$store.dispatch('setSelectedTaskType', value)
+      this.$store.dispatch('DataImport/setSelectedTaskType', value)
       this.selectedTaskType = value
     },
     checkLabelFile (pathInfo) {
-      this.$store.dispatch('setSelectedLabelFile', pathInfo)
+      this.$store.dispatch('DataImport/setSelectedLabelFile', pathInfo)
       this.selectedLabelFile = pathInfo
     },
     checkContent () {
@@ -97,8 +97,8 @@ export default {
         }
       }
       return new Promise((resolve, reject) => {
-        this.$store.dispatch('unlockStage')
-        this.$store.dispatch('setCompletedStageIndex', this.content.id)
+        this.$store.dispatch('DataImport/unlockStage')
+        this.$store.dispatch('DataImport/setCompletedStageIndex', this.content.id)
         resolve(true)
       })
     }

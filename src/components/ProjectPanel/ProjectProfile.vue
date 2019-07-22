@@ -78,7 +78,7 @@ export default {
     },
     fetechProjectData () {
       return new Promise((resolve, reject) => {
-        this.project = this.$store.getters.currentProject
+        this.project = this.$store.getters['Project/currentProject']
         projectService.getProject(this.project.uuid).then((result) => {
           this.project = result.project
           this.dataset = result.dataset
