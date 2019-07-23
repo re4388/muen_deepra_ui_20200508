@@ -249,7 +249,7 @@ ul.drop-down-menu ul { /*隱藏次選單*/
 ul.drop-down-menu ul li:last-child {
   border-bottom: none;
 }
-ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不同*/
+ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
   z-index: 25;
   top: 10px;
   left: 90%;
