@@ -62,12 +62,11 @@
       </div>
 
 
-      <div class="wrap__2 flex-fill flex-column">
+      <div class="wrap__2 d-inline-flex flex-fill flex-column justfy-content-center align-self-center;" style="width:100%; height:100%;">
         <v-zoomer class="zoomer d-inline-flex flex-column">
           <imagvue 
             id="imgExample"
             class="imgExample d-inline-flex justify-content: center"
-            style="max-width:100%;"
             v-model="url"
             :filters="isOpenFilters"
             :onerror="()=>alert('Please try again')"
@@ -263,16 +262,18 @@ ul.drop-down-menu ul ul { /*第三層以後的選單出現位置與第二層不�
   // display: none;
 }
 .vue-zoomer {
-  width: 1500px;
-  height: 750px;
+  // overflow: hidden;
 }
 .zoomer {
-  min-width: 100%;
-  min-height: 100%;
+  height: 600px;
 }
 #imgExample {
-  min-height: 100%;
-  display: flex;
-  align-items: stretch;
+  // min-height: 100%;
+  // display: flex;
+  // align-items: stretch;
+  // width: 50%;
+  object-fit: contain;
+  // width: auto;
+  height: 100%;
 }
 </style>
