@@ -13,7 +13,7 @@
       <div><img class="datasetImg" src="../../assets/people.png"></div>
       <div id="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
-        <ImageBox/>
+        <ImageBox :images="images"/>
       </div>
     </div>
     <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
@@ -36,6 +36,9 @@
 </template> -->        
 <script>
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
+import imageData from './image_data.json'
+import { EventBus } from '@/event_bus.js'
+import fileFetecher from '@/utils/file_fetcher.js'
 
 const separator = {
   template: `<hr style="border-color: rgba(255, 255, 255); margin: 10px;"/>`
@@ -49,9 +52,23 @@ export default {
   watch: {
     isShowingImgList() {}
   },
+  created () {
+    EventBus.$once('viewerDatasetChanged', () => {
+      // Parse path of images from dataset and assign to `this.images`
+      let dataset = this.$store.getters['Viewer/currentDataset']
+      console.log(dataset)
+
+      this.pathCollector = new fileFetecher.DatasetPathCollector(dataset)
+      this.pathCollector.parseFileList().then((result) => {
+        this.images = this.pathCollector.fileList
+      })
+    })
+  },
   data () {
     return {
-      isShowingImgList: false
+      isShowingImgList: false,
+      pathCollector: null,
+      images: []
     }
   },
   methods: {

@@ -1,11 +1,16 @@
 <template>
-  <div id="image-box">
+  <div id="image-box" class="image-box">
     <div class="box">
       <div class="title">
         <div class="imgList" id="imgList">
-          <div class="x-rayFilms" v-for="(item, index) in images" :key="index">
-            <thumbnail :root="item.root" :filename="item.filename"/>
-          </div>
+          <template v-for="(item, index) in images">
+            <thumbnail
+              :key="index"
+              :root="item.root"
+              :filename="item.filename"
+              @click="showClickedThumbnail"
+            />
+          </template>
         </div>
       </div>
     </div>
@@ -14,7 +19,6 @@
      
 <script>
 import thumbnail from './Thumbnail.vue'
-import imageData from './image_data.json'
 
 export default {
   name: 'ImageBox',
@@ -26,16 +30,19 @@ export default {
   },
   methods: {
     initializeComponent () {
+    },
+    showClickedThumbnail (event, el) {
+      console.log(event)
     }
   },
   props: {
-    currentImageSrc: String
+    currentImageSrc: String,
+    images: Array
   },
   computed: {
   },
   data () {
     return {
-      images: imageData.images
     }
   }
 }
@@ -78,29 +85,5 @@ export default {
 
 .show {
   right: 0px;
-}
-
-.x-rayFilms {
-  box-sizing: border-box;
-  width: 60px;
-  height: 60px;
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  justify-content: center;
-  padding: 3px;
-  z-index: 9;
-  position: relative;
-}
-
-.x-rayFilms:hover::after {
-  content: "";
-  display: inline-flex;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: #42ab427d;
 }
 </style>

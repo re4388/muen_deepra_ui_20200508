@@ -1,6 +1,6 @@
 <template>
   <div id="viewer-overview-panel" class="container-main">
-    <ToolBar/>    
+    <ToolBar id="toolbar"/>    
     <SidebarRight/>
     <!-- <ViewerContainer/> -->
     <!-- <imag-vue-panel></imag-vue-panel> -->
@@ -14,10 +14,8 @@ import ToolBar from '@/components/ViewerPanel/ToolBar.vue';
 import imagvue from 'imagvue';
 import VueDragResize from 'vue-drag-resize';
 import ViewerContainer from './ViewerContainer.vue';
-// import ImagVuePanel from '@/components/ImagVuePanel/ImagVuePanel.vue';
-// import imageData from './image_data.json'
-// console.log(imagvue)
-// console.log(imagvue.props.value)
+import datasetService from '@/api/dataset_service.js'
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name:"ViewerOverviewPanel",
@@ -32,12 +30,36 @@ export default {
   },
   data() {
     return {
-      image: null
+      image: null,
+      loading: true,
+      dataset: null
     }
   },
   computed:{
   },
+  watch: {
+    '$route': 'fetchData'
+  },
+  created () {
+    this.fetchData()
+  },
   methods: {
+    fetchData () {
+      let currentProject = this.$store.getters['Project/currentProject']
+      if (currentProject === null) {
+        return
+      }
+      datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
+        this.$store.dispatch('Viewer/setCurrentDataset', result.content)
+        this.dataset = this.$store.getters['Viewer/currentDataset']
+        EventBus.$emit('viewerDatasetChanged')
+        console.log('----- current dataset in viewer -----')
+        console.log(this.dataset)
+
+        // Notify that loading is complete
+        this.loading = true
+      })
+    },
   }  
 };
 
@@ -56,5 +78,7 @@ export default {
   // max-height: 100%;
   // max-width: 100%;
 }
-
+#toolbar {
+  height: 100%;
+}
 </style>
