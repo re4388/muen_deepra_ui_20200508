@@ -1,8 +1,15 @@
+from argparse import ArgumentParser
 import os
 import os.path as osp
 from subprocess import Popen
 from shutil import copyfile, rmtree
 import glob
+
+
+def parse_args():
+    parser = ArgumentParser()
+    parser.add_argument('--git_credential', type=str, default=None)
+    return parser.parse_args()
 
 
 def onerror(func, path, exc_info):
@@ -27,9 +34,13 @@ def onerror(func, path, exc_info):
         raise
 
 
-def main():
+def main(git_credential=None):
     cwd = osp.abspath(osp.join(osp.dirname(__file__), '..'))
-    cmd = 'git clone http://10.0.4.52:3000/muen/deepra.git'
+
+    if git_credential is not None:
+        cmd = 'git clone http://{}@10.0.4.52:3000/muen/deepra.git'.format(git_credential)
+    else:
+        cmd = 'git clone http://10.0.4.52:3000/muen/deepra.git'
 
     if osp.exists(osp.join(cwd, 'deepra')):
         raise RuntimeError('Git repository `deepra` exists already, please remove it to continue.')
@@ -61,5 +72,7 @@ def main():
 
     print('--- DONE ---')
 
+
 if __name__ == '__main__':
-    main()
+    args = parse_args()
+    main(git_credential=args.git_credential)
