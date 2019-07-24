@@ -1,11 +1,33 @@
 import os
 import os.path as osp
 from subprocess import Popen
-from shutil import copyfile
+from shutil import copyfile, rmtree
 import glob
 
 
-def main(enable_gherkin=False):
+def onerror(func, path, exc_info):
+    """
+    Error handler for ``shutil.rmtree``.
+
+    If the error is due to an access error (read only file)
+    it attempts to add write permission and then retries.
+
+    If the error is for another reason it re-raises the error.
+
+    Usage : ``shutil.rmtree(path, onerror=onerror)``
+
+    ref: https://stackoverflow.com/questions/2656322
+    """
+    import stat
+    if not os.access(path, os.W_OK):
+        # Is the error an access error ?
+        os.chmod(path, stat.S_IWUSR)
+        func(path)
+    else:
+        raise
+
+
+def main():
     cwd = osp.abspath(osp.join(osp.dirname(__file__), '..'))
     cmd = 'git clone http://10.0.4.52:3000/muen/deepra.git'
 
@@ -34,6 +56,10 @@ def main(enable_gherkin=False):
         print('Copying file from {} to {}'.format(f, dst))
         copyfile(f, dst)
 
+    print('--- removing files cloned from `deepra` ---')
+    rmtree(osp.join(cwd, 'deepra'), onerror=onerror)
+
+    print('--- DONE ---')
 
 if __name__ == '__main__':
     main()
