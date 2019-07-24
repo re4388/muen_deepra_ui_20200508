@@ -1,6 +1,6 @@
 import os
 import os.path as osp
-from subprocess import Popen
+from subprocess import Popen, check_call, CalledProcessError
 from shutil import copyfile, rmtree, which
 from getpass import getpass
 import glob
@@ -49,7 +49,6 @@ def main():
         (('git clone http://{}@10.0.4.52:3000/muen/deepra.git'
         .format(git_credential)), cwd, False),
         ('pip install .', osp.join(cwd, 'deepra'), False),
-        ('python gen_api.py', osp.join(cwd, 'deepra'), False),
         (cmd_clean.format('deepra'), cwd, True),
         # Install requirements of this project (`deepra_ui`)
         ('yarn install', cwd, True),
@@ -59,10 +58,16 @@ def main():
     if osp.exists(osp.join(cwd, 'deepra')):
         raise RuntimeError('Git repository `deepra` exists already, please remove it to continue.')
 
+    # Check whether given gitea-credential is valid for accessing gitea
+    try:
+        cmd = 'git ls-remote http://{}@10.0.4.52:3000/muen/autodl.git'.format(git_credential)
+        resp = check_call(cmd.split())
+    except CalledProcessError as ex_call_error:
+        raise ValueError('Given git credential is invalid.') from ex_call_error
+
     for _cmd, _cwd, use_shell in cmd_pairs:
         curr_cmd = _cmd
         try:
-            print('----- executing cmd: {}'.format(curr_cmd))
             temp = curr_cmd if use_shell else curr_cmd.split()
             proc = Popen(temp, cwd=_cwd, shell=use_shell)
             proc.wait()
