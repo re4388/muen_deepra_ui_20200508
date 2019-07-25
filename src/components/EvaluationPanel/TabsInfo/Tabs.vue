@@ -2,10 +2,19 @@
   <div class="container">
     <ConfusionMatrix id="modal" v-if="showModal" @close-event="closeModal" />
 
-    <!-- Modal 跳出 混淆矩陣 -->
+        <!-- Modal: ROC Graph -->
     <div>
-      <!-- D3.js-->
-      <b-modal hide-footer id="modal-lg" centered title="Confusion Matrix"> 
+      <b-modal  size="lg" id="roc-chart" title="ROC Chart " hide-footer centered > 
+        <h1>
+          <ROCGraph />
+        </h1>
+      </b-modal>
+    </div>
+
+
+    <!-- Modal:Confusion Matrix -->
+    <div>
+      <b-modal hide-footer centered id="modal-lg"  title="Confusion Matrix"> 
         <h1>
           <ConfusionMatrix :data="selectedData"/>
         </h1>
@@ -45,6 +54,9 @@
       <div class="row">
         <div class="col-6">
           <GraphDisplay :graph-data="tab.grpah" :new-threshold="newThreshold"></GraphDisplay>
+          
+          <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button>
+
         </div>
 
         
@@ -57,7 +69,12 @@
             :graph-data="tab.grpah"
             @threshold-change="ThresholdChange"
           ></ThresholdAdjustment>
-          <b-button pill block class="mt-5" v-b-modal.modal-lg variant="outline-dark">Confusion Matrix</b-button>
+          
+
+          <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Confusion Matrix</b-button>
+
+          <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Relable</b-button>
+
         </div>
       </div>
     </Tab>
@@ -78,6 +95,7 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
+import ROCGraph from "../InfoDisplay/ROCGraph";
 
 export default {
   name: "Tabs",
@@ -87,7 +105,8 @@ export default {
     MetricsDisplay,
     GraphDisplay,
     ThresholdAdjustment,
-    ConfusionMatrix
+    ConfusionMatrix,
+    ROCGraph
   },
 
   data() {
