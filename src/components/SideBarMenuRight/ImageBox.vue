@@ -8,7 +8,7 @@
               :key="index"
               :root="item.root"
               :filename="item.filename"
-              @click="showClickedThumbnail"
+              @click="showClickedThumbnail(item, index)"
             />
           </template>
         </div>
@@ -19,6 +19,8 @@
      
 <script>
 import thumbnail from './Thumbnail.vue'
+import { EventBus } from '@/event_bus.js'
+import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
 
 export default {
   name: 'ImageBox',
@@ -31,8 +33,10 @@ export default {
   methods: {
     initializeComponent () {
     },
-    showClickedThumbnail (event, el) {
-      console.log(event)
+    showClickedThumbnail (item, index) {
+      console.log('--- event `loaded` issued ---')
+      console.log(item, index)
+      EventBus.$emit('onNavigationImageClicked', {item, index})
     }
   },
   props: {

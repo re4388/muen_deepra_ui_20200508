@@ -1,6 +1,6 @@
 <template>
   <div id="viewer-overview-panel" class="container-main">
-    <ToolBar id="toolbar"/>    
+    <ToolBar class="toolbar"/>    
     <SidebarRight/>
     <!-- <ViewerContainer/> -->
     <!-- <imag-vue-panel></imag-vue-panel> -->
@@ -78,7 +78,7 @@ export default {
   // max-height: 100%;
   // max-width: 100%;
 }
-#toolbar {
-  height: 100%;
+.toolbar {
+  height: 85%;
 }
 </style>

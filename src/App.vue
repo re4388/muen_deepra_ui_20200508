@@ -18,6 +18,9 @@ import Sidebar from '@/components/SidebarMenu/SidebarMenu.vue'
 import ProjectSidebar from '@/components/SidebarMenu/ProjectSidebar.vue'
 import BasePanel from '@/components/BasePanel.vue'
 import { EventBus } from '@/event_bus.js'
+import thumbnail from '@/components/SideBarMenuRight/Thumbnail.vue'
+import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue'
+import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
 
 export default {
   name: 'App',
@@ -25,7 +28,10 @@ export default {
     Sidebar,
     ProjectSidebar,
     TopNavbar,
-    BasePanel
+    BasePanel,
+    thumbnail,
+    ImageBox,
+    ToolBar
   },
   watch: {
     currentEntry () {

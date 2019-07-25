@@ -8,6 +8,8 @@
      
 <script>
 import modPath from 'path'
+import { EventBus } from '@/event_bus.js'
+
 
 export default {
   name: 'Thumbnail',

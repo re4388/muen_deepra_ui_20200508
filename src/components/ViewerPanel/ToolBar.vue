@@ -65,11 +65,11 @@
       <div class="wrap__2 d-inline-flex flex-fill flex-column justfy-content-center align-self-center;" style="width:100%; height:100%;">
         <v-zoomer class="zoomer d-inline-flex flex-column">
           <imagvue 
+            v-model="imageUrl"
             id="imgExample"
             class="imgExample d-inline-flex justify-content: center"
-            v-model="url"
             :filters="isOpenFilters"
-            :onerror="()=>alert('Please try again')"
+            :onerror="()=>onFailedToLoadImage('Please try again')"
             :width="filters.width" 
             :height="filters.height"
             :brightness="filters.brightness"
@@ -90,28 +90,44 @@
           </imagvue>
         </v-zoomer>
       </div>
-
-      
-
-     
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import VueDragResize from 'vue-drag-resize';
+import VueDragResize from 'vue-drag-resize'
 import imagvue from 'imagvue'
 import VueZoomer from 'vue-zoomer'
-import 'vue-zoomer/dist/vue-zoomer.css' 
+import 'vue-zoomer/dist/vue-zoomer.css'
+import thumbnail from '@/components/SideBarMenuRight/Thumbnail.vue'
+import ImageBox from '../SideBarMenuRight/ImageBox.vue'
+import { EventBus } from '@/event_bus.js'
+import modPath from 'path'
+
 
 Vue.use(VueZoomer)
 
 export default {
   name: 'ToolBar',
+  props: {
+    root: String,
+    filename: String
+  },
   components: {
     imagvue,
     VueDragResize,
-    VueZoomer
+    VueZoomer,
+    thumbnail,
+    ImageBox
+  },
+  created(){
+    EventBus.$on('onNavigationImageClicked',(obj)=>{
+      // console.log(obj)
+      let item = obj.item
+      let joined = modPath.join(modPath.resolve(item.root), item.filename)
+      // console.log(joined)
+      this.url = joined
+    })
   },
   methods: {
     showImgList: function() {
@@ -146,6 +162,9 @@ export default {
         sepia: 0,
       }
     }
+    // onFailedToLoadImage(message) {
+    //   alert(message)
+    // }
   },
   computed: {
     fixedRatioHeight () {
@@ -153,10 +172,42 @@ export default {
     },
     dropShadow() {
       return this.dropShadowJson
+    },
+    fullPath: function() {
+      return modPath.join(modPath.resolve(this.root), this.filename)
+    },
+    imageUrl: function() {
+      console.log('----loading----')
+      console.log(this.url)
+      let el = document.getElementById('imgExample')
+      if (el === null) return ''
+      el.src = this.url
+      return this.url;
     }
   },
+  //   imageUrl: function() {
+  //     window.addEventListener('load', () => {
+  //     let el = document.getElementById('imgExample')
+  //     el.src = this.url
+  //     return this.url;
+  //     })
+  //   }
+  // },
+  // mounted() {
+  //   window.addEventListener('load', () => {
+  //     let el = document.getElementById('imgExample')
+  //     el.src = ''
+  //     return '';
+  //   })
+  // },
+  // updated() {
+  //   let el = document.getElementById('imgExample')
+  //   el.src = this.url
+  //   return this.url;
+  // },
   data() {
     return {
+      cnt: 0,
       width: 0,
       height: 0,
       top: 0,
@@ -183,14 +234,13 @@ export default {
         sepia: 0,
       },
       tooltip: false,
-      // url: 'https://www.radiologycafe.com/images/xrays/xray-mass-lul.jpg',
+      url: 'https://www.radiologycafe.com/images/xrays/xray-mass-lul.jpg',
       // url: 'https://previews.123rf.com/images/sopone/sopone1708/sopone170800194/85157473-xray-film-of-a-patient-with-pulmonary-tuberculosis.jpg',
-      url: 'https://media.mnn.com/assets/images/2012/05/XrayExposure.jpg.653x0_q80_crop-smart.jpg',
+      // url: 'https://media.mnn.com/assets/images/2012/05/XrayExposure.jpg.653x0_q80_crop-smart.jpg',
       errorURL:'https://i.stack.imgur.com/cl91I.png',
       loadUrls:[
         {url:'https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif' , lazy:'https://goo.gl/aiwqia'}
       ],
-      // imageList: imageData.content
     }
   }    
 }
@@ -264,9 +314,9 @@ ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
 .vue-zoomer {
   // overflow: hidden;
 }
-.zoomer {
-  height: 600px;
-}
+// .zoomer {
+//   height: 600px;
+// }
 #imgExample {
   // min-height: 100%;
   // display: flex;
