@@ -16,7 +16,7 @@
     <div>
       <b-modal hide-footer centered id="modal-lg"  title="Confusion Matrix"> 
         <h1>
-          <ConfusionMatrix :data="selectedData"/>
+          <ConfusionMatrix :data="selectedMatrixData"/>
         </h1>
       </b-modal>
     </div>
@@ -94,8 +94,8 @@ import {data} from "../InfoDisplay/confusionMatrixData.js";
 
 // 導入Tab-data
 import {classArray, tabData} from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
-console.log(tabData)
-console.log(classArray)
+// console.log(tabData)
+// console.log(classArray)
 
 // import components
 import Tab from "./Tab";
@@ -132,14 +132,9 @@ export default {
     this.currentView = this.views[0];
   },
   computed:{
-    selectedCategories(){
-      if(this.currentView === 'AllTabInfo'){
-        return this.categories
-      } else if (this.currentView === 'Tab-1info') {
-        return this.categories2
-      }
-    },
-    selectedData(){
+
+    
+    selectedMatrixData(){
       if(this.currentView === 'AllTabInfo'){
         return data[0]
       } else if (this.currentView === 'Tab-1info') {
@@ -152,13 +147,6 @@ export default {
         return data[4]
       } else if (this.currentView === 'Tab-5info'){
         return data[5]
-      }
-    },
-    selectedRows(){
-      if(this.currentView === 'AllTabInfo'){
-        return this.rows
-      } else if (this.currentView === 'Tab-1info') {
-        return this.rows2
       }
     },
 
