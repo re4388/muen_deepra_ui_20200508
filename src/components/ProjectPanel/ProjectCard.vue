@@ -40,7 +40,8 @@ export default {
     creationDate: function () {
       let date = new Date()
       let ts = this.details.creation_timestamp
-      date.setTime(ts.seconds + String(ts.nanos/100000))
+      // unit: milisecond
+      date.setTime(ts.seconds + '000')
       return date.toUTCString().split(' ').slice(0, 5).join(' ')
     }
   },
