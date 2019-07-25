@@ -69,10 +69,10 @@ export default {
   },
   computed: {
     precision() {
-      return this.graphData["x"][this.slider * 5] * 100 + "%";
+      return this.graphData["precision"][this.slider * 5] * 100 + "%";
     },
     recall() {
-      return this.graphData["y"][this.slider * 5] * 100 + "%";
+      return this.graphData["recall"][this.slider * 5] * 100 + "%";
     }
   }
 };

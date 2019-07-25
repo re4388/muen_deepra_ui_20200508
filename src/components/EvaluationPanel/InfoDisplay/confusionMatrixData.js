@@ -1,5 +1,9 @@
 
 
+
+
+
+
 let data = [
   {
     confusionMatrix: [
@@ -81,6 +85,38 @@ let data = [
     labels: ['Class A', 'Class B'],
   }
 ]
+
+
+
+import deepraData_4 from '../deepra.pretty.4class.json'
+import deepraData_10 from '../deepra.10Class.json'
+
+// demo deepraData_10 will error since
+// we don't have corresponding tooltip mounted with 10
+
+// 1. get data from backup json
+let updateData = deepraData_4['metrics']['confusion_matrix']
+let lablesData = deepraData_4['labels'].map(i => i.toString())
+
+// console.log(updateData)
+
+// 2. update allTab matrix data
+data[0]['confusionMatrix'] = updateData
+
+// 3. update alltab label
+data[0]['labels'] = lablesData
+
+
+// 4. update alltab annotations
+// TODO: no backend info yet 
+
+
+
+// 5. TODO: no invidual matrix for each tab yet
+
+
+
+
 
 
 export {

@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <ConfusionMatrix id="modal" v-if="showModal" @close-event="closeModal" />
-
-        <!-- Modal: ROC Graph -->
+    
+    
+        <!-- ROC Graph 的 Modal -->
     <div>
       <b-modal  size="lg" id="roc-chart" title="ROC Chart " hide-footer centered > 
         <h1>
@@ -12,7 +12,7 @@
     </div>
 
 
-    <!-- Modal:Confusion Matrix -->
+    <!-- Confusion Matrix 的 Modal -->
     <div>
       <b-modal hide-footer centered id="modal-lg"  title="Confusion Matrix"> 
         <h1>
@@ -71,8 +71,10 @@
           ></ThresholdAdjustment>
           
 
+          <!-- Confusion Matrix 的按鈕 -->
           <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Confusion Matrix</b-button>
 
+          <!-- relable 的按鈕  還沒建立 TODO:-->
           <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Relable</b-button>
 
         </div>
@@ -86,8 +88,14 @@
 </template>
 
 <script>
+
+// 導入confusionMatrixData 
 import {data} from "../InfoDisplay/confusionMatrixData.js";
-import tabData from "@/components/EvaluationPanel/TabsInfo/Tab-data.json";
+
+// 導入Tab-data
+import {classArray, tabData} from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+console.log(tabData)
+console.log(classArray)
 
 // import components
 import Tab from "./Tab";
@@ -115,7 +123,7 @@ export default {
       views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
       currentView: "",
       newThreshold: 0,
-      showModal: false,
+      
     };
   },
 
@@ -156,6 +164,7 @@ export default {
 
   },
   methods: {
+    // get all tabs
     getView() {
       this.views = this.tabs.map(key => {
         return key.name;
@@ -167,16 +176,7 @@ export default {
     ThresholdChange(obj) {
       this.newThreshold = obj.result;
     },
-    openModal() {
-      this.showModal = true;
-    },
-    closeModal() {
-      this.showModal = false;
-    },
-    // async fetchData() {
-    //   let data = await d3.json("../InfoDisplay/confusionMatrixData");
-    //   this.loadData = data;
-    // }
+    
   }
 };
 </script>

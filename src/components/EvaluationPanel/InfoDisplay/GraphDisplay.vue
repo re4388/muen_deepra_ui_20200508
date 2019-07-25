@@ -9,7 +9,7 @@ import Vue from "vue";
 import VueC3 from "vue-c3";
 import "c3/c3.min.css";
 
-import { CLIENT_RENEG_LIMIT } from "tls";
+
 export default {
   name: "GraphDisplay",
   components: {
@@ -44,8 +44,8 @@ export default {
           x: "x_axis_format",
           columns: [
             ["x_axis_format", "0", "0.2", "0.4", "0.6", "0.8", "1"],
-            ["Precision", ...this.graphData["x"]],
-            ["Recall", ...this.graphData["y"]]
+            ["Precision", ...this.graphData["precision"]],
+            ["Recall", ...this.graphData["recall"]]
           ]
         },
         // https://primer.style/css/support/color-system
@@ -115,6 +115,7 @@ export default {
 
   watch: {
     newThreshold() {
+      console.log(this.newThreshold)
       this.showAnnotation();
     }
   },
