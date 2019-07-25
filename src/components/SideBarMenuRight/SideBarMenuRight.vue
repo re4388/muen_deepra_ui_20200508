@@ -62,13 +62,18 @@ export default {
       this.pathCollector.parseFileList().then((result) => {
         this.images = this.pathCollector.fileList
       })
+    }),
+     // expect to show the first image
+    EventBus.$emit('onLoadFirstImage', ({item, index}) => {
+      this.firstImage = this.pathCollector.fileList[0]
     })
   },
   data () {
     return {
       isShowingImgList: false,
       pathCollector: null,
-      images: []
+      images: [],
+      firstImage: [],
     }
   },
   methods: {

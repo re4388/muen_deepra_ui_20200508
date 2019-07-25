@@ -103,6 +103,7 @@ import thumbnail from '@/components/SideBarMenuRight/Thumbnail.vue'
 import ImageBox from '../SideBarMenuRight/ImageBox.vue'
 import { EventBus } from '@/event_bus.js'
 import modPath from 'path'
+import fileFetecher from '@/utils/file_fetcher.js'
 
 
 Vue.use(VueZoomer)
@@ -121,6 +122,12 @@ export default {
     ImageBox
   },
   created(){
+    // expect to show the first image
+    EventBus.$on('onLoadFirstImage', (obj) => {
+      let item = obj[0].item
+      let joined = modPath.join(modPath.resolve(item.root), item.filename)
+      this.url = joined
+    }),
     EventBus.$on('onNavigationImageClicked',(obj)=>{
       // console.log(obj)
       let item = obj.item
@@ -151,6 +158,9 @@ export default {
       this.left = newRect.left;
     },
     setToDefault() {
+      this.filters = this.defaultValues();
+    },
+    defaultValues() {
       return {
         contrast: 100,
         brightness: 100,
