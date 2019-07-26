@@ -38,26 +38,25 @@
       class="currentView container"
     >
       <!-- tab 標題 -->
-      <div class="row">
+      <div class="row" slot="title" >
         <h5 class="col-12 text-left text-light m-0 mt-4">{{ tab.name }}</h5>
       </div>
 
       <!-- MetricsDisplay -->
-      <div class="row">
+      <div class="row mt-1" slot="MetricsDisplay">
         <MetricsDisplay :metrics-data=" tab.metrics" class="col-12"></MetricsDisplay>
       </div>
 
       <!-- GraphDisplay -->
-      <div class="row">
-        <div class="col-8">
-          <GraphDisplay2 :graph-data="tab.grpah" :new-threshold="newThreshold"></GraphDisplay2>
-
+      <!-- <div class="row" > -->
+        <!-- <div class="col-8" slot="GraphDisplay2"> -->
+          <GraphDisplay2 slot="GraphDisplay2" :graph-data="tab.grpah" :new-threshold="newThreshold"/>
           <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
-        </div>
+        <!-- </div> -->
 
         <!-- ThresholdAdjustment -->
-        <div class="col-4">
-          <ThresholdAdjustment
+        <!-- <div class="col-4" slot="ThresholdAdjustment"> -->
+          <ThresholdAdjustment slot="ThresholdAdjustment"
             class="mt-3"
             :threshold-data="tab.threshold"
             :graph-data="tab.grpah"
@@ -82,8 +81,8 @@
             class="mt-4"
             variant="outline-dark"
           >Relable</b-button>
-        </div>
-      </div>
+        <!-- </div> -->
+      <!-- </div> -->
     </Tab>
   </div>
 </template>

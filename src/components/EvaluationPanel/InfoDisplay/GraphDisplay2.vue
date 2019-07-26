@@ -64,10 +64,10 @@ export default {
         }
       },
         data: {
-          // size: {95
-          //   height: 600,
-          //   width: 600
-          // },
+          size: {
+            height: 600,
+            width: 600
+          },
           xs: this.axisSetting,
           columns: this.dataColumn
         },
@@ -131,7 +131,7 @@ export default {
         },
         legend: {
           show: true,
-          position: "bottom"
+          position: "right"
         }
       };
     }
@@ -139,8 +139,8 @@ export default {
 
   watch: {
     newThreshold() {
-      // console.log(this.newThreshold)
-      // this.showAnnotation();
+      console.log(this.newThreshold)
+      this.showAnnotation();
     }
   },
   methods: {
@@ -153,15 +153,16 @@ export default {
       this.xAxisLabel = this.graphData["xAxisLabel"];
       this.yAxisLabel = this.graphData["yAxisLabel"];
       
-    }
+    },
 
-    // showAnnotation() {
-    //   this.handler.$emit("dispatch", chart => {
-    //     chart.tooltip.show({
-    //       x: this.newThreshold
-    //     });
-    //   });
-    // }
+    showAnnotation() {
+      console.log(this.dataColumn[0][1])
+      this.handler.$emit("dispatch", chart => {
+        chart.tooltip.show({
+          x: this.dataColumn[0][this.newThreshold]
+        });
+      });
+    }
   }
 };
 </script>

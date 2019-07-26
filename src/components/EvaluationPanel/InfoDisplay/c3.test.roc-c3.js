@@ -691,7 +691,7 @@ let fake_metrics = {
     ]
   ],
   [
-    ['thresholds',
+    ['threshold',
       0.01,
       0,
       0,
