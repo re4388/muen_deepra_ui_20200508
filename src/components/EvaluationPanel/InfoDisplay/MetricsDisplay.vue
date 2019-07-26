@@ -14,7 +14,7 @@
       <tbody>
         <tr>
           <td class="td text-light" v-for="(value, key) in metricsData" 
-          :key="key"> {{ value }} </td>
+          :key="key"> {{ value | numberFormater }} </td>
         </tr>
       </tbody>
     </table>
@@ -40,9 +40,22 @@
         score : 2*Precision*Sensitivity/(Precision Sensitivity). AUC: Area under ROC curve
         `
       }
-    }
+    },
+    filters:{
+      numberFormater(val){
+        return parseFloat(val).toFixed(4) * 100 + ' %'
+      }
+    },
 
-  }
+  //   filters: {
+  // capitalize: function (value) {
+  //   if (!value) return ''
+  //   value = value.toString()
+  //   return value.charAt(0).toUpperCase() + value.slice(1)
+  // }
+}
+
+  
 
 </script>
 

@@ -1,22 +1,19 @@
 <template>
   <div class="container">
-    
-    
-        <!-- ROC Graph 的 Modal -->
+    <!-- ROC Graph 的 Modal -->
     <div>
-      <b-modal  size="lg" id="roc-chart" title="ROC Chart " hide-footer centered > 
+      <b-modal size="lg" id="roc-chart" title="ROC Chart " hide-footer centered>
         <h1>
           <ROCGraph />
         </h1>
       </b-modal>
     </div>
 
-
     <!-- Confusion Matrix 的 Modal -->
     <div>
-      <b-modal hide-footer centered id="modal-lg"  title="Confusion Matrix"> 
+      <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
         <h1>
-          <ConfusionMatrix :data="selectedMatrixData"/>
+          <ConfusionMatrix :data="selectedMatrixData" />
         </h1>
       </b-modal>
     </div>
@@ -53,17 +50,10 @@
       <!-- GraphDisplay -->
       <div class="row">
         <div class="col-8">
-          <h5>ROC Charts</h5>
-          <GraphDisplay2 
-          :graph-data="tab.grpah" 
-          :new-threshold="newThreshold">
-          </GraphDisplay2>
-          
+          <GraphDisplay2 :graph-data="tab.grpah" :new-threshold="newThreshold"></GraphDisplay2>
+
           <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
-
         </div>
-
-        
 
         <!-- ThresholdAdjustment -->
         <div class="col-4">
@@ -73,31 +63,37 @@
             :graph-data="tab.grpah"
             @threshold-change="ThresholdChange"
           ></ThresholdAdjustment>
-          
 
           <!-- Confusion Matrix 的按鈕 -->
-          <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Confusion Matrix</b-button>
+          <b-button
+            block
+            pill
+            size="sm"
+            class="mt-4"
+            v-b-modal.modal-lg
+            variant="outline-dark"
+          >Confusion Matrix</b-button>
 
           <!-- relable 的按鈕  還沒建立 TODO:-->
-          <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Relable</b-button>
-
+          <b-button
+            block
+            pill
+            size="sm"
+            class="mt-4"
+            variant="outline-dark"
+          >Relable</b-button>
         </div>
       </div>
     </Tab>
-    
-
-    
   </div>
-  
 </template>
 
 <script>
-
-// 導入confusionMatrixData 
-import {data} from "../InfoDisplay/confusionMatrixData.js";
+// 導入confusionMatrixData
+import { matrixData } from "../InfoDisplay/confusionMatrixData.js";
 
 // 導入Tab-data
-import {classArray, tabData} from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+import { tabData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
 // console.log(tabData)
 // console.log(classArray)
 
@@ -126,8 +122,7 @@ export default {
       tabs: tabData,
       views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
       currentView: "",
-      newThreshold: 0,
-      
+      newThreshold: 0
     };
   },
 
@@ -135,25 +130,34 @@ export default {
     this.getView();
     this.currentView = this.views[0];
   },
-  computed:{
-
-    
-    selectedMatrixData(){
-      if(this.currentView === 'AllTabInfo'){
-        return data[0]
-      } else if (this.currentView === 'Tab-1info') {
-        return data[1]
-      } else if (this.currentView === 'Tab-2info'){
-        return data[2]
-      } else if (this.currentView === 'Tab-3info'){
-        return data[3]
-      } else if (this.currentView === 'Tab-4info'){
-        return data[4]
-      } else if (this.currentView === 'Tab-5info'){
-        return data[5]
+  computed: {
+    // 這邊沒有動態生成，因此有一個上限顯示矩陣的數量，目前是10個類別
+    selectedMatrixData() {
+      if (this.currentView === this.views[0]) {
+        return matrixData[0];
+      } else if (this.currentView === this.views[1]) {
+        return matrixData[1];
+      } else if (this.currentView === this.views[2]) {
+        return matrixData[2];
+      } else if (this.currentView === this.views[3]) {
+        return matrixData[3];
+      } else if (this.currentView === this.views[4]) {
+        return matrixData[4];
+      } else if (this.currentView === this.views[5]) {
+        return matrixData[5];
+      } else if (this.currentView === this.views[6]) {
+        return matrixData[6];
+      } else if (this.currentView === this.views[7]) {
+        return matrixData[7];
+      } else if (this.currentView === this.views[8]) {
+        return matrixData[8];
+      } else if (this.currentView === this.views[9]) {
+        return matrixData[9];
+      } else if (this.currentView === this.views[10]) {
+        return matrixData[10];
       }
-    },
-
+      
+    }
   },
   methods: {
     // get all tabs
@@ -162,13 +166,12 @@ export default {
         return key.name;
       });
     },
-    changeView(obj) {
-      this.currentView = obj.name;
+    changeView(tab) {
+      this.currentView = tab.name;
     },
     ThresholdChange(obj) {
       this.newThreshold = obj.result;
-    },
-    
+    }
   }
 };
 </script>
@@ -187,10 +190,15 @@ export default {
 }
 
 ul.breadcrumb {
+  padding: 6px 10px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border: 1px solid rgb(8, 8, 8);
+  cursor: pointer;
+  background: #696969;
+  margin-bottom: -1px;
+  margin-right: -1px;
   list-style: none;
-  padding: 50px;
-  margin: 10px;
-  background-color: #696969;
   li {
     // display: inline;
     font-size: 18px;
@@ -206,7 +214,7 @@ ul.breadcrumb {
       text-decoration: none;
       &:hover {
         // color: rgba(255, 255, 255, 0.75);
-        color:#121416;
+        color: #121416;
         text-decoration: none;
       }
     }

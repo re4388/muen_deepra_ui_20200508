@@ -1,4 +1,5 @@
 <template>
+<!-- 上層有loop thru每一個tab的name, 又<a>會觸發currentView -->
   <div v-if="name === currentView" class="tab">
     <slot></slot>
   </div>

@@ -1,10 +1,6 @@
-
-
-
-
-
-
-let data = [
+//  原始測試資料
+// array of obj, 每一個 obj have 3 keys: data, label 和annotaion
+let matrixData = [
   {
     confusionMatrix: [
       [169, 10, 12, 0, 12, 169, 10, 12, 0, 12],
@@ -98,32 +94,28 @@ let data = [
 ]
 
 
-
+// 導入外部資料，會更新預設資料
 import deepraData_4 from '../deepra.pretty.4class.json'
 import deepraData_10 from '../deepra.10Class.json'
 
-// demo deepraData_10 will error since
-// we don't have corresponding tooltip mounted with 10
-
-// 1. get data from backup json
+// 整理資料
 let updateData = deepraData_10['metrics']['confusion_matrix']
-let lablesData = deepraData_10['labels'].map(i => i.toString())
-
-// console.log(updateData)
-
-// 2. update allTab matrix data
-data[0]['confusionMatrix'] = updateData
-
-// 3. update alltab label
-data[0]['labels'] = lablesData
+let lablesData = deepraData_10['labels'].map(i => i.toString()) //d3 的label 需要是string
 
 
-// 4. update alltab annotations
-// TODO: no backend info yet 
+// 更新原始資料
+matrixData[0]['confusionMatrix'] = updateData
+
+
+// 更新原始資料標籤
+matrixData[0]['labels'] = lablesData
+
+
+// TODO: 還需要標籤資料
 
 
 
-// 5. TODO: no invidual matrix for each tab yet
+// TODO: 還需要個別的矩陣資料
 
 
 
@@ -131,5 +123,5 @@ data[0]['labels'] = lablesData
 
 
 export {
-  data
+  matrixData
 }

@@ -7,7 +7,7 @@
 <script>
 // import backend data
 import deepraData_10 from "../deepra.10Class.json";
-console.log(deepraData_10["metrics"]["precision_prcurve"]["0"]);
+// console.log(deepraData_10["metrics"]["precision_prcurve"]["0"]);
 
 // import vue
 import Vue from "vue";
@@ -33,119 +33,43 @@ export default {
 
   data() {
     return {
-      handler: new Vue() // C3 handler
+      handler: new Vue(), // C3 handler
+      axisSetting: {}, // c3 axis setting
+      dataColumn: [], // c3 data
+      chartTitle:"",
+      xAxisLabel:'',
+      yAxisLabel:'',
     };
   },
-
   mounted() {
+    this.initData(); // must to initdata first, then init C3 options
     this.handler.$emit("init", this.options); // init C3 options
   },
   computed: {
     // c3 options, data和各種設定都在這邊，動態的所以放在computed
     options() {
       return {
+        padding: {
+        top: 0
+      },
+        title: {
+        show: false,
+        text: this.chartTitle,
+        position: 'top-center',   // top-left, top-center and top-right
+        padding: {
+          top: 3,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      },
         data: {
-          // size: {
+          // size: {95
           //   height: 600,
           //   width: 600
           // },
-          title: {
-            text: "My Title"
-          },
-          xs: {
-            "tpr_roccurve of class 9": "fpr_roccurve of class 9",
-            "tpr_roccurve of class 8": "fpr_roccurve of class 8",
-            "tpr_roccurve of class 7": "fpr_roccurve of class 7",
-            "tpr_roccurve of class 6": "fpr_roccurve of class 6",
-            "tpr_roccurve of class 5": "fpr_roccurve of class 5",
-            "tpr_roccurve of class 4": "fpr_roccurve of class 4",
-            "tpr_roccurve of class 3": "fpr_roccurve of class 3",
-            "tpr_roccurve of class 2": "fpr_roccurve of class 2",
-            "tpr_roccurve of class 1": "fpr_roccurve of class 1",
-            "tpr_roccurve of class 0": "fpr_roccurve of class 0"
-          },
-          columns: [
-            [
-              "fpr_roccurve of class 0",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["0"]
-            ],
-            [
-              "tpr_roccurve of class 0",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["0"]
-            ],
-            [
-              "fpr_roccurve of class 1",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["1"]
-            ],
-            [
-              "tpr_roccurve of class 1",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["1"]
-            ],
-            [
-              "fpr_roccurve of class 2",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["2"]
-            ],
-            [
-              "tpr_roccurve of class 2",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["2"]
-            ],
-            [
-              "fpr_roccurve of class 3",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["3"]
-            ],
-            [
-              "tpr_roccurve of class 3",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["3"]
-            ],
-            [
-              "fpr_roccurve of class 4",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["4"]
-            ],
-            [
-              "tpr_roccurve of class 4",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["4"]
-            ],
-            [
-              "fpr_roccurve of class 5",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["5"]
-            ],
-            [
-              "tpr_roccurve of class 5",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["5"]
-            ],
-            [
-              "fpr_roccurve of class 6",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["6"]
-            ],
-            [
-              "tpr_roccurve of class 6",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["6"]
-            ],
-            [
-              "fpr_roccurve of class 7",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["7"]
-            ],
-            [
-              "tpr_roccurve of class 7",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["7"]
-            ],
-            [
-              "fpr_roccurve of class 8",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["8"]
-            ],
-            [
-              "tpr_roccurve of class 8",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["8"]
-            ],
-            [
-              "fpr_roccurve of class 9",
-              ...deepraData_10["metrics"]["fpr_roccurve"]["9"]
-            ],
-            [
-              "tpr_roccurve of class 9",
-              ...deepraData_10["metrics"]["tpr_roccurve"]["9"]
-            ]
-          ]
+          xs: this.axisSetting,
+          columns: this.dataColumn
         },
         // https://primer.style/css/support/color-system
         // color: {
@@ -164,9 +88,9 @@ export default {
               outer: false
             },
             label: {
-              text: "1 - Specificity (False Positive Rate)",
+              text: this.xAxisLabel,
               position: "outer-center"
-              // textColor: 'white',
+              
             }
           },
           y: {
@@ -178,7 +102,7 @@ export default {
               outer: false
             },
             label: {
-              text: "Sensitivity (True Positive Rate)",
+              text: this.yAxisLabel,
               position: "outer-middle"
             }
           }
@@ -219,8 +143,18 @@ export default {
       // this.showAnnotation();
     }
   },
-
   methods: {
+    initData() {
+      // get data from upper component
+      // console.log(this.graphData)
+      this.axisSetting = this.graphData["axisSetting"];
+      this.dataColumn = this.graphData["dataColumn"];
+      this.chartTitle = this.graphData["ChartTitle"];
+      this.xAxisLabel = this.graphData["xAxisLabel"];
+      this.yAxisLabel = this.graphData["yAxisLabel"];
+      
+    }
+
     // showAnnotation() {
     //   this.handler.$emit("dispatch", chart => {
     //     chart.tooltip.show({
