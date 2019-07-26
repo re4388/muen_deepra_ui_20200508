@@ -52,17 +52,21 @@
 
       <!-- GraphDisplay -->
       <div class="row">
-        <div class="col-6">
-          <GraphDisplay :graph-data="tab.grpah" :new-threshold="newThreshold"></GraphDisplay>
+        <div class="col-8">
+          <h5>ROC Charts</h5>
+          <GraphDisplay2 
+          :graph-data="tab.grpah" 
+          :new-threshold="newThreshold">
+          </GraphDisplay2>
           
-          <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button>
+          <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
 
         </div>
 
         
 
         <!-- ThresholdAdjustment -->
-        <div class="col-6">
+        <div class="col-4">
           <ThresholdAdjustment
             class="mt-3"
             :threshold-data="tab.threshold"
@@ -100,7 +104,7 @@ import {classArray, tabData} from "@/components/EvaluationPanel/TabsInfo/Tab-dat
 // import components
 import Tab from "./Tab";
 import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
-import GraphDisplay from "../InfoDisplay/GraphDisplay";
+import GraphDisplay2 from "../InfoDisplay/GraphDisplay2";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
 import ROCGraph from "../InfoDisplay/ROCGraph";
@@ -111,7 +115,7 @@ export default {
   components: {
     Tab,
     MetricsDisplay,
-    GraphDisplay,
+    GraphDisplay2,
     ThresholdAdjustment,
     ConfusionMatrix,
     ROCGraph
@@ -119,7 +123,7 @@ export default {
 
   data() {
     return {
-      tabs: tabData.content,
+      tabs: tabData,
       views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
       currentView: "",
       newThreshold: 0,
