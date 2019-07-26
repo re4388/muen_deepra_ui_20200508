@@ -50,7 +50,11 @@
       <!-- GraphDisplay -->
       <!-- <div class="row" > -->
         <!-- <div class="col-8" slot="GraphDisplay2"> -->
-          <GraphDisplay2 slot="GraphDisplay2" :graph-data="tab.grpah" :new-threshold="newThreshold"/>
+          <GraphDisplay2 
+          class="outterGrpah"
+          slot="GraphDisplay2" 
+          :graph-data="tab.grpah" 
+          :new-threshold="newThreshold"/>
           <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
         <!-- </div> -->
 
@@ -181,6 +185,16 @@ export default {
 
 
 <style lang="scss" scoped>
+
+
+.outterGrpah {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-self: center;
+  height: 500px;
+  width: 700px;
+}
 #modal {
   position: absolute;
   left: calc(20% - 50px);

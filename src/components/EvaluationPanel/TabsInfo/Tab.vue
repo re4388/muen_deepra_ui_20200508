@@ -4,7 +4,7 @@
     <slot name="title"></slot>
     <slot name="MetricsDisplay"></slot>
 
-    <div class="row">
+    <div class="row innerGrpah">
       <dir :class="[activeClass]">
         <slot name="GraphDisplay2"></slot>
       </dir>
@@ -28,22 +28,26 @@ export default {
   },
   data() {
     return {
-      isShow: true,
+      isShow: true
       // activeClass:'col-8'
     };
   },
-  computed:{
-    activeClass(){
-      if (this.currentView === 'all class'){
-        return 'col-12'
+  computed: {
+    activeClass() {
+      if (this.currentView === "all class") {
+        return "col-12";
       } else {
-        return 'col-8'
+        return "col-8";
       }
-      
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+.innerGrpah {
+  align-self: center;
+  /* height: 1000px;
+  width: 1000px; */
+}
 </style>

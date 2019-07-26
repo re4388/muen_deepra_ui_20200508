@@ -65,8 +65,8 @@ export default {
       },
         data: {
           size: {
-            height: 600,
-            width: 600
+            height: 1200,
+            width: 1200
           },
           xs: this.axisSetting,
           columns: this.dataColumn
@@ -139,7 +139,7 @@ export default {
 
   watch: {
     newThreshold() {
-      console.log(this.newThreshold)
+      console.log("this.newThreshold", this.newThreshold)
       this.showAnnotation();
     }
   },
@@ -156,7 +156,7 @@ export default {
     },
 
     showAnnotation() {
-      console.log(this.dataColumn[0][1])
+      console.log("threshold",this.dataColumn[0][this.newThreshold])
       this.handler.$emit("dispatch", chart => {
         chart.tooltip.show({
           x: this.dataColumn[0][this.newThreshold]
