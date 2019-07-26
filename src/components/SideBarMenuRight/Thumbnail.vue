@@ -17,6 +17,9 @@ export default {
     root: String,
     filename: String
   },
+  created() {
+    EventBus.$emit('onNavigationImageClicked', this.item[0]);
+  },
   computed: {
     fullPath: function () {
       return modPath.join(modPath.resolve(this.root), this.filename)
@@ -25,6 +28,9 @@ export default {
   methods: {
     onClick () {
       this.$emit('click', this._props)
+    },
+    onload () {
+      this.$emit('onFirstImageLoaded', (obj))
     }
   }
 }

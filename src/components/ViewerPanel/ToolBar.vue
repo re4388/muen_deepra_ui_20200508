@@ -69,7 +69,6 @@
             id="imgExample"
             class="imgExample d-inline-flex justify-content: center"
             :filters="isOpenFilters"
-            :onerror="()=>onFailedToLoadImage('Please try again')"
             :width="filters.width" 
             :height="filters.height"
             :brightness="filters.brightness"
@@ -82,14 +81,20 @@
             :sepia="filters.sepia"
             :customData="customData()"
             >
-            <transition-group 
-            src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" 
-            :lazy="1000"
-            >
-            </transition-group>        
           </imagvue>
+          <!-- <img :src="firstImage" id="firstImage"/> -->
+          <!-- <firstImage :images="firstImage"/> -->
         </v-zoomer>
+
+        <img 
+        :src="firstImageUrl"
+        id="firstImage"
+        class="firstImage" 
+        />
       </div>
+
+    
+
   </div>
 </template>
 
@@ -100,11 +105,12 @@ import imagvue from 'imagvue'
 import VueZoomer from 'vue-zoomer'
 import 'vue-zoomer/dist/vue-zoomer.css'
 import thumbnail from '@/components/SideBarMenuRight/Thumbnail.vue'
-import ImageBox from '../SideBarMenuRight/ImageBox.vue'
+import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue'
+import imageData from '@/components/SideBarMenuRight/image_data.json'
 import { EventBus } from '@/event_bus.js'
 import modPath from 'path'
 import fileFetecher from '@/utils/file_fetcher.js'
-
+// import FirstImage from '@/components/ViewerPanel/FirstImge.vue'
 
 Vue.use(VueZoomer)
 
@@ -118,14 +124,20 @@ export default {
     imagvue,
     VueDragResize,
     VueZoomer,
-    thumbnail,
-    ImageBox
+    thumbnail
   },
   created(){
-    // expect to show the first image
-    EventBus.$on('onLoadFirstImage', (obj) => {
-      let item = obj[0].item
-      let joined = modPath.join(modPath.resolve(item.root), item.filename)
+    // // expect to show the first image
+    // EventBus.$on('onLoadFirstImage', (obj) => {
+    //   let item = obj[0].item
+    //   let joined = modPath.join(modPath.resolve(item.root), item.filename)
+    //   this.url = joined
+    // }),
+    EventBus.$on('onFirstImageLoaded',(obj)=>{
+      // console.log(obj)
+      let item = obj.item[0]
+      let joined = modPath.join(modPath.resolve(item[0].root), item[0].filename)
+      // console.log(joined)
       this.url = joined
     }),
     EventBus.$on('onNavigationImageClicked',(obj)=>{
@@ -172,9 +184,6 @@ export default {
         sepia: 0,
       }
     }
-    // onFailedToLoadImage(message) {
-    //   alert(message)
-    // }
   },
   computed: {
     fixedRatioHeight () {
@@ -186,15 +195,24 @@ export default {
     fullPath: function() {
       return modPath.join(modPath.resolve(this.root), this.filename)
     },
+    firstImageUrl: function() {
+      console.log('----loading----')  
+      console.log(this.url)
+      let el = document.getElementById('imgExample')
+      if (el === null) return ''
+      el.src = this.url
+      return this.url;
+    },
     imageUrl: function() {
       console.log('----loading----')
       console.log(this.url)
       let el = document.getElementById('imgExample')
       if (el === null) return ''
       el.src = this.url
-      return this.url;
+      return this.url
     }
   },
+
   //   imageUrl: function() {
   //     window.addEventListener('load', () => {
   //     let el = document.getElementById('imgExample')
@@ -217,6 +235,8 @@ export default {
   // },
   data() {
     return {
+      pathCollector: null,
+      firstImage: [],
       cnt: 0,
       width: 0,
       height: 0,
@@ -244,13 +264,8 @@ export default {
         sepia: 0,
       },
       tooltip: false,
-      url: 'https://www.radiologycafe.com/images/xrays/xray-mass-lul.jpg',
-      // url: 'https://previews.123rf.com/images/sopone/sopone1708/sopone170800194/85157473-xray-film-of-a-patient-with-pulmonary-tuberculosis.jpg',
-      // url: 'https://media.mnn.com/assets/images/2012/05/XrayExposure.jpg.653x0_q80_crop-smart.jpg',
-      errorURL:'https://i.stack.imgur.com/cl91I.png',
-      loadUrls:[
-        {url:'https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif' , lazy:'https://goo.gl/aiwqia'}
-      ],
+      // firstImageUrl: 'http://www.clker.com/cliparts/n/b/Q/a/X/U/number-1-black-round-md.png',
+      url: 'https://yt3.ggpht.com/a/AGF-l79qoSji84zhO0ZXgvbcGvHkYfjxX6O3ycrxmQ=s900-mo-c-c0xffffffff-rj-k-no'
     }
   }    
 }
@@ -335,5 +350,14 @@ ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
   object-fit: contain;
   // width: auto;
   height: 100%;
+}
+
+.firstImage {
+  width: 40px;
+  height: 40px;
+  background: white;
+  position: fixed;
+  top: 200px;
+  left: 300px;
 }
 </style>

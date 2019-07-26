@@ -20,7 +20,7 @@
       <div class="noteTitle"><h5>Edit Log</br> & </br>Note</h5></br></div>
       <div class="note"><p>20190523</p></div>
       <div class="note"><p>Model 1 Predict as Label1</p></div>
-    </div>
+    </div>    
   </div>
 </template>   
 <!-- <template v-for="(item, index) in imageList">
@@ -50,10 +50,10 @@ export default {
     ImageBox
   },
   watch: {
-    isShowingImgList() {}
+    isShowingImgList() {} 
   },
   created () {
-    EventBus.$once('viewerDatasetChanged', () => {
+    EventBus.$once('viewerDatasetChanged',()=>{
       // Parse path of images from dataset and assign to `this.images`
       let dataset = this.$store.getters['Viewer/currentDataset']
       console.log(dataset)
@@ -62,18 +62,13 @@ export default {
       this.pathCollector.parseFileList().then((result) => {
         this.images = this.pathCollector.fileList
       })
-    }),
-     // expect to show the first image
-    EventBus.$emit('onLoadFirstImage', ({item, index}) => {
-      this.firstImage = this.pathCollector.fileList[0]
     })
   },
   data () {
     return {
       isShowingImgList: false,
       pathCollector: null,
-      images: [],
-      firstImage: [],
+      images: []
     }
   },
   methods: {

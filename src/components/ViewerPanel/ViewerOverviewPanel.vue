@@ -13,14 +13,15 @@ import SidebarRight from '@/components/SideBarMenuRight/SideBarMenuRight.vue';
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue';
 import imagvue from 'imagvue';
 import VueDragResize from 'vue-drag-resize';
-import ViewerContainer from './ViewerContainer.vue';
+// import ViewerContainer from './ViewerContainer.vue';
 import datasetService from '@/api/dataset_service.js'
 import { EventBus } from '@/event_bus.js'
+import fileFetecher from '@/utils/file_fetcher.js'
 
 export default {
   name:"ViewerOverviewPanel",
   components: {
-    ViewerContainer,
+    // ViewerContainer,
     SidebarRight,
     ToolBar,
     imagvue,
