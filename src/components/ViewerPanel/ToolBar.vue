@@ -100,19 +100,12 @@
 <script>
 import VueDragResize from 'vue-drag-resize';
 import imagvue from 'imagvue'
-// NOTE: dependency `parcel-bundler` used by `vue-zoomer` makes distributed
-//   electron application unable to launched sucessfully.
-//   (ReferenceError: `parcelRequire is not defined`)
-//   So that we change the source of `vue-zoomer` from released source in
-//   npm modules to cloned source in `src/vendor/vue-zoomer/src`.
-import VueZoomer from '@/vendor/vue-zoomer/src'
 
 export default {
   name: 'ToolBar',
   components: {
     imagvue,
     VueDragResize,
-    VueZoomer
   },
   methods: {
     showImgList: function() {
