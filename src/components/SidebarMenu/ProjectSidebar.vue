@@ -28,6 +28,16 @@
       return {
         menu: [
           {
+            title: 'Profile',
+            href: '/project-profile',
+            icon: {
+              element: 'font-awesome-icon',
+              attributes: {
+                icon: 'folder'
+              }
+            }
+          },
+          {
             title: 'Images',
             href: '/viewer-overview',
             icon: {
