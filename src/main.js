@@ -49,6 +49,7 @@ import TrainingPanel from './components/TrainingPanel/TrainingPanel.vue'
 import ViewerOverviewPanel from './components/ViewerPanel/ViewerOverviewPanel.vue'
 import EvaluationPanel from './components/EvaluationPanel/EvaluationPanel.vue'
 import ProjectProfile from './components/ProjectPanel/ProjectProfile.vue'
+import ModelProfile from './components/ModelPanel/ModelProfile.vue'
 
 const router = new VueRouter({
   routes: [
@@ -91,6 +92,16 @@ const router = new VueRouter({
       path: '/project-profile',
       name: 'ProjectProfile',
       component: ProjectProfile
+    },
+    {
+      path: '/model-profile',
+      name: 'ModelProfile',
+      component: ModelProfile
+    },
+    {
+      path: '/testing',
+      name: 'Test',
+      component: null
     }
   ]
 })

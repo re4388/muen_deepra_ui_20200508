@@ -52,6 +52,7 @@ export default {
 #model-overview-panel {
   min-height: 100%;
   background-color: gray;
+  overflow-y: scroll;
 }
 .page-content {
   margin-top: 150px;

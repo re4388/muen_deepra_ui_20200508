@@ -29,26 +29,27 @@ function getModelList () {
   })
 }
 
-// function getProject (uuid) {
-//   let projectManagementService = protoUtils.getServicer(
-//     protoPath, protoPackageName, 'ProjectManagement'
-//   )
+function getModel (uuid) {
+  let modelManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ModelManagement'
+  )
 
-//   return new Promise((resolve, reject) => {
-//     projectManagementService.GetProject(
-//       {uuid: uuid}, (err, resp) => {
-//         if (err != null) {
-//           console.log(err)
-//         }
-//         console.log('------ got project from backend -----')
-//         console.log(resp)
-//         resolve(resp)
-//       }
-//     )
-//   })
-// }
+  return new Promise((resolve, reject) => {
+    modelManagementService.GetModel(
+      {uuid: uuid}, (err, resp) => {
+        if (err != null) {
+          console.log(err)
+        }
+        console.log('------ got model from backend -----')
+        console.log(resp)
+        resolve(resp)
+      }
+    )
+  })
+}
 
 export default {
   getModelList,
+  getModel,
   ModelInfo
 }

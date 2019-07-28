@@ -16,6 +16,7 @@
 import TopNavbar from '@/components/TopNavbar.vue'
 import Sidebar from '@/components/SidebarMenu/SidebarMenu.vue'
 import ProjectSidebar from '@/components/SidebarMenu/ProjectSidebar.vue'
+import ModelSidebar from '@/components/SidebarMenu/ModelSidebar.vue'
 import BasePanel from '@/components/BasePanel.vue'
 import { EventBus } from '@/event_bus.js'
 
@@ -24,6 +25,7 @@ export default {
   components: {
     Sidebar,
     ProjectSidebar,
+    ModelSidebar,
     TopNavbar,
     BasePanel
   },
@@ -55,7 +57,8 @@ export default {
       currentEntry: 'main',
       sidebarType: {
         main: 'Sidebar',
-        project: 'ProjectSidebar'
+        project: 'ProjectSidebar',
+        model: 'ModelSidebar'
       }
     }
   }

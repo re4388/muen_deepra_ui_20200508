@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { EventBus } from '@/event_bus.js'
+
 export default {
   name: 'ModelCard',
   props: {
@@ -66,7 +68,9 @@ export default {
   },
   methods: {
     selectModel () {
-      console.log('model selected')
+      this.$store.dispatch('Model/setCurrentModel', this.details)
+      EventBus.$emit('entryChanged', 'model')
+      this.$router.push('/model-profile')
     }
   },
   data () {
