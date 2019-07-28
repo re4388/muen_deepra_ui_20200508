@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, screen } from 'electron'
 import {
   createProtocol,
   installVueDevtools
@@ -16,9 +16,10 @@ protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true
 
 function createWindow () {
   // Create the browser window.
+  let { width, height } = screen.getPrimaryDisplay().workAreaSize
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: width,
+    height: height,
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
@@ -36,8 +37,6 @@ function createWindow () {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-
-  win.maximize()
 
   win.on('closed', () => {
     win = null
