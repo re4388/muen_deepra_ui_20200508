@@ -61,6 +61,9 @@ export default {
       this.pathCollector = new fileFetecher.DatasetPathCollector(dataset)
       this.pathCollector.parseFileList().then((result) => {
         this.images = this.pathCollector.fileList
+        console.log('ready to emit event `onFirstImageLoaded`')
+        console.log(this.images)
+        EventBus.$emit('onFirstImageLoaded', this.images[0])
       })
     })
   },

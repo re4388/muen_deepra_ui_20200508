@@ -1,6 +1,6 @@
 <template>
   <div class="first-image" id="first-image" @click="onClick">click me
-    <img :src=firstPath class="content"/>
+    <img :src=firstPath class="firstImageContent"/>
   </div>
 </template>   
      
@@ -14,6 +14,9 @@ export default {
   props: {
     root: String,
     filename: String
+  },
+  created() {
+    EventBus.$emit('viewerDatasetChanged', this.item[0]);
   },
   computed: {
     firstPath: function () {
@@ -29,7 +32,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
+.firstImageContent {
   width: 40px;
   height: 40px;
   background: white;

@@ -18,7 +18,7 @@ export default {
     filename: String
   },
   created() {
-    EventBus.$emit('onNavigationImageClicked', this.item[0]);
+    // EventBus.$emit('onNavigationImageClicked', this.item[0]);
   },
   computed: {
     fullPath: function () {
@@ -28,10 +28,10 @@ export default {
   methods: {
     onClick () {
       this.$emit('click', this._props)
-    },
-    onload () {
-      this.$emit('onFirstImageLoaded', (obj))
     }
+    // onload () {
+    //   this.$emit('onFirstImageLoaded', (obj))
+    // }
   }
 }
 </script>

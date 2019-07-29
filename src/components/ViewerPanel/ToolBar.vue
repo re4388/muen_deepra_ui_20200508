@@ -66,9 +66,9 @@
         <v-zoomer class="zoomer d-inline-flex flex-column">
           <imagvue 
             v-model="imageUrl"
+            :src="firstImage"
             id="imgExample"
-            class="imgExample d-inline-flex justify-content: center"
-            :filters="isOpenFilters"
+            class="imgExample d-inline-flex justify-content: center"            :filters="isOpenFilters"
             :width="filters.width" 
             :height="filters.height"
             :brightness="filters.brightness"
@@ -81,26 +81,36 @@
             :sepia="filters.sepia"
             :customData="customData()"
             >
+          <!-- <transition>
+            <img 
+            v-show="isLoad" 
+            :src="url" 
+            @load="loaded"
+            >
+          </transition> -->
+
           </imagvue>
           <!-- <img :src="firstImage" id="firstImage"/> -->
           <!-- <firstImage :images="firstImage"/> -->
         </v-zoomer>
 
-        <!-- <img 
-        :src="firstImageUrl"
-        id="firstImage"
-        class="firstImage" 
-        /> -->
-      </div>
-
+        <!-- 
+        <template>
+          <img 
+          :key="index"
+          id="firstImage"
+          class="firstImage" 
+          src="firstImageUrl"
+          @click="showFirstImage(item, index)"
+          />
+        </template> -->
     
-
+  </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import VueDragResize from 'vue-drag-resize'
 import imagvue from 'imagvue'
 import VueZoomer from 'vue-zoomer'
 import 'vue-zoomer/dist/vue-zoomer.css'
@@ -110,7 +120,7 @@ import imageData from '@/components/SideBarMenuRight/image_data.json'
 import { EventBus } from '@/event_bus.js'
 import modPath from 'path'
 import fileFetecher from '@/utils/file_fetcher.js'
-// import FirstImage from '@/components/ViewerPanel/FirstImge.vue'
+import FirstImage from '@/components/ViewerPanel/FirstImge.vue'
 
 Vue.use(VueZoomer)
 
@@ -122,24 +132,24 @@ export default {
   },
   components: {
     imagvue,
-    VueDragResize,
     VueZoomer,
     thumbnail
   },
   created(){
+    this.initializeComponent()
     // // expect to show the first image
     // EventBus.$on('onLoadFirstImage', (obj) => {
     //   let item = obj[0].item
     //   let joined = modPath.join(modPath.resolve(item.root), item.filename)
     //   this.url = joined
+    // },
+    // EventBus.$on('onFirstImageLoaded',(obj)=>{
+    //   // console.log(obj)
+    //   let item = obj.item[0]
+    //   let joined = modPath.join(modPath.resolve(item[0].root), item[0].filename)
+    //   // console.log(joined)
+    //   this.url = joined
     // }),
-    EventBus.$on('onFirstImageLoaded',(obj)=>{
-      // console.log(obj)
-      let item = obj.item[0]
-      let joined = modPath.join(modPath.resolve(item[0].root), item[0].filename)
-      // console.log(joined)
-      this.url = joined
-    }),
     EventBus.$on('onNavigationImageClicked',(obj)=>{
       // console.log(obj)
       let item = obj.item
@@ -147,8 +157,36 @@ export default {
       // console.log(joined)
       this.url = joined
     })
+    // // method 01
+    // EventBus.$on('onFirstImageLoaded', (obj) => {
+    //   console.log(obj)
+    //   let item = obj
+    //   let joined = modPath.join(modPath.resolve(item.root), item.filename)
+    //   // console.log(joined)
+    //   this.url = joined
+    // })
+    // method 02
+    EventBus.$once('viewerDatasetChanged',()=>{
+    // Parse path of images from dataset and assign to `this.images`
+    let dataset = this.$store.getters['Viewer/currentDataset']
+    console.log(dataset)
+
+    let pathCollector = new fileFetecher.DatasetPathCollector(dataset)
+    pathCollector.parseFileList().then((result) => {
+      let firstImage = pathCollector.fileList[0]
+      let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
+      this.url = joined
+      })
+    })
   },
   methods: {
+    initializeComponent() {
+    },
+    showFirstImage(item, index) {
+      console.log('--- event `loaded the first image` issued ---')
+      console.log(item, index)
+      EventBus.$emit('viewerDatasetChanged', {item, index})
+    },
     showImgList: function() {
       let el = document.querySelector('.title')
       el.classList.toggle('show')
@@ -196,9 +234,9 @@ export default {
       return modPath.join(modPath.resolve(this.root), this.filename)
     },
     firstImageUrl: function() {
-      console.log('----loading----')  
+      console.log('----loading the first image----')  
       console.log(this.url)
-      let el = document.getElementById('imgExample')
+      let el = document.getElementById('firstImage')
       if (el === null) return ''
       el.src = this.url
       return this.url;
@@ -212,7 +250,6 @@ export default {
       return this.url
     }
   },
-
   //   imageUrl: function() {
   //     window.addEventListener('load', () => {
   //     let el = document.getElementById('imgExample')
@@ -236,7 +273,6 @@ export default {
   data() {
     return {
       pathCollector: null,
-      firstImage: [],
       cnt: 0,
       width: 0,
       height: 0,
@@ -353,8 +389,8 @@ ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
 }
 
 .firstImage {
-  width: 40px;
-  height: 40px;
+  width: 100px;
+  height: 100px;
   background: white;
   position: fixed;
   top: 200px;

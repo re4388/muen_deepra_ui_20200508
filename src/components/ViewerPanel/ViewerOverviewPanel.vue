@@ -2,6 +2,7 @@
   <div id="viewer-overview-panel" class="container-main">
     <ToolBar class="toolbar"/>    
     <SidebarRight/>
+    <firstImage :images="images"/>
     <!-- <ViewerContainer/> -->
     <!-- <imag-vue-panel></imag-vue-panel> -->
   </div>
@@ -12,11 +13,11 @@ import Vue from "vue";
 import SidebarRight from '@/components/SideBarMenuRight/SideBarMenuRight.vue';
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue';
 import imagvue from 'imagvue';
-import VueDragResize from 'vue-drag-resize';
 // import ViewerContainer from './ViewerContainer.vue';
 import datasetService from '@/api/dataset_service.js'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
+import FirstImage from '@/components/ViewerPanel/FirstImge.vue'
 
 export default {
   name:"ViewerOverviewPanel",
@@ -25,7 +26,7 @@ export default {
     SidebarRight,
     ToolBar,
     imagvue,
-    VueDragResize
+    FirstImage
   },
   computed: {
   },
@@ -33,7 +34,8 @@ export default {
     return {
       image: null,
       loading: true,
-      dataset: null
+      dataset: null,
+      images: []
     }
   },
   computed:{
@@ -43,6 +45,16 @@ export default {
   },
   created () {
     this.fetchData()
+    // EventBus.$once('viewerDatasetChanged',()=>{
+    // // Parse path of images from dataset and assign to `this.images`
+    // let dataset = this.$store.getters['Viewer/currentDataset']
+    // console.log(dataset)
+
+    // this.pathCollector = new fileFetecher.DatasetPathCollector(dataset)
+    // this.pathCollector.parseFileList().then((result) => {
+    //   this.images = this.pathCollector.fileList
+    //   })
+    // })
   },
   methods: {
     fetchData () {
