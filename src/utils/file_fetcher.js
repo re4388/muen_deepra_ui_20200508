@@ -18,6 +18,7 @@ class DatasetPathCollector {
         let folderPath = this.folderPath
         let temp = result.split(/\r\n|\n/)
           // .splice(1, this.defaultBatchSize)
+          // ignore the first file(.csv)
           .splice(1)
           .map(function(x) {
             return {

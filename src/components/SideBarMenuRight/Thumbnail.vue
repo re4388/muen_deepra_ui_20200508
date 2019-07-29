@@ -29,9 +29,6 @@ export default {
     onClick () {
       this.$emit('click', this._props)
     }
-    // onload () {
-    //   this.$emit('onFirstImageLoaded', (obj))
-    // }
   }
 }
 </script>

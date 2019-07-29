@@ -2,9 +2,6 @@
   <div id="viewer-overview-panel" class="container-main">
     <ToolBar class="toolbar"/>    
     <SidebarRight/>
-    <firstImage :images="images"/>
-    <!-- <ViewerContainer/> -->
-    <!-- <imag-vue-panel></imag-vue-panel> -->
   </div>
 </template>
 
@@ -13,20 +10,16 @@ import Vue from "vue";
 import SidebarRight from '@/components/SideBarMenuRight/SideBarMenuRight.vue';
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue';
 import imagvue from 'imagvue';
-// import ViewerContainer from './ViewerContainer.vue';
 import datasetService from '@/api/dataset_service.js'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
-import FirstImage from '@/components/ViewerPanel/FirstImge.vue'
 
 export default {
   name:"ViewerOverviewPanel",
   components: {
-    // ViewerContainer,
     SidebarRight,
     ToolBar,
-    imagvue,
-    FirstImage
+    imagvue
   },
   computed: {
   },
@@ -34,8 +27,7 @@ export default {
     return {
       image: null,
       loading: true,
-      dataset: null,
-      images: []
+      dataset: null
     }
   },
   computed:{
@@ -57,6 +49,9 @@ export default {
     // })
   },
   methods: {
+    // methosd-1
+    // when the viewerDatasetChanged, get the current dataset from store,
+    // and emit the message(to ToolBar)
     fetchData () {
       let currentProject = this.$store.getters['Project/currentProject']
       if (currentProject === null) {

@@ -22,18 +22,7 @@
       <div class="note"><p>Model 1 Predict as Label1</p></div>
     </div>    
   </div>
-</template>   
-<!-- <template v-for="(item, index) in imageList">
-  <div class="x-rayFilms" :key="index">
-    <img class="overlay" src="item.src" height="40px">
-  </div>
-</template> -->
-<!-- <template v-for="(item, index) in imageList">
-  <div :key="index">
-    <p>{{ item.src }}</p>
-    <img :src="item.src"/>
-  </div>
-</template> -->        
+</template>        
 <script>
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
 import imageData from './image_data.json'
@@ -63,7 +52,11 @@ export default {
         this.images = this.pathCollector.fileList
         console.log('ready to emit event `onFirstImageLoaded`')
         console.log(this.images)
-        EventBus.$emit('onFirstImageLoaded', this.images[0])
+        // // methods-2
+        // // when receive the massage about viewerDatasetChanged,
+        // // get the current dataset from store as the images
+        // // emit the event about "onFirstImageLoaded" and the parameter (this.images[0]) (to toolBar)
+        // EventBus.$emit('onFirstImageLoaded', this.images[0])
       })
     })
   },
