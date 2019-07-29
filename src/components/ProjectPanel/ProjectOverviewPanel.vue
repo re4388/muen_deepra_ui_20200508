@@ -42,8 +42,6 @@ export default {
   methods: {
     createProject () {
       this.$router.push('/import-data')
-      this.$store.dispatch('setCurrentEntry', 'project')
-      EventBus.$emit('entryChanged', 'project')
     },
     fetchProjectData () {
       projectManager.getProjectList().then((result) => {

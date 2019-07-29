@@ -38,16 +38,6 @@
             }
           },
           {
-            title: 'Images',
-            href: '/viewer-overview',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'folder'
-              }
-            }
-          },
-          {
             title: 'Train',
             href: '/training',
             icon: {
@@ -64,6 +54,16 @@
               element: 'font-awesome-icon',
               attributes: {
                 icon: 'cube'
+              }
+            }
+          },
+          {
+            title: 'Images',
+            href: '/viewer-overview',
+            icon: {
+              element: 'font-awesome-icon',
+              attributes: {
+                icon: 'folder'
               }
             }
           },
