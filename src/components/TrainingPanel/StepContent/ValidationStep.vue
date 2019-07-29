@@ -86,7 +86,7 @@ export default {
 .progress {
   margin: 0px 0px 20px 0px;
 }
-.training-progress {
+.validation-step {
   color: black;
   padding: 20px;
 }

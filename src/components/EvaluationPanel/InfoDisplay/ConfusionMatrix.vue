@@ -11,6 +11,7 @@
 import * as d3 from "d3";
 
 export default {
+  name:'ConfusionMatrix',
   props: ["data"],
   mounted() {
     // console.log(this.data);
