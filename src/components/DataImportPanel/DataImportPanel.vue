@@ -22,6 +22,11 @@
             <p v-else>Next</p>
           </div>
         </a>
+        <a class="btn-flow-control" id="btn-cancel" @click="returnToProjectPage">
+          <div class="content">
+            <p>Cancel</p>
+          </div>
+        </a>
       </div>
     </div>
   </div>
@@ -74,6 +79,9 @@ export default {
     },
     finializeProjectCreation () {
       // TODO: save meta data by backend
+    },
+    returnToProjectPage () {
+      this.$router.push('/project-overview')
     }
   },
   data () {
@@ -135,6 +143,11 @@ $btn-height: 50px;
       transform: translate3D(2px, 2px, 0px);
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
+  }
+}
+#btn-cancel {
+  & .content {
+    background-color: rgba(200, 0, 0, 0.75);
   }
 }
 </style>
