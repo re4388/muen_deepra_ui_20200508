@@ -97,8 +97,11 @@ import { matrixData } from "../InfoDisplay/confusionMatrixData.js";
 
 // 導入Tab-data
 import { tabData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+// import { tabData,createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
 // console.log(tabData)
 // console.log(classArray)
+// let data = {} // from store, from parsed file
+// let temp = createData(data.lables, data.metrics)
 
 // import components
 import Tab from "./Tab";

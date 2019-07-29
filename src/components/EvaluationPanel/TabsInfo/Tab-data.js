@@ -112,7 +112,8 @@ function createData(lables = "", metric = {}) {
 
 }
 
-import deepraData_4 from '../deepra.pretty.4class.json'
+
+// import deepraData_4 from '../deepra.pretty.4class.json'
 import deepraData_10 from '../deepra.10Class.json'
 
 let lables = deepraData_10['labels']
@@ -123,5 +124,4 @@ let tabData = createData(lables, metrics)
 
 export {
   tabData,
-
 }
