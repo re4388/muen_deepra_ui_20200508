@@ -62,6 +62,8 @@ export default {
       this.currentStep = stepId
     },
     enterToNextStep () {
+      // TODO: rewrite this by switch-case clause
+      // TODO: redirect page when use press the `Done` button
       if (this.currentStep < this.stepContent.length - 1) {
         if (this.currentStep === this.stepOfTraining && !this.isTrainingFinished) {
           return

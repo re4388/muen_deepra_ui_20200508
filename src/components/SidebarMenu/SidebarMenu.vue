@@ -47,56 +47,6 @@
             }
           },
           {
-            title: 'Import data',
-            href: '/import-data',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'cube'
-              }
-            }
-          },
-          {
-            title: 'Train',
-            href: '/training',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'cube'
-              }
-            }
-          },
-          {
-            title: 'Evaluate',
-            href: '/evaluation',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'cube'
-              }
-            }
-          },
-          {
-            title: 'ProjectProfile',
-            href: '/project-profile',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'cube'
-              }
-            }
-          },
-          {
-            title: 'Viewer',
-            href: '/viewer-overview',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'cube'
-              }
-            }
-          },
-          {
             header: true,
             component: separator,
             visiableOnCollapse: true
