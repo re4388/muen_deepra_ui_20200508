@@ -118,7 +118,7 @@ import * as d3 from 'd3'
 import d3legend from 'd3-svg-legend'
 
 //導入資料
-import data from './ROC_data.json'
+import data from './ROC_data.js'
 // console.log(data)
 
 

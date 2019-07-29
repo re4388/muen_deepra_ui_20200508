@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       title: "First Image Dataset Model 1",
+      // TODO: there's some dynamic data in the description
       description: `The Model evaluation report is created at 09:21, 2019/05/17. 
         In this analysis, We analyzed 4463 image, and these images were divided in 5 fold for training dataset and validation dataset. 
         It is take 10hr for training .
