@@ -11,10 +11,13 @@
 import * as d3 from "d3";
 
 export default {
-  name:'ConfusionMatrix',
+  name: "ConfusionMatrix",
   props: ["data"],
+  data(){
+    return {}
+  },
   mounted() {
-    // console.log(this.data);
+    // console.log(...this.data.confusionMatrix)
 
     // setup svg margin
     var margin = {
@@ -27,6 +30,7 @@ export default {
     //data assignment
     var confusionMatrix = [
       ...this.data.confusionMatrix
+      // data is like below:
       // [169, 10, 12, 0, 12],
       // [7, 46, 12, 1, 1],
       // [1, 2, 3, 33, 0],
@@ -35,7 +39,8 @@ export default {
     ];
 
     var lableMatrix = [
-      ...this.data.lableMatrix
+        ...this.data.confusionMatrixAnnotation
+      // data is like below:
       // ["img01, img03", "img02,img04", "img23", "no img", "img09"],
       // ["no_img", "img05", "img12", "img09", "no img"],
       // ["no_img", "img05", "img12", "no img  ", "no img"],
@@ -44,7 +49,7 @@ export default {
     ];
 
     var labels = [
-      ...this.data.labels
+      ...this.data.confusionMatrixLable
       // "Class A", "Class B", "Class C", "Class D", "Class E"
     ];
 
@@ -78,6 +83,7 @@ export default {
     });
 
     // 根據資料結構算row and col
+    // for example:
     // [ [169,10],
     // [7 ,46] ];
     var numrows = data.length; // => 2
@@ -101,8 +107,7 @@ export default {
       .attr("width", width)
       .attr("height", height);
 
-    // scale
-    // rangeBands 可以看做是總長度的分段，有幾個數值，就會分成「數值-1」段
+    // setup scale
     var x = d3
       .scaleBand() // scaleBand
       .domain(d3.range(numcols)) // d3.range(numcols) => (0,1)
@@ -113,11 +118,6 @@ export default {
       .domain(d3.range(numrows)) // d3.range(numrows) => (0,1)
       .range([0, height]); // height = 250
 
-    // colorMap by max, min val and self-defined color
-    var colorMap = d3
-      .scaleLinear()
-      .domain([minValue, maxValue])
-      .range([startColor, endColor]);
 
     //選擇所有的roll->綁定data->獲取enter部分(資料比元素多的部份)->平移
     var row = svg
@@ -143,9 +143,9 @@ export default {
         return "translate(" + x(i) + ", 0)";
       });
 
-    // console.log(cell)
 
-    // 設定cell為rect
+
+    // cell rect
     cell
       .append("rect")
       .attr("width", x.bandwidth())
@@ -153,7 +153,8 @@ export default {
     // .style("stroke-width", 1)
     // .style("stroke", 'blue')
 
-    // cell 加上text
+
+    // cell text
     cell
       .append("text")
       .style("font-size", "16px")
@@ -169,6 +170,7 @@ export default {
         return d;
       });
 
+
     // Define the div for the tooltip
     var div = d3
       .select("body")
@@ -180,48 +182,68 @@ export default {
 
     // console.log(data,data2)
 
-    // Add color & tooltip
+
+
+
+    // Add color
+
+    // colorMap by max, min val and self-defined color
+    var colorMap = d3
+      .scaleLinear()
+      .domain([minValue, maxValue])
+      .range([startColor, endColor]);
+
+
     row
       .selectAll(".cell")
       .data(function(d, i) {
         return data[i];
       })
       .style("fill", colorMap)
-      .data(function(d, i) {
-        return data2[i];
-      })
-      .on("mouseover", function(d, i) {
-        div
-          .transition()
-          .duration(200)
-          .style("opacity", 1);
-        div
-          .html("<br /> File include: " + d)
-          .style("background", "lightsteelblue")
-          .style("line-height", "20px")
-          .style("display", "inline-block")
-          .style("height", "60px")
-          // .style('margin','10px')
-          .style("padding-bottom", "10px")
-          .style("padding-left", "15px")
-          .style("padding-right", "15px")
-          .style("border-radius", "20px")
-          // .style('text-align','center')
-          .style("left", d3.event.pageX + "px")
-          .style("top", d3.event.pageY + "px");
-      })
-      .on("mouseout", function(d) {
-        div
-          .transition()
-          .duration(200)
-          .style("opacity", 0);
-      });
+
+
+
+    // Add tooltip
+
+    // row
+    //   .selectAll(".cell")
+    //   .data(function(d, i) {
+    //     return data[i];
+    //   })
+    //   .on("mouseover", function(d, i) {
+    //     div
+    //       .transition()
+    //       .duration(200)
+    //       .style("opacity", 1);
+    //     div
+    //       .html("<br /> File include: " + d)
+    //       .style("background", "lightsteelblue")
+    //       .style("line-height", "20px")
+    //       .style("display", "inline-block")
+    //       .style("height", "60px")
+    //       // .style('margin','10px')
+    //       .style("padding-bottom", "10px")
+    //       .style("padding-left", "15px")
+    //       .style("padding-right", "15px")
+    //       .style("border-radius", "20px")
+    //       // .style('text-align','center')
+    //       .style("left", d3.event.pageX + "px")
+    //       .style("top", d3.event.pageY + "px");
+    //   })
+    //   .on("mouseout", function(d) {
+    //     div
+    //       .transition()
+    //       .duration(200)
+    //       .style("opacity", 0);
+    //   });
+
+
+
 
     // lable Part
-
     var labels = svg.append("g").attr("class", "labels");
 
-    // col 的label
+    // col label
     var columnLabels = labels
       .selectAll(".column-label")
       .data(labelsData)
@@ -232,7 +254,7 @@ export default {
         return "translate(" + x(i) + "," + height + ")";
       });
 
-    // 標籤上面那兩個小小的線, 線的顏色和寬，和線的(x1,y1) (x2,y2)
+
     columnLabels
       .append("line")
       .style("stroke", "black")
@@ -242,7 +264,7 @@ export default {
       .attr("y1", 0)
       .attr("y2", 5);
 
-    // text的位置 x,y圓點, 用dy定義y的位置
+    
     columnLabels
       .append("text")
       .style("font-size", "16px")

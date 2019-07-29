@@ -1,13 +1,5 @@
 <template>
   <div class="container">
-    <!-- ROC Graph 的 Modal -->
-    <div>
-      <b-modal size="lg" id="roc-chart" title="ROC Chart " hide-footer centered>
-        <h1>
-          <ROCGraph />
-        </h1>
-      </b-modal>
-    </div>
 
     <!-- Confusion Matrix 的 Modal -->
     <div>
@@ -92,10 +84,8 @@
 </template>
 
 <script>
-// 導入confusionMatrixData
-import { matrixData } from "../InfoDisplay/confusionMatrixData.js";
 
-// This line is to disconnect from autoDL and test from local Json
+// This localJson file is to test without link to autoDL
 import localJson from '../deepra.10Class.json'
 
 // import data
@@ -113,7 +103,6 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay2 from "../InfoDisplay/GraphDisplay2";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
-import ROCGraph from "../InfoDisplay/ROCGraph";
 
 export default {
   name: "Tabs",
@@ -124,7 +113,6 @@ export default {
     GraphDisplay2,
     ThresholdAdjustment,
     ConfusionMatrix,
-    ROCGraph
   },
 
   data() {
@@ -138,12 +126,13 @@ export default {
   },
   created() {
     console.log('--- Tabs: fetching data from store ---')
-
+    
+    // load data
     // TODO: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
     // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
     let data = localJson
     
-    console.log(data)
+    // console.log(data)
 
     if (data.content === null) {
       let projectInfo = this.$store.getters['Project/currentProject']
@@ -173,6 +162,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.tabs)
   },
   computed: {
     
@@ -184,27 +174,27 @@ export default {
 
     // 這邊沒有動態生成，因此有一個上限顯示矩陣的數量，目前是10個類別
       if (this.currentView === this.views[0]) {
-        return matrixData[0];
+        return this.tabs['0']['confusionMatrixInfo']
       } else if (this.currentView === this.views[1]) {
-        return matrixData[1];
+        return this.tabs['1']['confusionMatrixInfo']
       } else if (this.currentView === this.views[2]) {
-        return matrixData[2];
+        return this.tabs['2']['confusionMatrixInfo']
       } else if (this.currentView === this.views[3]) {
-        return matrixData[3];
+        return this.tabs['3']['confusionMatrixInfo']
       } else if (this.currentView === this.views[4]) {
-        return matrixData[4];
+        return this.tabs['4']['confusionMatrixInfo']
       } else if (this.currentView === this.views[5]) {
-        return matrixData[5];
+        return this.tabs['5']['confusionMatrixInfo']
       } else if (this.currentView === this.views[6]) {
-        return matrixData[6];
+        return this.tabs['6']['confusionMatrixInfo']
       } else if (this.currentView === this.views[7]) {
-        return matrixData[7];
+        return this.tabs['7']['confusionMatrixInfo']
       } else if (this.currentView === this.views[8]) {
-        return matrixData[8];
+        return this.tabs['8']['confusionMatrixInfo']
       } else if (this.currentView === this.views[9]) {
-        return matrixData[9];
+        return this.tabs['9']['confusionMatrixInfo']
       } else if (this.currentView === this.views[10]) {
-        return matrixData[10];
+        return this.tabs['10']['confusionMatrixInfo']
       }
       
     }

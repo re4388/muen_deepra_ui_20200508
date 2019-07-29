@@ -51,6 +51,23 @@ function createData(lables = "", metric = {}) {
       "precision": [0.45, 0.5, 0.6, 0.7, 0.8, 1],
       "recall": [1, 0.75, 0.5, 0.25, 0.1, 0],
       "image": 1000
+    },
+    'confusionMatrixInfo': {
+      confusionMatrix: [...metric['confusion_matrix']],
+      confusionMatrixLable: [...lables],
+      // TODO: need to import dynamically later
+      confusionMatrixAnnotation: [
+        ["img01, img03", "img02,img04", "img23", "no img", "img09", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "img09", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"],
+        ["no_img", "img05", "img12", "no img  ", "no img", "no_img", "img05", "img12", "no img  ", "no img"]
+      ]
     }
   })
 
@@ -94,9 +111,26 @@ function createData(lables = "", metric = {}) {
         "precision": [0.45, 0.5, 0.6, 0.7, 0.8, 1],
         "recall": [1, 0.75, 0.5, 0.25, 0.1, 0],
         "image": "N/A"
+      },
+      'confusionMatrixInfo': {
+        // TODO: need to import dynamically later
+        confusionMatrix: [
+          [1, 0],
+          [7, 0],
+        ],
+        // TODO: need to import dynamically later
+        confusionMatrixLable: [
+          0,1
+        ],
+        // TODO: need to import dynamically later
+        confusionMatrixAnnotation: [
+          ['img01, img03', 'img02,img04'],
+          ['no_img', 'img05'],
+        ],
       }
     })
   }
+
 
 
 
@@ -106,15 +140,12 @@ function createData(lables = "", metric = {}) {
 
 
 // import deepraData_4 from '../deepra.pretty.4class.json'
-import deepraData_10 from '../deepra.10Class.json'
+// import deepraData_10 from '../deepra.10Class.json'
 
-let lables = deepraData_10['labels']
-let metrics = deepraData_10['metrics']
-
-// let tabData = createData(lables, metrics)
-
+// let lables = deepraData_10['labels']
+// let metrics = deepraData_10['metrics']
 
 export {
   createData,
-  // tabData,
+
 }
