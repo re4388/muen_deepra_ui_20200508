@@ -5,24 +5,16 @@
     <slot name="MetricsDisplay"></slot>
 
     <div class="container">
-
-
       <div class="row innerGrpah">
-
         <div :class="[activeClass]">
           <slot name="GraphDisplay2"></slot>
         </div>
 
-
         <div class="col-sm-auto" v-if="currentView !== 'all class'">
           <slot name="ThresholdAdjustment"></slot>
         </div>
-
-        <slot></slot>
-
+        <slot />
       </div>
-
-
     </div>
   </div>
 </template>

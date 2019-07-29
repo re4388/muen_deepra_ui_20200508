@@ -48,17 +48,18 @@
       </div>
 
       <!-- GraphDisplay -->
-    
+      <!-- <div class="row" > -->
+        <!-- <div class="col-8" slot="GraphDisplay2"> -->
           <GraphDisplay2 
           class="outterGrpah"
           slot="GraphDisplay2" 
           :graph-data="tab.grpah" 
           :new-threshold="newThreshold"/>
           <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
-        
+        <!-- </div> -->
 
         <!-- ThresholdAdjustment -->
-      
+        <!-- <div class="col-4" slot="ThresholdAdjustment"> -->
           <ThresholdAdjustment slot="ThresholdAdjustment"
             class="mt-3"
             :threshold-data="tab.threshold"
@@ -84,7 +85,8 @@
             class="mt-4"
             variant="outline-dark"
           >Relable</b-button>
-   
+        <!-- </div> -->
+      <!-- </div> -->
     </Tab>
   </div>
 </template>
@@ -93,15 +95,13 @@
 // 導入confusionMatrixData
 import { matrixData } from "../InfoDisplay/confusionMatrixData.js";
 
-// 導入Tab-data
-// import { tabData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
-// import { tabData,createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
-// console.log(tabData)
-// console.log(classArray)
-// let data = {} // from store, from parsed file
-// let temp = createData(data.lables, data.metrics)
+// This line is to disconnect from autoDL and test from local Json
+import localJson from '../deepra.10Class.json'
 
+// import data
 import { createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+
+// import need modules
 import modPath from 'path'
 import modFs from 'fs'
 import fileFetcher from "@/utils/file_fetcher.js"
@@ -138,7 +138,11 @@ export default {
   },
   created() {
     console.log('--- Tabs: fetching data from store ---')
-    let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+
+    // TODO: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
+    // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+    let data = localJson
+    
     console.log(data)
 
     if (data.content === null) {
@@ -169,17 +173,16 @@ export default {
     }
   },
   mounted() {
-    // this.getView();
-    // this.currentView = this.views[0];
   },
   computed: {
-    // 這邊沒有動態生成，因此有一個上限顯示矩陣的數量，目前是10個類別
+    
     selectedMatrixData() {
       // Check whether `this.views` is loaded or not. If not, skip this operation.
       if (this.views === undefined) {
         return
       }
 
+    // 這邊沒有動態生成，因此有一個上限顯示矩陣的數量，目前是10個類別
       if (this.currentView === this.views[0]) {
         return matrixData[0];
       } else if (this.currentView === this.views[1]) {
