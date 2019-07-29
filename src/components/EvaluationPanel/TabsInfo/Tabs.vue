@@ -196,7 +196,7 @@ export default {
   justify-content: center;
   align-self: center;
   height: 500px;
-  width: 700px;
+  width: 600px;
 }
 #modal {
   position: absolute;
