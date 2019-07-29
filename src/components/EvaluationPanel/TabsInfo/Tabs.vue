@@ -1,22 +1,19 @@
 <template>
   <div class="container">
-    <ConfusionMatrix id="modal" v-if="showModal" @close-event="closeModal" />
-
-        <!-- Modal: ROC Graph -->
+    <!-- ROC Graph 的 Modal -->
     <div>
-      <b-modal  size="lg" id="roc-chart" title="ROC Chart " hide-footer centered > 
+      <b-modal size="lg" id="roc-chart" title="ROC Chart " hide-footer centered>
         <h1>
           <ROCGraph />
         </h1>
       </b-modal>
     </div>
 
-
-    <!-- Modal:Confusion Matrix -->
+    <!-- Confusion Matrix 的 Modal -->
     <div>
-      <b-modal hide-footer centered id="modal-lg"  title="Confusion Matrix"> 
+      <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
         <h1>
-          <ConfusionMatrix :data="selectedData"/>
+          <ConfusionMatrix :data="selectedMatrixData" />
         </h1>
       </b-modal>
     </div>
@@ -41,58 +38,81 @@
       class="currentView container"
     >
       <!-- tab 標題 -->
-      <div class="row">
+      <div class="row" slot="title" >
         <h5 class="col-12 text-left text-light m-0 mt-4">{{ tab.name }}</h5>
       </div>
 
       <!-- MetricsDisplay -->
-      <div class="row">
+      <div class="row mt-1" slot="MetricsDisplay">
         <MetricsDisplay :metrics-data=" tab.metrics" class="col-12"></MetricsDisplay>
       </div>
 
       <!-- GraphDisplay -->
-      <div class="row">
-        <div class="col-6">
-          <GraphDisplay :graph-data="tab.grpah" :new-threshold="newThreshold"></GraphDisplay>
-          
-          <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button>
-
-        </div>
-
-        
+      <!-- <div class="row" > -->
+        <!-- <div class="col-8" slot="GraphDisplay2"> -->
+          <GraphDisplay2 
+          class="outterGrpah"
+          slot="GraphDisplay2" 
+          :graph-data="tab.grpah" 
+          :new-threshold="newThreshold"/>
+          <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
+        <!-- </div> -->
 
         <!-- ThresholdAdjustment -->
-        <div class="col-6">
-          <ThresholdAdjustment
+        <!-- <div class="col-4" slot="ThresholdAdjustment"> -->
+          <ThresholdAdjustment slot="ThresholdAdjustment"
             class="mt-3"
             :threshold-data="tab.threshold"
             :graph-data="tab.grpah"
             @threshold-change="ThresholdChange"
           ></ThresholdAdjustment>
-          
 
-          <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Confusion Matrix</b-button>
+          <!-- Confusion Matrix 的按鈕 -->
+          <b-button
+            block
+            pill
+            size="sm"
+            class="mt-4"
+            v-b-modal.modal-lg
+            variant="outline-dark"
+          >Confusion Matrix</b-button>
 
-          <b-button  block pill size="sm"  class="mt-4" v-b-modal.modal-lg variant="outline-dark">Relable</b-button>
-
-        </div>
-      </div>
+          <!-- relable 的按鈕  還沒建立 TODO:-->
+          <b-button
+            block
+            pill
+            size="sm"
+            class="mt-4"
+            variant="outline-dark"
+          >Relable</b-button>
+        <!-- </div> -->
+      <!-- </div> -->
     </Tab>
-    
-
-    
   </div>
-  
 </template>
 
 <script>
-import {data} from "../InfoDisplay/confusionMatrixData.js";
-import tabData from "@/components/EvaluationPanel/TabsInfo/Tab-data.json";
+// 導入confusionMatrixData
+import { matrixData } from "../InfoDisplay/confusionMatrixData.js";
+
+// 導入Tab-data
+// import { tabData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+// import { tabData,createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+// console.log(tabData)
+// console.log(classArray)
+// let data = {} // from store, from parsed file
+// let temp = createData(data.lables, data.metrics)
+
+import { createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+import modPath from 'path'
+import modFs from 'fs'
+import fileFetcher from "@/utils/file_fetcher.js"
+import vueUtils from "@/api/vue_utils.js"
 
 // import components
 import Tab from "./Tab";
 import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
-import GraphDisplay from "../InfoDisplay/GraphDisplay";
+import GraphDisplay2 from "../InfoDisplay/GraphDisplay2";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
 import ROCGraph from "../InfoDisplay/ROCGraph";
@@ -103,7 +123,7 @@ export default {
   components: {
     Tab,
     MetricsDisplay,
-    GraphDisplay,
+    GraphDisplay2,
     ThresholdAdjustment,
     ConfusionMatrix,
     ROCGraph
@@ -111,72 +131,96 @@ export default {
 
   data() {
     return {
-      tabs: tabData.content,
+      // tabs: tabData,
+      tabs: null,  // initialize as null to avoid rendering when component is just created
       views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
       currentView: "",
-      newThreshold: 0,
-      showModal: false,
+      newThreshold: 0
     };
   },
+  created() {
+    console.log('--- Tabs: fetching data from store ---')
+    let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+    console.log(data)
 
-  mounted() {
-    this.getView();
-    this.currentView = this.views[0];
+    if (data.content === null) {
+      let projectInfo = this.$store.getters['Project/currentProject']
+      console.log('--- no parsed validation output, try to retrieve data from cached folder ---')
+
+      let cachedDir = modPath.join(projectInfo.location, 'deepra_output', '.cached')
+      let fn = modPath.join(cachedDir, 'validation_output.json')
+
+      let parsed = null
+      fileFetcher.readJson(fn, true).then((result) => {
+        console.log('--- parsed json ---')
+        console.log(result)
+        parsed = result
+
+        let tabData = createData(parsed.labels, parsed.metrics)
+        console.log('--- parsed tabData ---')
+        console.log(tabData)
+        this.tabs = tabData
+        this.getView();
+        this.currentView = this.views[0];
+      })
+    } else {
+      let tabData = createData(data.labels, data.metrics)
+      this.tabs = tabData
+      this.getView();
+      this.currentView = this.views[0];
+    }
   },
-  computed:{
-    selectedCategories(){
-      if(this.currentView === 'AllTabInfo'){
-        return this.categories
-      } else if (this.currentView === 'Tab-1info') {
-        return this.categories2
+  mounted() {
+    // this.getView();
+    // this.currentView = this.views[0];
+  },
+  computed: {
+    // 這邊沒有動態生成，因此有一個上限顯示矩陣的數量，目前是10個類別
+    selectedMatrixData() {
+      // Check whether `this.views` is loaded or not. If not, skip this operation.
+      if (this.views === undefined) {
+        return
       }
-    },
-    selectedData(){
-      if(this.currentView === 'AllTabInfo'){
-        return data[0]
-      } else if (this.currentView === 'Tab-1info') {
-        return data[1]
-      } else if (this.currentView === 'Tab-2info'){
-        return data[2]
-      } else if (this.currentView === 'Tab-3info'){
-        return data[3]
-      } else if (this.currentView === 'Tab-4info'){
-        return data[4]
-      } else if (this.currentView === 'Tab-5info'){
-        return data[5]
-      }
-    },
-    selectedRows(){
-      if(this.currentView === 'AllTabInfo'){
-        return this.rows
-      } else if (this.currentView === 'Tab-1info') {
-        return this.rows2
-      }
-    },
 
+      if (this.currentView === this.views[0]) {
+        return matrixData[0];
+      } else if (this.currentView === this.views[1]) {
+        return matrixData[1];
+      } else if (this.currentView === this.views[2]) {
+        return matrixData[2];
+      } else if (this.currentView === this.views[3]) {
+        return matrixData[3];
+      } else if (this.currentView === this.views[4]) {
+        return matrixData[4];
+      } else if (this.currentView === this.views[5]) {
+        return matrixData[5];
+      } else if (this.currentView === this.views[6]) {
+        return matrixData[6];
+      } else if (this.currentView === this.views[7]) {
+        return matrixData[7];
+      } else if (this.currentView === this.views[8]) {
+        return matrixData[8];
+      } else if (this.currentView === this.views[9]) {
+        return matrixData[9];
+      } else if (this.currentView === this.views[10]) {
+        return matrixData[10];
+      }
+      
+    }
   },
   methods: {
+    // get all tabs
     getView() {
       this.views = this.tabs.map(key => {
         return key.name;
       });
     },
-    changeView(obj) {
-      this.currentView = obj.name;
+    changeView(tab) {
+      this.currentView = tab.name;
     },
     ThresholdChange(obj) {
       this.newThreshold = obj.result;
-    },
-    openModal() {
-      this.showModal = true;
-    },
-    closeModal() {
-      this.showModal = false;
-    },
-    // async fetchData() {
-    //   let data = await d3.json("../InfoDisplay/confusionMatrixData");
-    //   this.loadData = data;
-    // }
+    }
   }
 };
 </script>
@@ -187,6 +231,16 @@ export default {
 
 
 <style lang="scss" scoped>
+
+
+.outterGrpah {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-self: center;
+  height: 500px;
+  width: 700px;
+}
 #modal {
   position: absolute;
   left: calc(20% - 50px);
@@ -195,10 +249,15 @@ export default {
 }
 
 ul.breadcrumb {
+  padding: 6px 10px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border: 1px solid rgb(8, 8, 8);
+  cursor: pointer;
+  background: #696969;
+  margin-bottom: -1px;
+  margin-right: -1px;
   list-style: none;
-  padding: 50px;
-  margin: 10px;
-  background-color: #696969;
   li {
     // display: inline;
     font-size: 18px;
@@ -214,7 +273,7 @@ ul.breadcrumb {
       text-decoration: none;
       &:hover {
         // color: rgba(255, 255, 255, 0.75);
-        color:#121416;
+        color: #121416;
         text-decoration: none;
       }
     }

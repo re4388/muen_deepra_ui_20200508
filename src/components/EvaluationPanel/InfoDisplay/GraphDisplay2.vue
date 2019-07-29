@@ -5,13 +5,19 @@
 </template>
 
 <script>
+// import backend data
+import deepraData_10 from "../deepra.10Class.json";
+// console.log(deepraData_10["metrics"]["precision_prcurve"]["0"]);
+
+// import vue
 import Vue from "vue";
+
+// import c3 related package
 import VueC3 from "vue-c3";
 import "c3/c3.min.css";
 
-
 export default {
-  name: "GraphDisplay",
+  name: "GraphDisplay2",
   components: {
     VueC3
   },
@@ -19,39 +25,56 @@ export default {
   props: {
     graphData: {
       type: Object
-      // required:true,
     },
     newThreshold: {
       type: Number
-      // required:true,
     }
   },
 
   data() {
     return {
-      handler: new Vue() // C3 handler
+      handler: new Vue(), // C3 handler
+      axisSetting: {}, // c3 axis setting
+      dataColumn: [], // c3 data
+      chartTitle:"",
+      xAxisLabel:'',
+      yAxisLabel:'',
     };
   },
-
   mounted() {
-    this.handler.$emit("init", this.options); // C3, need to init first
+    this.initData(); // must to initdata first, then init C3 options
+    this.handler.$emit("init", this.options); // init C3 options
   },
   computed: {
     // c3 options, data和各種設定都在這邊，動態的所以放在computed
     options() {
       return {
+        padding: {
+        top: 0
+      },
+        title: {
+        show: false,
+        text: this.chartTitle,
+        position: 'top-center',   // top-left, top-center and top-right
+        padding: {
+          top: 3,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      },
         data: {
-          x: "x_axis_format",
-          columns: [
-            ["x_axis_format", "0", "0.2", "0.4", "0.6", "0.8", "1"],
-            ["Precision", ...this.graphData["precision"]],
-            ["Recall", ...this.graphData["recall"]]
-          ]
+          size: {
+            height: 1200,
+            width: 1200
+          },
+          xs: this.axisSetting,
+          columns: this.dataColumn
         },
         // https://primer.style/css/support/color-system
-        color: {
-          pattern: ["#24292e", "#d1d5da"]
-        },
+        // color: {
+        //   pattern: ["#24292e", "#d1d5da"]
+        // },
         axis: {
           x: {
             padding: {
@@ -61,13 +84,13 @@ export default {
             // height: 50,
             show: true,
             tick: {
-              //  values: [0, 0.2, 0.4, 0.6, 0.8, 1],
+              values: [0, 0.2, 0.4, 0.6, 0.8, 1],
               outer: false
             },
             label: {
-              text: "Score threshold",
+              text: this.xAxisLabel,
               position: "outer-center"
-              // textColor: 'white',
+              
             }
           },
           y: {
@@ -75,10 +98,11 @@ export default {
             max: 1,
             min: 0,
             tick: {
+              values: [0, 0.2, 0.4, 0.6, 0.8, 1],
               outer: false
             },
             label: {
-              text: "Precision / Recall",
+              text: this.yAxisLabel,
               position: "outer-middle"
             }
           }
@@ -107,7 +131,7 @@ export default {
         },
         legend: {
           show: true,
-          position: "bottom",
+          position: "right"
         }
       };
     }
@@ -115,16 +139,27 @@ export default {
 
   watch: {
     newThreshold() {
-      console.log(this.newThreshold)
+      console.log("this.newThreshold", this.newThreshold)
       this.showAnnotation();
     }
   },
-
   methods: {
+    initData() {
+      // get data from upper component
+      // console.log(this.graphData)
+      this.axisSetting = this.graphData["axisSetting"];
+      this.dataColumn = this.graphData["dataColumn"];
+      this.chartTitle = this.graphData["ChartTitle"];
+      this.xAxisLabel = this.graphData["xAxisLabel"];
+      this.yAxisLabel = this.graphData["yAxisLabel"];
+      
+    },
+
     showAnnotation() {
+      console.log("threshold",this.dataColumn[0][this.newThreshold])
       this.handler.$emit("dispatch", chart => {
         chart.tooltip.show({
-          x: this.newThreshold
+          x: this.dataColumn[0][this.newThreshold]
         });
       });
     }
