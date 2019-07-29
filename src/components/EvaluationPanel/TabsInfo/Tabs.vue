@@ -129,8 +129,8 @@ export default {
     
     // load data
     // TODO: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-    // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-    let data = localJson
+    let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+    // let data = localJson
     
     // console.log(data)
 
