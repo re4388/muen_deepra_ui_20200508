@@ -9,7 +9,6 @@ function createData(lables = "", metric = {}) {
     axisObj[`tpr_roccurve of class ${i}`] = `fpr_roccurve of class ${i}`
   }
 
-
   // 1.1.2 create all_class dataColumne
   let dataArray = [] // will later store to dataColumn
 
@@ -20,7 +19,6 @@ function createData(lables = "", metric = {}) {
     fprTemp[`${i}`] = metric['fpr_roccurve'][`${i}`]
     tprTemp[`${i}`] = metric['tpr_roccurve'][`${i}`]
   }
-
 
   // push fpr first
   for (let i = 0; i < lables.length; i++) {
@@ -119,9 +117,10 @@ import deepraData_10 from '../deepra.10Class.json'
 let lables = deepraData_10['labels']
 let metrics = deepraData_10['metrics']
 
-let tabData = createData(lables, metrics)
+// let tabData = createData(lables, metrics)
 
 
 export {
-  tabData,
+  createData,
+  // tabData,
 }

@@ -96,12 +96,18 @@
 import { matrixData } from "../InfoDisplay/confusionMatrixData.js";
 
 // 導入Tab-data
-import { tabData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+// import { tabData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
 // import { tabData,createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
 // console.log(tabData)
 // console.log(classArray)
 // let data = {} // from store, from parsed file
 // let temp = createData(data.lables, data.metrics)
+
+import { createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+import modPath from 'path'
+import modFs from 'fs'
+import fileFetcher from "@/utils/file_fetcher.js"
+import vueUtils from "@/api/vue_utils.js"
 
 // import components
 import Tab from "./Tab";
@@ -125,20 +131,57 @@ export default {
 
   data() {
     return {
-      tabs: tabData,
+      // tabs: tabData,
+      tabs: null,  // initialize as null to avoid rendering when component is just created
       views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
       currentView: "",
       newThreshold: 0
     };
   },
+  created() {
+    console.log('--- Tabs: fetching data from store ---')
+    let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+    console.log(data)
 
+    if (data.content === null) {
+      let projectInfo = this.$store.getters['Project/currentProject']
+      console.log('--- no parsed validation output, try to retrieve data from cached folder ---')
+
+      let cachedDir = modPath.join(projectInfo.location, 'deepra_output', '.cached')
+      let fn = modPath.join(cachedDir, 'validation_output.json')
+
+      let parsed = null
+      fileFetcher.readJson(fn, true).then((result) => {
+        console.log('--- parsed json ---')
+        console.log(result)
+        parsed = result
+
+        let tabData = createData(parsed.labels, parsed.metrics)
+        console.log('--- parsed tabData ---')
+        console.log(tabData)
+        this.tabs = tabData
+        this.getView();
+        this.currentView = this.views[0];
+      })
+    } else {
+      let tabData = createData(data.labels, data.metrics)
+      this.tabs = tabData
+      this.getView();
+      this.currentView = this.views[0];
+    }
+  },
   mounted() {
-    this.getView();
-    this.currentView = this.views[0];
+    // this.getView();
+    // this.currentView = this.views[0];
   },
   computed: {
     // 這邊沒有動態生成，因此有一個上限顯示矩陣的數量，目前是10個類別
     selectedMatrixData() {
+      // Check whether `this.views` is loaded or not. If not, skip this operation.
+      if (this.views === undefined) {
+        return
+      }
+
       if (this.currentView === this.views[0]) {
         return matrixData[0];
       } else if (this.currentView === this.views[1]) {

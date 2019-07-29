@@ -10,21 +10,9 @@ class DatasetPathCollector {
     this.defaultBatchSize = 20
   }
 
-  readCsv (fn) {
-    return new Promise((resolve, reject) => {
-      try {
-        let fileContent = fs.readFileSync(fn, {encoding: 'utf8'})
-        resolve(fileContent)
-      }
-      catch (err) {
-        reject(err)
-      }
-    })
-  }
-
   parseFileList () {
     return new Promise((resolve, reject) => {
-      this.readCsv(this.labelFile).then((result) => {
+      readCsv(this.labelFile).then((result) => {
         // TODO: rewrite this
         console.log('--- parsing file list')
         let folderPath = this.folderPath
@@ -48,6 +36,40 @@ class DatasetPathCollector {
   getBatch (batchSize) {}
 }
 
+function readJson (fn, withEscape = false) {
+  return new Promise((resolve, reject) => {
+    try {
+      let fileContent = fs.readFileSync(fn, {encoding: 'utf8'})
+      let result = JSON.parse(fileContent)
+
+      // If there are escape notations in the file content, result from
+      // the first parsing operation will be pure string. So that we have
+      // to use `JSON.parse` again.
+      if (withEscape) {
+        result = JSON.parse(result)
+      }
+      resolve(result)
+    }
+    catch (err) {
+      reject(err)
+    }
+  })
+}
+
+function readCsv (fn) {
+  return new Promise((resolve, reject) => {
+    try {
+      let fileContent = fs.readFileSync(fn, {encoding: 'utf8'})
+      resolve(fileContent)
+    }
+    catch (err) {
+      reject(err)
+    }
+  })
+}
+
 export default {
-  DatasetPathCollector
+  DatasetPathCollector,
+  readJson,
+  readCsv
 }

@@ -65,7 +65,7 @@ export default {
       // Get training output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
-        this.$store.dispatch('Training/setValidationOutput', result)
+        this.$store.dispatch('Validation/setValidationOutput', result)
         console.log(result)
       })
       this.$emit('onProgressFinished', true)
