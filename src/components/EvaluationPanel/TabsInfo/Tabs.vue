@@ -48,18 +48,17 @@
       </div>
 
       <!-- GraphDisplay -->
-      <!-- <div class="row" > -->
-        <!-- <div class="col-8" slot="GraphDisplay2"> -->
+     
           <GraphDisplay2 
           class="outterGrpah"
           slot="GraphDisplay2" 
           :graph-data="tab.grpah" 
           :new-threshold="newThreshold"/>
           <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
-        <!-- </div> -->
+        
 
         <!-- ThresholdAdjustment -->
-        <!-- <div class="col-4" slot="ThresholdAdjustment"> -->
+       
           <ThresholdAdjustment slot="ThresholdAdjustment"
             class="mt-3"
             :threshold-data="tab.threshold"
@@ -85,8 +84,7 @@
             class="mt-4"
             variant="outline-dark"
           >Relable</b-button>
-        <!-- </div> -->
-      <!-- </div> -->
+   
     </Tab>
   </div>
 </template>

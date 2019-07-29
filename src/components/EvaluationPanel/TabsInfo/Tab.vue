@@ -4,13 +4,23 @@
     <slot name="title"></slot>
     <slot name="MetricsDisplay"></slot>
 
-    <div class="row innerGrpah">
-      <dir :class="[activeClass]">
-        <slot name="GraphDisplay2"></slot>
-      </dir>
-      <dir class="col-4" v-if="currentView !== 'all class'">
-        <slot name="ThresholdAdjustment"></slot>
-      </dir>
+    <div class="container">
+
+
+      <div class="row innerGrpah">
+
+        <div :class="[activeClass]">
+          <slot name="GraphDisplay2"></slot>
+        </div>
+
+
+        <div class="col-sm-auto" v-if="currentView !== 'all class'">
+          <slot name="ThresholdAdjustment"></slot>
+        </div>
+
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -35,9 +45,9 @@ export default {
   computed: {
     activeClass() {
       if (this.currentView === "all class") {
-        return "col-12";
+        return "col-sm-12";
       } else {
-        return "col-8";
+        return "col-sm-8 ";
       }
     }
   }
