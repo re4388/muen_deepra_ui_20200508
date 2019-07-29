@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     initializeContent () {
-      this.$store.dispatch('setCurrentStage', 'finalization')
+      this.$store.dispatch('DataImport/setCurrentStage', 'finalization')
     },
     formatPath (pathInfo) {
       if (pathInfo === null) return
@@ -68,18 +68,18 @@ export default {
       // warn user if it is.
 
       if (pathInfo === null) return
-      this.$store.dispatch('setNewProjectLocation', pathInfo)
+      this.$store.dispatch('DataImport/setNewProjectLocation', pathInfo)
       this.newProjectLocation = pathInfo
     },
     sendRequestForProjectCreation () {
-      let datasetInfo = this.$store.getters.datasetInfo
+      let datasetInfo = this.$store.getters['DataImport/datasetInfo']
       console.log(datasetInfo)
       return new Promise((resolve, reject) => {
         projectManager.createProject(
           this.newProjectName,
           this.newProjectDescription,
           this.newProjectLocation.path,
-          datasetInfo
+          datasetInfo.uuid
         ).then((result) => {
           this.newProjectInfo = result
           resolve(true)
@@ -92,10 +92,10 @@ export default {
 
       return new Promise((resolve, reject) => {
         this.sendRequestForProjectCreation().then((result) => {
-          this.$store.commit('SET_NEW_PROJECT_INFO', this.newProjectInfo)
-          this.$store.dispatch('setIsCreatingProject', true)
-          this.$store.dispatch('unlockStage')
-          this.$store.dispatch('setCompletedStageIndex', this.content.id)
+          this.$store.commit('DataImport/SET_NEW_PROJECT_INFO', this.newProjectInfo)
+          this.$store.dispatch('DataImport/setIsCreatingProject', true)
+          this.$store.dispatch('DataImport/unlockStage')
+          this.$store.dispatch('DataImport/setCompletedStageIndex', this.content.id)
 
           resolve(true)
         })

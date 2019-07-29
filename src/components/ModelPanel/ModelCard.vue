@@ -1,10 +1,17 @@
 <template>
-  <div class="project-card d-flex flex-column">
+  <div class="model-card d-flex flex-column">
     <div class="title-section d-flex flex-row">
       <h4 class="title flex-fill">{{ details.name }}</h4>
-      <a class="btn-more-options">
-        <div class="content">...</div>
-      </a>
+      <div class="dropdown-wrapper">
+        <b-dropdown class="dropdown-list" right size="sm">
+          <b-dropdown-item
+            class="dropdown-item-delete"
+            variant="danger"
+          >
+            Delete
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
     </div>
     <div class="content d-flex flex-row">
       <div class="image-section flex-column">
@@ -15,10 +22,12 @@
         </div>
       </div>
       <div class="text-section flex-fill align-items-start flex-column">
-        <p class="description flex-fill">Description: {{ description }}</p>
+        <div class="metric-info flex-fill">
+          <p>Log loss: {{ logLoss }}</p>
+        </div>
         <p class="creation-date">Created: {{ creationDate }}</p>
-        <a class="btn-open-project" @click="openProject">
-          <div class="content">Open</div>
+        <a class="btn-select-model" @click="selectModel">
+          <div class="content">Select</div>
         </a>
       </div>
     </div>
@@ -29,13 +38,13 @@
 import { EventBus } from '@/event_bus.js'
 
 export default {
-  name: 'ProjectCard',
+  name: 'ModelCard',
   props: {
     details: Object
   },
   computed: {
-    description: function () {
-      return this.details.description
+    metricInfo: function () {
+      return JSON.parse(this.details.details_json).metric_info
     },
     creationDate: function () {
       let date = new Date()
@@ -43,15 +52,25 @@ export default {
       // unit: milisecond
       date.setTime(ts.seconds + '000')
       return date.toUTCString().split(' ').slice(0, 5).join(' ')
+    },
+    logLoss: function () {
+      return this.metricInfo.log_loss
+    },
+    precision: function () {
+      return this.metricInfo.micro_precision
+    },
+    recall: function () {
+      return this.metricInfo.micro_recall
+    },
+    f1Score: function () {
+      return this.metricInfo.micro_f1_score
     }
   },
   methods: {
-    openProject () {
-      this.$store.dispatch('Project/setCurrentProject', this.details)
-      console.log('---- saved project info : ')
-      console.log(this.$store.getters['Project/currentProject'])
-      EventBus.$emit('entryChanged', 'project')
-      this.$router.push('/project-profile')
+    selectModel () {
+      this.$store.dispatch('Model/setCurrentModel', this.details)
+      EventBus.$emit('entryChanged', 'model')
+      this.$router.push('/model-profile')
     }
   },
   data () {
@@ -66,7 +85,7 @@ $shadow: rgba(0, 0, 0, 0.2);
 $card-height: 200px;
 $card-min-width: 600px;
 
-.project-card {
+.model-card {
   display: block;
   max-width: 80%;
   min-width: $card-min-width;
@@ -123,7 +142,7 @@ $card-min-width: 600px;
 .text-section {
   padding: 0px 10px;
 }
-.description {
+.metric-info {
   text-align: left;
   height: $card-height*0.45;
   margin-bottom: 0px;
@@ -133,8 +152,19 @@ $card-min-width: 600px;
   margin-bottom: 0px;
 }
 
+.dropdown-wrapper {
+  align-content: center;
+  align-items: center;
+}
+
+.dropdown-list {
+  position: relative;
+  margin: .5rem;
+  height: 20px;
+}
+
 $btn-height: 30px;
-.btn-open-project {
+.btn-select-model {
   & .content {
     background-color: rgb(185, 185, 185);
     color: rgb(25, 25, 25);

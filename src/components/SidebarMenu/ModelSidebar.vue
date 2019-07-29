@@ -1,5 +1,5 @@
 <template>
-  <div id="project-sidebar">
+  <div id="model-sidebar">
     <sidebar-menu 
     :menu="menu" 
     :collapsed="collapsed" 
@@ -20,7 +20,7 @@
   }
 
   export default {
-    name: 'ProjectSidebar',
+    name: 'ModelSidebar',
     components: {
       SidebarMenu
     },
@@ -29,7 +29,7 @@
         menu: [
           {
             title: 'Profile',
-            href: '/project-profile',
+            href: '/model-profile',
             icon: {
               element: 'font-awesome-icon',
               attributes: {
@@ -38,35 +38,15 @@
             }
           },
           {
-            title: 'Images',
-            href: '/viewer-overview',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'folder'
-              }
-            }
-          },
-          {
-            title: 'Train',
-            href: '/training',
+            title: 'Test',
+            href: '/testing',
             icon: {
               element: 'font-awesome-icon',
               attributes: {
                 icon: 'cube'
               }
             }
-          },
-          {
-            title: 'Evaluation',
-            href: '/evaluation',
-            icon: {
-              element: 'font-awesome-icon',
-              attributes: {
-                icon: 'cube'
-              }
-            }
-          },
+          }
         ],
         collapsed: false,
         width: '150px',

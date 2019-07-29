@@ -75,71 +75,101 @@ $ python ./scripts/setup_api_protos.py
     $ python ./scripts/run_pytest_bdd.py --show_scenario
     ```
 
-- Manual test
+### Manual test
 
-    Make sure that there is not pre-installed python package: `autodl` and `deepra` on the machine.
+- Requirement
+    - Python >= 3.6
+    
+        If you don't have Python installed on your machine, Anaconda is recommended for you. You can download it from [here](https://repo.continuum.io/archive/Anaconda3-5.3.0-Windows-x86_64.exe)
 
-    Or you have to make sure that the version of those package is the latest.
+    - node.js (v10.15.3)
 
-    1. Install backend server and its requirements
+        You can download and install it from [here](https://nodejs.org/zh-tw/download/releases/)
 
-        ```bash
-        # Install `autodl`
-        $ git clone http://10.0.4.52:3000/muen/autodl.git
-        $ cd autodl
-        $ pip install .
-        $ cd ..
+    - yarn
 
-        # Install `deepra`
-        $ git clone http://10.0.4.52:3000/muen/deepra.git
-        $ cd deepra
-        $ pip install .  # TODO: add setup.py
-        $ cd ..
-        ```
+        You can download and install it from [here](https://yarnpkg.com/lang/en/docs/install/#windows-stable)
 
-    2. Clone source of this application (`deepra_ui`) and install requirements
+- Optional
+    - Sample dataset ([MNIST_sample](https://mega.nz/#!Ld5jhYxQ!dhqRGX6TAoSwae9rIlNgREy-HzHMTa-PHZ1DkT-pFh8))
 
-        NOTE: make sure that you have `node.js` and `yarn` installed on your machine
-        
-        - if you don't have `node.js (v10.15.3)`, please download and install it from [here](https://nodejs.org/zh-tw/download/releases/)
 
-        - if you don't have `yarn`, please download and install it from [here](https://yarnpkg.com/lang/en/docs/install/#windows-stable)
+#### I. Setup through script
 
-        ```bash
-        $ git clone http://10.0.4.52:3000/muen/deepra_ui.git
-        $ cd deepra_ui
-        $ yarn install
+- Simply run these command:
 
-        # the last thing:
-        # copy all `.proto` files from `deepra/deepra/api/protos` into `deepra_ui/src/api/protos`
-        # This step will be simplified in the future.
-        ```
+    ```bash
+    $ git clone http://10.0.4.52:3000/muen/deepra_ui.git
+    $ cd deepra_ui
+    $ python ./scripts/setup_full_package.py
+    ```
 
-    3. Launch backend server
+#### II. Setup manually
 
-        ```bash
-        $ cd deepra
-        $ python gen_api.py
-        $ python -m deepra.api.api_server
-        ```
+1. Install backend server and its requirements
 
-    4. Launch this application (`deepra_ui`)
+    ```bash
+    # Install `autodl`
+    $ git clone http://10.0.4.52:3000/muen/autodl.git
+    $ cd autodl
+    $ pip install .
+    $ cd ..
 
-        ```bash
-        $ cd deerpa_ui
-        $ yarn run electron:serve
-        ```
+    # Install `deepra`
+    $ git clone http://10.0.4.52:3000/muen/deepra.git
+    $ cd deepra
+    $ pip install .
+    $ python gen_api.py  # this command will run code generator for .proto files
+    $ cd ..
+    ```
 
-    5. Start your test
+2. Clone source of this application (`deepra_ui`) and install requirements
 
-    6. If you want to remove all installed packages, you can
+    NOTE: make sure that you have `node.js` and `yarn` installed on your machine
+    
+    - if you don't have `node.js (v10.15.3)`, please download and install it from [here](https://nodejs.org/zh-tw/download/releases/)
 
-        ```bash
-        # remove `autodl`
-        $ pip uninstall autodl
+    - if you don't have `yarn`, please download and install it from [here](https://yarnpkg.com/lang/en/docs/install/#windows-stable)
 
-        # remove `deepra`
-        $ pip uninstall deepra
-        ```
+    ```bash
+    $ git clone http://10.0.4.52:3000/muen/deepra_ui.git
+    $ cd deepra_ui
+    $ yarn install
 
-        - To remove `deepra_ui`, you just have to remove the `deepra_ui` folder
+    # The last thing:
+    # Run the following script to copy all `.proto` files from `deepra/deepra/api/protos` into `deepra_ui/src/api/protos`.
+    # Note that this script requires your gitea credentials to access `deepra` repository.
+    $ python ./script/setup_api_protos.py
+    ```
+
+#### Launch application
+
+1. Launch backend server
+
+    ```bash
+    $ python -m deepra.api.api_server
+    ```
+
+2. Launch this application (`deepra_ui`)
+
+    ```bash
+    $ cd deerpa_ui
+    $ yarn run electron:serve
+    ```
+
+3. Start your test
+
+
+#### Note
+
+- If you want to remove all installed packages, you can
+
+    ```bash
+    # remove `autodl`
+    $ pip uninstall autodl
+
+    # remove `deepra`
+    $ pip uninstall deepra
+    ```
+
+    - To remove `deepra_ui`, you just have to remove the `deepra_ui` folder

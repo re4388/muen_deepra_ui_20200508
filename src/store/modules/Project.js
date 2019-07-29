@@ -1,5 +1,7 @@
 import { initializeState } from './index'
 
+const namespaced = true;
+
 const defaultState = {
   currentProject: {
     info: null
@@ -29,6 +31,7 @@ const actions = {
 }
 
 export default {
+  namespaced,
   state,
   getters,
   mutations,

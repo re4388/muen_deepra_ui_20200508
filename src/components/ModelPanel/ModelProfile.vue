@@ -1,5 +1,5 @@
 <template>
-  <div id="project-profile" class="container-main">
+  <div id="model-profile" class="container-main">
     <div class="page-content d-flex flex-column">
       <div class="project-info flex-fill">
         <div class="name text-content">
@@ -18,29 +18,12 @@
           <span class="text-title">Location: </span>
           <span class="text-value">{{ location }}</span>
         </div>
-        <div class="label-list text-content">
-          <span class="text-title">Labels: </span>
-          <span class="text-value">{{ labelList }}</span>
+        <div class="metric-info text-content">
+          <span class="text-title">Performance: </span>
+          <p class="text-value">
+            log loss, precision, recall
+          </p>
         </div>
-        <div class="label-report text-content">
-          <span class="text-title">Label report: </span>
-          <div class="label-total">
-            - labeled: {{ labeledFiles }}
-          </div>
-          <div class="label-unlabeled">
-            - unlabeled: {{ unlabeledFiles }}
-          </div>
-          <div class="label-missed">
-            - missed: {{ missedFiles }}
-          </div>
-        </div>
-        <!-- <div calss="label-list-view">
-          <b-list-group id="label-list-group">
-            <template v-for="(item, index) in labelList">
-              <b-list-group-item :key=index>{{ item }}</b-list-group-item>
-            </template>
-          </b-list-group>
-        </div> -->
       </div>
       <div class="control-section">
       <a class="btn-flow-control" id="btn-flow-control">
@@ -54,10 +37,10 @@
 </template>
 
 <script>
-import projectService from '@/api/projects_service.js'
+import modelManager from '@/api/models_service.js'
 
 export default {
-  name: 'ProjectProfile',
+  name: 'ModelProfile',
   props: {
   },
   created () {
@@ -68,20 +51,20 @@ export default {
   },
   methods: {
     initializeComponent () {
-      console.log('--- initializing project profile ---')
-      console.log(this.project)
-      console.log(this.dataset)
+      console.log('--- initializing model profile ---')
+      console.log(this.model)
       this.isLoading = false
-      this.name = this.project.name
-      this.description = this.project.description
-      this.location = this.project.location
+      this.name = this.model.name
+      this.description = this.model.description
+      this.location = this.model.location
     },
     fetechProjectData () {
       return new Promise((resolve, reject) => {
-        this.project = this.$store.getters['Project/currentProject']
-        projectService.getProject(this.project.uuid).then((result) => {
-          this.project = result.project
-          this.dataset = result.dataset
+        this.model = this.$store.getters['Model/currentModel']
+        console.log('--- got model from store ')
+        console.log(this.model)
+        modelManager.getModel(this.model.uuid).then((result) => {
+          this.model = result.model
           resolve(result)
         })
       })
@@ -89,36 +72,13 @@ export default {
   },
   computed: {
     creationDatetime() {
-      if (this.project === {}) return ''
+      if (this.model === {}) return ''
       let date = new Date()
-      let ts = this.project.creation_timestamp
-      console.log(this.project.creation_timestamp)
-      // date.setTime(ts.seconds + String(ts.nanos/1000000))
-      date.setTime(ts.seconds + String(ts.nanos/100000))
+      let ts = this.model.creation_timestamp
+      console.log(this.model.creation_timestamp)
+      date.setTime(ts.seconds + '000')
       console.log(date)
       return date.toUTCString().split(' ').slice(0, 5).join(' ')
-    },
-    datasetDetails() {
-      if (this.isLoading) return null
-      let parsed = JSON.parse(this.dataset.details_json).label_report
-      return parsed
-    },
-    labelList() {
-      if (this.datasetDetails === null) return ''
-      let parsedList = this.datasetDetails.labels
-      return parsedList.join(', ')
-    },
-    labeledFiles() {
-      if (this.datasetDetails === null) return ''
-      return this.datasetDetails.normal
-    },
-    unlabeledFiles() {
-      if (this.datasetDetails === null) return ''
-      return this.datasetDetails.unlabeled
-    },
-    missedFiles() {
-      if (this.datasetDetails === null) return ''
-      return this.datasetDetails.missed
     }
   },
   watch: {
@@ -126,8 +86,7 @@ export default {
   data () {
     return {
       isLoading: true,
-      project: {},
-      dataset: {},
+      model: {},
       name: '',
       description: '',
       timestamp: '',

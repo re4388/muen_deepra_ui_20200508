@@ -26,6 +26,14 @@ import VueTippy, {
 } from 'vue-tippy'
 Vue.use(VueTippy)
 
+// VueZoomer
+// NOTE: dependency `parcel-bundler` used by `vue-zoomer` makes distributed
+//   electron application unable to launched sucessfully.
+//   (ReferenceError: `parcelRequire is not defined`)
+//   So that we change the source of `vue-zoomer` from released source in
+//   npm modules to cloned source in `src/vendor/vue-zoomer/src`.
+import VueZoomer from '@/vendor/vue-zoomer/src'
+Vue.use(VueZoomer)
 
 // BootstrapVue
 import BoostrapVue from 'bootstrap-vue'
@@ -41,6 +49,7 @@ import TrainingPanel from './components/TrainingPanel/TrainingPanel.vue'
 import ViewerOverviewPanel from './components/ViewerPanel/ViewerOverviewPanel.vue'
 import EvaluationPanel from './components/EvaluationPanel/EvaluationPanel.vue'
 import ProjectProfile from './components/ProjectPanel/ProjectProfile.vue'
+import ModelProfile from './components/ModelPanel/ModelProfile.vue'
 
 const router = new VueRouter({
   routes: [
@@ -83,6 +92,16 @@ const router = new VueRouter({
       path: '/project-profile',
       name: 'ProjectProfile',
       component: ProjectProfile
+    },
+    {
+      path: '/model-profile',
+      name: 'ModelProfile',
+      component: ModelProfile
+    },
+    {
+      path: '/testing',
+      name: 'Test',
+      component: null
     }
   ]
 })

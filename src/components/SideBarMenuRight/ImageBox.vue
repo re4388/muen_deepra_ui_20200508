@@ -1,11 +1,16 @@
 <template>
-  <div id="image-box">
+  <div id="image-box" class="image-box">
     <div class="box">
       <div class="title">
         <div class="imgList" id="imgList">
-          <div class="x-rayFilms" v-for="(item, index) in images" :key="index">
-            <thumbnail :root="item.root" :filename="item.filename"/>
-          </div>
+          <template v-for="(item, index) in images">
+            <thumbnail
+              :key="index"
+              :root="item.root"
+              :filename="item.filename"
+              @click="showClickedThumbnail(item, index)"
+            />
+          </template>
         </div>
       </div>
     </div>
@@ -14,7 +19,8 @@
      
 <script>
 import thumbnail from './Thumbnail.vue'
-import imageData from './image_data.json'
+import { EventBus } from '@/event_bus.js'
+import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
 
 export default {
   name: 'ImageBox',
@@ -26,16 +32,21 @@ export default {
   },
   methods: {
     initializeComponent () {
+    },
+    showClickedThumbnail (item, index) {
+      console.log('--- event `loaded` issued ---')
+      console.log(item, index)
+      EventBus.$emit('onNavigationImageClicked', {item, index})
     }
   },
   props: {
-    currentImageSrc: String
+    currentImageSrc: String,
+    images: Array
   },
   computed: {
   },
   data () {
     return {
-      images: imageData.images
     }
   }
 }
@@ -78,29 +89,5 @@ export default {
 
 .show {
   right: 0px;
-}
-
-.x-rayFilms {
-  box-sizing: border-box;
-  width: 60px;
-  height: 60px;
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  justify-content: center;
-  padding: 3px;
-  z-index: 9;
-  position: relative;
-}
-
-.x-rayFilms:hover::after {
-  content: "";
-  display: inline-flex;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: #42ab427d;
 }
 </style>

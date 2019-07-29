@@ -54,7 +54,7 @@ export default {
   mounted () {
     EventBus.$emit('pageChanged', 'Training')
     console.log('Current project')
-    console.log(this.$store.getters.currentProject)
+    console.log(this.$store.getters['Project/currentProject'])
   },
   methods: {
     updateStep (stepId) {

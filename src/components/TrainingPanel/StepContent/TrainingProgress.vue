@@ -48,7 +48,7 @@ export default {
       let handlerEnd = (resp) => {
         this.finishTraining()
       }
-      let projectInfo = this.$store.getters.currentProject
+      let projectInfo = this.$store.getters['Project/currentProject']
       console.log(projectInfo)
       let call = trainingService.startTraining(projectInfo, handlerProgress, handlerEnd)
     },
@@ -56,9 +56,9 @@ export default {
       console.log('Training is finished')
 
       // Get training output (e.g. output directory)
-      let projectInfo = this.$store.getters.currentProject
+      let projectInfo = this.$store.getters['Project/currentProject']
       trainingService.getTrainingOutput(projectInfo).then((result) => {
-        this.$store.dispatch('setTrainingOutput', result)
+        this.$store.dispatch('Training/setTrainingOutput', result)
       })
       this.$emit('onProgressFinished', true)
     }

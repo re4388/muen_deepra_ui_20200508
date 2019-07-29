@@ -1,8 +1,8 @@
 <template>
   <div id="viewer-overview-panel" class="container-main">
-    <ToolBar/>    
+    <ToolBar class="toolbar"/>    
     <SidebarRight/>
-    <ViewerContainer/>
+    <!-- <ViewerContainer/> -->
     <!-- <imag-vue-panel></imag-vue-panel> -->
   </div>
 </template>
@@ -13,16 +13,15 @@ import SidebarRight from '@/components/SideBarMenuRight/SideBarMenuRight.vue';
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue';
 import imagvue from 'imagvue';
 import VueDragResize from 'vue-drag-resize';
-import ViewerContainer from './ViewerContainer.vue';
-// import ImagVuePanel from '@/components/ImagVuePanel/ImagVuePanel.vue';
-// import imageData from './image_data.json'
-// console.log(imagvue)
-// console.log(imagvue.props.value)
+// import ViewerContainer from './ViewerContainer.vue';
+import datasetService from '@/api/dataset_service.js'
+import { EventBus } from '@/event_bus.js'
+import fileFetecher from '@/utils/file_fetcher.js'
 
 export default {
   name:"ViewerOverviewPanel",
   components: {
-    ViewerContainer,
+    // ViewerContainer,
     SidebarRight,
     ToolBar,
     imagvue,
@@ -32,12 +31,36 @@ export default {
   },
   data() {
     return {
-      image: null
+      image: null,
+      loading: true,
+      dataset: null
     }
   },
   computed:{
   },
+  watch: {
+    '$route': 'fetchData'
+  },
+  created () {
+    this.fetchData()
+  },
   methods: {
+    fetchData () {
+      let currentProject = this.$store.getters['Project/currentProject']
+      if (currentProject === null) {
+        return
+      }
+      datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
+        this.$store.dispatch('Viewer/setCurrentDataset', result.content)
+        this.dataset = this.$store.getters['Viewer/currentDataset']
+        EventBus.$emit('viewerDatasetChanged')
+        console.log('----- current dataset in viewer -----')
+        console.log(this.dataset)
+
+        // Notify that loading is complete
+        this.loading = true
+      })
+    },
   }  
 };
 
@@ -52,9 +75,11 @@ export default {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid red;
+  // border: 1px solid red;
   // max-height: 100%;
   // max-width: 100%;
 }
-
+.toolbar {
+  height: 85%;
+}
 </style>
