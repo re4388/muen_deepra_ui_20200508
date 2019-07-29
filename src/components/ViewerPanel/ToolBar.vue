@@ -86,11 +86,11 @@
           <!-- <firstImage :images="firstImage"/> -->
         </v-zoomer>
 
-        <img 
+        <!-- <img 
         :src="firstImageUrl"
         id="firstImage"
         class="firstImage" 
-        />
+        /> -->
       </div>
 
     
