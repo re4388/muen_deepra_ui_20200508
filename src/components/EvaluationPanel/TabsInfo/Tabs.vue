@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <!-- Confusion Matrix 的 Modal -->
     <div>
       <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
@@ -30,7 +29,7 @@
       class="currentView container"
     >
       <!-- tab 標題 -->
-      <div class="row" slot="title" >
+      <div class="row" slot="title">
         <h5 class="col-12 text-left text-light m-0 mt-4">{{ tab.name }}</h5>
       </div>
 
@@ -40,55 +39,50 @@
       </div>
 
       <!-- GraphDisplay -->
-          <GraphDisplay 
-          class="outterGrpah"
-          slot="GraphDisplay" 
-          :graph-data="tab.grpah" 
-          :new-threshold="newThreshold"/>
+      <GraphDisplay
+        class="outterGrpah"
+        slot="GraphDisplay"
+        :graph-data="tab.grpah"
+        :new-threshold="newThreshold"
+      />
 
-        <!-- ThresholdAdjustment -->
-          <ThresholdAdjustment slot="ThresholdAdjustment"
-            class="mt-3"
-            :threshold-data="tab.threshold"
-            :graph-data="tab.grpah"
-            @threshold-change="ThresholdChange"
-          ></ThresholdAdjustment>
+      <!-- ThresholdAdjustment -->
+      <ThresholdAdjustment
+        slot="ThresholdAdjustment"
+        class="mt-3"
+        :threshold-data="tab.threshold"
+        :graph-data="tab.grpah"
+        @threshold-change="ThresholdChange"
+      ></ThresholdAdjustment>
 
-          <!-- Confusion Matrix 的按鈕 -->
-          <b-button
-            block
-            pill
-            size="sm"
-            class="mt-4"
-            v-b-modal.modal-lg
-            variant="outline-dark"
-          >Confusion Matrix</b-button>
+      <!-- Confusion Matrix 的按鈕 -->
+      <b-button
+        block
+        pill
+        size="sm"
+        class="mt-4"
+        v-b-modal.modal-lg
+        variant="outline-dark"
+      >Confusion Matrix</b-button>
 
-          <!-- relable 的按鈕  還沒建立 TODO:-->
-          <b-button
-            block
-            pill
-            size="sm"
-            class="mt-4"
-            variant="outline-dark"
-          >Relable</b-button>
+      <!-- relable 的按鈕  還沒建立 TODO:-->
+      <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relable</b-button>
     </Tab>
   </div>
 </template>
 
 <script>
-
 // This localJson file is to test without link to autoDL
-import localJson from '../deepra.10Class.json'
+import localJson from "../deepra.10Class.json";
 
 // import data
 import { createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
 
 // import need modules
-import modPath from 'path'
-import modFs from 'fs'
-import fileFetcher from "@/utils/file_fetcher.js"
-import vueUtils from "@/api/vue_utils.js"
+import modPath from "path";
+import modFs from "fs";
+import fileFetcher from "@/utils/file_fetcher.js";
+import vueUtils from "@/api/vue_utils.js";
 
 // import components
 import Tab from "./Tab";
@@ -105,91 +99,72 @@ export default {
     MetricsDisplay,
     GraphDisplay,
     ThresholdAdjustment,
-    ConfusionMatrix,
+    ConfusionMatrix
   },
 
   data() {
     return {
-      // tabs: tabData,
-      tabs: null,  // initialize as null to avoid rendering when component is just created
-      views: [], // e.g. => [ 'AllTabInfo','Tab-1info','Tab-2info','Tab-3info','Tab-4info' ]
+      tabs: null, // initialize as null to avoid rendering when component is just created
+      views: [], // e.g. => [ 'class 0','class 1','class 2'...]
       currentView: "",
       newThreshold: 0
     };
   },
   created() {
-    console.log('--- Tabs: fetching data from store ---')
-    
+    console.log("--- Tabs: fetching data from store ---");
+
     // load data
     // TODO: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
     // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-    let data = localJson
-    
+    let data = localJson;
     // console.log(data)
 
     if (data.content === null) {
-      let projectInfo = this.$store.getters['Project/currentProject']
-      console.log('--- no parsed validation output, try to retrieve data from cached folder ---')
+      let projectInfo = this.$store.getters["Project/currentProject"];
+      console.log(
+        "--- no parsed validation output, try to retrieve data from cached folder ---"
+      );
 
-      let cachedDir = modPath.join(projectInfo.location, 'deepra_output', '.cached')
-      let fn = modPath.join(cachedDir, 'validation_output.json')
+      let cachedDir = modPath.join(
+        projectInfo.location,
+        "deepra_output",
+        ".cached"
+      );
+      let fn = modPath.join(cachedDir, "validation_output.json");
 
-      let parsed = null
-      fileFetcher.readJson(fn, true).then((result) => {
-        console.log('--- parsed json ---')
-        console.log(result)
-        parsed = result
+      let parsed = null;
+      fileFetcher.readJson(fn, true).then(result => {
+        console.log("--- parsed json ---");
+        console.log(result);
+        parsed = result;
 
-        let tabData = createData(parsed.labels, parsed.metrics)
-        console.log('--- parsed tabData ---')
-        console.log(tabData)
-        this.tabs = tabData
+        let tabData = createData(parsed.labels, parsed.metrics);
+        console.log("--- parsed tabData ---");
+        console.log(tabData);
+        this.tabs = tabData;
         this.getView();
         this.currentView = this.views[0];
-      })
+      });
     } else {
-      let tabData = createData(data.labels, data.metrics)
-      this.tabs = tabData
+      let tabData = createData(data.labels, data.metrics);
+      this.tabs = tabData;
       this.getView();
       this.currentView = this.views[0];
     }
   },
   mounted() {
-    console.log(this.tabs)
+    console.log(this.tabs);
   },
   computed: {
-    
     selectedMatrixData() {
       // Check whether `this.views` is loaded or not. If not, skip this operation.
       if (this.views === undefined) {
-        return
+        return;
       }
 
-    // 這邊沒有動態生成，因此有一個上限顯示矩陣的數量，目前是10個類別
-      if (this.currentView === this.views[0]) {
-        return this.tabs['0']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[1]) {
-        return this.tabs['1']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[2]) {
-        return this.tabs['2']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[3]) {
-        return this.tabs['3']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[4]) {
-        return this.tabs['4']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[5]) {
-        return this.tabs['5']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[6]) {
-        return this.tabs['6']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[7]) {
-        return this.tabs['7']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[8]) {
-        return this.tabs['8']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[9]) {
-        return this.tabs['9']['confusionMatrixInfo']
-      } else if (this.currentView === this.views[10]) {
-        return this.tabs['10']['confusionMatrixInfo']
-      }
       
+      let currentTab = this.views.indexOf(this.currentView);  // get the current view index
+      return this.tabs[currentTab]["confusionMatrixInfo"];
     }
   },
   methods: {
@@ -215,8 +190,6 @@ export default {
 
 
 <style lang="scss" scoped>
-
-
 .outterGrpah {
   display: flex;
   flex-direction: row;
