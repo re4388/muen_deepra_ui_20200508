@@ -1,4 +1,4 @@
-要自動生成一個目前的結構
+// 要自動生成一個目前的結構
 let tabData = [{
     "id": 0,
     "name": "AllTabInfo",

@@ -55,7 +55,7 @@ function createData(lables = "", metric = {}) {
     'confusionMatrixInfo': {
       confusionMatrix: [...metric['confusion_matrix']],
       confusionMatrixLable: [...lables],
-      // TODO: need to import dynamically later
+      // TODO: need to import dynamically 
       confusionMatrixAnnotation: [
         ["img01, img03", "img02,img04", "img23", "no img", "img09", "no_img", "img05", "img12", "no img  ", "no img"],
         ["no_img", "img05", "img12", "img09", "no img", "no_img", "img05", "img12", "no img  ", "no img"],

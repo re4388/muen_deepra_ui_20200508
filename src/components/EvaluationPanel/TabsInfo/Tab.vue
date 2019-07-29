@@ -7,7 +7,7 @@
     <div class="container">
       <div class="row innerGrpah">
         <div :class="[activeClass]">
-          <slot name="GraphDisplay2"></slot>
+          <slot name="GraphDisplay"></slot>
         </div>
 
         <div class="col-sm-auto" v-if="currentView !== 'all class'">

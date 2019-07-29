@@ -40,18 +40,13 @@
       </div>
 
       <!-- GraphDisplay -->
-      <!-- <div class="row" > -->
-        <!-- <div class="col-8" slot="GraphDisplay2"> -->
-          <GraphDisplay2 
+          <GraphDisplay 
           class="outterGrpah"
-          slot="GraphDisplay2" 
+          slot="GraphDisplay" 
           :graph-data="tab.grpah" 
           :new-threshold="newThreshold"/>
-          <!-- <b-button  v-b-modal.roc-chart pill size="sm"  class="mt-3"  variant="outline-dark">See ROC Chart</b-button> -->
-        <!-- </div> -->
 
         <!-- ThresholdAdjustment -->
-        <!-- <div class="col-4" slot="ThresholdAdjustment"> -->
           <ThresholdAdjustment slot="ThresholdAdjustment"
             class="mt-3"
             :threshold-data="tab.threshold"
@@ -77,8 +72,6 @@
             class="mt-4"
             variant="outline-dark"
           >Relable</b-button>
-        <!-- </div> -->
-      <!-- </div> -->
     </Tab>
   </div>
 </template>
@@ -100,7 +93,7 @@ import vueUtils from "@/api/vue_utils.js"
 // import components
 import Tab from "./Tab";
 import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
-import GraphDisplay2 from "../InfoDisplay/GraphDisplay2";
+import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
 
@@ -110,7 +103,7 @@ export default {
   components: {
     Tab,
     MetricsDisplay,
-    GraphDisplay2,
+    GraphDisplay,
     ThresholdAdjustment,
     ConfusionMatrix,
   },
@@ -129,8 +122,8 @@ export default {
     
     // load data
     // TODO: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-    let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-    // let data = localJson
+    // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+    let data = localJson
     
     // console.log(data)
 
