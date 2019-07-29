@@ -48,7 +48,7 @@
       </div>
 
       <!-- GraphDisplay -->
-     
+    
           <GraphDisplay2 
           class="outterGrpah"
           slot="GraphDisplay2" 
@@ -58,7 +58,7 @@
         
 
         <!-- ThresholdAdjustment -->
-       
+      
           <ThresholdAdjustment slot="ThresholdAdjustment"
             class="mt-3"
             :threshold-data="tab.threshold"
