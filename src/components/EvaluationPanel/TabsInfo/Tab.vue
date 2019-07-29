@@ -18,6 +18,8 @@
           <slot name="ThresholdAdjustment"></slot>
         </div>
 
+        <slot></slot>
+
       </div>
 
 
