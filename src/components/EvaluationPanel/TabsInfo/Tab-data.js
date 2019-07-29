@@ -10,32 +10,26 @@ function createData(lables = "", metric = {}) {
   }
 
   // 1.1.2 create all_class dataColumne
-  let dataArray = [] // will later store to dataColumn
 
-  // can't use spread, setup temp
-  let fprTemp = {}
-  let tprTemp = {}
-  for (let i = 0; i < lables.length + 1; i++) {
-    fprTemp[`${i}`] = metric['fpr_roccurve'][`${i}`]
-    tprTemp[`${i}`] = metric['tpr_roccurve'][`${i}`]
+  let dataArray = []
+
+  let len = lables.length
+
+  // need to construct the strcuture first to later use push method to its index
+  for (let i = 0; i < len * 2; i++) {
+    dataArray.push([])
   }
 
-  // push fpr first
-  for (let i = 0; i < lables.length; i++) {
-    dataArray.push([`fpr_roccurve of class ${ i }`])
-    for (let j = 0; j < fprTemp[i].length; j++) {
-      dataArray[i].push(fprTemp[i][j])
-    }
+  for (let i = 0; i < len; i++) {
+    dataArray[i].push(`fpr_roccurve of class ${i}`, ...metric['fpr_roccurve'][`${i}`])
   }
 
-  // push tpr
-  for (let i = 0; i < lables.length; i++) {
-    dataArray.push([`tpr_roccurve of class ${ i }`])
-    for (let j = 0; j < tprTemp[i].length; j++) {
-      // i + lables.length -> begin after fpr element
-      dataArray[i + lables.length].push(tprTemp[i][j])
-    }
+  // also push tpr into array, use i-len to get the correct index from data
+  for (let i = len; i < len * 2; i++) {
+    dataArray[i].push(`tpr_roccurve of class ${i - len}`, ...metric['tpr_roccurve'][`${i - len}`])
   }
+
+
 
   // 1.3 init all_class data
   tabData.push({
