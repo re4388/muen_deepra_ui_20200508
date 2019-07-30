@@ -158,7 +158,7 @@ export default {
     computed: {
         selectedMatrixData() {
             // Check whether `this.views` is loaded or not. If not, skip this operation.
-            if (this.views === undefined) {
+            if (this.views.length === 0) {
                 return;
             }
 
