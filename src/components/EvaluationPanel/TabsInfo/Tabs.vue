@@ -10,15 +10,31 @@
         </div>
 
         <!-- tabs 麵包屑 -->
-        <div class="row align-self-center">
+
+        <div class="m-0 bg-white text-white ">
+            <b-tabs
+                class="text-info"
+                no-nav-style
+                active-nav-item-class="font-weight-bold text-uppercase text-dark"
+            >
+                <b-tab
+                    v-for="tab in tabs"
+                    :key="tab.name"
+                    :title="tab.name"
+                    @click.prevent="changeView(tab)"
+                ></b-tab>
+            </b-tabs>
+        </div>
+
+        <!-- <div class="row align-self-center">
             <div class="col-12 pl-1 pt-2">
                 <ul class="pt-0 breadcrumb rounded text-black-50 m-0 p-3">
                     <li v-for="tab in tabs" :key="tab.id">
-                        <a href="#" @click.prevent="changeView(tab)">{{ tab.name }}</a>
+                        <a href="#" class="current" @click.prevent="changeView(tab)">{{ tab.name }}</a>
                     </li>
                 </ul>
             </div>
-        </div>
+        </div>-->
 
         <!-- 每一個lable/Tab 的元件們 -->
         <Tab
@@ -30,11 +46,11 @@
         >
             <!-- tab 標題 -->
             <div class="row" slot="title">
-                <h5 class="col-12 text-left text-light m-0 mt-4">{{ tab.name }}</h5>
+                <h5 class="col-12 text-center text-light m-0 mt-3">{{ tab.name | capitalize }}</h5>
             </div>
 
             <!-- MetricsDisplay -->
-            <div class="row mt-1" slot="MetricsDisplay">
+            <div class="row mt-3" slot="MetricsDisplay">
                 <MetricsDisplay :metrics-data=" tab.metrics" class="col-12"></MetricsDisplay>
             </div>
 
@@ -72,7 +88,7 @@
 </template>
 
 <script>
-// This localJson file is to test without link to autoDL
+// This is to test without link to autoDL
 import localJson from "../deepra_mnistV2.json";
 
 // import data
@@ -115,8 +131,8 @@ export default {
 
         // load data
         // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-        // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-        let data = localJson;
+        let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+        // let data = localJson;
         // console.log(data)
 
         if (data.content === null) {
@@ -144,7 +160,7 @@ export default {
                 this.tabs = tabData;
                 this.$emit("model-data", {
                     result: tabData
-                })
+                });
                 this.getView();
                 this.currentView = this.views[0];
             });
@@ -153,14 +169,12 @@ export default {
             this.tabs = tabData;
             this.$emit("model-data", {
                 result: tabData
-            })
+            });
             this.getView();
             this.currentView = this.views[0];
         }
     },
-    mounted() {
-        // console.log("qq", this.tabs);
-    },
+    mounted() {},
     computed: {
         selectedMatrixData() {
             // Check whether `this.views` is loaded or not. If not, skip this operation.
@@ -171,6 +185,11 @@ export default {
             let currentTab = this.views.indexOf(this.currentView); // get the current view index
             return this.tabs[currentTab]["confusionMatrixInfo"];
         },
+        activeClass() {
+            if (this.currentView === "all class") {
+                return "currentUsed";
+            }
+        }
     },
     methods: {
         // get all tabs
@@ -184,6 +203,13 @@ export default {
         },
         ThresholdChange(obj) {
             this.newThreshold = obj.result;
+        }
+    },
+    filters: {
+        capitalize: function(value) {
+            if (!value) return "";
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
         }
     }
 };
@@ -208,6 +234,10 @@ export default {
     left: calc(20% - 50px);
     top: calc(30% - 50px);
     z-index: 2;
+}
+
+.breadcrumbV2 {
+    font-size: 24px;
 }
 
 ul.breadcrumb {
@@ -238,9 +268,17 @@ ul.breadcrumb {
                 color: #121416;
                 text-decoration: none;
             }
+            .current {
+                background-color: #fff;
+            }
         }
     }
 }
+
+// .active {
+//     color: #0567c9;
+//     text-decoration: none;
+// }
 
 table {
     font-family: "Open Sans", sans-serif;
