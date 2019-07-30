@@ -30,6 +30,12 @@ function createData(lables = "", metric = {}) {
   }
 
 
+  // calculate total imgae
+  let totalImage = 0;
+  for (let i = 0; i < len; i++) {
+    totalImage += metric['label_counts'][i]
+  }
+
 
   // 1.3 init all_class data
   tabData.push({
@@ -37,10 +43,10 @@ function createData(lables = "", metric = {}) {
     "name": "all class",
     "metrics": {
       "Sensitivity": metric['micro_recall'],
-      "Specificity": "N/A",
+      "Specificity": metric['micro_specificity'],
       "Precision": metric['micro_precision'],
       "F1score": metric['micro_f1_score'],
-      "AUC": "N/A"
+      "AUC": metric['weighted_roc_auc'],
     },
     "grpah": {
       ChartTitle: 'ROC Chart',
@@ -50,11 +56,12 @@ function createData(lables = "", metric = {}) {
       dataColumn: dataArray,
       "precision": [0.45, 0.5, 0.6, 0.7, 0.8, 1],
       "recall": [1, 0.75, 0.5, 0.25, 0.1, 0],
-      "image": 1000
+      "image": totalImage
     },
     'confusionMatrixInfo': {
       confusionMatrix: [...metric['confusion_matrix']],
       confusionMatrixLable: [...lables],
+
       // TODO: need to import dynamically 
       confusionMatrixAnnotation: [
         ["img01, img03", "img02,img04", "img23", "no img", "img09", "no_img", "img05", "img12", "no img  ", "no img"],
@@ -93,11 +100,11 @@ function createData(lables = "", metric = {}) {
       "id": `${i+1}`,
       "name": `class ${lables[i]}`,
       "metrics": {
-        "Sensitivity": "N/A",
-        "Specificity": "N/A",
-        "Precision": "N/A",
-        "F1score": "N/A",
-        "AUC": metric['roc_auc'][`${i}`],
+        "Sensitivity": metric['report_per_labels'][i]['recall'],
+        "Specificity": metric['report_per_labels'][i]['specificity'],
+        "Precision": metric['report_per_labels'][i]['precision'],
+        "F1score": metric['report_per_labels'][i]['f1'],
+        "AUC": metric['roc_auc'][i],
       },
       "grpah": {
         ChartTitle: 'Precision Recall Curve',
@@ -108,19 +115,20 @@ function createData(lables = "", metric = {}) {
           'recall': 'threshold',
         },
         dataColumn: eachDataColumn[i],
-        "precision": [0.45, 0.5, 0.6, 0.7, 0.8, 1],
-        "recall": [1, 0.75, 0.5, 0.25, 0.1, 0],
-        "image": "N/A"
+        precision: [0.45, 0.5, 0.6, 0.7, 0.8, 1],
+        recall: [1, 0.75, 0.5, 0.25, 0.1, 0],
+        image: metric['label_counts'][i]
       },
       'confusionMatrixInfo': {
         // TODO: need to import dynamically later
         confusionMatrix: [
-          [1, 0],
-          [7, 0],
+          ...metric["report_per_labels"][i]["content"]
+          // [1, 0],
+          // [7, 0],
         ],
         // TODO: need to import dynamically later
         confusionMatrixLable: [
-          0,1
+          'other', i
         ],
         // TODO: need to import dynamically later
         confusionMatrixAnnotation: [

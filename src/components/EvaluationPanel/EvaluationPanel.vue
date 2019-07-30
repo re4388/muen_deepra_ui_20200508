@@ -5,11 +5,14 @@
       <div class="col-12 ">
         <h2 class="text-light bg-color rounded-pill border p-2 m-3">{{ title }}</h2>
         <p id="page-content" class="px-3 m-2 text-light text-left">
-        The Model evaluation report is created at {{ createTime }}. 
+          The Model evaluation report. 
+        In this analysis, images were divided in {{ folderNumber }} folds for training dataset and validation dataset. 
+        The prediction performance of model are shown in following table.
+        <!-- The Model evaluation report is created at {{ createTime }}. 
         In this analysis, we analyzed {{ imageNumber }} image, 
         and these images were divided in {{ folderNumber }} folds for training dataset and validation dataset. 
         It takes {{ trainingTime}} for training .
-        The prediction performance of model are shown in following table.
+        The prediction performance of model are shown in following table. -->
         </p>
       </div>
     </header>
@@ -35,6 +38,7 @@ export default {
     return {
       title: "First Image Dataset Model 1",
       // TODO: need to link to backend
+      // use...vuex 
       createTime:'11:21, 2019/07/30',
       imageNumber:'4023',
       folderNumber: '10',

@@ -43,7 +43,7 @@
     },
     filters:{
       numberFormater(val){
-        return parseFloat(val).toFixed(4) * 100 + ' %'
+        return Math.round(parseFloat(val) * 10000)/100 + ' %'
       }
     },
 }

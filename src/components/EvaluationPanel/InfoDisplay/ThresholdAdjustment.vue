@@ -41,7 +41,7 @@ export default {
       slider: 0,
       slider2:1,
       // TODO: still need to connect to backend data
-      totalImages:'4023',
+      totalImages:this.graphData["image"],
       step: this.graphData["dataColumn"][0].length - 1  //elt 0 is threshold string 
       // imageNumber: this.graphData["image"]
     };
