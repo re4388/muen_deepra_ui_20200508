@@ -128,7 +128,7 @@ function createData(lables = "", metric = {}) {
         ],
         // TODO: need to import dynamically later
         confusionMatrixLable: [
-          'other', i
+          i, 'other',
         ],
         // TODO: need to import dynamically later
         confusionMatrixAnnotation: [
