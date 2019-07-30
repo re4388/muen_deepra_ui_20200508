@@ -52,6 +52,12 @@ export default {
         this.images = this.pathCollector.fileList
         console.log('ready to emit event `onFirstImageLoaded`')
         console.log(this.images)
+        let imageTotalNumber = this.images.length
+        console.log(this.images.length)
+        console.log(imageTotalNumber)
+        
+        EventBus.$emit('viewerDatasetChanged', imageTotalNumber)
+        
         // // methods-2
         // // when receive the massage about viewerDatasetChanged,
         // // get the current dataset from store as the images
@@ -152,5 +158,17 @@ export default {
 
 .show {
   right: 0px;
+}
+
+.catalog {
+  width: 300px;
+  height: 40px;
+  background: #777777;
+  position: relative;
+  top: 240px;
+  left: 0;
+  z-index: 20;
+  line-height: 40px;
+  color: white;
 }
 </style>
