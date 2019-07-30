@@ -50,6 +50,7 @@ import ViewerOverviewPanel from './components/ViewerPanel/ViewerOverviewPanel.vu
 import EvaluationPanel from './components/EvaluationPanel/EvaluationPanel.vue'
 import ProjectProfile from './components/ProjectPanel/ProjectProfile.vue'
 import ModelProfile from './components/ModelPanel/ModelProfile.vue'
+import TestPanel from './components/TestPanel/TestPanel.vue'
 
 const router = new VueRouter({
   routes: [
@@ -101,7 +102,7 @@ const router = new VueRouter({
     {
       path: '/testing',
       name: 'Test',
-      component: null
+      component: TestPanel
     }
   ]
 })

@@ -1,11 +1,13 @@
 <template>
   <div id="model-sidebar">
     <sidebar-menu 
-    :menu="menu" 
-    :collapsed="collapsed" 
-    :width="width" 
-    :widthCollapsed="widthCollapsed" 
-    :theme="theme" />
+      :menu="menu"
+      :collapsed="collapsed"
+      :width="width"
+      :widthCollapsed="widthCollapsed"
+      :theme="theme"
+      @itemClick="onItemClick"
+    />
   </div>
 </template>
 
@@ -46,6 +48,16 @@
                 icon: 'cube'
               }
             }
+          },
+          {
+            title: 'image',
+            href: '/viewer-overview',
+            icon: {
+              element: 'font-awesome-icon',
+              attributes: {
+                icon: 'folder'
+              }
+            }
           }
         ],
         collapsed: false,
@@ -54,7 +66,11 @@
         theme: 'default-theme'
       }
     },
-    methods: {}
+    methods: {
+      onItemClick (event, item) {
+        // TODO: check whether there is existing test dataset before entering viewer
+      }
+    }
   }
 
 </script>
