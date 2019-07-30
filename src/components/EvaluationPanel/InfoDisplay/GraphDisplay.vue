@@ -86,7 +86,7 @@ export default {
             // min: 0,
             show: true,
             tick: {
-              values: [0, 0.2, 0.4, 0.6, 0.8,0.98, 1],
+              values: [0, 0.2, 0.4, 0.6, 0.8, 1],
               // values: [0, 0.1, 0.2, 0.3, 0.4, 0.5,0.6,0.7,0.8,0.9,1],
               outer: false
             },
