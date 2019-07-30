@@ -114,9 +114,9 @@ export default {
         console.log("--- Tabs: fetching data from store ---");
 
         // load data
-        // TODO: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-        let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-        // let data = localJson;
+        // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
+        // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+        let data = localJson;
         // console.log(data)
 
         if (data.content === null) {
@@ -142,18 +142,24 @@ export default {
                 console.log("--- parsed tabData ---");
                 console.log(tabData);
                 this.tabs = tabData;
+                this.$emit("model-data", {
+                    result: tabData
+                })
                 this.getView();
                 this.currentView = this.views[0];
             });
         } else {
             let tabData = createData(data.labels, data.metrics);
             this.tabs = tabData;
+            this.$emit("model-data", {
+                result: tabData
+            })
             this.getView();
             this.currentView = this.views[0];
         }
     },
     mounted() {
-        console.log(this.tabs);
+        // console.log("qq", this.tabs);
     },
     computed: {
         selectedMatrixData() {
@@ -164,7 +170,7 @@ export default {
 
             let currentTab = this.views.indexOf(this.currentView); // get the current view index
             return this.tabs[currentTab]["confusionMatrixInfo"];
-        }
+        },
     },
     methods: {
         // get all tabs

@@ -1,4 +1,6 @@
-import { initializeState } from './index'
+import {
+  initializeState
+} from './index'
 
 const namespaced = false;
 
@@ -30,10 +32,14 @@ const mutations = {
 }
 
 const actions = {
-  setCurrentEntry({ commit }, payload) {
+  setCurrentEntry({
+    commit
+  }, payload) {
     commit('SET_CURRENT_ENTRY', payload)
   },
-  setCurrentPage({ commit }, payload) {
+  setCurrentPage({
+    commit
+  }, payload) {
     commit('SET_CURRENT_PAGE', payload)
   }
 }
