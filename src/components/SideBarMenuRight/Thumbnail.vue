@@ -15,7 +15,8 @@ export default {
   name: 'Thumbnail',
   props: {
     root: String,
-    filename: String
+    filename: String,
+    
   },
   created() {
     // EventBus.$emit('onNavigationImageClicked', this.item[0]);

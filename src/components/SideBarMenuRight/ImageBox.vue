@@ -86,7 +86,7 @@ export default {
         this.currentIndex += this.batchSize
         console.log(this.loadedImages.length)
         this.loading = false;
-      }, 100); 
+      }, 200); 
     }
   },
   props: {
