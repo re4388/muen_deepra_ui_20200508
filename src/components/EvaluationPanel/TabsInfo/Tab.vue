@@ -7,10 +7,10 @@
     <div class="container">
       <div class="row innerGrpah">
         <div :class="[activeClass]">
-          <slot name="GraphDisplay2"></slot>
+          <slot name="GraphDisplay"></slot>
         </div>
 
-        <div class="col-sm-auto" v-if="currentView !== 'all class'">
+        <div class="col-sm-auto threshold" v-if="currentView !== 'all class'">
           <slot name="ThresholdAdjustment"></slot>
         </div>
         <slot />
@@ -53,5 +53,9 @@ export default {
   align-self: center;
   /* height: 1000px;
   width: 1000px; */
+}
+
+.threshold{
+  max-width:250px;
 }
 </style>

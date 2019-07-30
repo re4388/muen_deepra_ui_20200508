@@ -18,7 +18,7 @@
       <b-list-group-item class="list-group text-light text-left">Threshold : {{ threshold }}</b-list-group-item>
       <b-list-group-item class="list-group text-light text-left">Precision : {{ precision }}</b-list-group-item>
       <b-list-group-item class="list-group text-light text-left" >Recall: {{ recall }}</b-list-group-item> 
-      <b-list-group-item class="list-group text-light text-left">Total images: NA </b-list-group-item> 
+      <b-list-group-item class="list-group text-light text-left">Total images: {{ totalImages }} </b-list-group-item> 
 
     </b-list-group>   
   </div>
@@ -40,6 +40,8 @@ export default {
     return {
       slider: 0,
       slider2:1,
+      // TODO: still need to connect to backend data
+      totalImages:this.graphData["image"],
       step: this.graphData["dataColumn"][0].length - 1  //elt 0 is threshold string 
       // imageNumber: this.graphData["image"]
     };

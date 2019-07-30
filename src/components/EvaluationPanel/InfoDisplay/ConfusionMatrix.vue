@@ -1,6 +1,23 @@
 <template>
   <div class="container">
-    <div class="d3"></div>
+    <div class="d3">
+
+      <!-- <svg>
+            <g 
+      transform="translate(100,150)"
+      >
+
+        <text 
+          x="60"  
+          y="220"
+          text-anchor="middle"
+          font-family="sans-serif" 
+          font-size="20px"
+          fill="steelblue">TESTEST</text>
+      </g>
+        </svg> -->
+  
+    </div>
     <div class="file-info"></div>
   </div>
 </template>
@@ -142,7 +159,6 @@ export default {
       .attr("transform", function(d, i) {
         return "translate(" + x(i) + ", 0)";
       });
-
 
 
     // cell rect
@@ -307,6 +323,35 @@ export default {
       .text(function(d, i) {
         return d;
       });
+
+
+    svg
+      .append("text")
+      // .attr('rotate', 30)
+      .style("font-size", "16px")
+      // .style("writing-mode", 'tb')
+      .attr("x", 155)
+      .attr("y", 280)
+      .attr("dy", ".32em")
+      .attr("text-anchor", "end")
+      
+      .text('True Label')
+      .attr("transform", "rotate(90,100,100)");
+
+      svg
+      .append("text")
+      // .attr('rotate', 30)
+      .style("font-size", "16px")
+      // .style("writing-mode", 'tb')
+      .attr("x", 170)
+      .attr("y", 320)
+      .attr("dy", ".32em")
+      .attr("text-anchor", "end")
+      
+      .text('Predicted Label')
+      // .attr("transform", "rotate(90,100,100)");
+      
+      
   }
 };
 </script>
