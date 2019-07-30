@@ -120,17 +120,14 @@ function createData(lables = "", metric = {}) {
         image: metric['label_counts'][i]
       },
       'confusionMatrixInfo': {
-        // TODO: need to import dynamically later
         confusionMatrix: [
           ...metric["report_per_labels"][i]["content"]
           // [1, 0],
           // [7, 0],
         ],
-        // TODO: need to import dynamically later
         confusionMatrixLable: [
           i, 'other',
         ],
-        // TODO: need to import dynamically later
         confusionMatrixAnnotation: [
           ['img01, img03', 'img02,img04'],
           ['no_img', 'img05'],
