@@ -12,7 +12,6 @@ const defaultState = {
   datasetInfo: { details: {} },
   newProjectInfo: {},
   newProjectLocation: {},
-  isCreatingProject: false
 }
 
 const state = {}

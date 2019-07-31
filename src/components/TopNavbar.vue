@@ -24,6 +24,9 @@ export default {
     onClick() {
       this.$store.dispatch('setCurrentEntry', 'main')
       EventBus.$emit('entryChanged', 'main')
+      // Reset state
+      this.$store.dispatch('DataImport/resetAllState')
+      this.$store.dispatch('Project/resetAllState')
       this.$router.push('/')
     }
   },

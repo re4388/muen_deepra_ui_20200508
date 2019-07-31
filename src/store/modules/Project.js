@@ -19,12 +19,18 @@ const getters = {
 }
 
 const mutations = {
+  RESET_ALL_STATE(state) {
+    initializeState(state, defaultState)
+  },
   SET_CURRENT_PROJECT(state, payload) {
     state.currentProject = payload
   }
 }
 
 const actions = {
+  resetAllState({ commit }) {
+    commit('RESET_ALL_STATE')
+  },
   setCurrentProject({ commit }, payload) {
     commit('SET_CURRENT_PROJECT', payload)
   }
