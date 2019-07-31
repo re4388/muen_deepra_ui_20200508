@@ -42,29 +42,24 @@ export default {
     // when the viewerDatasetChanged, get the current dataset from store and emit the message
     fetchData () {
       let currentProject = this.$store.getters['Project/currentProject']
-
       let dataset = this.$store.getters['DataImport/datasetInfo']
 
+      let parseDataProcess = (result) => {
+        let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
+        pathCollector.parseFileList().then((result) => {
+          this.$store.dispatch('Viewer/setParsedFileList', pathCollector.fileList)
+          console.log('ready to emit event `viewerDatasetChanged`')
+          EventBus.$emit('viewerDatasetChanged')
+          // Notify that loading is complete
+          this.loading = true
+        })
+      }
+
       if (currentProject.uuid !== undefined) {
-        // datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
-        //   this.$store.dispatch('Viewer/setCurrentDataset', result.content)
-        //   this.dataset = this.$store.getters['Viewer/currentDataset']
-        //   EventBus.$emit('viewerDatasetChanged')
-        //   // Notify that loading is complete
-        //   this.loading = false
-        // })
         datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
           this.$store.dispatch('Viewer/setCurrentDataset', result.content)
           this.dataset = this.$store.getters['Viewer/currentDataset']
-
-          let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
-          pathCollector.parseFileList().then((result) => {
-            this.$store.dispatch('Viewer/setParsedFileList', pathCollector.fileList)
-            console.log('ready to emit event `viewerDatasetChanged`')
-            EventBus.$emit('viewerDatasetChanged')
-            // Notify that loading is complete
-            this.loading = true
-          })
+          parseDataProcess(result)
         })
       } else if (dataset.uuid !== undefined) {
         // XXX: We have to fire event `viewerDatasetChanged` in async operation. Otherwise,
@@ -77,8 +72,7 @@ export default {
         this.promiseProxy().then((result) => {
           this.$store.dispatch('Viewer/setCurrentDataset', dataset)
           this.dataset = this.$store.getters['Viewer/currentDataset']
-          EventBus.$emit('viewerDatasetChanged')
-          this.loading = false
+          parseDataProcess(result)
         })
       } else {
         alert('You should import a dataset first, then you can explore them in viewer.')

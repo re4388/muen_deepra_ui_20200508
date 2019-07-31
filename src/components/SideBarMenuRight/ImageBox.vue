@@ -39,7 +39,7 @@ export default {
     thumbnail
   },
   created () {
-    EventBus.$on('notifyImageTotalNumber', (imageTotalNumber)=>{
+    EventBus.$once('notifyImageTotalNumber', (imageTotalNumber)=>{
       this.total = imageTotalNumber -1
       this.initializeComponent()
     })
