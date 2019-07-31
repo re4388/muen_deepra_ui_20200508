@@ -60,4 +60,18 @@ export default {
   left: 0;
   background: #42ab427d;
 }
+.labelGreen::before {
+  content: "";
+  display: inline-flex;
+  position: absolute;
+  top: 0;
+  left: 45px;
+  width: 15px;
+  height: 15px;
+  background: #42ab427d;
+}
+
+.labelRed {
+  border: 1px solid red;
+}
 </style>

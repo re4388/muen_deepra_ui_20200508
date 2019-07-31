@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
-      <div class="noteTitle"><h5>Edit Log</br> & </br>Note</h5></br></div>
+      <div class="noteTitle"><h5>Edit Log<br> &amp; <br>Note</h5><br></div>
       <div class="note"><p>20190523</p></div>
       <div class="note"><p>Model 1 Predict as Label1</p></div>
     </div>    
@@ -28,6 +28,7 @@ import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
 import imageData from './image_data.json'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
+import { constants } from 'fs';
 
 const separator = {
   template: `<hr style="border-color: rgba(255, 255, 255); margin: 10px;"/>`
@@ -44,26 +45,9 @@ export default {
   created () {
     EventBus.$once('viewerDatasetChanged',()=>{
       // Parse path of images from dataset and assign to `this.images`
-      let dataset = this.$store.getters['Viewer/currentDataset']
-      console.log(dataset)
-
-      this.pathCollector = new fileFetecher.DatasetPathCollector(dataset)
-      this.pathCollector.parseFileList().then((result) => {
-        this.images = this.pathCollector.fileList
-        console.log('ready to emit event `onFirstImageLoaded`')
-        console.log(this.images)
-        let imageTotalNumber = this.images.length
-        console.log(this.images.length)
-        console.log(imageTotalNumber)
-        
-        EventBus.$emit('viewerDatasetChanged', imageTotalNumber)
-        
-        // // methods-2
-        // // when receive the massage about viewerDatasetChanged,
-        // // get the current dataset from store as the images
-        // // emit the event about "onFirstImageLoaded" and the parameter (this.images[0]) (to toolBar)
-        // EventBus.$emit('onFirstImageLoaded', this.images[0])
-      })
+      let fileList = this.$store.getters['Viewer/parsedFileList']
+      this.images = fileList
+      EventBus.$emit('notifyImageTotalNumber', this.images.length)
     })
   },
   data () {

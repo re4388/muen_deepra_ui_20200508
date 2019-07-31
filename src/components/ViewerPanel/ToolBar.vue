@@ -118,24 +118,10 @@ export default {
     // finally, join the root and filename for imageUrl using
     EventBus.$once('viewerDatasetChanged',()=>{
       // Parse path of images from dataset and assign to `this.images`
-      let dataset = this.$store.getters['Viewer/currentDataset']
-      console.log(dataset)
-
-      let pathCollector = new fileFetecher.DatasetPathCollector(dataset)
-      pathCollector.parseFileList().then((result) => {
-        let firstImage = pathCollector.fileList[0]
-        let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
-        this.url = joined
-      })
-    }),
-    EventBus.$on('onNavigationImageClicked',(obj)=>{
-      // console.log(obj)
-      let item = obj.item
-      let joined = modPath.join(modPath.resolve(item.root), item.filename)
-      // console.log(joined)
+      let firstImage = this.$store.getters['Viewer/parsedFileList'][0]
+      let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
       this.url = joined
-    })   
-
+    }),
     // // methods-2
     // // when receive the message adout "onFirstImageLoaded"
     // // join the root and the filename as imageUrl
@@ -147,6 +133,14 @@ export default {
     // this.url = joined
     // })
     // when onNavigationImageClicked, join the root and filename for imageUrl using
+
+    EventBus.$on('onNavigationImageClicked',(obj)=>{
+      // console.log(obj)
+      let item = obj.item
+      let joined = modPath.join(modPath.resolve(item.root), item.filename)
+      // console.log(joined)
+      this.url = joined
+    })  
   },
   methods: {
     initializeComponent() {
@@ -165,7 +159,7 @@ export default {
         }
       }
     },
-    // when click the reset buttom, the filters' value will set to default
+    // when click the 'reset' buttom, the filters' value will set to default
     setToDefault() {
       this.filters = this.defaultValues();
     },

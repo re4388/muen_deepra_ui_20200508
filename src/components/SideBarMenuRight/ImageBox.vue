@@ -39,13 +39,13 @@ export default {
     thumbnail
   },
   created () {
-    this.initializeComponent()
-    EventBus.$on('viewerDatasetChanged', (imageTotalNumber)=>{
-      this.total = imageTotalNumber
+    EventBus.$on('notifyImageTotalNumber', (imageTotalNumber)=>{
+      this.total = imageTotalNumber -1
+      this.initializeComponent()
     })
   },
   mounted(){
-    this.showClickedThumbnail()
+
     const listElm = document.querySelector('#imgList');
     listElm.addEventListener('scroll', e => {
       // console.log(`${listElm.scrollTop} , ${listElm.clientHeight} , ${listElm.scrollHeight}`)
@@ -56,15 +56,15 @@ export default {
       }
     });
     // Initially load some items.
-    this.loadMore();
+    // this.loadMore();
   },
   methods: {
     initializeComponent () {
       console.log('--- initializeComponent ---')
-      console.log(this.images)
-      this.loadedImages = this.images.splice(this.currentIndex, this.currentIndex+this.batchSize)
+      let fileList = this.$store.getters['Viewer/parsedFileList']
+      this.loadedImages = fileList.slice(this.currentIndex, this.currentIndex+this.batchSize)
       this.currentIndex += this.batchSize
-      console.log(this.loadedImages)
+      console.log(this.loadedImages-1)
     },
     showClickedThumbnail (item, index) {
       console.log('--- event `loaded` issued ---')
@@ -77,15 +77,13 @@ export default {
     },
     loadMore () {
       this.loading = true;
-      console.log('load more')
       setTimeout(e => {
+        console.log('load more')
         console.log(`current index: ${this.currentIndex}`)
-        for (var i = 0; i < this.batchSize; i++) {
-          this.loadedImages.push(this.images[this.currentIndex+i]);
-        }
+        this.loadedImages.push(...this.images.slice(this.currentIndex, this.currentIndex+this.batchSize))
         this.currentIndex += this.batchSize
-        console.log(this.loadedImages.length)
         this.loading = false;
+        console.log(this.loadedImages)
       }, 200); 
     }
   },
@@ -109,12 +107,11 @@ export default {
     return {
       loading: false,
       nextItem: 1,
-      // images: [],
       loadedImages: [],
       currentIndex: 0,
-      batchSize: 40,
       indexNumber: 0,
-      total: ''
+      total: '',
+      batchSize: 40
     }
   }
 }
@@ -124,13 +121,14 @@ export default {
 // ImageList
 .imgList {
   width: 317px;
-  height: 300px;
+  height: 320px;
   overflow: scroll;
   margin: 0 auto;
   list-style-type: none;
   text-align: left;
   position: relative;
   top: -20px;
+  padding-bottom: 20px;
 }
 // .imgList::-webkit-scrollbar { 
 //     display: none; 
@@ -140,20 +138,21 @@ export default {
   height: 20px;
   background: #777777;
   position: relative;
-  top: 280px;
+  top: 300px;
   left: 0;
   z-index: 20;
   line-height: 20px;
   color: white;
 }
 .box {
-  height: 300px;
+  height: 320px;
   width: 317px;
   overflow: hidden;
   position: fixed;
   top: 350px;
   right: 150px;
   padding: 0px;
+  padding-bottom: 20px;
 }
 .title {
   background: #000;

@@ -3,6 +3,7 @@ const namespaced = true;
 const state = {
   currentImageSrc: '',
   currentDataset: null,
+  parsedFileList: [],
 }
 
 const getters = {
@@ -11,6 +12,9 @@ const getters = {
   },
   currentDataset() {
     return state.currentDataset
+  },
+  parsedFileList() {
+    return state.parsedFileList
   }
 }
 
@@ -20,6 +24,9 @@ const mutations = {
   },
   SET_CURRENT_DATASET(state, payload) {
     state.currentDataset = payload
+  },
+  SET_PARSED_FILE_LIST(state, payload) {
+    state.parsedFileList = payload
   }
 }
 
@@ -29,6 +36,9 @@ const actions = {
   },
   setCurrentDataset({ commit }, payload) {
     commit('SET_CURRENT_DATASET', payload)
+  },
+  setParsedFileList({ commit }, payload) {
+    commit('SET_PARSED_FILE_LIST', payload)
   }
 }
 

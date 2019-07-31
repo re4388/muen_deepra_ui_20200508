@@ -37,21 +37,9 @@ export default {
   },
   created () {
     this.fetchData()
-    // EventBus.$once('viewerDatasetChanged',()=>{
-    // // Parse path of images from dataset and assign to `this.images`
-    // let dataset = this.$store.getters['Viewer/currentDataset']
-    // console.log(dataset)
-
-    // this.pathCollector = new fileFetecher.DatasetPathCollector(dataset)
-    // this.pathCollector.parseFileList().then((result) => {
-    //   this.images = this.pathCollector.fileList
-    //   })
-    // })
   },
   methods: {
-    // methosd-1
-    // when the viewerDatasetChanged, get the current dataset from store,
-    // and emit the message(to ToolBar)
+    // when the viewerDatasetChanged, get the current dataset from store and emit the message
     fetchData () {
       let currentProject = this.$store.getters['Project/currentProject']
       if (currentProject === null) {
@@ -60,14 +48,17 @@ export default {
       datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
         this.$store.dispatch('Viewer/setCurrentDataset', result.content)
         this.dataset = this.$store.getters['Viewer/currentDataset']
-        EventBus.$emit('viewerDatasetChanged')
-        console.log('----- current dataset in viewer -----')
-        console.log(this.dataset)
 
-        // Notify that loading is complete
-        this.loading = true
+        let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
+        pathCollector.parseFileList().then((result) => {
+          this.$store.dispatch('Viewer/setParsedFileList', pathCollector.fileList)
+          console.log('ready to emit event `viewerDatasetChanged`')
+          EventBus.$emit('viewerDatasetChanged')
+          // Notify that loading is complete
+          this.loading = true
+        })
       })
-    },
+    }
   }  
 };
 
