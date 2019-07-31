@@ -9,6 +9,21 @@
             </b-modal>
         </div>
 
+
+        <div v-if="tabs === null">  
+            <!-- <b-alert show variant="light" class="mt-5">
+                
+            </b-alert>  -->
+
+            <b-alert show variant="dark">
+                <a href="#" class="alert-link">
+                <router-link to="/project-overview">Please open the existed project or train a project first</router-link> 
+                </a>
+                
+                </b-alert>
+            
+            </div>
+
         <!-- tabs 麵包屑 -->
 
         <div class="m-0 bg-white text-white">
