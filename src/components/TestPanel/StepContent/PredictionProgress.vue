@@ -61,9 +61,8 @@ export default {
       console.log('Prediction is finished')
 
       // Get training output (e.g. output directory)
-      // let projectInfo = this.$store.getters['Project/currentProject']
-      predictionService.getPredictionOutput(projectInfo).then((result) => {
-        this.$store.dispatch('Prediction/setPredictionOutput', result)
+      predictionService.getPredictionOutput().then((result) => {
+        this.$store.dispatch('Testing/setPredictionOutput', result)
         console.log(result)
       })
       this.$emit('onProgressFinished', true)

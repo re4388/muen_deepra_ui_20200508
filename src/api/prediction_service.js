@@ -32,9 +32,7 @@ function getPredictionOutput () {
     protoPath, protoPackageName, 'PredictionService'
   )
   return new Promise((resolve, reject) => {
-    predictionService.GetPredictionOutput({
-      // project_info_json: JSON.stringify(projectInfo)
-    }, (err, resp) => {
+    predictionService.GetPredictionOutput({}, (err, resp) => {
       let result = JSON.parse(resp.output_json)
       console.log(result)
       resolve(result)
