@@ -11,7 +11,7 @@
 
         <!-- tabs 麵包屑 -->
 
-        <div class="m-0 bg-white text-white ">
+        <div class="m-0 bg-white text-white">
             <b-tabs
                 class="text-info"
                 no-nav-style
@@ -106,6 +106,7 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
     name: "Tabs",
@@ -128,7 +129,6 @@ export default {
     },
     created() {
         console.log("--- Tabs: fetching data from store ---");
-
         // load data
         // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
         let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
@@ -173,6 +173,9 @@ export default {
             this.getView();
             this.currentView = this.views[0];
         }
+
+        // practice:  1. dispatcj action from store EvaluationPanel.js via Vuex
+        this.$store.dispatch("EvaluationPanel/getData");
     },
     mounted() {},
     computed: {
@@ -189,7 +192,15 @@ export default {
             if (this.currentView === "all class") {
                 return "currentUsed";
             }
-        }
+        },
+        // practice: 2.access state from EvaluationPanel.js, you then can render testData in html
+        ...mapState({
+            testData: state => state.EvaluationPanel.data
+        }),
+        // practice: 3. access gatter from EvaluationPanel.js, you then can render testlables in html
+        ...mapGetters("EvaluationPanel", {
+            testlables: "labels"
+        })
     },
     methods: {
         // get all tabs
@@ -217,9 +228,6 @@ export default {
 
 
 
-
-
-
 <style lang="scss" scoped>
 .outterGrpah {
     display: flex;
@@ -236,44 +244,40 @@ export default {
     z-index: 2;
 }
 
-.breadcrumbV2 {
-    font-size: 24px;
-}
-
-ul.breadcrumb {
-    padding: 6px 10px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border: 1px solid rgb(8, 8, 8);
-    cursor: pointer;
-    background: #696969;
-    margin-bottom: -1px;
-    margin-right: -1px;
-    list-style: none;
-    li {
-        // display: inline;
-        font-size: 18px;
-        + li:before {
-            padding: 15px;
-            color: rgb(8, 8, 8);
-            content: "   ";
-        }
-        a {
-            font-size: 20px;
-            // color:rgba(255, 255, 255, 0.5);
-            color: #343a40;
-            text-decoration: none;
-            &:hover {
-                // color: rgba(255, 255, 255, 0.75);
-                color: #121416;
-                text-decoration: none;
-            }
-            .current {
-                background-color: #fff;
-            }
-        }
-    }
-}
+// ul.breadcrumb {
+//     padding: 6px 10px;
+//     border-top-left-radius: 3px;
+//     border-top-right-radius: 3px;
+//     border: 1px solid rgb(8, 8, 8);
+//     cursor: pointer;
+//     background: #696969;
+//     margin-bottom: -1px;
+//     margin-right: -1px;
+//     list-style: none;
+//     li {
+//         // display: inline;
+//         font-size: 18px;
+//         + li:before {
+//             padding: 15px;
+//             color: rgb(8, 8, 8);
+//             content: "   ";
+//         }
+//         a {
+//             font-size: 20px;
+//             // color:rgba(255, 255, 255, 0.5);
+//             color: #343a40;
+//             text-decoration: none;
+//             &:hover {
+//                 // color: rgba(255, 255, 255, 0.75);
+//                 color: #121416;
+//                 text-decoration: none;
+//             }
+//             .current {
+//                 background-color: #fff;
+//             }
+//         }
+//     }
+// }
 
 // .active {
 //     color: #0567c9;
