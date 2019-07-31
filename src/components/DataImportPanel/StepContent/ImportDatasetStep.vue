@@ -62,6 +62,7 @@ export default {
   methods: {
     initializeContent () {
       this.$store.dispatch('DataImport/setCurrentStage', 'importDataset')
+      this.$store.dispatch('DataImport/resetAllState')
       this.selectedFolder = this.$store.getters['DataImport/selectedFolder']
       this.$refs.inputFolderBrowser.setFiles([this.selectedFolder])
       this.selectedTaskType = this.$store.getters['DataImport/selectedTaskType']
