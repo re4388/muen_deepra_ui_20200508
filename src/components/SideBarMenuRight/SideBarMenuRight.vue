@@ -17,28 +17,18 @@
       </div>
     </div>
     <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
-      <div class="noteTitle"><h5>Edit Log</br> & </br>Note</h5></br></div>
+      <div class="noteTitle"><h5>Edit Log<br> &amp; <br>Note</h5><br></div>
       <div class="note"><p>20190523</p></div>
       <div class="note"><p>Model 1 Predict as Label1</p></div>
     </div>    
   </div>
-</template>   
-<!-- <template v-for="(item, index) in imageList">
-  <div class="x-rayFilms" :key="index">
-    <img class="overlay" src="item.src" height="40px">
-  </div>
-</template> -->
-<!-- <template v-for="(item, index) in imageList">
-  <div :key="index">
-    <p>{{ item.src }}</p>
-    <img :src="item.src"/>
-  </div>
-</template> -->        
+</template>        
 <script>
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
 import imageData from './image_data.json'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
+import { constants } from 'fs';
 
 const separator = {
   template: `<hr style="border-color: rgba(255, 255, 255); margin: 10px;"/>`
@@ -55,13 +45,9 @@ export default {
   created () {
     EventBus.$once('viewerDatasetChanged',()=>{
       // Parse path of images from dataset and assign to `this.images`
-      let dataset = this.$store.getters['Viewer/currentDataset']
-      console.log(dataset)
-
-      this.pathCollector = new fileFetecher.DatasetPathCollector(dataset)
-      this.pathCollector.parseFileList().then((result) => {
-        this.images = this.pathCollector.fileList
-      })
+      let fileList = this.$store.getters['Viewer/parsedFileList']
+      this.images = fileList
+      EventBus.$emit('notifyImageTotalNumber', this.images.length)
     })
   },
   data () {
@@ -156,5 +142,17 @@ export default {
 
 .show {
   right: 0px;
+}
+
+.catalog {
+  width: 300px;
+  height: 40px;
+  background: #777777;
+  position: relative;
+  top: 240px;
+  left: 0;
+  z-index: 20;
+  line-height: 40px;
+  color: white;
 }
 </style>

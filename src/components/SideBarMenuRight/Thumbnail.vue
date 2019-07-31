@@ -15,10 +15,11 @@ export default {
   name: 'Thumbnail',
   props: {
     root: String,
-    filename: String
+    filename: String,
+    
   },
   created() {
-    EventBus.$emit('onNavigationImageClicked', this.item[0]);
+    // EventBus.$emit('onNavigationImageClicked', this.item[0]);
   },
   computed: {
     fullPath: function () {
@@ -28,9 +29,6 @@ export default {
   methods: {
     onClick () {
       this.$emit('click', this._props)
-    },
-    onload () {
-      this.$emit('onFirstImageLoaded', (obj))
     }
   }
 }
@@ -61,5 +59,19 @@ export default {
   bottom: 0;
   left: 0;
   background: #42ab427d;
+}
+.labelGreen::before {
+  content: "";
+  display: inline-flex;
+  position: absolute;
+  top: 0;
+  left: 45px;
+  width: 15px;
+  height: 15px;
+  background: #42ab427d;
+}
+
+.labelRed {
+  border: 1px solid red;
 }
 </style>

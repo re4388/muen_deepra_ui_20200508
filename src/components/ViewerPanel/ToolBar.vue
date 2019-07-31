@@ -1,6 +1,5 @@
 <template>
   <div id="tool-bar d-flex flex-column" class="tool-bar">
-
       <div class="wrap__1 flex-fill flex-column">
         <ul class="drop-down-menu d-flex justify-content-center">
           <li><a href="#"><div class="filterbtn"><img class="img__icon" src="../../assets/settings_brightness.png"></div></a>
@@ -60,14 +59,12 @@
           </li>
         </ul>
       </div>
-
-
       <div class="wrap__2 d-inline-flex flex-fill flex-column justfy-content-center align-self-center;" style="width:100%; height:100%;">
         <v-zoomer class="zoomer d-inline-flex flex-column">
           <imagvue 
             v-model="imageUrl"
             id="imgExample"
-            class="imgExample d-inline-flex justify-content: center"
+            class="imgExample d-inline-flex justify-content-center"            
             :filters="isOpenFilters"
             :width="filters.width" 
             :height="filters.height"
@@ -82,25 +79,13 @@
             :customData="customData()"
             >
           </imagvue>
-          <!-- <img :src="firstImage" id="firstImage"/> -->
-          <!-- <firstImage :images="firstImage"/> -->
-        </v-zoomer>
-
-        <!-- <img 
-        :src="firstImageUrl"
-        id="firstImage"
-        class="firstImage" 
-        /> -->
+        </v-zoomer>    
       </div>
-
-    
-
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import VueDragResize from 'vue-drag-resize'
 import imagvue from 'imagvue'
 import VueZoomer from 'vue-zoomer'
 import 'vue-zoomer/dist/vue-zoomer.css'
@@ -110,7 +95,6 @@ import imageData from '@/components/SideBarMenuRight/image_data.json'
 import { EventBus } from '@/event_bus.js'
 import modPath from 'path'
 import fileFetecher from '@/utils/file_fetcher.js'
-// import FirstImage from '@/components/ViewerPanel/FirstImge.vue'
 
 Vue.use(VueZoomer)
 
@@ -122,33 +106,45 @@ export default {
   },
   components: {
     imagvue,
-    VueDragResize,
     VueZoomer,
     thumbnail
   },
   created(){
-    // // expect to show the first image
-    // EventBus.$on('onLoadFirstImage', (obj) => {
-    //   let item = obj[0].item
-    //   let joined = modPath.join(modPath.resolve(item.root), item.filename)
-    //   this.url = joined
-    // }),
-    EventBus.$on('onFirstImageLoaded',(obj)=>{
-      // console.log(obj)
-      let item = obj.item[0]
-      let joined = modPath.join(modPath.resolve(item[0].root), item[0].filename)
-      // console.log(joined)
+    this.initializeComponent()
+    // methods-1
+    // when (once) receive the message about viewerDatasetChange, 
+    // get the current dataset from fileFecher,
+    // and let the firstImage equal to the first item from the fileList
+    // finally, join the root and filename for imageUrl using
+    EventBus.$once('viewerDatasetChanged',()=>{
+      // Parse path of images from dataset and assign to `this.images`
+      let firstImage = this.$store.getters['Viewer/parsedFileList'][0]
+      let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
       this.url = joined
     }),
+    // // methods-2
+    // // when receive the message adout "onFirstImageLoaded"
+    // // join the root and the filename as imageUrl
+    // EventBus.$on('onFirstImageLoaded', (obj) => {
+    //   console.log(obj)
+    //   let item = obj
+    //   let joined = modPath.join(modPath.resolve(item.root), item.filename)
+    //   // console.log(joined)
+    // this.url = joined
+    // })
+    // when onNavigationImageClicked, join the root and filename for imageUrl using
+
     EventBus.$on('onNavigationImageClicked',(obj)=>{
       // console.log(obj)
       let item = obj.item
       let joined = modPath.join(modPath.resolve(item.root), item.filename)
       // console.log(joined)
       this.url = joined
-    })
+    })  
   },
   methods: {
+    initializeComponent() {
+    },
     showImgList: function() {
       let el = document.querySelector('.title')
       el.classList.toggle('show')
@@ -163,12 +159,7 @@ export default {
         }
       }
     },
-    resize(newRect) {
-      this.width = newRect.width;
-      this.height = newRect.height;
-      this.top = newRect.top;
-      this.left = newRect.left;
-    },
+    // when click the 'reset' buttom, the filters' value will set to default
     setToDefault() {
       this.filters = this.defaultValues();
     },
@@ -195,14 +186,6 @@ export default {
     fullPath: function() {
       return modPath.join(modPath.resolve(this.root), this.filename)
     },
-    firstImageUrl: function() {
-      console.log('----loading----')  
-      console.log(this.url)
-      let el = document.getElementById('imgExample')
-      if (el === null) return ''
-      el.src = this.url
-      return this.url;
-    },
     imageUrl: function() {
       console.log('----loading----')
       console.log(this.url)
@@ -212,31 +195,9 @@ export default {
       return this.url
     }
   },
-
-  //   imageUrl: function() {
-  //     window.addEventListener('load', () => {
-  //     let el = document.getElementById('imgExample')
-  //     el.src = this.url
-  //     return this.url;
-  //     })
-  //   }
-  // },
-  // mounted() {
-  //   window.addEventListener('load', () => {
-  //     let el = document.getElementById('imgExample')
-  //     el.src = ''
-  //     return '';
-  //   })
-  // },
-  // updated() {
-  //   let el = document.getElementById('imgExample')
-  //   el.src = this.url
-  //   return this.url;
-  // },
   data() {
     return {
       pathCollector: null,
-      firstImage: [],
       cnt: 0,
       width: 0,
       height: 0,
@@ -244,13 +205,6 @@ export default {
       left: 0,
       // projects: viewerData.content,
       isOpenFilters: true ,
-      dropShadowJson:
-      {
-        offset: 16,
-        blurRadius: 16,
-        spreadRadius: 10,
-        color: "#000000"
-      },
       filters: {
         // maintain the aspect ratio
         // width: 500,
@@ -264,8 +218,7 @@ export default {
         sepia: 0,
       },
       tooltip: false,
-      // firstImageUrl: 'http://www.clker.com/cliparts/n/b/Q/a/X/U/number-1-black-round-md.png',
-      url: 'https://yt3.ggpht.com/a/AGF-l79qoSji84zhO0ZXgvbcGvHkYfjxX6O3ycrxmQ=s900-mo-c-c0xffffffff-rj-k-no'
+      url: 'https://www.evershine.com/wp-content/uploads/2017/11/60T90-Black.jpg'
     }
   }    
 }
@@ -353,8 +306,8 @@ ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
 }
 
 .firstImage {
-  width: 40px;
-  height: 40px;
+  width: 100px;
+  height: 100px;
   background: white;
   position: fixed;
   top: 200px;

@@ -2,8 +2,6 @@
   <div id="viewer-overview-panel" class="container-main">
     <ToolBar class="toolbar"/>    
     <SidebarRight/>
-    <!-- <ViewerContainer/> -->
-    <!-- <imag-vue-panel></imag-vue-panel> -->
   </div>
 </template>
 
@@ -12,8 +10,6 @@ import Vue from "vue";
 import SidebarRight from '@/components/SideBarMenuRight/SideBarMenuRight.vue';
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue';
 import imagvue from 'imagvue';
-import VueDragResize from 'vue-drag-resize';
-// import ViewerContainer from './ViewerContainer.vue';
 import datasetService from '@/api/dataset_service.js'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
@@ -21,11 +17,9 @@ import fileFetecher from '@/utils/file_fetcher.js'
 export default {
   name:"ViewerOverviewPanel",
   components: {
-    // ViewerContainer,
     SidebarRight,
     ToolBar,
-    imagvue,
-    VueDragResize
+    imagvue
   },
   computed: {
   },
@@ -45,17 +39,32 @@ export default {
     this.fetchData()
   },
   methods: {
+    // when the viewerDatasetChanged, get the current dataset from store and emit the message
     fetchData () {
       let currentProject = this.$store.getters['Project/currentProject']
+
       let dataset = this.$store.getters['DataImport/datasetInfo']
 
       if (currentProject.uuid !== undefined) {
+        // datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
+        //   this.$store.dispatch('Viewer/setCurrentDataset', result.content)
+        //   this.dataset = this.$store.getters['Viewer/currentDataset']
+        //   EventBus.$emit('viewerDatasetChanged')
+        //   // Notify that loading is complete
+        //   this.loading = false
+        // })
         datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
           this.$store.dispatch('Viewer/setCurrentDataset', result.content)
           this.dataset = this.$store.getters['Viewer/currentDataset']
-          EventBus.$emit('viewerDatasetChanged')
-          // Notify that loading is complete
-          this.loading = false
+
+          let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
+          pathCollector.parseFileList().then((result) => {
+            this.$store.dispatch('Viewer/setParsedFileList', pathCollector.fileList)
+            console.log('ready to emit event `viewerDatasetChanged`')
+            EventBus.$emit('viewerDatasetChanged')
+            // Notify that loading is complete
+            this.loading = true
+          })
         })
       } else if (dataset.uuid !== undefined) {
         // XXX: We have to fire event `viewerDatasetChanged` in async operation. Otherwise,
@@ -81,8 +90,8 @@ export default {
         resolve(true)
       })
     }
-  }  
-};
+  }
+}
 
 
 </script>
