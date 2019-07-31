@@ -47,20 +47,40 @@ export default {
   methods: {
     fetchData () {
       let currentProject = this.$store.getters['Project/currentProject']
-      if (currentProject === null) {
-        return
-      }
-      datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
-        this.$store.dispatch('Viewer/setCurrentDataset', result.content)
-        this.dataset = this.$store.getters['Viewer/currentDataset']
-        EventBus.$emit('viewerDatasetChanged')
-        console.log('----- current dataset in viewer -----')
-        console.log(this.dataset)
+      let dataset = this.$store.getters['DataImport/datasetInfo']
 
-        // Notify that loading is complete
-        this.loading = true
-      })
+      if (currentProject.uuid !== undefined) {
+        datasetService.getDatasetInfo(currentProject.uuid).then((result) => {
+          this.$store.dispatch('Viewer/setCurrentDataset', result.content)
+          this.dataset = this.$store.getters['Viewer/currentDataset']
+          EventBus.$emit('viewerDatasetChanged')
+          // Notify that loading is complete
+          this.loading = false
+        })
+      } else if (dataset.uuid !== undefined) {
+        // XXX: We have to fire event `viewerDatasetChanged` in async operation. Otherwise,
+        //   the order of instantiating component will make `SideBarMenuRight` unable to catch
+        //   this event. (Because `SideBarMenuRight` is created after this component is created.
+        //   If we make the event `viewerDatasetChanged` be a sync operation, this event will
+        //   be fired before `SideBarMenuRight` is created. So that the event listener in
+        //   `SideBarMenuRight` won't be triggered.)
+        //   That's why we have to use this promiseProxy to make the content be async.
+        this.promiseProxy().then((result) => {
+          this.$store.dispatch('Viewer/setCurrentDataset', dataset)
+          this.dataset = this.$store.getters['Viewer/currentDataset']
+          EventBus.$emit('viewerDatasetChanged')
+          this.loading = false
+        })
+      } else {
+        alert('You should import a dataset first, then you can explore them in viewer.')
+        this.$router.push('/testing')
+      }
     },
+    promiseProxy () {
+      return new Promise((resolve, reject) => {
+        resolve(true)
+      })
+    }
   }  
 };
 
