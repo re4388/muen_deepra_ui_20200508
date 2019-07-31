@@ -1,30 +1,25 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-Vue.use(VueRouter)
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // Chart.js
-import 'chart.js'
-import 'vue-chartjs'
+import 'chart.js';
+import 'vue-chartjs';
 
 // FontAwesome
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFolder, faCube } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faFolder)
-library.add(faCube)
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faFolder, faCube } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+library.add(faFolder);
+library.add(faCube);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-// Bootstrap
-import 'bootstrap/scss/bootstrap.scss'
-import 'bootstrap'
 
 // VueTippy
-import VueTippy, {
-  VueComponent
-} from 'vue-tippy'
-Vue.use(VueTippy)
+import VueTippy, { VueComponent } from 'vue-tippy';
+Vue.use(VueTippy);
 
 // VueZoomer
 // NOTE: dependency `parcel-bundler` used by `vue-zoomer` makes distributed
@@ -32,13 +27,14 @@ Vue.use(VueTippy)
 //   (ReferenceError: `parcelRequire is not defined`)
 //   So that we change the source of `vue-zoomer` from released source in
 //   npm modules to cloned source in `src/vendor/vue-zoomer/src`.
-import VueZoomer from '@/vendor/vue-zoomer/src'
-Vue.use(VueZoomer)
+import VueZoomer from '@/vendor/vue-zoomer/src';
+Vue.use(VueZoomer);
 
-// BootstrapVue
-import BoostrapVue from 'bootstrap-vue'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-Vue.use(BoostrapVue)
+// Bootstrap & BootstrapVue
+import './custom.scss'
+import BoostrapVue from 'bootstrap-vue';
+import 'bootstrap';
+Vue.use(BoostrapVue);
 
 // Routing
 import BasePanel from './components/BasePanel.vue'
@@ -107,11 +103,11 @@ const router = new VueRouter({
   ]
 })
 
-import App from './App.vue'
-import store from './store'
+import App from './App.vue';
+import store from './store';
 new Vue({
-  el: '#app',
-  store,
-  router,
-  render: h => h(App)
-})
+	el: '#app',
+	store,
+	router,
+	render: (h) => h(App)
+});

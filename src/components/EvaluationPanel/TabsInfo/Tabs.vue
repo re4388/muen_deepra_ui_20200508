@@ -10,15 +10,31 @@
         </div>
 
         <!-- tabs 麵包屑 -->
-        <div class="row align-self-center">
+
+        <div class="m-0 bg-white text-white">
+            <b-tabs
+                class="text-info"
+                no-nav-style
+                active-nav-item-class="font-weight-bold text-uppercase text-dark"
+            >
+                <b-tab
+                    v-for="tab in tabs"
+                    :key="tab.name"
+                    :title="tab.name"
+                    @click.prevent="changeView(tab)"
+                ></b-tab>
+            </b-tabs>
+        </div>
+
+        <!-- <div class="row align-self-center">
             <div class="col-12 pl-1 pt-2">
                 <ul class="pt-0 breadcrumb rounded text-black-50 m-0 p-3">
                     <li v-for="tab in tabs" :key="tab.id">
-                        <a href="#" @click.prevent="changeView(tab)">{{ tab.name }}</a>
+                        <a href="#" class="current" @click.prevent="changeView(tab)">{{ tab.name }}</a>
                     </li>
                 </ul>
             </div>
-        </div>
+        </div>-->
 
         <!-- 每一個lable/Tab 的元件們 -->
         <Tab
@@ -30,11 +46,11 @@
         >
             <!-- tab 標題 -->
             <div class="row" slot="title">
-                <h5 class="col-12 text-left text-light m-0 mt-4">{{ tab.name }}</h5>
+                <h5 class="col-12 text-center text-light m-0 mt-3">{{ tab.name | capitalize }}</h5>
             </div>
 
             <!-- MetricsDisplay -->
-            <div class="row mt-1" slot="MetricsDisplay">
+            <div class="row mt-3" slot="MetricsDisplay">
                 <MetricsDisplay :metrics-data=" tab.metrics" class="col-12"></MetricsDisplay>
             </div>
 
@@ -72,7 +88,7 @@
 </template>
 
 <script>
-// This localJson file is to test without link to autoDL
+// This is to test without link to autoDL
 import localJson from "../deepra_mnistV2.json";
 
 // import data
@@ -90,6 +106,7 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
     name: "Tabs",
@@ -112,9 +129,8 @@ export default {
     },
     created() {
         console.log("--- Tabs: fetching data from store ---");
-
         // load data
-        // TODO: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
+        // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
         let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
         // let data = localJson;
         // console.log(data)
@@ -142,19 +158,26 @@ export default {
                 console.log("--- parsed tabData ---");
                 console.log(tabData);
                 this.tabs = tabData;
+                this.$emit("model-data", {
+                    result: tabData
+                });
                 this.getView();
                 this.currentView = this.views[0];
             });
         } else {
             let tabData = createData(data.labels, data.metrics);
             this.tabs = tabData;
+            this.$emit("model-data", {
+                result: tabData
+            });
             this.getView();
             this.currentView = this.views[0];
         }
+
+        // practice:  1. dispatcj action from store EvaluationPanel.js via Vuex
+        this.$store.dispatch("EvaluationPanel/getData");
     },
-    mounted() {
-        console.log(this.tabs);
-    },
+    mounted() {},
     computed: {
         selectedMatrixData() {
             // Check whether `this.views` is loaded or not. If not, skip this operation.
@@ -164,7 +187,20 @@ export default {
 
             let currentTab = this.views.indexOf(this.currentView); // get the current view index
             return this.tabs[currentTab]["confusionMatrixInfo"];
-        }
+        },
+        activeClass() {
+            if (this.currentView === "all class") {
+                return "currentUsed";
+            }
+        },
+        // practice: 2.access state from EvaluationPanel.js, you then can render testData in html
+        ...mapState({
+            testData: state => state.EvaluationPanel.data
+        }),
+        // practice: 3. access gatter from EvaluationPanel.js, you then can render testlables in html
+        ...mapGetters("EvaluationPanel", {
+            testlables: "labels"
+        })
     },
     methods: {
         // get all tabs
@@ -179,12 +215,16 @@ export default {
         ThresholdChange(obj) {
             this.newThreshold = obj.result;
         }
+    },
+    filters: {
+        capitalize: function(value) {
+            if (!value) return "";
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
     }
 };
 </script>
-
-
-
 
 
 
@@ -204,37 +244,45 @@ export default {
     z-index: 2;
 }
 
-ul.breadcrumb {
-    padding: 6px 10px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border: 1px solid rgb(8, 8, 8);
-    cursor: pointer;
-    background: #696969;
-    margin-bottom: -1px;
-    margin-right: -1px;
-    list-style: none;
-    li {
-        // display: inline;
-        font-size: 18px;
-        + li:before {
-            padding: 15px;
-            color: rgb(8, 8, 8);
-            content: "   ";
-        }
-        a {
-            font-size: 20px;
-            // color:rgba(255, 255, 255, 0.5);
-            color: #343a40;
-            text-decoration: none;
-            &:hover {
-                // color: rgba(255, 255, 255, 0.75);
-                color: #121416;
-                text-decoration: none;
-            }
-        }
-    }
-}
+// ul.breadcrumb {
+//     padding: 6px 10px;
+//     border-top-left-radius: 3px;
+//     border-top-right-radius: 3px;
+//     border: 1px solid rgb(8, 8, 8);
+//     cursor: pointer;
+//     background: #696969;
+//     margin-bottom: -1px;
+//     margin-right: -1px;
+//     list-style: none;
+//     li {
+//         // display: inline;
+//         font-size: 18px;
+//         + li:before {
+//             padding: 15px;
+//             color: rgb(8, 8, 8);
+//             content: "   ";
+//         }
+//         a {
+//             font-size: 20px;
+//             // color:rgba(255, 255, 255, 0.5);
+//             color: #343a40;
+//             text-decoration: none;
+//             &:hover {
+//                 // color: rgba(255, 255, 255, 0.75);
+//                 color: #121416;
+//                 text-decoration: none;
+//             }
+//             .current {
+//                 background-color: #fff;
+//             }
+//         }
+//     }
+// }
+
+// .active {
+//     color: #0567c9;
+//     text-decoration: none;
+// }
 
 table {
     font-family: "Open Sans", sans-serif;
