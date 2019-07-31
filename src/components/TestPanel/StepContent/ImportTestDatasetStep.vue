@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import dataImportService from '@/api/dataset_service.js'
+
 export default {
   name: 'ImportTestDatasetStep',
   props: {
@@ -48,7 +50,8 @@ export default {
   methods: {
     initializeContent () {
       this.$store.dispatch('Testing/setCurrentStage', 'importDataset')
-      this.selectedFolder = this.$store.getters['Testing/selectedFolder']
+      this.$store.dispatch('DataImport/resetAllState')
+      this.selectedFolder = this.$store.getters['DataImport/selectedFolder']
       this.$refs.inputFolderBrowser.setFiles([this.selectedFolder])
     },
     formatPath (pathInfo) {
@@ -60,19 +63,30 @@ export default {
       // TODO: send `pathInfo` to backend, and set the status of
       // `b-form-file` as valid or invalid by the returned response.
       if (pathInfo === null) return
-      this.$store.dispatch('Testing/setSelectedFolder', pathInfo)
+      this.$store.dispatch('DataImport/setSelectedFolder', pathInfo)
       this.selectedFolder = pathInfo
     },
     checkLabelFile (pathInfo) {
-      this.$store.dispatch('Testing/setSelectedLabelFile', pathInfo)
+      this.$store.dispatch('DataImport/setSelectedLabelFile', pathInfo)
       this.selectedLabelFile = pathInfo
     },
     checkContent () {
       if (this.selectedFolder === '' || this.selectedFolder === null) return
+
       return new Promise((resolve, reject) => {
-        this.$store.dispatch('Testing/unlockStage')
-        this.$store.dispatch('Testing/setCompletedStageIndex', this.content.id)
-        resolve(true)
+        let model = this.$store.getters['Model/currentModel']
+        let taskType = JSON.parse(model.details_json)['task_type']
+        dataImportService.importDataset(
+          this.selectedFolder.path,
+          taskType,
+          this.selectedLabelFile,
+          true
+        ).then((result) => {
+          this.$store.dispatch('DataImport/setDatasetInfo', result.content)
+          this.$store.dispatch('Testing/unlockStage')
+          this.$store.dispatch('Testing/setCompletedStageIndex', this.content.id)
+          resolve(true)
+        })
       })
     }
   },

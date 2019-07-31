@@ -35,7 +35,7 @@ class DatasetInfo {
   }
 }
 
-function importDataset (folderPath, taskType) {
+function importDataset (folderPath, taskType, labelFile=null, forTest=false) {
   let datasetImportService = protoUtils.getServicer(
     protoPath, protoPackageName, 'DatasetImportServicer'
   )
@@ -44,7 +44,9 @@ function importDataset (folderPath, taskType) {
     datasetImportService.ImportDataset(
       {
         'folder_path': folderPath,
-        'task_type': taskType
+        'task_type': taskType,
+        'label_file': labelFile,
+        'for_test': forTest
       },
       (err, resp) => {
         if (err !== null) {

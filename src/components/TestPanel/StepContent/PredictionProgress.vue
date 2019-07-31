@@ -38,14 +38,9 @@ export default {
     },
     startPrediction () {
       let model = this.$store.getters['Model/currentModel']
-      let modelUuid = model.uuid
-      let folderPath = this.$store.getters['Testing/selectedFolder']
-      let labelFile = this.$store.getters['Testing/selectedLabelFile']
+      let dataset = this.$store.getters['DataImport/datasetInfo']
 
       console.log('--- start prediction ---')
-      console.log(modelUuid)
-      console.log(folderPath.path)
-      console.log(labelFile)
 
       let handlerProgress = (resp) =>{
         this.updateProgressBar(resp)
@@ -55,9 +50,9 @@ export default {
       }
 
       let call = predictionService.startPrediction(
-        modelUuid,
-        folderPath.path,
-        labelFile,
+        model.uuid,
+        dataset.folderPath,
+        dataset.labelFile,
         handlerProgress,
         handlerEnd
       )
