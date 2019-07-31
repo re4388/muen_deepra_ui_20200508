@@ -40,7 +40,7 @@ export default {
   },
   created () {
     EventBus.$once('notifyImageTotalNumber', (imageTotalNumber)=>{
-      this.total = imageTotalNumber -1
+      this.total = imageTotalNumber
       this.initializeComponent()
     })
   },
@@ -62,7 +62,6 @@ export default {
     initializeComponent () {
       console.log('--- initializeComponent ---')
       let fileList = this.$store.getters['Viewer/parsedFileList']
-      fileList.pop()
       this.loadedImages = fileList.slice(this.currentIndex, this.currentIndex+this.batchSize)
       this.currentIndex += this.batchSize
       console.log(this.loadedImages-1)
