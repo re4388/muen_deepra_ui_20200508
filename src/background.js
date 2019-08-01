@@ -5,11 +5,15 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+import apiServer from './api/api_server.js'
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
+
+app.setName('DeepRA')
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true, standard: true } }])
@@ -25,8 +29,11 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false
-    }
+    },
+    // frame: false
   })
+
+  apiServer.launchGRPCServer()
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -40,6 +47,7 @@ function createWindow () {
 
   win.on('closed', () => {
     win = null
+    apiServer.stopGRPCServer()
   })
 }
 
