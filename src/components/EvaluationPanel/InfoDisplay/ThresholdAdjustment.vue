@@ -26,6 +26,9 @@
 </template>
 
 <script>
+
+
+
 export default {
     name: "ThresholdAdjustment",
     props: {
