@@ -4,27 +4,24 @@
         <div>
             <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
                 <h1>
-                    <ConfusionMatrix 
-                    :data="selectedMatrixData" 
-                    :new-threshold="newThreshold"
-                    />
+                    <ConfusionMatrix :data="selectedMatrixData" :new-threshold="newThreshold" />
                 </h1>
             </b-modal>
         </div>
 
-
-        <div v-if="tabs === null">  
+        <div v-if="tabs === null">
             <!-- <b-alert show variant="light" class="mt-5">
                 
-            </b-alert>  -->
+            </b-alert>-->
 
             <b-alert show variant="dark">
                 <a href="#" class="alert-link">
-                <router-link to="/project-overview">Please open the existed project or train a project first</router-link> 
-                </a>    
+                    <router-link
+                        to="/project-overview"
+                    >Please open the existed project or train a project first</router-link>
+                </a>
             </b-alert>
-            
-            </div>
+        </div>
 
         <!-- tabs 麵包屑 -->
 
@@ -58,7 +55,7 @@
 
             <!-- MetricsDisplay -->
             <div class="row mt-3" slot="MetricsDisplay">
-                <MetricsDisplay :metrics-data=" tab.metrics" class="col-12"/>
+                <MetricsDisplay :metrics-data=" tab.metrics" class="col-12" />
             </div>
 
             <!-- GraphDisplay -->
@@ -95,13 +92,13 @@
 </template>
 
 <script>
-// This is to test without link to autoDL
+// local Fake data
 import localJson from "../deepra_mnistV2.json";
 
 // import data
 import createData from "@/components/EvaluationPanel/TabsInfo/HandelData.js";
 
-// import need modules
+// import utilties
 import modPath from "path";
 import modFs from "fs";
 import fileFetcher from "@/utils/file_fetcher.js";
@@ -113,7 +110,6 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
-import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
     name: "Tabs",
@@ -128,88 +124,36 @@ export default {
 
     data() {
         return {
-            tabs: null, // initialize as null to avoid rendering when component is just created
-            views: [], // e.g. => [ 'class 0','class 1','class 2'...]
+            tabs: null,
+            views: [], //  => [ 'class 0','class 1','class 2'...]
             currentView: "",
             newThreshold: 0
         };
     },
+
     created() {
-        console.log("--- Tabs: fetching data from store ---");
-        // load data
-        // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-        // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-        let data = localJson;
-        // console.log(data)
-
-        if (data.content === null) {
-            let projectInfo = this.$store.getters["Project/currentProject"];
-            console.log(
-                "--- no parsed validation output, try to retrieve data from cached folder ---"
-            );
-
-            let cachedDir = modPath.join(
-                projectInfo.location,
-                "deepra_output",
-                ".cached"
-            );
-            let fn = modPath.join(cachedDir, "validation_output.json");
-
-            let parsed = null;
-            fileFetcher.readJson(fn, true).then(result => {
-                console.log("--- parsed json ---");
-                console.log(result);
-                parsed = result;
-
-                let tabData = createData(parsed.labels, parsed.metrics);
-                console.log("--- parsed tabData ---");
-                console.log(tabData);
-                this.tabs = tabData;
-                this.$emit("model-data", {
-                    result: tabData
-                });
-                this.getView();
-                this.currentView = this.views[0];
-            });
-        } else {
-            let tabData = createData(data.labels, data.metrics);
-            this.tabs = tabData;
-            this.$emit("model-data", {
-                result: tabData
-            });
-            this.getView();
-            this.currentView = this.views[0];
-        }
-
-        // practice:  1. dispatcj action from store EvaluationPanel.js via Vuex
-        this.$store.dispatch("EvaluationPanel/getData");
+        this.dataInit();
     },
+
     mounted() {},
+
     computed: {
         selectedMatrixData() {
-            // Check whether `this.views` is loaded or not. 
-            // If not, skip this operation.
+            // views data is async, so need to skip operation when no views
             if (this.views.length === 0) {
                 return;
             }
             // get the current view index
-            let currentTab = this.views.indexOf(this.currentView); 
+            let currentTab = this.views.indexOf(this.currentView);
             return this.tabs[currentTab]["confusionMatrixInfo"];
         },
         activeClass() {
             if (this.currentView === "all class") {
                 return "currentUsed";
             }
-        },
-        // practice: 2.access state from EvaluationPanel.js, you then can render testData in html
-        ...mapState({
-            testData: state => state.EvaluationPanel.data
-        }),
-        // practice: 3. access gatter from EvaluationPanel.js, you then can render testlables in html
-        ...mapGetters("EvaluationPanel", {
-            testlables: "labels"
-        })
+        }
     },
+
     methods: {
         // get all tabs
         getView() {
@@ -217,13 +161,63 @@ export default {
                 return key.name;
             });
         },
+
         changeView(tab) {
             this.currentView = tab.name;
         },
+
         ThresholdChange(obj) {
             this.newThreshold = obj.result;
+        },
+
+        dataInit() {
+            console.log("--- Tabs: fetching data from store ---");
+
+            // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
+            // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+            let data = localJson;
+            // console.log(data)
+
+            // if no training data, get data from current project
+            if (data.content === null) {
+                let projectInfo = this.$store.getters["Project/currentProject"];
+                console.log(
+                    "--- no parsed validation output, try to retrieve data from cached folder ---"
+                );
+                let cachedDir = modPath.join(
+                    projectInfo.location,
+                    "deepra_output",
+                    ".cached"
+                );
+                let fn = modPath.join(cachedDir, "validation_output.json");
+                let parsed = null;
+                fileFetcher.readJson(fn, true).then(result => {
+                    console.log("--- parsed json ---");
+                    console.log(result);
+                    parsed = result;
+
+                    let tabData = createData(parsed.labels, parsed.metrics);
+                    console.log("--- parsed tabData ---");
+                    console.log(tabData);
+                    this.tabs = tabData;
+                    this.$emit("model-data", {
+                        result: tabData
+                    });
+                    this.getView();
+                    this.currentView = this.views[0];
+                });
+            } else {
+                let tabData = createData(data.labels, data.metrics);
+                this.tabs = tabData;
+                this.$emit("model-data", {
+                    result: tabData
+                });
+                this.getView();
+                this.currentView = this.views[0];
+            }
         }
     },
+    
     filters: {
         capitalize: function(value) {
             if (!value) return "";
@@ -237,7 +231,6 @@ export default {
 
 
 <style lang="scss" scoped>
-
 .outterGrpah {
     display: flex;
     flex-direction: row;
@@ -252,5 +245,4 @@ export default {
     top: calc(30% - 50px);
     z-index: 2;
 }
-
 </style>
