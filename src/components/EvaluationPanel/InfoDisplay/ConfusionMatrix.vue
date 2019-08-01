@@ -22,13 +22,14 @@ export default {
         };
     },
     created() {
-        console.log(this.data.thresholdValue[this.newThreshold - 1])
+        // below code is for mutiple matrix in one class
+        // console.log(this.data.thresholdValue[this.newThreshold - 1])
 
-        if (this.data.confusionMatrix.length === this.data.lablesNum) {
-            this.matrix = this.data.confusionMatrix;
-        } else {
-            this.matrix = this.data.confusionMatrix[this.newThreshold - 1];
-        }
+        // if (this.data.confusionMatrix.length === this.data.lablesNum) {
+        //     this.matrix = this.data.confusionMatrix;
+        // } else {
+        //     this.matrix = this.data.confusionMatrix[this.newThreshold - 1];
+        // }
     },
     mounted() {
         // console.log(...this.data.confusionMatrix)
@@ -43,8 +44,12 @@ export default {
 
         //data assignment
         var confusionMatrix = [
-            ...this.matrix
-            // data is like below:
+
+            // this code is for mutiple matrix in one class
+            // ...this.matrix
+
+            ...this.data.confusionMatrix
+            // ex.
             // [169, 10, 12, 0, 12],
             // [7, 46, 12, 1, 1],
             // [1, 2, 3, 33, 0],
@@ -54,7 +59,7 @@ export default {
 
         var lableMatrix = [
             ...this.data.confusionMatrixAnnotation
-            // data is like below:
+            // ex.
             // ["img01, img03", "img02,img04", "img23", "no img", "img09"],
             // ["no_img", "img05", "img12", "img09", "no img"],
             // ["no_img", "img05", "img12", "no img  ", "no img"],

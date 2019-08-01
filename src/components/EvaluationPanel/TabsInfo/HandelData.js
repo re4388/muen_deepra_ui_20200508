@@ -131,8 +131,9 @@ function createData(lables = '', metric = {}) {
 			},
 			confusionMatrixInfo: {
 				confusionMatrix: [
-					// ...metric['report_per_labels'][i]['content']
-                    ...metric['matrix_threshold'][i]
+                    ...metric['report_per_labels'][i]['content']
+                    // below code is for mutiple matrix in one class
+                    // ...metric['matrix_threshold'][i]
 					// [1, 0],
 					// [7, 0],
 				],

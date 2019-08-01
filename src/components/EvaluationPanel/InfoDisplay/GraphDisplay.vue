@@ -170,9 +170,16 @@ export default {
 </script>
 
 <style>
+
 .bg-color2 {
     background-color: #696969;
 }
+
+
+.c3-focused .c3-line {
+    stroke-width: 5px !important;
+}
+
 
 .c3-axis-x-label {
     /* background-color: white; */

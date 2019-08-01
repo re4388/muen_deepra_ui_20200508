@@ -174,8 +174,8 @@ export default {
             console.log("--- Tabs: fetching data from store ---");
 
             // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-            // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-            let data = localJson;
+            let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+            // let data = localJson;
             // console.log(data)
 
             // if no training data, get data from current project
@@ -217,7 +217,7 @@ export default {
             }
         }
     },
-    
+
     filters: {
         capitalize: function(value) {
             if (!value) return "";
