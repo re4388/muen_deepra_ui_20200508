@@ -16,8 +16,19 @@ export default {
     brandText: String
   },
   created () {
-    EventBus.$on('pageChanged', (page) => {
-      this.pageIndicator = page
+    EventBus.$on('pageChanged', (info) => {
+      console.log('got page info')
+      console.log(info)
+      console.log(typeof(info))
+      if (typeof(info) === 'string') {
+        this.pageIndicatorInfo = {
+          pages: info === '' ? [] : [info],
+          keepRoot: false
+        }
+      } else {
+        this.pageIndicatorInfo = info
+      }
+      console.log(this.pageIndicatorInfo)
     })
   },
   methods: {
@@ -27,17 +38,30 @@ export default {
       // Reset state
       this.$store.dispatch('DataImport/resetAllState')
       this.$store.dispatch('Project/resetAllState')
+      EventBus.$emit('pageChanged', '')
       this.$router.push('/')
     }
   },
   computed: {
     pageIndicatorDisplay: function () {
-      return this.pageIndicator == '' ? '' : ('> ' + this.pageIndicator)
-    }
+      if (this.pageIndicatorInfo.pages.length === 0) {
+        return ''
+      } else {
+        let indicator = ['']
+        indicator.push(...this.pageIndicatorInfo.pages)
+        // this.pageIndicator = this.pageIndicatorInfo.keepRoot ?
+        //   this.pageIndicator + indicator.join(' > ') : indicator.join(' > ')
+        return indicator.join(' > ')
+      }
+    },
   },
   data () {
     return {
-      pageIndicator: ''
+      pageIndicator: '',
+      pageIndicatorInfo: {
+        pages: [],
+        keepRoot: true
+      }
     }
   }
 }

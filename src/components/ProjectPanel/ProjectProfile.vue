@@ -43,7 +43,7 @@
         </div> -->
       </div>
       <div class="control-section">
-      <a class="btn-flow-control" id="btn-flow-control">
+      <a class="btn-flow-control" id="btn-flow-control" @click="redirectToPage">
           <div class="content">
             <p>Continue</p>
           </div>
@@ -55,6 +55,7 @@
 
 <script>
 import projectService from '@/api/projects_service.js'
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'ProjectProfile',
@@ -75,6 +76,10 @@ export default {
       this.name = this.project.name
       this.description = this.project.description
       this.location = this.project.location
+      EventBus.$emit('pageChanged', {
+        pages: ['Profile'],
+        keepRoot: true,
+      })
     },
     fetechProjectData () {
       return new Promise((resolve, reject) => {
@@ -85,6 +90,9 @@ export default {
           resolve(result)
         })
       })
+    },
+    redirectToPage () {
+      this.$router.push('/training')
     }
   },
   computed: {

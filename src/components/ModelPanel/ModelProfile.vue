@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="control-section">
-      <a class="btn-flow-control" id="btn-flow-control">
+      <a class="btn-flow-control" id="btn-flow-control" @click="redirectToPage">
           <div class="content">
             <p>Continue</p>
           </div>
@@ -38,6 +38,7 @@
 
 <script>
 import modelManager from '@/api/models_service.js'
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'ModelProfile',
@@ -47,6 +48,12 @@ export default {
     this.fetechProjectData().then((result) => {
       console.log('--- initializing ---')
       this.initializeComponent()
+    })
+  },
+  mounted () {
+    EventBus.$emit('pageChanged', {
+      pages: ['Model profile'],
+      keepRoot: true,
     })
   },
   methods: {
@@ -68,6 +75,9 @@ export default {
           resolve(result)
         })
       })
+    },
+    redirectToPage () {
+      this.$router.push('/testing')
     }
   },
   computed: {

@@ -30,13 +30,17 @@ export default {
       dataset: null
     }
   },
-  computed:{
-  },
   watch: {
     '$route': 'fetchData'
   },
   created () {
     this.fetchData()
+  },
+  mounted () {
+    EventBus.$emit('pageChanged', {
+      pages: ['Viewer'],
+      keepRoot: true,
+    })
   },
   methods: {
     // when the viewerDatasetChanged, get the current dataset from store and emit the message
