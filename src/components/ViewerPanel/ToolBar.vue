@@ -85,18 +85,19 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import imagvue from 'imagvue'
-import VueZoomer from 'vue-zoomer'
-import 'vue-zoomer/dist/vue-zoomer.css'
+// NOTE: dependency `parcel-bundler` used by `vue-zoomer` makes distributed
+//   electron application unable to launched sucessfully.
+//   (ReferenceError: `parcelRequire is not defined`)
+//   So that we change the source of `vue-zoomer` from released source in
+//   npm modules to cloned source in `src/vendor/vue-zoomer/src`.
+import VueZoomer from '@/vendor/vue-zoomer/src'
 import thumbnail from '@/components/SideBarMenuRight/Thumbnail.vue'
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue'
 import imageData from '@/components/SideBarMenuRight/image_data.json'
 import { EventBus } from '@/event_bus.js'
 import modPath from 'path'
 import fileFetecher from '@/utils/file_fetcher.js'
-
-Vue.use(VueZoomer)
 
 export default {
   name: 'ToolBar',
