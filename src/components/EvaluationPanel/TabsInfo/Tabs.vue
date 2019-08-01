@@ -4,7 +4,10 @@
         <div>
             <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
                 <h1>
-                    <ConfusionMatrix :data="selectedMatrixData" />
+                    <ConfusionMatrix 
+                    :data="selectedMatrixData" 
+                    :new-threshold="newThreshold"
+                    />
                 </h1>
             </b-modal>
         </div>
@@ -18,9 +21,8 @@
             <b-alert show variant="dark">
                 <a href="#" class="alert-link">
                 <router-link to="/project-overview">Please open the existed project or train a project first</router-link> 
-                </a>
-                
-                </b-alert>
+                </a>    
+            </b-alert>
             
             </div>
 
@@ -41,16 +43,6 @@
             </b-tabs>
         </div>
 
-        <!-- <div class="row align-self-center">
-            <div class="col-12 pl-1 pt-2">
-                <ul class="pt-0 breadcrumb rounded text-black-50 m-0 p-3">
-                    <li v-for="tab in tabs" :key="tab.id">
-                        <a href="#" class="current" @click.prevent="changeView(tab)">{{ tab.name }}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>-->
-
         <!-- 每一個lable/Tab 的元件們 -->
         <Tab
             v-for="tab in tabs"
@@ -66,7 +58,7 @@
 
             <!-- MetricsDisplay -->
             <div class="row mt-3" slot="MetricsDisplay">
-                <MetricsDisplay :metrics-data=" tab.metrics" class="col-12"></MetricsDisplay>
+                <MetricsDisplay :metrics-data=" tab.metrics" class="col-12"/>
             </div>
 
             <!-- GraphDisplay -->
@@ -107,7 +99,7 @@
 import localJson from "../deepra_mnistV2.json";
 
 // import data
-import { createData } from "@/components/EvaluationPanel/TabsInfo/Tab-data.js";
+import createData from "@/components/EvaluationPanel/TabsInfo/HandelData.js";
 
 // import need modules
 import modPath from "path";
@@ -146,8 +138,8 @@ export default {
         console.log("--- Tabs: fetching data from store ---");
         // load data
         // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-        let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-        // let data = localJson;
+        // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+        let data = localJson;
         // console.log(data)
 
         if (data.content === null) {
@@ -195,12 +187,13 @@ export default {
     mounted() {},
     computed: {
         selectedMatrixData() {
-            // Check whether `this.views` is loaded or not. If not, skip this operation.
+            // Check whether `this.views` is loaded or not. 
+            // If not, skip this operation.
             if (this.views.length === 0) {
                 return;
             }
-
-            let currentTab = this.views.indexOf(this.currentView); // get the current view index
+            // get the current view index
+            let currentTab = this.views.indexOf(this.currentView); 
             return this.tabs[currentTab]["confusionMatrixInfo"];
         },
         activeClass() {
@@ -244,6 +237,7 @@ export default {
 
 
 <style lang="scss" scoped>
+
 .outterGrpah {
     display: flex;
     flex-direction: row;
@@ -259,116 +253,4 @@ export default {
     z-index: 2;
 }
 
-// ul.breadcrumb {
-//     padding: 6px 10px;
-//     border-top-left-radius: 3px;
-//     border-top-right-radius: 3px;
-//     border: 1px solid rgb(8, 8, 8);
-//     cursor: pointer;
-//     background: #696969;
-//     margin-bottom: -1px;
-//     margin-right: -1px;
-//     list-style: none;
-//     li {
-//         // display: inline;
-//         font-size: 18px;
-//         + li:before {
-//             padding: 15px;
-//             color: rgb(8, 8, 8);
-//             content: "   ";
-//         }
-//         a {
-//             font-size: 20px;
-//             // color:rgba(255, 255, 255, 0.5);
-//             color: #343a40;
-//             text-decoration: none;
-//             &:hover {
-//                 // color: rgba(255, 255, 255, 0.75);
-//                 color: #121416;
-//                 text-decoration: none;
-//             }
-//             .current {
-//                 background-color: #fff;
-//             }
-//         }
-//     }
-// }
-
-// .active {
-//     color: #0567c9;
-//     text-decoration: none;
-// }
-
-table {
-    font-family: "Open Sans", sans-serif;
-    width: 750px;
-    border-collapse: collapse;
-    border: 3px solid #44475c;
-    margin: 10px 10px 0 10px;
-}
-
-/* 設定內部框線 */
-table,
-th,
-td {
-    border: 1px solid #44475c;
-}
-
-table th {
-    text-transform: uppercase;
-    text-align: center;
-    background: #44475c;
-    color: #fff;
-    /* cursor: pointer; */
-    padding: 8px;
-    min-width: 30px;
-}
-
-table th:first-child {
-    /* color: #44475c; */
-    background: #44475c;
-}
-
-/* table th:hover {
-  background: #717699;
-} */
-
-/* 這裡需要先設定可能最大的row number, 如果實際資料大於這邊設定的最大值，就會無法呈現效果了 */
-table tr:nth-child(1) td:first-child {
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    background: #44475c;
-}
-
-table tr:nth-child(2) td:first-child {
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    background: #44475c;
-}
-table tr:nth-child(3) td:first-child {
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    background: #44475c;
-}
-table tr:nth-child(4) td:first-child {
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    background: #44475c;
-}
-table tr:nth-child(5) td:first-child {
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    background: #44475c;
-}
-
-table td {
-    text-align: center;
-    padding: 8px;
-    border-right: 2px solid #7d82a8;
-}
 </style>

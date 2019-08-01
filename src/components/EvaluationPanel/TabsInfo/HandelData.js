@@ -83,7 +83,9 @@ function createData(lables = '', metric = {}) {
 				[ 'no_img', 'img05', 'img12', 'no img  ', 'no img', 'no_img', 'img05', 'img12', 'no img  ', 'no img' ],
 				[ 'no_img', 'img05', 'img12', 'no img  ', 'no img', 'no_img', 'img05', 'img12', 'no img  ', 'no img' ],
 				[ 'no_img', 'img05', 'img12', 'no img  ', 'no img', 'no_img', 'img05', 'img12', 'no img  ', 'no img' ]
-			]
+            ],
+            lablesNum: lables.length,
+            thresholdValue: null
 		}
 	});
 
@@ -129,12 +131,16 @@ function createData(lables = '', metric = {}) {
 			},
 			confusionMatrixInfo: {
 				confusionMatrix: [
-					...metric['report_per_labels'][i]['content']
+					// ...metric['report_per_labels'][i]['content']
+                    ...metric['matrix_threshold'][i]
 					// [1, 0],
 					// [7, 0],
 				],
 				confusionMatrixLable: [ i, 'other' ],
-				confusionMatrixAnnotation: [ [ 'img01, img03', 'img02,img04' ], [ 'no_img', 'img05' ] ]
+                confusionMatrixAnnotation: [ [ 'img01, img03', 'img02,img04' ], [ 'no_img', 'img05' ] ],
+                lablesNum: lables.length,
+                thresholdValue: metric['thresholds_prcurve'][i]
+                
 			}
 		});
 	}
@@ -148,4 +154,4 @@ function createData(lables = '', metric = {}) {
 // let lables = deepraData_10['labels']
 // let metrics = deepraData_10['metrics']
 
-export { createData };
+export default createData ;
