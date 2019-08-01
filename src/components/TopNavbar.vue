@@ -17,9 +17,6 @@ export default {
   },
   created () {
     EventBus.$on('pageChanged', (info) => {
-      console.log('got page info')
-      console.log(info)
-      console.log(typeof(info))
       if (typeof(info) === 'string') {
         this.pageIndicatorInfo = {
           pages: info === '' ? [] : [info],
@@ -28,7 +25,6 @@ export default {
       } else {
         this.pageIndicatorInfo = info
       }
-      console.log(this.pageIndicatorInfo)
     })
   },
   methods: {

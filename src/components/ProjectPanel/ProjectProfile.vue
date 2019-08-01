@@ -63,7 +63,6 @@ export default {
   },
   created () {
     this.fetechProjectData().then((result) => {
-      console.log('--- initializing ---')
       this.initializeComponent()
     })
   },
@@ -100,10 +99,7 @@ export default {
       if (this.project === {}) return ''
       let date = new Date()
       let ts = this.project.creation_timestamp
-      console.log(this.project.creation_timestamp)
-      // date.setTime(ts.seconds + String(ts.nanos/1000000))
-      date.setTime(ts.seconds + String(ts.nanos/100000))
-      console.log(date)
+      date.setTime(ts.seconds + '000')  // unit: ms
       return date.toUTCString().split(' ').slice(0, 5).join(' ')
     },
     datasetDetails() {

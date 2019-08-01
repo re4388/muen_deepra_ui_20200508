@@ -46,7 +46,6 @@ export default {
   },
   created () {
     this.fetechProjectData().then((result) => {
-      console.log('--- initializing ---')
       this.initializeComponent()
     })
   },
@@ -58,8 +57,6 @@ export default {
   },
   methods: {
     initializeComponent () {
-      console.log('--- initializing model profile ---')
-      console.log(this.model)
       this.isLoading = false
       this.name = this.model.name
       this.description = this.model.description
@@ -85,9 +82,7 @@ export default {
       if (this.model === {}) return ''
       let date = new Date()
       let ts = this.model.creation_timestamp
-      console.log(this.model.creation_timestamp)
       date.setTime(ts.seconds + '000')
-      console.log(date)
       return date.toUTCString().split(' ').slice(0, 5).join(' ')
     }
   },

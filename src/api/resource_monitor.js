@@ -38,8 +38,7 @@ function getGPUMemoryUsage () {
   return new Promise((resolve, reject) => {
     gpuMemoryUsageChecker.GetGPUMemoryUsage({}, (err, resp) => {
       console.log(`GPU memory usage: ${resp}`)
-      console.log(resp)   // <- returned value is a list
-      let result = JSON.parse(resp.dict_report)[0]
+      let result = JSON.parse(resp.dict_report)[0]  // <- returned value is a list
       resolve(result)
     })
   })
