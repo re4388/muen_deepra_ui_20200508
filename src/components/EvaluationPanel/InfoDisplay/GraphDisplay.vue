@@ -5,9 +5,7 @@
 </template>
 
 <script>
-// import backend data
-import deepraData_10 from "../deepra.10Class.json";
-// console.log(deepraData_10["metrics"]["precision_prcurve"]["0"]);
+
 
 // import vue
 import Vue from "vue";

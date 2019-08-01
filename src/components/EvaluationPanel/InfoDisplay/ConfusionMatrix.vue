@@ -25,7 +25,7 @@ export default {
         // below code is for mutiple matrix in one class
         // console.log(this.data.thresholdValue[this.newThreshold - 1])
 
-        // if (this.data.confusionMatrix.length === this.data.lablesNum) {
+        // if (this.data.confusionMatrix.length === this.data.labelsNum) {
         //     this.matrix = this.data.confusionMatrix;
         // } else {
         //     this.matrix = this.data.confusionMatrix[this.newThreshold - 1];
@@ -328,10 +328,9 @@ export default {
             .style("font-size", "16px")
             // .style("writing-mode", 'tb')
             .attr("x", 170)
-            .attr("y", 320)
+            .attr("y", 340)
             .attr("dy", ".32em")
             .attr("text-anchor", "end")
-
             .text("Predicted Label");
         // .attr("transform", "rotate(90,100,100)");
     }

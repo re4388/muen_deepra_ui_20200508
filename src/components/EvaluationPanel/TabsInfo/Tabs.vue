@@ -93,10 +93,14 @@
 
 <script>
 // local Fake data
+
+// minist data 
 import localJson from "../deepra_mnistV2.json";
+// binary data
+import localJson2 from "../binary_data.json";
 
 // import data
-import createData from "@/components/EvaluationPanel/TabsInfo/HandelData.js";
+import createData from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
 
 // import utilties
 import modPath from "path";
@@ -176,6 +180,7 @@ export default {
             // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
             let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
             // let data = localJson;
+            // let data = localJson2;
             // console.log(data)
 
             // if no training data, get data from current project
