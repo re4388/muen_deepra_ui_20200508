@@ -1,11 +1,13 @@
 let { spawn, exec } = require('child_process')
 let net = require('net')
+let procPythonEnv = null
 
 function checkGRPCServerOpened (port, options) {
-  options = Object.assign({timeout: 1000}, options)
+  options = Object.assign({timeout: 10000}, options)
   return new Promise((resolve, reject) => {
     const socket = new net.Socket();
-    let onError = () => {
+    let onError = (message) => {
+      console.log(message)
       socket.destroy()
       resolve(false)
     }
@@ -23,11 +25,9 @@ function checkGRPCServerOpened (port, options) {
 function launchGRPCServer () {
   let _launchProcess = () => {
     // Location of DeepRa should be modified (bundled in source of distribution)
-    let procPythonEnv = exec(
-      'cd %userprofile%/project/muen/deepra/deepra && activate autodl && python -m api.api_server',
-      shell=true
+    procPythonEnv = spawn(
+      'python', ['-m', 'deepra.api.api_server'], {}
     )
-  
     procPythonEnv.stdout.on('data', (data) => {
       console.log(`stdout: \n${data}`)
     })
@@ -47,13 +47,29 @@ function launchGRPCServer () {
 
   let port = 50051
   let options = { host: 'localhost' }
+
   checkGRPCServerOpened(port, options).then((isUsed) => {
+    console.log(`is port ${port} being used? ${isUsed}`)
     if (isUsed) {
       console.log(`Port ${port} is in used`)
     } else {
       _launchProcess()
+      console.log(procPythonEnv)
     }
-  })
+  }).catch(
+    console.log('Backend server is failed to launch. Please contact with your service provider.')
+  )
 }
 
-launchGRPCServer()
+function stopGRPCServer () {
+  if (procPythonEnv !== null) {
+    procPythonEnv.kill()
+  }
+  // process.kill(-procPythonEnv.pid)
+  console.log('Backend server is killed')
+}
+
+export default {
+  launchGRPCServer,
+  stopGRPCServer
+}

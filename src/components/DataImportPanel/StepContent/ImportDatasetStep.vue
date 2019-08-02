@@ -45,12 +45,32 @@
           @input="checkLabelFile"
         >
         </b-form-file>
+        <template v-if="Boolean(selectedLabelFile)" class="container">
+          <div class="row dropdown-header">
+            <b-form-select
+              class="col-sm"
+              id="col-file"
+              text="column name of file"
+              v-model="colFilename"
+              :options="labelHeader">
+            </b-form-select>
+            <b-form-select
+              class="col-sm"
+              id="col-label"
+              text="column name of label"
+              v-model="colLabel"
+              :options="labelHeader">
+            </b-form-select>
+          </div>
+        </template>
       </p>
     </div>
   </div>
 </template>
 
 <script>
+import datasetService from '@/api/dataset_service.js'
+
 export default {
   name: 'ImportDatasetStep',
   props: {
@@ -85,8 +105,12 @@ export default {
       this.selectedTaskType = value
     },
     checkLabelFile (pathInfo) {
+      if (pathInfo === null) return
       this.$store.dispatch('DataImport/setSelectedLabelFile', pathInfo)
       this.selectedLabelFile = pathInfo
+      datasetService.parseLabelFile(pathInfo.path).then((result) => {
+        this.labelHeader = result.header
+      })
     },
     checkContent () {
       if (this.selectedFolder === '' || this.selectedFolder === null) return
@@ -97,6 +121,8 @@ export default {
           return
         }
       }
+      this.$store.dispatch('DataImport/setSelectedColFilename', this.colFilename)
+      this.$store.dispatch('DataImport/setSelectedColLabel', this.colLabel)
       return new Promise((resolve, reject) => {
         this.$store.dispatch('DataImport/unlockStage')
         this.$store.dispatch('DataImport/setCompletedStageIndex', this.content.id)
@@ -109,6 +135,9 @@ export default {
       selectedFolder: '',
       selectedTaskType: '',
       selectedLabelFile: '',
+      labelHeader: [],
+      colFilename: '',
+      colLabel: '',
       taskTypes: [
         { value: '', text: 'Please select an type of task' },
         { value: 'binary', text: 'binary' },
@@ -132,5 +161,9 @@ export default {
 }
 .description {
   text-align: left;
+}
+.dropdown-header {
+  padding: 0px;
+  width: 20%;
 }
 </style>

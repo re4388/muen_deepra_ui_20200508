@@ -12296,11 +12296,6 @@ vue-tippy@^4.0.0-beta.4:
     lodash.pickby "^4.6.0"
     tippy.js "^4.2.1"
 
-vue-zoomer@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/vue-zoomer/-/vue-zoomer-0.3.1.tgz#6868877c0c51b00cdefb5de3086e87fdd9db1b04"
-  integrity sha512-AB0T93welFTFSG0iv5O8JUaX8g+w6dvAab4m+tzxHhtoyDHU7xyQNkTWbGJOlIfO8L5wMEmsNfMlh7sDKn42EQ==
-
 vue@^2.4.1, vue@^2.5.17, vue@^2.5.21, vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"

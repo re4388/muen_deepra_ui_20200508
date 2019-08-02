@@ -35,18 +35,24 @@ class DatasetInfo {
   }
 }
 
-function importDataset (folderPath, taskType, labelFile=null, forTest=false) {
+function importDataset (
+  folderPath, taskType, labelFile=null, forTest=false,
+  colFilename='', colLabel='') {
   let datasetImportService = protoUtils.getServicer(
     protoPath, protoPackageName, 'DatasetImportServicer'
   )
 
+  console.log(colFilename)
+  console.log(colLabel)
   return new Promise((resolve, reject) => {
     datasetImportService.ImportDataset(
       {
-        'folder_path': folderPath,
-        'task_type': taskType,
-        'label_file': labelFile,
-        'for_test': forTest
+        folder_path: folderPath,
+        task_type: taskType,
+        label_file: labelFile,
+        for_test: forTest,
+        col_filename: colFilename,
+        col_label: colLabel
       },
       (err, resp) => {
         if (err !== null) {
@@ -55,6 +61,24 @@ function importDataset (folderPath, taskType, labelFile=null, forTest=false) {
         console.log('--- got dataset ---')
         console.log(resp)
         resolve(DatasetInfo.parseFromResponse(resp))
+      }
+    )
+  })
+}
+
+function parseLabelFile (filePath) {
+  let datasetSelectionService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'DatasetImportServicer'
+  )
+
+  return new Promise((resolve, reject) => {
+    datasetSelectionService.ParseLabelFile(
+      {path: filePath},
+      (err, resp) => {
+        if (err != null) {
+          console.log(err)
+        }
+        resolve(JSON.parse(resp.content_json))
       }
     )
   })
@@ -81,5 +105,6 @@ function getDatasetInfo (projectUuid) {
 export default {
   DatasetInfo,
   importDataset,
+  parseLabelFile,
   getDatasetInfo
 }

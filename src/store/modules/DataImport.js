@@ -9,6 +9,8 @@ const defaultState = {
   selectedFolder: '',
   selectedTaskType: '',
   selectedLabelFile: '',
+  selectedColFilename: '',
+  selectedColLabel: '',
   datasetInfo: { details: {} },
   newProjectInfo: {},
   newProjectLocation: {},
@@ -36,6 +38,12 @@ const getters = {
   },
   selectedLabelFile() {
     return state.selectedLabelFile
+  },
+  selectedColFilename() {
+    return state.selectedColFilename
+  },
+  selectedColLabel() {
+    return state.selectedColLabel
   },
   datasetInfo() {
     return state.datasetInfo
@@ -77,6 +85,12 @@ const mutations = {
   SET_SELECTED_LABEL_FILE(state, payload) {
     state.selectedLabelFile = payload
   },
+  SET_SELECTED_COL_FILENAME(state, payload) {
+    state.selectedColFilename = payload
+  },
+  SET_SELECTED_COL_LABEL(state, payload) {
+    state.selectedColLabel = payload
+  },
   SET_DATASET_INFO(state, payload) {
     state.datasetInfo = payload
   },
@@ -115,6 +129,12 @@ const actions = {
   },
   setSelectedLabelFile({ commit }, payload) {
     commit('SET_SELECTED_LABEL_FILE', payload)
+  },
+  setSelectedColFilename({ commit }, payload) {
+    commit('SET_SELECTED_COL_FILENAME', payload)
+  },
+  setSelectedColLabel({ commit }, payload) {
+    commit('SET_SELECTED_COL_LABEL', payload)
   },
   setDatasetInfo({ commit }, payload) {
     commit('SET_DATASET_INFO', payload)

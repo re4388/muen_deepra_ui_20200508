@@ -39,6 +39,7 @@ import ImportDatasetStep from './StepContent/ImportTestDatasetStep.vue'
 // TODO: reuse existing component `TrainingPanel/StepContent/ResourcesCheckStep.vue`
 import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
 import PredictionProgress from './StepContent/PredictionProgress.vue'
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'TestPanel',
@@ -51,6 +52,12 @@ export default {
   },
   created: function () {
     this.initializeComponent()
+  },
+  mounted () {
+    EventBus.$emit('pageChanged', {
+      pages: ['Test'],
+      keepRoot: true,
+    })
   },
   methods: {
     initializeComponent () {
