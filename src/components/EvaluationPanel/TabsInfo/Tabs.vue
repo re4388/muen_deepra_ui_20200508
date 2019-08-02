@@ -196,7 +196,7 @@ export default {
                 );
                 let fn = modPath.join(cachedDir, "validation_output.json");
                 let parsed = null;
-                fileFetcher.readJson(fn, true).then(result => {
+                fileFetcher.readJson(fn, false).then(result => {
                     console.log("--- parsed json ---");
                     console.log(result);
                     parsed = result;
