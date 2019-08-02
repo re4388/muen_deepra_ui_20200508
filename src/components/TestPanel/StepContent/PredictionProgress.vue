@@ -1,5 +1,5 @@
 <template>
-  <div class="prediction-progress">
+  <div class="prediction-progress d-flex flex-column">
     <div class="title text-content">{{ content.title }}</div>
     <div class="progress">
       <div class="progress-bar" role="progressbar"
@@ -11,14 +11,19 @@
       </div>
     </div>
     <div class="estimated-time text-content">Estimated time of completion:</div>
+    <log-display class="flex-fill" id="log-display" :content="log"/>
   </div>
 </template>
 
 <script>
 import predictionService from '@/api/prediction_service.js'
+import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
 
 export default {
   name: 'PredictionProgress',
+  components: {
+    logDisplay
+  },
   props: {
     content: Object
   },
@@ -81,6 +86,7 @@ export default {
       progressValueMin: 0,
       progressValueMax: 100,
       isTrainingStarted: false,
+      log: ''
     }
   }
 }
@@ -89,6 +95,7 @@ export default {
 <style lang="scss" scoped>
 .progress {
   margin: 0px 0px 20px 0px;
+  min-height: 15px;
 }
 .prediction-progress {
   color: black;
@@ -102,5 +109,9 @@ export default {
 }
 .text-content {
   text-align: left;
+}
+#log-display {
+  margin: 20px 0px;
+  overflow-y: scroll;
 }
 </style>

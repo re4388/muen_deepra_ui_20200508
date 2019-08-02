@@ -1,5 +1,5 @@
 <template>
-  <div class="training-progress">
+  <div class="training-progress d-flex flex-column">
     <div class="title text-content">{{ content.title }}</div>
     <div class="progress">
       <div class="progress-bar" role="progressbar"
@@ -11,14 +11,20 @@
       </div>
     </div>
     <div class="estimated-time text-content">Estimated time of completion:</div>
+    <log-display class="flex-fill" id="log-display" :content="log"/>
   </div>
 </template>
 
 <script>
 import trainingService from '@/api/training_service.js'
+import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { LogFormatter } from '@/utils/log_formatter.js'
 
 export default {
   name: 'TrainingProgress',
+  components: {
+    logDisplay
+  },
   props: {
     content: Object
   },
@@ -42,15 +48,17 @@ export default {
       }
       this.isTrainingStarted = true
 
-      let handlerProgress = (resp) => {
+      this.handlerProgress = (resp) => {
+        this.log = LogFormatter.fromTraining(resp)
         this.updateProgressBar(resp.currentProgress)
       }
-      let handlerEnd = (resp) => {
+      this.handlerEnd = (resp) => {
         this.finishTraining()
       }
       let projectInfo = this.$store.getters['Project/currentProject']
       console.log(projectInfo)
-      let call = trainingService.startTraining(projectInfo, handlerProgress, handlerEnd)
+      let call = trainingService.startTraining(projectInfo, this.handlerProgress, this.handlerEnd)
+      this.log = 'Preparing to start training, it might take a few moment...'
     },
     finishTraining () {
       console.log('Training is finished')
@@ -69,6 +77,9 @@ export default {
       progressValueMin: 0,
       progressValueMax: 100,
       isTrainingStarted: false,
+      handlerProgress: null,
+      handlerEnd: null,
+      log: '',
     }
   }
 }
@@ -77,6 +88,7 @@ export default {
 <style lang="scss" scoped>
 .progress {
   margin: 0px 0px 20px 0px;
+  min-height: 15px;
 }
 .training-progress {
   color: black;
@@ -90,5 +102,9 @@ export default {
 }
 .text-content {
   text-align: left;
+}
+#log-display {
+  margin: 20px 0px;
+  overflow-y: scroll;
 }
 </style>
