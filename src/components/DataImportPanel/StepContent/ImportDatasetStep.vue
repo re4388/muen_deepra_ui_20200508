@@ -118,7 +118,6 @@ export default {
       this.selectedLabelFile = pathInfo
       datasetService.parseLabelFile(pathInfo.path).then((result) => {
         this.labelHeader = result.header
-        this.candidate = result.header
       })
     },
     checkContent () {
