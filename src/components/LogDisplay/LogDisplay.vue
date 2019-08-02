@@ -1,6 +1,6 @@
 <template>
-  <div class="log-display">
-    <pre class="display-section">
+  <div class="log-display" id="log-display">
+    <pre class="display-section" id="display-section">
       <code class="log-content">{{logContent}}</code>
     </pre>
   </div>
@@ -17,7 +17,18 @@ export default {
   computed: {
     logContent () {
       if (this.content !== '') {
+        if (this.logStash.length == this.stashSize) {
+          this.logStash.splice(0, this.sizeToClear)
+        }
         this.logStash.push(this.content)
+
+        // Auto scroll to bottom
+        var el = document.getElementById('log-display')
+        var isScrollToBottom = el.scrollHeight - el.clientHeight - 21 <= el.scrollTop + 1
+        if (isScrollToBottom) {
+          el.scrollTop = el.scrollHeight - el.clientHeight
+        }
+
         return this.logStash.join('\n')
       } else {
         return ''
@@ -26,8 +37,10 @@ export default {
   },
   data () {
     return {
-      maxLines: 1000,
-      logStash: []
+      stashSize: 2000,
+      logStash: [],
+      sizeToClear: 500,
+      keepScroll: true,
     }
   }
 }
