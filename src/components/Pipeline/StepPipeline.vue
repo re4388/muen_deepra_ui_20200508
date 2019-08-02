@@ -1,13 +1,16 @@
 <template>
   <div class="step-pipeline">
-    <template v-for="(item, index) in contentList">
-      <pipeline-element
-        ref="pipelineElement"
-        :key="index"
-        :digit="item.id"
-        @onLabelSelected="notifySelection"
-      />
-    </template>
+    <div id="container">
+      <div class="rect"></div>
+      <template v-for="(item, index) in contentList" class="pipeline">
+        <pipeline-element
+          ref="pipelineElement"
+          :key="index"
+          :digit="item.id"
+          @onLabelSelected="notifySelection"
+        />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -64,5 +67,19 @@ export default {
   min-width: 100px;
   height: 100%;
   overflow-y: hidden;
+}
+.pipeline {
+  position: absolute;
+  z-index: 10;
+}
+// TODO: rewrite this as a dynamic style (height can be changed according to
+// the number of steps)
+.rect {
+  background-color: rgb(80, 80 ,80);
+  height: 215px;
+  width: 20px;
+  position: absolute;
+  margin-left: 40px;
+  top: 50px;
 }
 </style>

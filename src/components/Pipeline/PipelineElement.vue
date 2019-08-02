@@ -8,7 +8,7 @@
       @click="emitClickedEvent"
       :style="labelStyle"
     >
-      {{ digit }}
+      {{ digit + 1}}
     </div>
   </div>
 </template>
