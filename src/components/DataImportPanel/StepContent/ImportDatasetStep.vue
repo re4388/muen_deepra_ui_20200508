@@ -54,8 +54,8 @@
                 id="col-file"
                 text="column name of file"
                 v-model="colFilename"
-                v-on:change="colItemChange"
-                :options="candidate">
+                v-on:change="selectedFilenameChanged"
+                :options="labelHeader">
               </b-form-select>
             </div>
             <div class="dropdown-item">
@@ -65,8 +65,8 @@
                 id="col-label"
                 text="column name of label"
                 v-model="colLabel"
-                v-on:change="colItemChange"
-                :options="candidate">
+                v-on:change="selectedLabelChanged"
+                :options="labelHeader">
               </b-form-select>
             </div>
           </div>
@@ -138,24 +138,22 @@ export default {
         resolve(true)
       })
     },
-    colItemChange: function() {
-      this.$store.dispatch('DataImport/setSelectedColFilename', this.colFilename)
-      console.log(this.colFilename)
-      let indexofColFilename = -1
-      for (var i=0; i<this.candidate.length; i++) {
-        if(this.candidate[i] === this.colFilename) {
-          indexofColFilename = i
-        }
+    selectedFilenameChanged () {
+      var idxFilename = this.labelHeader.indexOf(this.colFilename)
+      var idxLabel = this.labelHeader.indexOf(this.colLabel)
+      if (idxFilename === idxLabel) {
+        alert('You cannot pick the same value as annotation.')
+        this.colFilename = ''
       }
-      let temp = this.candidate.splice(indexofColFilename,1);
-      this.colFilename = temp
-      console.log(this.candidate)
-      console.log(temp)
-      // return this.labelHeader.spice(this.colFilename);
-      // // this.$store.dispatch('DataImport/setSelectedColLabel', this.colLabel)
-      // console.log(this.colLabel)
-      // console.log(this.colFilename)
-
+    },
+    selectedLabelChanged () {
+      console.log(this.colLabel)
+      var idxFilename = this.labelHeader.indexOf(this.colFilename)
+      var idxLabel = this.labelHeader.indexOf(this.colLabel)
+      if (idxFilename === idxLabel) {
+        alert('You cannot pick the same value as filename.')
+        this.colLabel = ''
+      }
     }
   },
   data () {
@@ -164,7 +162,6 @@ export default {
       selectedTaskType: '',
       selectedLabelFile: '',
       labelHeader: [],
-      candidate: [],
       colFilename: '',
       colLabel: '',
       taskTypes: [
