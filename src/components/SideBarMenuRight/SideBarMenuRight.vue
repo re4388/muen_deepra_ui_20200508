@@ -1,15 +1,14 @@
 <template>
   <div id="sidebar-right" class="sidebarRight d-flex flex-column">
     <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
-      <h2>Labels</h2>
-      <button class="addLabelBtn">+NewLabel</button>
+      <div class="rightsideBlockTitle"><h3>Labels</h3></div>
       <label><input type="checkbox" id="Nofinding"> Nofinding</label>
       <label><input type="checkbox" id="Label1"> Label 1</label>
       <label><input type="checkbox" id="Label2"> Label 2</label>
       <label><input type="checkbox" id="Label3"> Label 3</label>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
-      <h3>DataSet</h3>
+      <div class="rightsideBlockTitle"><h3>DataSet</h3></div>
       <div><img class="datasetImg" src="../../assets/people.png"></div>
       <div id="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
@@ -17,7 +16,7 @@
       </div>
     </div>
     <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
-      <div class="noteTitle"><h5>Edit Log<br> &amp; <br>Note</h5><br></div>
+      <div class="noteTitle rightsideBlockTitle"><h5>Edit Log<br> &amp; <br>Note</h5><br></div>
       <div class="note"><p>20190523</p></div>
       <div class="note"><p>Model 1 Predict as Label1</p></div>
     </div>    
@@ -60,7 +59,6 @@ export default {
   methods: {
     showImgList() {
       this.isShowingImgList = !this.isShowingImgList
-      console.log(this.isShowingImgList)
       let el = document.querySelector('.title')
       el.classList.toggle('show')
     }
@@ -86,17 +84,8 @@ export default {
   border-bottom: 1px solid white;
   padding: 20px 0;
 }
-.addLabelBtn {
-  background-color: rgb(194, 194, 194);
-  border: none;
-  border-radius: 3px;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  margin: 10px 0 20px 0;
-}
-.addLabelBtn:hover{
-  background: rgb(255, 255, 255);
+.rightsideBlockTitle {
+  margin: 10px 0 30px 0;
 }
 .datasetImg {
   padding: 30px;
@@ -116,11 +105,9 @@ export default {
   text-align: left;
   position: relative;
 }
-
 .imgList::-webkit-scrollbar { 
     display: none; 
 }
-
 .box {
   width: 300px;
   height: 300px;
@@ -130,7 +117,6 @@ export default {
   right: 150px;
   padding: 0px;
 }
-
 .title {
   background: #000;
   width: 100%;
@@ -139,11 +125,9 @@ export default {
   transition: all 1s;
   overflow: hidden;
 }
-
 .show {
   right: 0px;
 }
-
 .catalog {
   width: 300px;
   height: 40px;

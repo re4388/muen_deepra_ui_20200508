@@ -45,13 +45,10 @@ export default {
     })
   },
   mounted(){
-
     const listElm = document.querySelector('#imgList');
     listElm.addEventListener('scroll', e => {
-      // console.log(`${listElm.scrollTop} , ${listElm.clientHeight} , ${listElm.scrollHeight}`)
       let condition = listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight
       if(condition) {
-        console.log(condition)
         this.loadMore();
       }
     });
@@ -60,31 +57,25 @@ export default {
   },
   methods: {
     initializeComponent () {
-      console.log('--- initializeComponent ---')
       let fileList = this.$store.getters['Viewer/parsedFileList']
       this.loadedImages = fileList.slice(this.currentIndex, this.currentIndex+this.batchSize)
       this.currentIndex += this.batchSize
-      console.log(this.loadedImages-1)
     },
     showClickedThumbnail (item, index) {
-      console.log('--- event `loaded` issued ---')
-      console.log(item, index)
       EventBus.$emit('onNavigationImageClicked', {item, index})
-      console.log('---count numbers---')
-      console.log({item, index})
-      console.log(index)
       this.indexNumber = index === undefined ? 0 : index
     },
     loadMore () {
       this.loading = true;
       setTimeout(e => {
-        console.log('load more')
-        console.log(`current index: ${this.currentIndex}`)
-        this.loadedImages.push(...this.images.slice(this.currentIndex, this.currentIndex+this.batchSize))
-        this.currentIndex += this.batchSize
-        this.loading = false;
-        console.log(this.loadedImages)
-      }, 200); 
+        let batchSizeNumber = Math.ceil(this.loadedImages.length / this.batchSize)
+        if (batchSizeNumber*this.batchSize <= this.loadedImages.length) {
+          this.loadedImages.push(...this.images.slice(this.currentIndex, this.currentIndex+this.batchSize))
+          this.currentIndex += this.batchSize
+        } else {
+          this.loading = false;
+        }
+      }, 200);
     }
   },
   props: {
@@ -93,13 +84,11 @@ export default {
   },
   watch: {
     indexNumber () {
-      console.log(`watched: ${this.indexNumber}`)
       return this.indexNumber
     }
   },
   computed: {
     currentImageIndex () {
-      console.log(`computed: ${this.indexNumber}`)
       return this.indexNumber + 1
     }
   },
@@ -118,7 +107,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// ImageList
 .imgList {
   width: 317px;
   height: 320px;
@@ -191,7 +179,6 @@ export default {
   font-size: 16px;
   background: gray;
 }
-
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s
 }
