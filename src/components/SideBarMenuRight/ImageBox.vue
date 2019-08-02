@@ -72,9 +72,8 @@ export default {
         if (batchSizeNumber*this.batchSize <= this.loadedImages.length) {
           this.loadedImages.push(...this.images.slice(this.currentIndex, this.currentIndex+this.batchSize))
           this.currentIndex += this.batchSize
-        } else {
-          this.loading = false;
         }
+        this.loading = false;
       }, 200);
     }
   },
