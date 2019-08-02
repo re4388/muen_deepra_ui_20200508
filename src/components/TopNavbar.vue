@@ -34,6 +34,7 @@ export default {
       // Reset state
       this.$store.dispatch('DataImport/resetAllState')
       this.$store.dispatch('Project/resetAllState')
+      this.$store.dispatch('Validation/resetAllState')
       EventBus.$emit('pageChanged', '')
       this.$router.push('/')
     }

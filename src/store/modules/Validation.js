@@ -19,12 +19,18 @@ const getters = {
 }
 
 const mutations = {
+  RESET_ALL_STATE(state) {
+    initializeState(state, defaultState)
+  },
   SET_VALIDATION_OUTPUT(state, payload) {
     state.validationOutput = payload
   }
 }
 
 const actions = {
+  resetAllState({ commit }) {
+    commit('RESET_ALL_STATE')
+  },
   setValidationOutput({ commit }, payload) {
     commit('SET_VALIDATION_OUTPUT', payload)
   }
