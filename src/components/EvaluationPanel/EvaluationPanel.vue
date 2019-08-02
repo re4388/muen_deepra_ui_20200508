@@ -26,6 +26,8 @@
 
 <script>
 import Tabs from "./TabsInfo/Tabs.vue";
+import { EventBus } from "@/event_bus.js"
+
 export default {
     name: "EvaluationPanel",
     components: {
@@ -47,7 +49,10 @@ export default {
         }
     },
     mounted() {
-        
+        EventBus.$emit('pageChanged', {
+            pages: ['Evaluation'],
+            keepRoot: true,
+        })
     },
     computed: {
         imageNumber() {
