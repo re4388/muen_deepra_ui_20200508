@@ -4,6 +4,7 @@ class DatasetPathCollector {
   constructor(datasetInfo) {
     this.folderPath = datasetInfo.folderPath
     this.labelFile = datasetInfo.labelFile
+    this.fileExtension = datasetInfo.details.fileExtension
     this.fileList = []
 
     // TODO: this field is for development only
@@ -16,13 +17,14 @@ class DatasetPathCollector {
         // TODO: rewrite this
         console.log('--- parsing file list')
         let folderPath = this.folderPath
+        let ext = this.fileExtension
         this.fileList = result.split(/\r\n|\n/)
           // ignore the first row (header)
           .splice(1)
           .map(function(x) {
             return {
               root: folderPath,
-              filename: x.split(',')[0]
+              filename: `${x.split(',')[0]}${ext}`
             }
           })
 

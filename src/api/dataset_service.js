@@ -23,6 +23,9 @@ class DatasetInfo {
     content.details = {
       '__DatasetClass': details['__DatasetClass'],
       labelReport: details.label_report,
+      colFilename: details.col_filename,
+      colLabel: details.col_label,
+      fileExtension: details.file_extension,
     }
     content.fileCounts = details.file_counts
     content.totalLabels = (
