@@ -1,6 +1,8 @@
 <template>
     <div class="container">
 
+ 
+
         <!-- Confusion Matrix 的 Modal -->
         <div>
             <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
@@ -179,8 +181,8 @@ export default {
             console.log("--- Tabs: fetching data from store ---");
 
             // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-            let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-            // let data = localJson;
+            // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+            let data = localJson;
             // let data = localJson2;
             // console.log(data)
 

@@ -44,7 +44,7 @@ export default {
     methods: {
         modelInfo(obj) {
             this.modelData = obj.result;
-            console.log("eva", this.modelData);
+            // console.log("eva", this.modelData);
         }
     },
     mounted() {},

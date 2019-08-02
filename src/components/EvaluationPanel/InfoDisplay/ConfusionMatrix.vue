@@ -12,18 +12,16 @@
                 <g
                     v-for="(arr, key) in confusionMatrix"
                     :key="key +'1'"
-                    :transform="`translate(0, ${yScale(key)})`" 
+                    :transform="`translate(0, ${yScale(key)})`"
                 >
                     <!-- cells -->
-                    <!-- @mouseover="showTooltip(key, key2, $event)"
-                    @mouseout="hiddenTooltip"-->
                     <g
                         v-for="(num, key2) in arr"
                         :key="key2 +'2'"
                         :fill="colorMap(num)"
                         :transform="`translate(${xScale(key2)}, 0)`"
                     >
-                        <rect  :width="xBandwidth" :height="yBandwidth" />
+                        <rect :width="xBandwidth" :height="yBandwidth" />
                         <!-- text -->
                         <text
                             font-size="16px"
@@ -32,13 +30,20 @@
                             :y="yBandwidth / 2"
                             text-anchor="middle"
                             :fill="( num >= maxValue / 2) ? 'white' : 'black'"
-                            
                         >{{ num }}</text>
                     </g>
                 </g>
 
+                <!-- 
+    <text 
+    // 加入這兩行可以引入tooltip
+    :content="showTooptip(key,key2)" 
+    v-tippy='{ interactive : true, trigger: "click" }'
+    >
+    {{ num }}
+    </text> 
+                -->
                 <!-- lables -->
-
                 <g class="labels">
                     <!-- column Labels -->
                     <g
@@ -91,48 +96,18 @@
 
                 <!-- Text -->
 
-                <text
-                    font-size="16px"
-                    x="175"
-                    y="345"
-                    dy=".32em"
-                    text-anchor="end"
-                >Predicted Label</text>
+                <text font-size="16px" x="175" y="345" dy=".32em" text-anchor="end">Predicted Label</text>
 
                 <text
-                    
                     font-size="16px"
                     writing-mode="tb"
                     x="-90"
                     y="180"
                     dy=".32em"
                     text-anchor="end"
-                    
                 >True Label</text>
-
-      <!-- svg.append("text")
-            // .attr('rotate', 30)
-            .style("font-size", "16px")
-            // .style("writing-mode", 'tb')
-            .attr("x", 155)
-            .attr("y", 280)
-            .attr("dy", ".32em")
-            .attr("text-anchor", "end")
-            .text("True Label")
-            .attr("transform", "rotate(90,100,100)"); -->
-    
             </g>
         </svg>
-        <!-- tooptip -->
-        <div
-            :class="{ tooltip: true, hidden: hideTooltip}"
-            class="tooltip"
-            position="absolute"
-            width="60px"
-            opacity="0"
-        />
-
-        <div class="file-info"></div>
 
         <!-- {{ data.thresholdValue[this.newThreshold - 1] }} -->
         <!-- TODO: no show threshold when we hit confution matrix for all -->
@@ -153,8 +128,6 @@ export default {
     props: ["data", "newThreshold"],
     data() {
         return {
-            hideTooltip: true,
-            matrix: null,
             width: 250,
             height: 250,
             margin: {
@@ -175,54 +148,24 @@ export default {
     },
     created() {},
     methods: {
+        // 顯示toop tip
+        showTooptip(key, key2) {
+            return this.lableMatrix[key][key2];
+        },
+
+        // 掛載dom時，prop data 進入 data
         init() {
             // console.log(...this.data.confusionMatrixLable);
-            console.log(...this.data.confusionMatrix);
+            // console.log(...this.data.confusionMatrix);
             this.confusionMatrix = [...this.data.confusionMatrix];
-            // this.lableMatrix = [...this.data.confusionMatrixAnnotation];
+            this.lableMatrix = [...this.data.confusionMatrixAnnotation];
             this.labels = [...this.data.confusionMatrixLable];
         },
-
-        setAttributes(el, attrs) {
-            for (let key in attrs) {
-                el.setAttribute(key, attrs[key]);
-            }
-        },
-
-        showTooltip(key, index2, event) {
-            let mouseX = event.clientX + 20;
-            let mouseY = event.clientY;
-
-            // 設置位置
-            let tooltip = document.querySelector(".tooltip");
-            tooltipAttObj = {
-                style: `left: ${mouseX}px; top: ${mouseY}px`,
-                style: "line-height: 20px",
-                style: "background: lightsteelblue",
-                style: "display: inline-block",
-                style: "margin: 10px;",
-                style: "padding-bottom: 10px;",
-                style: "padding-left: 15px;",
-                style: "padding-right: 15px;",
-                style: "border-radius: 20px;"
-            };
-            this.setAttributes(tooltip, tooltipAttObj);
-
-            // 插入內容
-            document.querySelector(
-                ".tooltip"
-            ).innerHTML = `${this.lableMatrix[key][index2].number}`;
-
-            // 顯示 tooltip
-            this.hideTooltip = false;
-        },
-
-        hiddenTooltip() {
-            this.hideTooltip = true;
-        }
     },
-
     computed: {
+
+
+        // setuop color map and related variables
         maxValue() {
             return d3.max(this.confusionMatrix, item => {
                 return d3.max(item, d => {
@@ -246,8 +189,7 @@ export default {
                 .range([this.startColor, this.endColor]);
         },
 
-    
-
+        // setup scale and related variable
         numrows() {
             return this.confusionMatrix.length;
         },
@@ -282,6 +224,6 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 </style>
 
