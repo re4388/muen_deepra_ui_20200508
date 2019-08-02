@@ -52,9 +52,8 @@ export default {
         let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
         pathCollector.parseFileList().then((result) => {
           this.$store.dispatch('Viewer/setParsedFileList', pathCollector.fileList)
-          console.log('ready to emit event `viewerDatasetChanged`')
+          // console.log('ready to emit event `viewerDatasetChanged`')
           EventBus.$emit('viewerDatasetChanged')
-          console.log(pathCollector.fileList.length)
           // Notify that loading is complete
           this.loading = true
         })
@@ -91,7 +90,6 @@ export default {
     }
   }
 }
-
 
 </script>
 

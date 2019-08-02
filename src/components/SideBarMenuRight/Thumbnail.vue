@@ -15,8 +15,7 @@ export default {
   name: 'Thumbnail',
   props: {
     root: String,
-    filename: String,
-    
+    filename: String
   },
   created() {
     // EventBus.$emit('onNavigationImageClicked', this.item[0]);
@@ -70,7 +69,6 @@ export default {
   height: 15px;
   background: #42ab427d;
 }
-
 .labelRed {
   border: 1px solid red;
 }

@@ -11,8 +11,6 @@
         :y="50"
         v-on:resizing="resize" 
         v-on:dragging="resize">
-        <!-- <p>{{ top }} х {{ left }} </p> -->
-        <!-- <p>{{ width }} х {{ height }}</p> -->
         <imagvue class="imgExample" 
           style="width: 100%;"
           v-model="url"

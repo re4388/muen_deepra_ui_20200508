@@ -283,35 +283,15 @@ ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
   top: 10px;
   left: 90%;
 }
-.vdr.active:before {
-  // outline: none;
+#imgExample {
+  object-fit: contain;
+  height: 100%;
 }
-.vdr-stick {
-  border: 6px solid #6c6c6c;
-  // display: none;
-}
-.vue-zoomer {
-  // overflow: hidden;
-}
+// .vue-zoomer {
+//   overflow: hidden;
+// }
 // .zoomer {
 //   height: 600px;
 // }
-#imgExample {
-  // min-height: 100%;
-  // display: flex;
-  // align-items: stretch;
-  // width: 50%;
-  object-fit: contain;
-  // width: auto;
-  height: 100%;
-}
 
-.firstImage {
-  width: 100px;
-  height: 100px;
-  background: white;
-  position: fixed;
-  top: 200px;
-  left: 300px;
-}
 </style>

@@ -46,21 +46,29 @@
         >
         </b-form-file>
         <template v-if="Boolean(selectedLabelFile)" class="container">
-          <div class="row dropdown-header">
-            <b-form-select
-              class="col-sm"
-              id="col-file"
-              text="column name of file"
-              v-model="colFilename"
-              :options="labelHeader">
-            </b-form-select>
-            <b-form-select
-              class="col-sm"
-              id="col-label"
-              text="column name of label"
-              v-model="colLabel"
-              :options="labelHeader">
-            </b-form-select>
+          <div class="row dropdown-header text-content d-flex flex-row">
+            <div class="dropdown-item">
+              <p class="description text-content">Column of filename</p>
+              <b-form-select
+                class="col-sm"
+                id="col-file"
+                text="column name of file"
+                v-model="colFilename"
+                v-on:change="colItemChange"
+                :options="candidate">
+              </b-form-select>
+            </div>
+            <div class="dropdown-item">
+              <p class="description text-content">Column of annotation</p>
+              <b-form-select
+                class="col-sm"
+                id="col-label"
+                text="column name of label"
+                v-model="colLabel"
+                v-on:change="colItemChange"
+                :options="candidate">
+              </b-form-select>
+            </div>
           </div>
         </template>
       </p>
@@ -110,6 +118,7 @@ export default {
       this.selectedLabelFile = pathInfo
       datasetService.parseLabelFile(pathInfo.path).then((result) => {
         this.labelHeader = result.header
+        this.candidate = result.header
       })
     },
     checkContent () {
@@ -128,6 +137,25 @@ export default {
         this.$store.dispatch('DataImport/setCompletedStageIndex', this.content.id)
         resolve(true)
       })
+    },
+    colItemChange: function() {
+      this.$store.dispatch('DataImport/setSelectedColFilename', this.colFilename)
+      console.log(this.colFilename)
+      let indexofColFilename = -1
+      for (var i=0; i<this.candidate.length; i++) {
+        if(this.candidate[i] === this.colFilename) {
+          indexofColFilename = i
+        }
+      }
+      let temp = this.candidate.splice(indexofColFilename,1);
+      this.colFilename = temp
+      console.log(this.candidate)
+      console.log(temp)
+      // return this.labelHeader.spice(this.colFilename);
+      // // this.$store.dispatch('DataImport/setSelectedColLabel', this.colLabel)
+      // console.log(this.colLabel)
+      // console.log(this.colFilename)
+
     }
   },
   data () {
@@ -136,6 +164,7 @@ export default {
       selectedTaskType: '',
       selectedLabelFile: '',
       labelHeader: [],
+      candidate: [],
       colFilename: '',
       colLabel: '',
       taskTypes: [
@@ -164,6 +193,18 @@ export default {
 }
 .dropdown-header {
   padding: 0px;
-  width: 20%;
+  // width: 20%;
+  margin: 16px 0 16px;
+}
+.dropdown-header p {
+  color: black;
+  margin :0;
+}
+.dropdown-item {
+  width: 33%;
+  padding-left: 0;
+}
+.dropdown-item:hover{
+  background: none;
 }
 </style>
