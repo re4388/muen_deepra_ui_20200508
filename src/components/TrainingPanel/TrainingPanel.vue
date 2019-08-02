@@ -64,12 +64,14 @@ export default {
     enterToNextStep () {
       // TODO: rewrite this by switch-case clause
       // TODO: redirect page when use press the `Done` button
-      if (this.currentStep < this.stepContent.length - 1) {
-        if (this.currentStep === this.stepOfTraining && !this.isTrainingFinished) {
-          return
-        }
-        this.currentStep += 1
-        this.toggleBtnFlowControl(this.currentStep !== this.stepOfTraining)
+      switch (this.currentStep) {
+        case this.stepContent.length - 1:
+          this.$router.push('/evaluation')
+          break;
+        default:
+          this.currentStep += 1
+          this.toggleBtnFlowControl(this.currentStep !== this.stepOfTraining)
+          break;
       }
     },
     toggleBtnFlowControl (enable) {
