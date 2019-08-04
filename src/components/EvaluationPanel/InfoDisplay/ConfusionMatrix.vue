@@ -34,7 +34,9 @@
                     </g>
                 </g>
 
-                <!-- 
+    <!-- tooptip possibilities -->
+    <!--第一種
+    https://kabbouchi.github.io/vue-tippy/4.0/demo.html 
     <text 
     // 加入這兩行可以引入tooltip
     :content="showTooptip(key,key2)" 
@@ -42,7 +44,18 @@
     >
     {{ num }}
     </text> 
-                -->
+    -->
+
+    <!--第二種
+    https://bootstrap-vue.js.org/docs/directives/popover/#popovers
+    <text 
+    // 加入這一行是用vuebs4，可以選
+    v-b-popover="showTooptip(key,key2)" 
+    >
+    {{ num }}
+    </text> 
+    -->
+
                 <!-- lables -->
                 <g class="labels">
                     <!-- column Labels -->
