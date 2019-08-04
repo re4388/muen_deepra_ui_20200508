@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+
+ 
+
         <!-- Confusion Matrix 的 Modal -->
         <div>
             <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
@@ -94,7 +97,7 @@
 <script>
 // local Fake data
 
-// minist data
+// minist data 
 import localJson from "../deepra_mnistV2.json";
 // binary data
 import localJson2 from "../binary_data.json";
@@ -177,11 +180,13 @@ export default {
         dataInit() {
             console.log("--- Tabs: fetching data from store ---");
 
-            // FIXME:
+            // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
             // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
             let data = localJson;
             // let data = localJson2;
+            // console.log(data)
 
+            // if no training data, get data from current project
             if (data.content === null) {
                 let projectInfo = this.$store.getters["Project/currentProject"];
                 console.log(

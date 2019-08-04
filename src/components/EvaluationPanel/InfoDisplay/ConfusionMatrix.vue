@@ -34,9 +34,7 @@
                     </g>
                 </g>
 
-                <!-- tooptip possibilities -->
-                <!--第一種
-    https://kabbouchi.github.io/vue-tippy/4.0/demo.html 
+                <!-- 
     <text 
     // 加入這兩行可以引入tooltip
     :content="showTooptip(key,key2)" 
@@ -44,18 +42,7 @@
     >
     {{ num }}
     </text> 
-                v1-->
-
-                <!--第二種
-    https://bootstrap-vue.js.org/docs/directives/popover/#popovers
-    <text 
-    // 加入這一行是用vuebs4，可以選
-    v-b-popover="showTooptip(key,key2)" 
-    >
-    {{ num }}
-    </text> 
-                v1-->
-
+                -->
                 <!-- lables -->
                 <g class="labels">
                     <!-- column Labels -->
@@ -151,9 +138,9 @@ export default {
             },
             startColor: "#ffffff",
             endColor: "#e67e22",
-            confusionMatrix: [],
-            lableMatrix: [],
-            labels: []
+            confusionMatrix: null,
+            lableMatrix: null,
+            labels: null
         };
     },
     mounted() {
@@ -169,14 +156,15 @@ export default {
         // 掛載dom時，prop data 進入 data
         init() {
             // console.log(...this.data.confusionMatrixLable);
-            // console.table(...this.data.confusionMatrix);
-            // console.table(this.data.confusionMatrix);
+            // console.log(...this.data.confusionMatrix);
             this.confusionMatrix = [...this.data.confusionMatrix];
             this.lableMatrix = [...this.data.confusionMatrixAnnotation];
             this.labels = [...this.data.confusionMatrixLable];
-        }
+        },
     },
     computed: {
+
+
         // setuop color map and related variables
         maxValue() {
             return d3.max(this.confusionMatrix, item => {
