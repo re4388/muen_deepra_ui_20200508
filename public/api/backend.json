@@ -1,0 +1,13 @@
+{
+    "server": {
+        "ip": "localhost",
+        "port": "50051"
+    },
+    "devSetting": {
+        "server": {
+            "projectPath": "%userprofile%/project/deepra",
+            "env": "",
+            "module": ""
+        }
+    }
+}
