@@ -61,6 +61,12 @@ function importDataset (
         if (err !== null) {
           console.log(err)
         }
+        if (resp == null) {
+          reject(
+            'Failed to import dataset, please check that given folder ' +
+            'contains valid data to be imported.'
+          )
+        }
         console.log('--- got dataset ---')
         console.log(resp)
         resolve(DatasetInfo.parseFromResponse(resp))

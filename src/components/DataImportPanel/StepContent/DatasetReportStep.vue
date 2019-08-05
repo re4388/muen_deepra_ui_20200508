@@ -50,6 +50,9 @@ export default {
         this.datasetInfo = result.content
         this.$store.dispatch('DataImport/setDatasetInfo', this.datasetInfo)
         this.updateContent(this.datasetInfo)
+      }).catch((err) =>{
+        alert(err)
+        this.$router.push('/project-overview')
       })
     },
     updateContent (newContent) {
