@@ -95,15 +95,16 @@
 </template>
 
 <script>
-// local Fake data
 
+/***** local Fake data to locally test *****/
 // minist data 
 import localJson from "../deepra_mnistV2.json";
 // binary data
 import localJson2 from "../binary_data.json";
 
+
 // import data
-import createData from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
+import {createData, dataGenerator} from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
 
 // import utilties
 import modPath from "path";
@@ -204,7 +205,13 @@ export default {
                     console.log(result);
                     parsed = result;
 
-                    let tabData = createData(parsed.labels, parsed.metrics);
+
+                    // use dataGenerator to tansform data
+                    let n1 = new dataGenerator(data.labels, data.metrics)
+                    let tabData = n1.generateData()
+                    // let tabData = createData(parsed.labels, parsed.metrics);
+
+
                     console.log("--- parsed tabData ---");
                     console.log(tabData);
                     this.tabs = tabData;
@@ -215,7 +222,12 @@ export default {
                     this.currentView = this.views[0];
                 });
             } else {
-                let tabData = createData(data.labels, data.metrics);
+
+                // use dataGenerator to tansform data
+                let n1 = new dataGenerator(data.labels, data.metrics)
+                let tabData = n1.generateData()
+                // let tabData = createData(data.labels, data.metrics);
+
                 this.tabs = tabData;
                 this.$emit("model-data", {
                     result: tabData
