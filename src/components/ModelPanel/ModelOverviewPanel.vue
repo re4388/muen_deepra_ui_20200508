@@ -23,9 +23,19 @@ export default {
   components: {
     ModelCard
   },
+  created () {
+    EventBus.$on('modelDeleted', () => {
+      console.log('--- model deleted ---')
+      this.fetchModelData()
+    })
+  },
   mounted () {
     this.fetchModelData()
     EventBus.$emit('pageChanged', 'ModelOverview')
+  },
+  beforeDestroy () {
+    console.log('--- removing event listener: modelDeleted')
+    EventBus.$off('modelDeleted')
   },
   watch: {
     '$route': 'fetchModelData'

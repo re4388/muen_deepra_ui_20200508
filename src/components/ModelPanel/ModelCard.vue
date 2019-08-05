@@ -7,6 +7,7 @@
           <b-dropdown-item
             class="dropdown-item-delete"
             variant="danger"
+            @click="showModalDeleteModel"
           >
             Delete
           </b-dropdown-item>
@@ -31,10 +32,14 @@
         </a>
       </div>
     </div>
+    <b-modal ref="modal-delete-model" title="delete" @ok="deleteModel">
+      <p>Are you sure that you want to delete this model?</p>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import modelService from '@/api/models_service.js'
 import { EventBus } from '@/event_bus.js'
 
 export default {
@@ -71,6 +76,15 @@ export default {
       this.$store.dispatch('Model/setCurrentModel', this.details)
       EventBus.$emit('entryChanged', 'model')
       this.$router.push('/model-profile')
+    },
+    showModalDeleteModel () {
+      this.$refs['modal-delete-model'].show()
+    },
+    deleteModel () {
+      console.log(this.details.uuid)
+      modelService.deleteModel(this.details.uuid).then((result) => {
+        EventBus.$emit('modelDeleted')
+      })
     }
   },
   data () {

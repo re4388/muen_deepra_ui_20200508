@@ -21,6 +21,7 @@ function getModelList () {
       null, (err, resp) => {
         if (err != null) {
           console.log(err)
+          reject(err)
         }
         console.log(resp)
         resolve(resp)
@@ -39,6 +40,7 @@ function getModel (uuid) {
       {uuid: uuid}, (err, resp) => {
         if (err != null) {
           console.log(err)
+          reject(err)
         }
         console.log('------ got model from backend -----')
         console.log(resp)
@@ -48,8 +50,32 @@ function getModel (uuid) {
   })
 }
 
+function deleteModel (uuid) {
+  let modelManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ModelManagement'
+  )
+
+  return new Promise((resolve, reject) => {
+    modelManagementService.DeleteModel(
+      {uuid: uuid}, (err, resp) => {
+        if (err != null) {
+          console.log(err)
+          reject(err)
+        }
+        if (!resp.success) {
+          reject(false)
+        }
+        console.log('----- model is deleted -----')
+        console.log(uuid)
+        resolve(resp.success)
+      }
+    )
+  })
+}
+
 export default {
   getModelList,
   getModel,
+  deleteModel,
   ModelInfo
 }

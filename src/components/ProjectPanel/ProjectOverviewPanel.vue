@@ -32,7 +32,6 @@ export default {
     // created project card after they finish the data import phase from
     // `DataImportPanel`)
     EventBus.$on('projectDeleted', () => {
-      console.log('--- project deleted, refreshing project page ---')
       this.fetchProjectData()
     })
   },
@@ -41,7 +40,6 @@ export default {
     EventBus.$emit('pageChanged', 'ProjectOverview')
   },
   beforeDestroy () {
-    console.log('--- removing event listener: projectDeleted')
     EventBus.$off('projectDeleted')
   },
   watch: {
