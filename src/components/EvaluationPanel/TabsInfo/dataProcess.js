@@ -8,6 +8,21 @@ class dataGenerator {
 		
 	}
 
+	// get total imgae
+	getTotalImage() {
+		// return if backend don't have this info
+		if (this.metric['label_counts'] === undefined) {
+			return;
+		}
+
+		let len = this.labels.length;
+		let totalImage = 0;
+		for (let i = 0; i < len; i++) {
+			totalImage += this.metric['label_counts'][i];
+		}
+		return totalImage;
+	}
+
 	// return model Type
 	// we only have 2 cases for now,multi_class/multi_label,  one is another on is binary
 	// we currently use 'fpr_roccurve' data structure to decide which model backend send into
@@ -20,7 +35,8 @@ class dataGenerator {
 
 	}
 
-	// create axis obj for c3
+
+	// create axis obj for plot C3
 	createAxis() {
 		if (this.checkModel() === 'multiType' ) {
 			for (let i = 0; i < this.labels.length + 1; i++) {
@@ -33,8 +49,10 @@ class dataGenerator {
 		}
 	}
 
-	// create data obj for all_class
-	createDataArray() {
+
+
+	// create graph da tafor all_class for plot C3
+	getAllClassGraphData() {
 		let dataArray = [];
 		let len = this.labels.length;
 
@@ -64,23 +82,10 @@ class dataGenerator {
 		}
 	}
 
-	// get total imgae-
-	getTotalImage() {
-		// return if backend don't have this info
-		if (this.metric['label_counts'] === undefined) {
-			return;
-		}
+	
 
-		let len = this.labels.length;
-		let totalImage = 0;
-		for (let i = 0; i < len; i++) {
-			totalImage += this.metric['label_counts'][i];
-		}
-		return totalImage;
-	}
-
-	// fun to gen all_class data
-	createAllClassTab() {
+	// create all_class data
+	createAllClassData() {
 
 		this.allData.push({
 			id: 0,
@@ -97,7 +102,7 @@ class dataGenerator {
 				xAxisLabel: '1 - Specificity (False Positive Rate)',
 				yAxisLabel: 'Sensitivity (True Positive Rate)',
 				axisSetting: this.createAxis(this.labels),
-				dataColumn: this.createDataArray(this.labels, this.metric),
+				dataColumn: this.getAllClassGraphData(this.labels, this.metric),
 				// precision: [ 0.45, 0.5, 0.6, 0.7, 0.8, 1 ],
 				// recall: [ 1, 0.75, 0.5, 0.25, 0.1, 0 ],
 				// image: 'not available yet'
@@ -227,11 +232,12 @@ class dataGenerator {
 
 	
 
-
-	// 3. function to create each_class datacolumn
-	createEachTabDataArray() {
+	// create each_class graph data for plot C3
+	getEachClassGraphData() {
+		
 		// init data strcutrure
 		let eachDataColumn = [];
+
 		for (let i = 0; i < this.labels.length; i++) {
 			eachDataColumn.push([]);
 		}
@@ -247,8 +253,8 @@ class dataGenerator {
 	}
 
 
-	// 5. function to create each each class/label
-	createEachClassTab() {
+	// create each each class data
+	createEachClassData() {
 		for (let i = 0; i < this.labels.length; i++) {
 			this.allData.push({
 				id: `${i + 1}`,
@@ -268,7 +274,7 @@ class dataGenerator {
 						precision: 'threshold',
 						recall: 'threshold'
 					},
-					dataColumn: this.createEachTabDataArray(this.labels, this.metric)[i],
+					dataColumn: this.getEachClassGraphData(this.labels, this.metric)[i],
 					image: this.metric['label_counts'][i]
 				},
 				confusionMatrixInfo: {
@@ -288,14 +294,14 @@ class dataGenerator {
 		}
 	}
 
-
+	// generate data based on given model
 	generateData() {
-		if (this.labels.length > 2) {
-			this.createAllClassTab()
-			this.createEachClassTab();
+		if (this.checkModel() === 'multiType') {
+			this.createAllClassData()
+			this.createEachClassData()
 			return this.allData
 		} else {
-			this.createAllClassTab()
+			this.createAllClassData()
 			return this.allData
 		}
 	}
@@ -321,305 +327,6 @@ class dataGenerator {
 
 
 
-// 這兩行要寫在tabs
-// let n1 = new dataGenerator(1, 2)
-// console.log(n1.generateData())
-
-
-
-
-////////////////////////////////////////////////////////////////////
-
-
-
-
-function createData(labels = '', metric = {}) {
-	// 0. init data
-	let tabData = [];
-
-
-	// 1. create axis and dataColumne for c3 pr curve
-	// 1.1 to create axis obj
-	function createAxis(labels) {
-		let checkDataStructure = metric['fpr_roccurve'];
-		let axisObj = {};
-
-		if (!Array.isArray(checkDataStructure)) {
-			for (let i = 0; i < labels.length + 1; i++) {
-				axisObj[`tpr_roccurve of class ${i}`] = `fpr_roccurve of class ${i}`;
-			}
-			return axisObj;
-		} else {
-			axisObj = {'ROC curve': 'x'};
-			return axisObj;
-		}
-	}
-
-	// 1.2 create dataColumne for all_class
-	function createDataArray(labels, metric) {
-		let dataArray = [];
-		let len = labels.length;
-		let checkDataStructure = metric['fpr_roccurve'];
-
-		if (!Array.isArray(checkDataStructure)) {
-			// need to construct the strcuture first to later use push method to its index
-			for (let i = 0; i < len * 2; i++) {
-				dataArray.push([]);
-			}
-
-			for (let i = 0; i < len; i++) {
-				dataArray[i].push(`fpr_roccurve of class ${i}`, ...metric['fpr_roccurve'][`${i}`]);
-			}
-
-			// also push tpr into array, use i-len to get the correct index from data
-			for (let i = len; i < len * 2; i++) {
-				dataArray[i].push(`tpr_roccurve of class ${i - len}`, ...metric['tpr_roccurve'][`${i - len}`]);
-			}
-
-			return dataArray;
-
-		} else {
-			dataArray.push(['x', ...metric['fpr_roccurve']]);
-			dataArray.push(['ROC curve', ...metric['tpr_roccurve']]);
-			// dataArray.push('qq')
-			return dataArray;
-			console.log(dataArray);
-		}
-	}
-
-	// 1.3 calculate total imgae-
-	function getTotalImage(labels, metric) {
-		// deal with source data don't have label_counts prop
-		if (metric['label_counts'] === undefined) {
-			return;
-		}
-
-		let len = labels.length;
-		let totalImage = 0;
-		for (let i = 0; i < len; i++) {
-			totalImage += metric['label_counts'][i];
-		}
-		return totalImage;
-	}
-
-	// 2. fun to gen all_class data
-	function createAllClassTab(metric, labels) {
-		tabData.push({
-			id: 0,
-			name: 'all class',
-			metrics: {
-				Sensitivity: metric['micro_recall'] || 'not available yet',
-				Specificity: metric['micro_specificity'] || 'not available yet',
-				Precision: metric['micro_precision'] || 'not available yet',
-				F1score: metric['micro_f1_score'] || 'not available yet',
-				AUC: metric['weighted_roc_auc'] || 'not available yet'
-			},
-			grpah: {
-				ChartTitle: 'ROC Chart',
-				xAxisLabel: '1 - Specificity (False Positive Rate)',
-				yAxisLabel: 'Sensitivity (True Positive Rate)',
-				axisSetting: createAxis(labels),
-				dataColumn: createDataArray(labels, metric),
-				// precision: [ 0.45, 0.5, 0.6, 0.7, 0.8, 1 ],
-				// recall: [ 1, 0.75, 0.5, 0.25, 0.1, 0 ],
-				// image: 'not available yet'
-				image: getTotalImage(labels, metric) || 'not available yet'
-			},
-			confusionMatrixInfo: {
-				confusionMatrix: [...metric['confusion_matrix']],
-				confusionMatrixLable: [...labels],
-
-				// TODO: need to import dynamically
-				confusionMatrixAnnotation: [
-					[
-						'img01, img03',
-						'img02,img04',
-						'img23',
-						'no img',
-						'img09',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					['no_img', 'img05', 'img12', 'img09', 'no img', 'no_img', 'img05', 'img12', 'no img', 'no img'],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					],
-					[
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img',
-						'no_img',
-						'img05',
-						'img12',
-						'no img  ',
-						'no img'
-					]
-				],
-				labelsNum: labels.length,
-				thresholdValue: null
-			}
-		});
-	}
-
-	// 3. create all_class data
-	createAllClassTab(metric, labels);
-
-
-	// 4. function to create each_class datacolumn
-	function createEachTabDataArray(labels, metric) {
-		// init data strcutrure
-		let eachDataColumn = [];
-		for (let i = 0; i < labels.length; i++) {
-			eachDataColumn.push([]);
-		}
-
-		for (let i = 0; i < labels.length; i++) {
-			// loop thru class
-			eachDataColumn[i].push(['threshold', ...metric['thresholds_prcurve'][i]]);
-			eachDataColumn[i].push(['precision', ...metric['precision_prcurve'][i]]);
-			eachDataColumn[i].push(['recall', ...metric['recall_prcurve'][i]]);
-		}
-
-		return eachDataColumn;
-	}
-
-
-	// 5. function to create each each class/label
-	function createEachClassTab(metric, labels) {
-		for (let i = 0; i < labels.length; i++) {
-			tabData.push({
-				id: `${i + 1}`,
-				name: `class ${labels[i]}`,
-				metrics: {
-					Sensitivity: metric['report_per_labels'][i]['recall'] || 'not available yet',
-					Specificity: metric['report_per_labels'][i]['specificity'] || 'not available yet',
-					Precision: metric['report_per_labels'][i]['precision'] || 'not available yet',
-					F1score: metric['report_per_labels'][i]['f1'] || 'not available yet',
-					AUC: metric['roc_auc'][i] || 'not available yet'
-				},
-				grpah: {
-					ChartTitle: 'Precision Recall Curve',
-					xAxisLabel: 'Threshold',
-					yAxisLabel: 'Precision / Recall',
-					axisSetting: {
-						precision: 'threshold',
-						recall: 'threshold'
-					},
-					dataColumn: createEachTabDataArray(labels, metric)[i],
-					image: metric['label_counts'][i]
-				},
-				confusionMatrixInfo: {
-					confusionMatrix: [
-						...metric['report_per_labels'][i]['content']
-						// below code is for mutiple matrix in one class
-						// ...metric['matrix_threshold'][i]
-						// [1, 0],
-						// [7, 0],
-					],
-					confusionMatrixLable: [i, 'other'],
-					confusionMatrixAnnotation: [['img01, img03', 'img02,img04'], ['no_img', 'img05']],
-					labelsNum: labels.length,
-					thresholdValue: metric['thresholds_prcurve'][i]
-				}
-			});
-		}
-	}
-
-	// 6. check if not binary data, then call each each class/label func
-	if (labels.length > 2) {
-		createEachClassTab(metric, labels);
-	}
-
-	return tabData;
-}
-
 export {
-	createData,
 	dataGenerator
 };
