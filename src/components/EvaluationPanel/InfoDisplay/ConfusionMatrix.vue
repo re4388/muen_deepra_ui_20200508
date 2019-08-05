@@ -5,6 +5,7 @@
             :height="`${height + margin.top + margin.bottom}`"
         >
             <g :transform="`translate(${margin.left},${margin.top})`">
+                
                 <!-- background Rect -->
                 <rect stroke="black" stroke-width="2px" :width="width" :height="height" />
 
@@ -176,8 +177,6 @@ export default {
         },
     },
     computed: {
-
-
         // setuop color map and related variables
         maxValue() {
             return d3.max(this.confusionMatrix, item => {
