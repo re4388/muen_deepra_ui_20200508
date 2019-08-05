@@ -31,10 +31,18 @@ export default {
     // `DataImportPanel` (that is, make users able to see that recently
     // created project card after they finish the data import phase from
     // `DataImportPanel`)
+    EventBus.$on('projectDeleted', () => {
+      console.log('--- project deleted, refreshing project page ---')
+      this.fetchProjectData()
+    })
   },
   mounted () {
     this.fetchProjectData()
     EventBus.$emit('pageChanged', 'ProjectOverview')
+  },
+  beforeDestroy () {
+    console.log('--- removing event listener: projectDeleted')
+    EventBus.$off('projectDeleted')
   },
   watch: {
     '$route': 'fetchProjectData'

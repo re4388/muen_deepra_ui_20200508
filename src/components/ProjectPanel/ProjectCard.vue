@@ -2,9 +2,17 @@
   <div class="project-card d-flex flex-column">
     <div class="title-section d-flex flex-row">
       <h4 class="title flex-fill">{{ details.name }}</h4>
-      <a class="btn-more-options">
-        <div class="content">...</div>
-      </a>
+      <div class="dropdown-wrapper">
+        <b-dropdown class="dropdown-list" right size="sm">
+          <b-dropdown-item
+            class="dropdown-item-delete"
+            variant="danger"
+            @click="showModalDeleteProject"
+          >
+            Delete
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
     </div>
     <div class="content d-flex flex-row">
       <div class="image-section flex-column">
@@ -22,10 +30,14 @@
         </a>
       </div>
     </div>
+    <b-modal ref="modal-delete-project" title="delete" @ok="deleteProject">
+      <p>Are you sure that you want to delete this project?</p>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import projectService from '@/api/projects_service.js'
 import { EventBus } from '@/event_bus.js'
 
 export default {
@@ -56,6 +68,19 @@ export default {
       })
       EventBus.$emit('entryChanged', 'project')
       this.$router.push('/project-profile')
+    },
+    showModalDeleteProject () {
+      this.$refs['modal-delete-project'].show()
+    },
+    deleteProject () {
+      console.log(this.details.uuid)
+      projectService.deleteProject(this.details.uuid).then((result) =>{
+        console.log(result)
+        EventBus.$emit('projectDeleted')
+      }).catch((result) => {
+        alert('project is failed to be deleted')
+        // console.log('Project')
+      })
     }
   },
   data () {
@@ -135,6 +160,17 @@ $card-min-width: 600px;
 .creation-date {
   text-align: left;
   margin-bottom: 0px;
+}
+
+.dropdown-wrapper {
+  align-content: center;
+  align-items: center;
+}
+
+.dropdown-list {
+  position: relative;
+  margin: .5rem;
+  height: 20px;
 }
 
 $btn-height: 30px;

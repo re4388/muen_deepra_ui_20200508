@@ -48,6 +48,7 @@ function getProjectList () {
       null, (err, resp) => {
         if (err != null) {
           console.log(err)
+          reject(err)
         }
         resolve(resp)
       }
@@ -74,9 +75,32 @@ function getProject (uuid) {
   })
 }
 
+function deleteProject (uuid) {
+  let projectManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ProjectManagement'
+  )
+
+  return new Promise((resolve, reject) => {
+    projectManagementService.DeleteProject(
+      {uuid: uuid}, (err, resp) => {
+        if (err != null) {
+          console.log(err)
+          reject(err)
+        }
+        if (!resp.success) {
+          reject(false)
+        }
+        console.log('------ project is deleted -----')
+        resolve(resp.success)
+      }
+    )
+  })
+}
+
 export default {
   createProject,
   getProjectList,
   getProject,
+  deleteProject,
   ProjectInfo
 }
