@@ -104,7 +104,9 @@ import localJson2 from "../binary_data.json";
 
 
 // import data
-import {createData, dataGenerator} from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
+import { generateModel } from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
+
+
 
 // import utilties
 import modPath from "path";
@@ -182,10 +184,9 @@ export default {
             console.log("--- Tabs: fetching data from store ---");
 
             // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-            // let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-            let data = localJson;
+            let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
+            // let data = localJson;
             // let data = localJson2;
-            // console.log(data)
 
             // if no training data, get data from current project
             if (data.content === null) {
@@ -205,12 +206,7 @@ export default {
                     console.log(result);
                     parsed = result;
 
-
-                    // use dataGenerator to tansform data
-                    let n1 = new dataGenerator(data.labels, data.metrics)
-                    let tabData = n1.generateData()
-                    // let tabData = createData(parsed.labels, parsed.metrics);
-
+                    let tabData = generateModel(parsed.labels, parsed.metrics);
 
                     console.log("--- parsed tabData ---");
                     console.log(tabData);
@@ -223,10 +219,8 @@ export default {
                 });
             } else {
 
-                // use dataGenerator to tansform data
-                let n1 = new dataGenerator(data.labels, data.metrics)
-                let tabData = n1.generateData()
-                // let tabData = createData(data.labels, data.metrics);
+                let tabData = generateModel(data.labels, data.metrics)
+                console.log(tabData)
 
                 this.tabs = tabData;
                 this.$emit("model-data", {
