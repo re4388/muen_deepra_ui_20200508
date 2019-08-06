@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+
+ 
+
         <!-- Confusion Matrix 的 Modal -->
         <div>
             <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
@@ -92,15 +95,18 @@
 </template>
 
 <script>
-// local Fake data
 
+/***** local Fake data to locally test *****/
 // minist data 
 import localJson from "../deepra_mnistV2.json";
 // binary data
 import localJson2 from "../binary_data.json";
 
+
 // import data
-import createData from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
+import { generateModel } from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
+
+
 
 // import utilties
 import modPath from "path";
@@ -181,7 +187,6 @@ export default {
             let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
             // let data = localJson;
             // let data = localJson2;
-            // console.log(data)
 
             // if no training data, get data from current project
             if (data.content === null) {
@@ -201,7 +206,8 @@ export default {
                     console.log(result);
                     parsed = result;
 
-                    let tabData = createData(parsed.labels, parsed.metrics);
+                    let tabData = generateModel(parsed.labels, parsed.metrics);
+
                     console.log("--- parsed tabData ---");
                     console.log(tabData);
                     this.tabs = tabData;
@@ -212,7 +218,10 @@ export default {
                     this.currentView = this.views[0];
                 });
             } else {
-                let tabData = createData(data.labels, data.metrics);
+
+                let tabData = generateModel(data.labels, data.metrics)
+                console.log(tabData)
+
                 this.tabs = tabData;
                 this.$emit("model-data", {
                     result: tabData
