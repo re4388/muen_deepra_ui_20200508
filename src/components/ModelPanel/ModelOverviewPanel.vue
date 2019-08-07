@@ -25,7 +25,6 @@ export default {
   },
   created () {
     EventBus.$on('modelDeleted', () => {
-      console.log('--- model deleted ---')
       this.fetchModelData()
     })
   },
@@ -34,7 +33,6 @@ export default {
     EventBus.$emit('pageChanged', 'ModelOverview')
   },
   beforeDestroy () {
-    console.log('--- removing event listener: modelDeleted')
     EventBus.$off('modelDeleted')
   },
   watch: {
