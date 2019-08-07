@@ -2,10 +2,12 @@
   <div id="sidebar-right" class="sidebarRight d-flex flex-column">
     <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
       <div class="rightsideBlockTitle"><h3>Labels</h3></div>
-      <label><input type="checkbox" id="Nofinding"> Nofinding</label>
-      <label><input type="checkbox" id="Label1"> Label 1</label>
-      <label><input type="checkbox" id="Label2"> Label 2</label>
-      <label><input type="checkbox" id="Label3"> Label 3</label>
+      <components
+        id="label-panel"
+        :labels="labels"
+        :isSingleSelection="isSingleSelection"
+        :is="'LabelPanel'">
+      </components>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
       <div class="rightsideBlockTitle"><h3>DataSet</h3></div>
@@ -24,10 +26,10 @@
 </template>        
 <script>
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
+import LabelPanel from './LabelPanel.vue'
 import imageData from './image_data.json'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
-import { constants } from 'fs';
 
 const separator = {
   template: `<hr style="border-color: rgba(255, 255, 255); margin: 10px;"/>`
@@ -36,7 +38,8 @@ const separator = {
 export default {
   name: 'SidebarRight',
   components: {
-    ImageBox
+    ImageBox,
+    LabelPanel
   },
   watch: {
     isShowingImgList() {} 
@@ -47,13 +50,24 @@ export default {
       let fileList = this.$store.getters['Viewer/parsedFileList']
       this.images = fileList
       EventBus.$emit('notifyImageTotalNumber', this.images.length)
+
+      let dataset = this.$store.getters['Viewer/currentDataset']
+      this.labels = dataset.details.labelReport.labels
+      this.taskType = dataset.taskType
     })
   },
   data () {
     return {
       isShowingImgList: false,
       pathCollector: null,
-      images: []
+      images: [],
+      labels: [],
+      taskType: ''
+    }
+  },
+  computed: {
+    isSingleSelection () {
+      return this.taskType != 'multilabel' ? true : false
     }
   },
   methods: {
@@ -138,5 +152,8 @@ export default {
   z-index: 20;
   line-height: 40px;
   color: white;
+}
+#label-panel {
+  max-height: 150px;
 }
 </style>

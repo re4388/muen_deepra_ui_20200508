@@ -51,7 +51,7 @@ export default {
         this.updateProgressBar(resp)
       }
       let handlerEnd = (resp) =>{
-        this.finishTraining()
+        this.finishPrediction()
       }
 
       let call = predictionService.startPrediction(
@@ -62,13 +62,19 @@ export default {
         handlerEnd
       )
     },
-    finishTraining () {
+    finishPrediction () {
       console.log('Prediction is finished')
 
-      // Get training output (e.g. output directory)
       predictionService.getPredictionOutput().then((result) => {
         this.$store.dispatch('Testing/setPredictionOutput', result)
+        console.log('--- Prediction output:')
         console.log(result)
+
+        // Update the label list of cached `datasetInfo`, so that the correct label
+        // set can be displayed in label panel.
+        this.$store.dispatch('DataImport/updateDatasetInfo', {
+          'details.labelReport.labels': result.labels
+        })
       })
       this.$emit('onProgressFinished', true)
     },

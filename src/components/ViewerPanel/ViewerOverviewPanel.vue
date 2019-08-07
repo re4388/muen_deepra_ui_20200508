@@ -55,7 +55,7 @@ export default {
           // console.log('ready to emit event `viewerDatasetChanged`')
           EventBus.$emit('viewerDatasetChanged')
           // Notify that loading is complete
-          this.loading = true
+          this.loading = false
         })
       }
 
