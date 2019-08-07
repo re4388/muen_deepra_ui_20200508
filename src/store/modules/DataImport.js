@@ -1,4 +1,4 @@
-import { localStore, initializeState } from './index'
+import { localStore, initializeState, updateValue } from './index'
 
 const namespaced = true;
 
@@ -102,7 +102,10 @@ const mutations = {
   },
   SET_IS_CREATING_PROJECT(state, payload) {
     state.isCreatingProject = payload
-  }
+  },
+  UPDATE_DATASET_INFO(state, payload) {
+    updateValue(state.datasetInfo, payload)
+  },
 }
 
 const actions = {
@@ -147,6 +150,9 @@ const actions = {
   },
   setIsCreatingProject({ commit }, payload) {
     commit('SET_IS_CREATING_PROJECT', payload)
+  },
+  updateDatasetInfo({ commit }, payload) {
+    commit('UPDATE_DATASET_INFO', payload)
   }
 }
 

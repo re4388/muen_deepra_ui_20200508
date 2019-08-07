@@ -17,4 +17,26 @@ function initializeState (target, defaults) {
   }
 }
 
-export { modules, localStore, initializeState }
+function updateValue (target, payload) {
+  let updater = (obj, entry, value) => {
+    var keys = entry.split('.')
+    var key = keys[0]
+    if (obj === undefined || !obj.hasOwnProperty(key)) return
+
+    if (keys.length == 1) {
+      obj[key] = value
+    } else {
+      updater(obj[key], keys.slice(1,).join('.'), value)
+    }
+  }
+  Object.keys(payload).forEach((entry) => {
+    updater(target, entry, payload[entry])
+  })
+}
+
+export {
+  modules,
+  localStore,
+  initializeState,
+  updateValue
+}
