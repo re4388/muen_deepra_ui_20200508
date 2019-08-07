@@ -47,12 +47,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$scroll-bar-width: 10px;
 .log-display {
   background-color: rgba(0, 0, 0, 0.7);
   font-family: "Lucida Console";
   text-align: left;
   padding: 0.5rem;
   border-radius: 10px;
+
+  // Always show scroll bar, but make it be transparent.
+  // Only show it when cursor hovers on this component.
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    margin-right: 10px;
+    width: $scroll-bar-width;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &:hover {
+    &::-webkit-scrollbar-track {
+      border-radius: $scroll-bar-width;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(125, 125, 125, 0.7);
+      border-radius: $scroll-bar-width;
+    }
+  }
 }
 pre, code {
   white-space: pre-line;

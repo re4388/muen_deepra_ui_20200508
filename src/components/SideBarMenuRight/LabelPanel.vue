@@ -46,10 +46,6 @@ $scroll-bar-width: 5px;
     background-color: transparent;
   }
   &:hover {
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      width: $scroll-bar-width;
-    }
     &::-webkit-scrollbar-track {
       background-color: #808080;
       border-radius: $scroll-bar-width;
