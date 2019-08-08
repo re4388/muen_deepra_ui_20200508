@@ -32,6 +32,7 @@ import LabelPanel from './LabelPanel.vue'
 import imageData from './image_data.json'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
+import { mapState } from 'vuex';
 
 const separator = {
   template: `<hr style="border-color: rgba(255, 255, 255); margin: 10px;"/>`
@@ -52,9 +53,6 @@ export default {
   },
   created () {
     EventBus.$once('viewerDatasetChanged',()=>{
-      // Parse path of images from dataset and assign to `this.images`
-      let fileList = this.$store.getters['Viewer/parsedFileList']
-      this.images = fileList
       EventBus.$emit('notifyImageTotalNumber', this.images.length)
 
       let dataset = this.$store.getters['Viewer/currentDataset']
@@ -73,7 +71,6 @@ export default {
     return {
       isShowingImgList: false,
       pathCollector: null,
-      images: [],
       labels: [],
       taskType: '',
       selectedImage: null
@@ -85,7 +82,10 @@ export default {
     },
     selectedLabel () {
       return this.selectedImage === null ? '' : this.selectedImage.label
-    }
+    },
+    ...mapState({
+      images: state => state.Viewer.parsedFileList,
+    })
   },
   methods: {
     showImgList() {

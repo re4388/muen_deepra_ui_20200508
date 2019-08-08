@@ -30,8 +30,8 @@ import thumbnail from './Thumbnail.vue'
 import { EventBus } from '@/event_bus.js'
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
 import { window } from 'd3-selection';
-import { constants, chownSync } from 'fs';
 import { connect } from 'http2';
+import { mapState } from 'vuex';
 
 export default {
   name: 'ImageBox',
@@ -57,8 +57,7 @@ export default {
   },
   methods: {
     initializeComponent () {
-      let fileList = this.$store.getters['Viewer/parsedFileList']
-      this.loadedImages = fileList.slice(this.currentIndex, this.currentIndex+this.batchSize)
+      this.loadedImages = this.fileList.slice(this.currentIndex, this.currentIndex+this.batchSize)
       this.currentIndex += this.batchSize
     },
     showClickedThumbnail (item, index) {
@@ -89,7 +88,10 @@ export default {
   computed: {
     currentImageIndex () {
       return this.indexNumber + 1
-    }
+    },
+    ...mapState({
+      fileList: state => state.Viewer.parsedFileList
+    })
   },
   data () {
     return {
