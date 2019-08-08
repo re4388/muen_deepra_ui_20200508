@@ -6,6 +6,8 @@
         id="label-panel"
         :labels="labels"
         :isSingleSelection="isSingleSelection"
+        :isDisabled="false"
+        :selectedLabel="selectedLabel"
         :is="'LabelPanel'">
       </components>
     </div>
@@ -42,7 +44,11 @@ export default {
     LabelPanel
   },
   watch: {
-    isShowingImgList() {} 
+    isShowingImgList() {},
+    selectedImage (newVal, oldVal) {
+      console.log('Information of selected image: ')
+      console.log(newVal)
+    }
   },
   created () {
     EventBus.$once('viewerDatasetChanged',()=>{
@@ -54,7 +60,14 @@ export default {
       let dataset = this.$store.getters['Viewer/currentDataset']
       this.labels = dataset.details.labelReport.labels
       this.taskType = dataset.taskType
+      this.selectedImage = this.images[0]
     })
+    EventBus.$on('onNavigationImageClicked', (obj) => {
+      this.selectedImage = obj.item
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('onNavigationImageClicked')
   },
   data () {
     return {
@@ -62,12 +75,16 @@ export default {
       pathCollector: null,
       images: [],
       labels: [],
-      taskType: ''
+      taskType: '',
+      selectedImage: null
     }
   },
   computed: {
     isSingleSelection () {
       return this.taskType != 'multilabel' ? true : false
+    },
+    selectedLabel () {
+      return this.selectedImage === null ? '' : this.selectedImage.label
     }
   },
   methods: {

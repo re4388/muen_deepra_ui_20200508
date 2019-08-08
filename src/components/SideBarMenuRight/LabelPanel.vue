@@ -2,30 +2,50 @@
   <div class="label-panel d-flex flex-column" id="label-panel">
     <template v-for="(item, index) in labels">
       <label :key="index" @change="changeCheckedState">
-        <input type="checkbox" class="radio"> {{item}}
+        <input type="checkbox" class="radio" :disabled="isDisabled">
+        {{item}}
       </label>
     </template>
   </div>
 </template>   
      
 <script>
+import { EventBus } from '@/event_bus.js'
+
 export default {
   name: 'LabelPanel',
   props: {
     labels: Array,
     selectedIndex: Number,
-    isSingleSelection: Boolean
+    selectedLabel: String,
+    isSingleSelection: Boolean,
+    isDisabled: Boolean
   },
-  created () {
+  updated () {
+    // call this method to update label until the whole component is rendered
+    this.updateLabel()
   },
-  computed: {
+  watch: {
+    selectedLabel (newVal, oldVal) {
+      this.updateLabel()
+    }
   },
   methods: {
+    getLabels () {
+      return [...document.getElementById('label-panel').getElementsByTagName('label')]
+    },
+    getCheckboxes () {
+      return this.getLabels().map(item => item.getElementsByTagName('input')[0])
+    },
     changeCheckedState (evnt) {
       if (!this.isSingleSelection) return
-      var labels = document.getElementById('label-panel').getElementsByTagName('label')
-      var checkboxes = [...labels].map(item => item.getElementsByTagName('input')[0])
+      var checkboxes = this.getCheckboxes()
       checkboxes.map(item => item.checked = item === evnt.target ? true : false)
+    },
+    updateLabel () {
+      var texts = this.getLabels().map(item => item.innerText.trim())
+      var idx = texts.indexOf(this.selectedLabel)
+      this.getCheckboxes().map((item, index) => item.checked = index == idx ? true : false)
     }
   },
   data () {
