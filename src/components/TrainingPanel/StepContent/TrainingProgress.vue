@@ -28,7 +28,7 @@ export default {
   props: {
     content: Object
   },
-  created: function () {
+  mounted () {
     this.startTraining()
   },
   methods: {
