@@ -82,6 +82,7 @@ export default {
     },
     deleteModel () {
       console.log(this.details.uuid)
+      // TODO: ask for deleting validation result?
       modelService.deleteModel(this.details.uuid).then((result) => {
         EventBus.$emit('modelDeleted')
       })
