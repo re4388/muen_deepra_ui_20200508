@@ -90,7 +90,8 @@ export default {
       return this.indexNumber + 1
     },
     ...mapState({
-      fileList: state => state.Viewer.parsedFileList
+      fileList: state => state.Viewer.parsedFileList,
+      predictedLabels: state => state.Testing.predictedLabels
     })
   },
   data () {
