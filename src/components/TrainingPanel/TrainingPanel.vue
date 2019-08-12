@@ -5,7 +5,7 @@
         <step-pipeline
           :contentList="stepContent"
           :indexActivated="currentStep"
-          :enableSelectionOnClicked="Boolean(true)"
+          :enableSelectionOnClicked="false"
           @onStepChanged="updateStep"
         />
         <component
@@ -59,7 +59,7 @@ export default {
   methods: {
     updateStep (stepId) {
       // NOTE: remove current implementation to avoid user switching stage
-      this.currentStep = stepId
+      // this.currentStep = stepId
     },
     enterToNextStep () {
       // TODO: rewrite this by switch-case clause
