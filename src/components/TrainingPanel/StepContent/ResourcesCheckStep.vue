@@ -9,6 +9,7 @@
 
 <script>
 import resourceMonitor from '@/api/resource_monitor.js'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ResourcesCheckStep',
@@ -21,6 +22,10 @@ export default {
     this.getGPUMemoryUsage()
   },
   methods: {
+    ...mapActions('Training', {
+      unlockStage: 'unlockStage',
+      setCompletedStageIndex: 'setCompletedStageIndex'
+    }),
     getDiskUsage () {
       resourceMonitor.getDiskUsage().then((result) => {
         this.freeDiskSpace = result['free'].toFixed(2)
@@ -34,6 +39,13 @@ export default {
     getGPUMemoryUsage () {
       resourceMonitor.getGPUMemoryUsage().then((result) => {
         this.freeGPUMemory = result['free'].toFixed(2)
+      })
+    },
+    checkContent () {
+      return new Promise((resolve, reject) => {
+        this.unlockStage()
+        this.setCompletedStageIndex(this.content.id)
+        resolve(true)
       })
     }
   },

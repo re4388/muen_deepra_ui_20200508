@@ -19,6 +19,7 @@
 import trainingService from '@/api/training_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
 import { LogFormatter } from '@/utils/log_formatter.js'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'TrainingProgress',
@@ -32,6 +33,11 @@ export default {
     this.startTraining()
   },
   methods: {
+    ...mapActions('Training', {
+      unlockStage: 'unlockStage',
+      setCompletedStageIndex: 'setCompletedStageIndex',
+      toggleIsTraining: 'toggleIsTraining'
+    }),
     setProgressRange (rngMin, rngMax) {
       this.progressValueMin = rngMin
       this.progressValueMax = rngMax
@@ -43,10 +49,8 @@ export default {
       this.progressValue = (val * this.progressValueMax).toFixed(2)
     },
     startTraining () {
-      if (this.isTrainingStarted) {
-        return
-      }
-      this.isTrainingStarted = true
+      // Prevent retriggering
+      if (this.isTraining) return
 
       this.handlerProgress = (resp) => {
         this.log = LogFormatter.fromTraining(resp)
@@ -55,6 +59,14 @@ export default {
       this.handlerEnd = (resp) => {
         this.finishTraining()
       }
+
+      this.$store.dispatch('Training/setHandlers', {
+        progress: this.handlerProgress,
+        end: this.handlerEnd
+      })
+      console.log(this.$store.getters['Training/handlers'])
+
+      this.toggleIsTraining()
       let projectInfo = this.$store.getters['Project/currentProject']
       console.log(projectInfo)
       let call = trainingService.startTraining(projectInfo, this.handlerProgress, this.handlerEnd)
@@ -62,6 +74,7 @@ export default {
     },
     finishTraining () {
       console.log('Training is finished')
+      this.toggleIsTraining()
 
       // Get training output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
@@ -69,17 +82,30 @@ export default {
         this.$store.dispatch('Training/setTrainingOutput', result)
       })
       this.$emit('onProgressFinished', true)
+    },
+    checkContent () {
+      if (this.isTraining) return
+
+      return new Promise((resolve, reject) => {
+        this.unlockStage()
+        this.setCompletedStageIndex(this.content.id)
+        resolve(true)
+      })
     }
+  },
+  computed: {
+    ...mapGetters('Training', {
+      isTraining: 'isTraining'
+    })
   },
   data () {
     return {
       progressValue: 0,
       progressValueMin: 0,
       progressValueMax: 100,
-      isTrainingStarted: false,
       handlerProgress: null,
       handlerEnd: null,
-      log: '',
+      log: ''
     }
   }
 }

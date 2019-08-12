@@ -10,13 +10,14 @@
         />
         <component
           class="flex-fill"
+          ref="stepContent"
           :is="stepContent[currentStep]['contentType']"
           :content="stepContent[currentStep]"
           @onProgressFinished="toggleBtnFlowControl"
         />
       </div>
       <div class="control-section">
-        <a class="btn-flow-control" id="btn-flow-control" @click="enterToNextStep">
+        <a class="btn-flow-control" id="btn-flow-control" @click="progressToNextStep">
           <div class="content">
             <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
             <p v-else>Next</p>
@@ -41,6 +42,7 @@ import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
 import TrainingProgress from './StepContent/TrainingProgress.vue'
 import ValidationStep from './StepContent/ValidationStep.vue'
 import { EventBus } from '@/event_bus.js'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'TrainingPanel',
@@ -57,27 +59,46 @@ export default {
     console.log(this.$store.getters['Project/currentProject'])
   },
   methods: {
+    ...mapActions({
+      resetStageLock: 'Training/resetStageLock'
+    }),
+    initializeComponent () {
+      this.$store.dispatch('Training/resetAllState')
+    },
     updateStep (stepId) {
       // NOTE: remove current implementation to avoid user switching stage
       // this.currentStep = stepId
     },
-    enterToNextStep () {
-      // TODO: rewrite this by switch-case clause
-      // TODO: redirect page when use press the `Done` button
-      switch (this.currentStep) {
-        case this.stepContent.length - 1:
+    progressToNextStep () {
+      let call = this.$refs.stepContent.checkContent()
+      if (call === undefined) return
+
+      call.then((result) => {
+        if (this.isCurrentStageLocked) return
+
+        console.log('--- step info')
+        console.log(this.currentStep, this.stepContent.length)
+        if (this.currentStep == this.stepContent.length - 1) {
           this.$router.push('/evaluation')
-          break;
-        default:
-          this.currentStep += 1
-          this.toggleBtnFlowControl(this.currentStep !== this.stepOfTraining)
-          break;
-      }
+        }
+        this.currentStep += 1
+        this.resetStageLock()
+      })
     },
-    toggleBtnFlowControl (enable) {
-      this.isTrainingFinished = enable
+    toggleBtnFlowControl () {
       let el = document.getElementById('btn-flow-control').getElementsByClassName('content')[0]
-      el.style.backgroundColor = enable ? 'rgba(0, 150, 150, 0.75)' : 'rgb(175, 175, 175)'
+      el.style.backgroundColor = this.isTraining ? 'rgb(175, 175, 175)' : 'rgba(0, 150, 150, 0.75)'
+    }
+  },
+  computed: {
+    ...mapGetters('Training', {
+      isCurrentStageLocked: 'isCurrentStageLocked',
+      isTraining: 'isTraining'
+    })
+  },
+  watch: {
+    isTraining () {
+      this.toggleBtnFlowControl()
     }
   },
   data () {
@@ -99,9 +120,8 @@ export default {
           contentType: 'ValidationStep'
         }
       ],
-      currentStep: 0,
       stepOfTraining: 1,
-      isTrainingFinished: false
+      currentStep: 0,
     }
   }
 }
