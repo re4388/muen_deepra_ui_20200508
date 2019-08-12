@@ -18,6 +18,7 @@
 <script>
 import validationService from '@/api/validation_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'ValidationStep',
@@ -27,10 +28,17 @@ export default {
   props: {
     content: Object
   },
-  created: function () {
+  mounted () {
     this.startValidation()
   },
   methods: {
+    ...mapActions ('Training', {
+      unlockStage: 'unlockStage',
+      setCompletedStageIndex: 'setCompletedStageIndex'
+    }),
+    ...mapActions ('Validation', {
+      toggleIsValidating: 'toggleIsValidating'
+    }),
     setProgressRange (rngMin, rngMax) {
       this.progressValueMin = rngMin
       this.progressValueMax = rngMax
@@ -42,21 +50,20 @@ export default {
       this.progressValue = (val * this.progressValueMax).toFixed(2)
     },
     startValidation () {
-      if (this.isTrainingStarted) {
-        return
-      }
-      this.isTrainingStarted = true
+      if (this.isValidating) return
 
       let handlerProgress = (resp) => {
         this.updateProgressBar(resp)
       }
       let handlerEnd = (resp) => {
-        this.finishTraining()
+        this.finishValidation()
       }
       let projectInfo = this.$store.getters['Project/currentProject']
       let trainingOutput = this.$store.getters['Training/trainingOutput']
       console.log(projectInfo)
       console.log(trainingOutput)
+
+      this.toggleIsValidating()
       let call = validationService.startValidation(
         projectInfo,
         trainingOutput,
@@ -64,25 +71,39 @@ export default {
         handlerEnd
       )
     },
-    finishTraining () {
+    finishValidation () {
       console.log('Validation is finished')
+      this.toggleIsValidating()
 
-      // Get training output (e.g. output directory)
+      // Get validation output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
         this.$store.dispatch('Validation/setValidationOutput', result)
         console.log(result)
       })
       this.$emit('onProgressFinished', true)
+    },
+    checkContent () {
+      if (this.isValidating) return
+
+      return new Promise((resolve, reject) => {
+        this.unlockStage()
+        this.setCompletedStageIndex(this.content.id)
+        resolve(true)
+      })
     }
+  },
+  computed: {
+    ...mapGetters('Validation', {
+      isValidating: 'isValidating'
+    })
   },
   data () {
     return {
       progressValue: 0,
       progressValueMin: 0,
       progressValueMax: 100,
-      isTrainingStarted: false,
-      log: '',
+      log: ''
     }
   }
 }
