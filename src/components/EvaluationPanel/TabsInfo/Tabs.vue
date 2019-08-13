@@ -88,8 +88,26 @@
                 variant="outline-dark"
             >Confusion Matrix</b-button>
 
-            <!-- relable 的按鈕  還沒建立 TODO:-->
-            <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relable</b-button>
+            <!-- relabel 的按鈕  還沒建立 TODO:-->
+            <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relabel</b-button>
+
+            <!-- export files related to validation, maybe we should group this with `div` tag -->
+            <b-button
+                block pill
+                size="sm"
+                class="mt-4"
+                variant="outline-dark"
+                @click="$refs.exportFolderInput[0].click()">
+                Export
+            </b-button>
+            <input
+                id="exportFolderInput"
+                type="file"
+                ref="exportFolderInput"
+                style="display:none;"
+                webkitdirectory
+                @change="onExport"
+            />
         </Tab>
     </div>
 </template>
@@ -120,6 +138,9 @@ import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
+
+import validationService from '@/api/validation_service.js'
+import { mapGetters, mapActions } from "vuex"
 
 export default {
     name: "Tabs",
@@ -161,7 +182,10 @@ export default {
             if (this.currentView === "all class") {
                 return "currentUsed";
             }
-        }
+        },
+        ...mapGetters('Validation', {
+            exportLocation: 'outputLocation'
+        })
     },
 
     methods: {
@@ -229,6 +253,19 @@ export default {
                 this.getView();
                 this.currentView = this.views[0];
             }
+        },
+
+        ...mapActions('Validation', {
+            setExportLocation: 'setOutputLocation'
+        }),
+
+        onExport (evnt) {
+            let projectInfo = this.$store.getters["Project/currentProject"]
+            let outputLocation = evnt.target.files[0].path
+            if (outputLocation === undefined) return
+            validationService.exportFiles(projectInfo, outputLocation).then((result) => {
+                console.log(result)
+            })
         }
     },
 
@@ -258,5 +295,9 @@ export default {
     left: calc(20% - 50px);
     top: calc(30% - 50px);
     z-index: 2;
+}
+#btn-export-files {
+    // visibility: hidden;
+    display: none;
 }
 </style>
