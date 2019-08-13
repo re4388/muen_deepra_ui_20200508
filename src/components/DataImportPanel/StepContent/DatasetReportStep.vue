@@ -21,6 +21,7 @@
 
 <script>
 import dataImportService from '@/api/dataset_service.js'
+import { mapState } from 'vuex'
 
 export default {
   name: 'DatasetReportStep',
@@ -39,18 +40,17 @@ export default {
     getDatasetInfo () {
       if (this.datasetInfo.folderPath !== undefined) return
       dataImportService.importDataset(
-        this.$store.getters['DataImport/selectedFolder'].path,
-        this.$store.getters['DataImport/selectedTaskType'],
+        this.folderPath,
+        this.taskType,
         {
           labelFile: this.labelFile === '' ? null : this.labelFile,
           forTest: false,
-          colFilename: this.$store.getters['DataImport/selectedColFilename'],
-          colLabel: this.$store.getters['DataImport/selectedColLabel']
+          colFilename: this.colFilename,
+          colLabel: this.colLabel
         },
       ).then((result) => {
         this.dataRecieved = true
         this.datasetInfo = result.content
-        this.$store.dispatch('DataImport/setDatasetInfo', this.datasetInfo)
         this.updateContent(this.datasetInfo)
       }).catch((err) =>{
         alert(err)
@@ -79,13 +79,30 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('DataImport', {
+      colFilename: 'selectedColFilename',
+      colLabel: 'selectedColLabel'
+    }),
+    datasetInfo: {
+      get () { return this.$store.state.DataImport.datasetInfo },
+      set (value) { this.$store.dispatch('DataImport/setDatasetInfo', value) }
+    },
+    folderPath: {
+      get () { return this.$store.state.DataImport.selectedFolder },
+      set (value) { this.$store.dispatch('DataImport/setSelectedFolder', value) }
+    },
+    taskType: {
+      get () { return this.$store.state.DataImport.selectedTaskType },
+      set (value) { this.$store.dispatch('DataImport/setSelectedTaskType', value) }
+    },
+    labelFile: {
+      get () { return this.$store.state.DataImport.selectedLabelFile },
+      set (value) { this.$store.dispatch('DataImport/setSelectedLabelFile', value) }
+    }
+  },
   data () {
     return {
-      datasetInfo: { details: {} },
-      folderPath: '',
-      taskType: '',
-      fileCounts: 0,
-      labelFile: '',
       totalLabels: '',
       normalFiles: 0,
       unlabeledFiles: 0,
