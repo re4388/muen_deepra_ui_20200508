@@ -44,7 +44,7 @@ export default {
     },
     startPrediction () {
       let model = this.$store.getters['Model/currentModel']
-      let dataset = this.$store.getters['DataImport/datasetInfo']
+      let datasetInfo = this.$store.getters['DataImport/datasetInfo']
 
       console.log('--- start prediction ---')
 
@@ -57,8 +57,7 @@ export default {
 
       let call = predictionService.startPrediction(
         model.uuid,
-        dataset.folderPath,
-        dataset.labelFile,
+        datasetInfo,
         handlerProgress,
         handlerEnd
       )

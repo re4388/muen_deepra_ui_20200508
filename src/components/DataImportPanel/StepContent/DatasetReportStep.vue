@@ -41,10 +41,12 @@ export default {
       dataImportService.importDataset(
         this.$store.getters['DataImport/selectedFolder'].path,
         this.$store.getters['DataImport/selectedTaskType'],
-        this.$store.getters['DataImport/selectedLabelFile'].path,
-        false,
-        this.$store.getters['DataImport/selectedColFilename'],
-        this.$store.getters['DataImport/selectedColLabel'],
+        {
+          labelFile: this.labelFile === '' ? null : this.labelFile,
+          forTest: false,
+          colFilename: this.$store.getters['DataImport/selectedColFilename'],
+          colLabel: this.$store.getters['DataImport/selectedColLabel']
+        },
       ).then((result) => {
         this.dataRecieved = true
         this.datasetInfo = result.content
