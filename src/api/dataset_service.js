@@ -39,14 +39,12 @@ class DatasetInfo {
 }
 
 function importDataset (
-  folderPath, taskType, labelFile=null, forTest=false,
-  colFilename='', colLabel='') {
+  folderPath, taskType, { labelFile=null, forTest=false,
+  colFilename='', colLabel='' }) {
   let datasetImportService = protoUtils.getServicer(
     protoPath, protoPackageName, 'DatasetImportServicer'
   )
 
-  console.log(colFilename)
-  console.log(colLabel)
   return new Promise((resolve, reject) => {
     datasetImportService.ImportDataset(
       {
