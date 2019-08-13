@@ -42,7 +42,24 @@ function getValidationOutput (projectInfo) {
   })
 }
 
+function exportFiles (projectInfo, location) {
+  let validationService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ValidationService'
+  )
+  return new Promise((resolve, reject) => {
+    validationService.ExportFiles({
+      project_info_json: JSON.stringify(projectInfo),
+      location: location
+    }, (err, resp) => {
+      // let result = resp.files
+      console.log(resp)
+      resolve(resp)
+    })
+  })
+}
+
 export default {
   startValidation,
-  getValidationOutput
+  getValidationOutput,
+  exportFiles
 }
