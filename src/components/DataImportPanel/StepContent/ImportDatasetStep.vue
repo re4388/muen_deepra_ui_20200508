@@ -104,8 +104,8 @@ export default {
       // TODO: send `pathInfo` to backend, and set the status of
       // `b-form-file` as valid or invalid by the returned response.
       if (pathInfo === null) return
-      this.$store.dispatch('DataImport/setSelectedFolder', pathInfo)
-      this.selectedFolder = pathInfo
+      this.selectedFolder = pathInfo.path
+      this.$store.dispatch('DataImport/setSelectedFolder', this.selectedFolder)
     },
     checkTaskType (value) {
       if (value === null) return
@@ -113,9 +113,14 @@ export default {
       this.selectedTaskType = value
     },
     checkLabelFile (pathInfo) {
-      if (pathInfo === null) return
-      this.$store.dispatch('DataImport/setSelectedLabelFile', pathInfo)
-      this.selectedLabelFile = pathInfo
+      if (pathInfo === null) {
+        // reset
+        this.colFilename = ''
+        this.colLabel = ''
+        return
+      }
+      this.selectedLabelFile = pathInfo.path
+      this.$store.dispatch('DataImport/setSelectedLabelFile', this.selectedLabelFile)
       datasetService.parseLabelFile(pathInfo.path).then((result) => {
         this.labelHeader = result.header
       })
@@ -129,6 +134,12 @@ export default {
           return
         }
       }
+
+      if (this.selectedLabelFile !== '' && (this.colFilename === '' || this.colLabel === '')) {
+        alert('Column of file name and label should be selected.')
+        return
+      }
+
       this.$store.dispatch('DataImport/setSelectedColFilename', this.colFilename)
       this.$store.dispatch('DataImport/setSelectedColLabel', this.colLabel)
       return new Promise((resolve, reject) => {
