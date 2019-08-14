@@ -60,12 +60,6 @@ export default {
         this.finishTraining()
       }
 
-      this.$store.dispatch('Training/setHandlers', {
-        progress: this.handlerProgress,
-        end: this.handlerEnd
-      })
-      console.log(this.$store.getters['Training/handlers'])
-
       this.toggleIsTraining()
       let projectInfo = this.$store.getters['Project/currentProject']
       console.log(projectInfo)
