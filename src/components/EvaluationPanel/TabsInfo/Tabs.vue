@@ -261,8 +261,8 @@ export default {
 
         onExport (evnt) {
             let projectInfo = this.$store.getters["Project/currentProject"]
+            if (evnt.target.files.length === 0) return
             let outputLocation = evnt.target.files[0].path
-            if (outputLocation === undefined) return
             validationService.exportFiles(projectInfo, outputLocation).then((result) => {
                 console.log(result)
             })
