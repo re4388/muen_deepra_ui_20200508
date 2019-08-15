@@ -7,11 +7,10 @@ class ModelInfo {
   constructor(content) {
     this.content = content
   }
-  static parseFromResponse(resp) {
-  }
+  static parseFromResponse(resp) {}
 }
 
-function getModelList () {
+function getModelList() {
   let modelManagementService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ModelManagement'
   )
@@ -29,27 +28,46 @@ function getModelList () {
   })
 }
 
-function getModel (uuid) {
+function getModel(uuid) {
   let modelManagementService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ModelManagement'
   )
 
   return new Promise((resolve, reject) => {
-    modelManagementService.GetModel(
-      {uuid: uuid}, (err, resp) => {
-        if (err != null) {
-          console.log(err)
-        }
-        console.log('------ got model from backend -----')
-        console.log(resp)
-        resolve(resp)
+    modelManagementService.GetModel({
+      uuid: uuid
+    }, (err, resp) => {
+      if (err != null) {
+        console.log(err)
       }
-    )
+      console.log('------ got model from backend -----')
+      console.log(resp)
+      resolve(resp)
+    })
+  })
+}
+
+function GetModelListByProject(uuid) {
+  let modelManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ModelManagement'
+  )
+  return new Promise((resolve, reject) => {
+    modelManagementService.GetModelListByProject({
+      project_uuid: uuid
+    }, (err, resp) => {
+      if (err != null) {
+        console.log(err)
+      }
+      console.log('------ got modelList based on Project ID -----')
+      console.log(resp)
+      resolve(resp)
+    })
   })
 }
 
 export default {
   getModelList,
   getModel,
-  ModelInfo
+  ModelInfo,
+  GetModelListByProject
 }

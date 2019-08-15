@@ -1,116 +1,122 @@
 <template>
-    <div class="container">
-
- 
-
-        <!-- Confusion Matrix 的 Modal -->
-        <div>
-            <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
-                <h1>
-                    <ConfusionMatrix :data="selectedMatrixData" :new-threshold="newThreshold" />
-                </h1>
-            </b-modal>
-        </div>
-
-        <div v-if="tabs === null">
-            <!-- <b-alert show variant="light" class="mt-5">
-                
-            </b-alert>-->
-
-            <b-alert show variant="dark">
-                <a href="#" class="alert-link">
-                    <router-link
-                        to="/project-overview"
-                    >Please open the existed project or train a project first</router-link>
-                </a>
-            </b-alert>
-        </div>
-
-        <!-- tabs 麵包屑 -->
-
-        <div class="m-0 bg-white text-white">
-            <b-tabs
-                class="text-info"
-                no-nav-style
-                active-nav-item-class="font-weight-bold text-uppercase text-dark"
-            >
-                <b-tab
-                    v-for="tab in tabs"
-                    :key="tab.name"
-                    :title="tab.name"
-                    @click.prevent="changeView(tab)"
-                ></b-tab>
-            </b-tabs>
-        </div>
-
-        <!-- 每一個lable/Tab 的元件們 -->
-        <Tab
-            v-for="tab in tabs"
-            :key="tab.id"
-            :name="tab.name"
-            :current-view="currentView"
-            class="currentView container"
-        >
-            <!-- tab 標題 -->
-            <div class="row" slot="title">
-                <h5 class="col-12 text-center text-light m-0 mt-3">{{ tab.name | capitalize }}</h5>
-            </div>
-
-            <!-- MetricsDisplay -->
-            <div class="row mt-3" slot="MetricsDisplay">
-                <MetricsDisplay :metrics-data=" tab.metrics" class="col-12" />
-            </div>
-
-            <!-- GraphDisplay -->
-            <GraphDisplay
-                class="outterGrpah"
-                slot="GraphDisplay"
-                :graph-data="tab.grpah"
-                :new-threshold="newThreshold"
-            />
-
-            <!-- ThresholdAdjustment -->
-            <ThresholdAdjustment
-                slot="ThresholdAdjustment"
-                class="mt-3"
-                :threshold-data="tab.threshold"
-                :graph-data="tab.grpah"
-                @threshold-change="ThresholdChange"
-            ></ThresholdAdjustment>
-
-            <!-- Confusion Matrix 的按鈕 -->
-            <b-button
-                block
-                pill
-                size="sm"
-                class="mt-4"
-                v-b-modal.modal-lg
-                variant="outline-dark"
-            >Confusion Matrix</b-button>
-
-            <!-- relable 的按鈕  還沒建立 TODO:-->
-            <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relable</b-button>
-        </Tab>
+  <div class="container">
+    <!-- Confusion Matrix 的 Modal -->
+    <div>
+      <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
+        <h1>
+          <ConfusionMatrix :data="selectedMatrixData" :new-threshold="newThreshold" />
+        </h1>
+      </b-modal>
     </div>
+
+    <!-- if no tabs data, ask user go back to project to init -->
+    <div v-if="tabs === null">
+      <b-alert show variant="dark">
+        <a href="#" class="alert-link">
+          <router-link
+            to="/project-overview"
+          >Please train a project or choose Model History below</router-link>
+        </a>
+      </b-alert>
+    </div>
+
+    <!-- dropdown to select models record -->
+    <div class="text-left">
+      <b-dropdown id="dropdown-1" text="Model History" class="m-md-2">
+        <b-dropdown-item
+          v-for="modelData in modelDatas"
+          :key="modelData.name"
+          @click="modelDataChage(modelData)"
+        >{{ modelData }}</b-dropdown-item>
+      </b-dropdown>
+    </div>
+    <p class="text-left">{{ modelId}}</p>
+
+    <!-- tabs 麵包屑 -->
+    <div class="m-0 bg-white text-white">
+      <b-tabs
+        class="text-info"
+        no-nav-style
+        active-nav-item-class="font-weight-bold text-uppercase text-dark"
+      >
+        <b-tab
+          v-for="tab in tabs"
+          :key="tab.name"
+          :title="tab.name"
+          @click.prevent="changeView(tab)"
+        ></b-tab>
+      </b-tabs>
+    </div>
+
+    <!-- 每一個lable/Tab 的元件們 -->
+    <Tab
+      v-for="tab in tabs"
+      :key="tab.id"
+      :name="tab.name"
+      :current-view="currentView"
+      class="currentView container"
+    >
+      <!-- tab 標題 -->
+      <div class="row" slot="title">
+        <h5 class="col-12 text-center text-light m-0 mt-3">{{ tab.name | capitalize }}</h5>
+      </div>
+
+      <!-- MetricsDisplay -->
+      <div class="row mt-3" slot="MetricsDisplay">
+        <MetricsDisplay :metrics-data=" tab.metrics" class="col-12" />
+      </div>
+
+      <!-- GraphDisplay -->
+      <GraphDisplay
+        class="outterGrpah"
+        slot="GraphDisplay"
+        :graph-data="tab.grpah"
+        :new-threshold="newThreshold"
+      />
+
+      <!-- ThresholdAdjustment -->
+      <ThresholdAdjustment
+        slot="ThresholdAdjustment"
+        class="mt-3"
+        :threshold-data="tab.threshold"
+        :graph-data="tab.grpah"
+        @threshold-change="ThresholdChange"
+      ></ThresholdAdjustment>
+
+      <!-- Confusion Matrix 的按鈕 -->
+      <b-button
+        block
+        pill
+        size="sm"
+        class="mt-4"
+        v-b-modal.modal-lg
+        variant="outline-dark"
+      >Confusion Matrix</b-button>
+
+      <!-- relable 的按鈕  還沒建立 TODO:-->
+      <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relable</b-button>
+    </Tab>
+  </div>
 </template>
 
 <script>
-
 /***** local Fake data to locally test *****/
-// minist data 
+// minist data
 import localJson from "../deepra_mnistV2.json";
 // binary data
 import localJson2 from "../binary_data.json";
 
-
 // import data
 import { generateModel } from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
 
-
+// import gRPC
+import validationService from "@/api/validation_service.js";
+import projectManager from "@/api/projects_service.js";
+import ModelManager from "@/api/models_service.js";
 
 // import utilties
 import modPath from "path";
-import modFs from "fs";
+import modFs, { constants } from "fs";
 import fileFetcher from "@/utils/file_fetcher.js";
 import vueUtils from "@/api/vue_utils.js";
 
@@ -122,123 +128,145 @@ import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
 
 export default {
-    name: "Tabs",
+  name: "Tabs",
 
-    components: {
-        Tab,
-        MetricsDisplay,
-        GraphDisplay,
-        ThresholdAdjustment,
-        ConfusionMatrix
+  components: {
+    Tab,
+    MetricsDisplay,
+    GraphDisplay,
+    ThresholdAdjustment,
+    ConfusionMatrix
+  },
+
+  data() {
+    return {
+      tabs: null,
+      views: [], //  => [ 'class 0','class 1','class 2'...]
+      currentView: "",
+      newThreshold: 0,
+      modelId: "",
+      modelDatas: []
+    };
+  },
+
+  created() {
+    this.dataInit();
+  },
+
+  mounted() {},
+
+  computed: {
+    selectedMatrixData() {
+      // views data is async, so need to skip operation when no views
+      if (this.views.length === 0) {
+        return;
+      }
+      // get the current view index
+      let currentTab = this.views.indexOf(this.currentView);
+      return this.tabs[currentTab]["confusionMatrixInfo"];
     },
-
-    data() {
-        return {
-            tabs: null,
-            views: [], //  => [ 'class 0','class 1','class 2'...]
-            currentView: "",
-            newThreshold: 0
-        };
-    },
-
-    created() {
-        this.dataInit();
-    },
-
-    mounted() {},
-
-    computed: {
-        selectedMatrixData() {
-            // views data is async, so need to skip operation when no views
-            if (this.views.length === 0) {
-                return;
-            }
-            // get the current view index
-            let currentTab = this.views.indexOf(this.currentView);
-            return this.tabs[currentTab]["confusionMatrixInfo"];
-        },
-        activeClass() {
-            if (this.currentView === "all class") {
-                return "currentUsed";
-            }
-        }
-    },
-
-    methods: {
-        // get all tabs
-        getView() {
-            this.views = this.tabs.map(key => {
-                return key.name;
-            });
-        },
-
-        changeView(tab) {
-            this.currentView = tab.name;
-        },
-
-        ThresholdChange(obj) {
-            this.newThreshold = obj.result;
-        },
-
-        dataInit() {
-            console.log("--- Tabs: fetching data from store ---");
-
-            // FIXME: brefore push to remote, REMEMBER switch to vueUtils.clone and comment out localJason
-            let data = vueUtils.clone(this.$store.getters['Validation/validationOutput'])
-            // let data = localJson;
-            // let data = localJson2;
-
-            // if no training data, get data from current project
-            if (data.content === null) {
-                let projectInfo = this.$store.getters["Project/currentProject"];
-                console.log(
-                    "--- no parsed validation output, try to retrieve data from cached folder ---"
-                );
-                let cachedDir = modPath.join(
-                    projectInfo.location,
-                    "deepra_output",
-                    ".cached"
-                );
-                let fn = modPath.join(cachedDir, "validation_output.json");
-                let parsed = null;
-                fileFetcher.readJson(fn, false).then(result => {
-                    console.log("--- parsed json ---");
-                    console.log(result);
-                    parsed = result;
-
-                    let tabData = generateModel(parsed.labels, parsed.metrics);
-
-                    console.log("--- parsed tabData ---");
-                    console.log(tabData);
-                    this.tabs = tabData;
-                    this.$emit("model-data", {
-                        result: tabData
-                    });
-                    this.getView();
-                    this.currentView = this.views[0];
-                });
-            } else {
-
-                let tabData = generateModel(data.labels, data.metrics)
-                console.log(tabData)
-
-                this.tabs = tabData;
-                this.$emit("model-data", {
-                    result: tabData
-                });
-                this.getView();
-                this.currentView = this.views[0];
-            }
-        }
-    },
-
-    filters: {
-        capitalize: function(value) {
-            if (!value) return "";
-            value = value.toString();
-            return value.charAt(0).toUpperCase() + value.slice(1);
-        }
+    activeClass() {
+      if (this.currentView === "all class") {
+        return "currentUsed";
+      }
     }
+  },
+
+  methods: {
+    modelDataChage(id) {
+      this.modelId = id;
+      this.modelChange();
+    },
+
+    getView() {
+      this.views = this.tabs.map(key => {
+        return key.name;
+      });
+    },
+
+    changeView(tab) {
+      this.currentView = tab.name;
+    },
+
+    ThresholdChange(obj) {
+      this.newThreshold = obj.result;
+    },
+
+    loadFromHistory() {
+      let projectInfo = this.$store.getters["Project/currentProject"];
+      let filePath = modPath.join(
+        projectInfo.location,
+        "deepra_output",
+        this.modelId,
+        "validation"
+      );
+
+      let fn = modPath.join(filePath, "validation_output.json");
+      fileFetcher.readJson(fn, true).then(result => {
+        console.log("--- begin to read local json ---");
+        let tabData = generateModel(result.labels, result.metrics);
+        this.tabs = tabData;
+
+        this.$emit("model-data", {
+          result: tabData
+        });
+        this.getView();
+        this.currentView = this.views[0];
+      });
+    },
+
+    modelChange() {
+      this.loadFromHistory();
+    },
+    
+    getModelHistory() {
+      let projectInfo = this.$store.getters["Project/currentProject"];
+      ModelManager.GetModelListByProject(projectInfo.uuid).then(result => {
+        let re = /(train_[0-9]+_[0-9]+)/;
+        let modelHistory = [];
+        for (let i = 0; i < result.model_list.length; i++) {
+          let model_path = result.model_list[i];
+          modelHistory.push(model_path.match(re)[0]);
+        }
+        // console.log(modelHistory);
+        this.modelId = modelHistory[modelHistory.length-1];
+        this.modelDatas = modelHistory;
+      });
+    },
+
+    dataInit() {
+      console.log('--- Tabs: get data from validation result ---')
+      let data = vueUtils.clone(
+        this.$store.getters["Validation/validationOutput"]
+      );
+      // let data = localJson;
+      // let data = localJson2;
+      this.getModelHistory();
+
+      if (data.content === null) {
+        console.log('--- Tabs: get data from history record ---')
+        this.getModelHistory();
+        this.loadFromHistory();
+      } else {
+        let tabData = generateModel(data.labels, data.metrics);
+        this.tabs = tabData;
+
+        this.$emit("model-data", {
+          result: tabData
+        });
+        this.getView();
+        this.currentView = this.views[0];
+      }
+    }
+  },
+
+  filters: {
+    capitalize: function(value) {
+      if (!value) return "";
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+  }
 };
 </script>
 
@@ -246,17 +274,17 @@ export default {
 
 <style lang="scss" scoped>
 .outterGrpah {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-self: center;
-    height: 500px;
-    width: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-self: center;
+  height: 500px;
+  width: 600px;
 }
 #modal {
-    position: absolute;
-    left: calc(20% - 50px);
-    top: calc(30% - 50px);
-    z-index: 2;
+  position: absolute;
+  left: calc(20% - 50px);
+  top: calc(30% - 50px);
+  z-index: 2;
 }
 </style>
