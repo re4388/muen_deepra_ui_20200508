@@ -94,16 +94,8 @@ export default {
     },
     predictedLabel () {
       console.log('---- predictedLabel: ')
-      console.log(this.predictedLabels)
-      console.log(this.selectedImageIndex)
-      console.log(this.predictedLabels[this.selectedImageIndex])
-      console.log('--- selected image: ')
-      console.log('---check the difference between select and predict---')
       console.log(this.predictedLabels[this.selectedImageIndex])
       return String(this.predictedLabels[this.selectedImageIndex])
-      // if (this.selectedImage.label === this.predictedLabels[this.selectedImageIndex]) {
-      //   console.log('---different label info---')
-      // }
     },
     ...mapState({
       images: state => state.Viewer.parsedFileList,
