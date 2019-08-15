@@ -109,9 +109,31 @@ function getDatasetInfo (projectUuid) {
   })
 }
 
+function updateLabel (projectUuid, modified_content) {
+  let datasetManagementServicer = protoUtils.getServicer(
+    protoPath, protoPackageName, 'DatasetManagementServicer'
+  )
+
+  return new Promise((resolve, reject) => {
+    datasetManagementServicer.UpdateLabel(
+      {
+        project_uuid: projectUuid,
+        modified_content_json: JSON.stringify(modified_content)
+      },
+      (err, resp) => {
+        if (err != null) {
+          console.log(err)
+        }
+        resolve(resp)
+      }
+    )
+  })
+}
+
 export default {
   DatasetInfo,
   importDataset,
   parseLabelFile,
-  getDatasetInfo
+  getDatasetInfo,
+  updateLabel
 }
