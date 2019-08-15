@@ -16,18 +16,14 @@ export default {
   name: 'LabelPanel',
   props: {
     labels: Array,
-    selectedIndex: Number,
+    srcIndex: Number,   // index of selected image in `parsedFileList`
     selectedLabel: String,
     isSingleSelection: Boolean,
     isDisabled: Boolean,
     predictedLabel: String
   },
-  mounted () {
-    // this.updateCheckedLabel()
-  },
   updated () {
     // call this method to update label until the whole component is rendered
-    // this.updateLabel()
     this.updateCheckedLabel()
     this.updateLabelColor()
   },
@@ -44,7 +40,6 @@ export default {
   methods: {
     getLabels () {
       return [...document.getElementById('label-panel').getElementsByTagName('label')]
-      
     },
     getCheckboxes () {
       return this.getLabels().map(item => item.getElementsByTagName('input')[0])
@@ -52,22 +47,30 @@ export default {
     changeCheckedState (evnt) {
       if (!this.isSingleSelection) return
       var checkboxes = this.getCheckboxes()
-      checkboxes.map(item => item.checked = item === evnt.target ? true : false)
+      checkboxes.map(item => {
+        return item.checked = item === evnt.target ?
+          (this.modificationLogger(evnt.target) || true) : false
+      })
     },
     updateCheckedLabel () {
       var texts = this.getLabels().map(item => item.innerText.trim())
       var idx = texts.indexOf(this.selectedLabel)
-      this.getCheckboxes().map((item, index) => item.checked = index == idx ? true : false)
+      this.getCheckboxes().map((item, index) => item.checked = index === idx)
     },
     updateLabelColor () {
       if (this.predictedLabel === '') return
       console.log(this.predictedLabel) 
       var texts = this.getLabels().map(item => item.innerText.trim())
       var idx = texts.indexOf(this.predictedLabel)
-      this.getLabels().map((item, index) => item.style.color = index == idx ? 'red' : null)
+      this.getLabels().map((item, index) => item.style.color = index === idx ? 'red' : null)
     },
-    updateDifferentLabelColor () {
-      
+    modificationLogger (target) {
+      let newLabel = target.parentElement.innerText.trim()
+      if (newLabel !== this.selectedLabel) {
+        let temp = Object.assign({}, this.$store.getters['Viewer/parsedFileList'][this.srcIndex])
+        temp.label = newLabel
+        this.$store.dispatch('Label/updateModifiedSample', temp)
+      }
     }
   },
   data () {

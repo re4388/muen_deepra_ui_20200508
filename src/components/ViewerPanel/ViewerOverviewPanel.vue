@@ -2,6 +2,12 @@
   <div id="viewer-overview-panel" class="container-main">
     <ToolBar class="toolbar"/>    
     <SidebarRight/>
+    <b-modal ref="modal-confirm-changes" title="Save changes?"
+      @ok="saveModifiedSamples"
+      @cancel="discardModifiedSamples"
+    >
+      <p>Some annotations of samples are changed, do you want to save them?</p>
+    </b-modal>
   </div>
 </template>
 
@@ -41,6 +47,18 @@ export default {
       pages: ['Viewer'],
       keepRoot: true,
     })
+  },
+  beforeRouteLeave (to, from, next) {
+    // Check whether there are samples modified.
+    // If true, send a request to backend to handle them.
+    let modifiedSamples = this.$store.getters['Label/modifiedSamples']
+    console.log(modifiedSamples)
+
+    if (modifiedSamples.length !== 0) {
+      this.$refs['modal-confirm-changes'].show()
+    } else {
+      next(true)
+    }
   },
   methods: {
     // when the viewerDatasetChanged, get the current dataset from store and emit the message
@@ -87,6 +105,19 @@ export default {
       return new Promise((resolve, reject) => {
         resolve(true)
       })
+    },
+    saveModifiedSamples () {
+      datasetService.updateLabel(
+        this.$store.getters['Project/currentProject'].uuid,
+        this.$store.getters['Label/modifiedSamples']
+      ).then((result) => {
+        console.log(result)
+        this.$store.dispatch('Label/resetAllState')  // TODO: remove this line
+      })
+    },
+    discardModifiedSamples () {
+      this.$store.dispatch('Label/resetAllState')
+      console.log(this.$store.getters['Label/modifiedSamples'])
     }
   }
 }

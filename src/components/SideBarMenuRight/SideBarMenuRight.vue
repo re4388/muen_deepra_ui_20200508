@@ -8,6 +8,7 @@
         :isSingleSelection="isSingleSelection"
         :isDisabled="false"
         :selectedLabel="selectedLabel"
+        :srcIndex="selectedImageIndex"
         :predictedLabel="predictedLabel"
         :is="'LabelPanel'">
       </components>
