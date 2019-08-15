@@ -18,7 +18,8 @@
       <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
           <div>
-            <ImageBox :images="images" class="imageBox"/>
+            <!-- TODO: complete the feature of `differentLabels` -->
+            <ImageBox :images="images" :differentLabels="differentLabels" class="imageBox"/>
           </div>
       </div>
     </div>
@@ -58,18 +59,34 @@ export default {
     EventBus.$once('viewerDatasetChanged',()=>{
       console.log('--- processing with event viewerDatasetChanged')
       EventBus.$emit('notifyImageTotalNumber', this.images.length)
-
+      
       let dataset = this.$store.getters['Viewer/currentDataset']
       this.labels = dataset.details.labelReport.labels
       console.log(this.labels)
       this.taskType = dataset.taskType
       this.selectedImage = this.images[0]
+      let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
-      console.log('--- current selected image: ')
+      console.log('--- current selected image: 123')
       console.log(obj.item)
+      console.log(obj.index)
       this.selectedImage = obj.item
       this.selectedImageIndex = obj.index
+    })
+    EventBus.$on('showDifference', (differentLabels) => {
+      console.log('---recived the message---')
+      console.log(differentLabels)
+
+      // let el = ddocument.querySelector('.thumbnail')
+      // el.classList.add('labelRed')
+      // console.log('---recived the message---')
+      // var showDifferentLabels = function () {
+      //   console.log(showDifferentLabels)
+      //   let el = ddocument.querySelector('.thumbnail')
+      //   el.classList.add('labelRed')
+      //   console.log('---recived the message---')
+      // }
     })
   },
   beforeDestroy () {

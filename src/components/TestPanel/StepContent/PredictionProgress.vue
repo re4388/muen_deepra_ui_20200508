@@ -78,6 +78,8 @@ export default {
         let taskType = this.$store.getters['DataImport/datasetInfo'].taskType
         let labelConvert = new converterDict[taskType](result.prediction, result.labels)
         let predictedLabels = labelConvert.convertAll()
+        console.log(predictedLabels)
+        console.log(predictedLabels[0])
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       })
       this.$emit('onProgressFinished', true)

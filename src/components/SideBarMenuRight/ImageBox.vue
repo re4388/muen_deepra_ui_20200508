@@ -11,10 +11,12 @@
             </transition>
             <div class="imgList " id="imgList">
               <template class="imgList-item" id="imgList-item" v-for="(item, index) in loadedImages">
+                <!-- TODO: complete the feature of `isDifferent` -->
                 <thumbnail
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
+                  :isDifferent="differentLabels.indexOf(index) === -1 ? false : true" 
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
@@ -78,7 +80,8 @@ export default {
   },
   props: {
     currentImageSrc: String,
-    images: Array
+    images: Array,
+    differentLabels: Array  // todo
   },
   watch: {
     indexNumber () {

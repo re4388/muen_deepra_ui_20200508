@@ -35,12 +35,42 @@ export default {
   },
   created () {
     this.fetchData()
+    EventBus.$on('viewerDatasetChanged', () => {
+      var temp = this.$store.getters['Viewer/parsedFileList']
+      var predictedLabels = this.$store.getters['Testing/predictedLabels']
+      var parsedFileListLabels = temp.map(function (obj) {
+        return parseInt(obj.label, 10)
+      })
+      console.log(temp)
+      console.log(predictedLabels)
+      console.log(parsedFileListLabels)
+      // compare two arrays and then return the index of the difference
+      if (predictedLabels !== parsedFileListLabels) {
+        console.log('---it is different----')
+      }
+      var findDivergence = function (predictedLabels, parsedFileListLabels) {
+      var result = []
+      var i
+      for (i = 0; i < predictedLabels.length; i++){
+          if (predictedLabels[i] !== parsedFileListLabels[i]) {
+              result.push(i);
+          }
+        }
+       return result;
+      };
+      // show the index between two different arrays
+      console.log(findDivergence(predictedLabels, parsedFileListLabels))
+      EventBus.$emit('showDifference', findDivergence(predictedLabels, parsedFileListLabels))
+    })
   },
   mounted () {
     EventBus.$emit('pageChanged', {
       pages: ['Viewer'],
       keepRoot: true,
     })
+  },
+  beforeDestroy() {
+    EventBus.$off('viewerDatasetChanged')
   },
   methods: {
     // when the viewerDatasetChanged, get the current dataset from store and emit the message
@@ -87,6 +117,9 @@ export default {
       return new Promise((resolve, reject) => {
         resolve(true)
       })
+    },
+    processLabel () {
+
     }
   }
 }

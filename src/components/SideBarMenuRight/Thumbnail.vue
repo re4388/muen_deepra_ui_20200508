@@ -1,5 +1,5 @@
 <template>
-  <div class="thumbnail" id="thumbnail" @click="onClick">
+  <div class="thumbnail labelRed" id="thumbnail" @click="onClick">
   <!-- <div class="thumbnail labelRed" id="thumbnail" @click="onClick"> -->
     <div class="layer-container">
       <img :src=fullPath class="main-content"/>
@@ -16,17 +16,43 @@ export default {
   name: 'Thumbnail',
   props: {
     root: String,
-    filename: String
+    filename: String,
+    isDifferent: Boolean
   },
-  created() {
-    // EventBus.$emit('onNavigationImageClicked', this.item[0]);
-  },
+  // watch: {
+  //   '$route': 'renewData'
+  // },
+  // created() {
+  //   this.renewData()
+  //   EventBus.$on('showDifference', () => {
+  //     var showDifferentLabels = function () {
+  //       let el = ddocument.querySelector('.thumbnail')
+  //       el.classList.add('labelRed')
+  //       console.log('---recived the message---')
+  //     }
+  //   })
+  // },
+  // updated() {
+  //   EventBus.$on('showDifference', () => {
+  //     let el = ddocument.querySelector('.thumbnail')
+  //       el.classList.add('labelRed')
+  //     // var showDifferentLabels = function () {
+  //     //   console.log(showDifferentLabels)
+  //     //   let el = ddocument.querySelector('.thumbnail')
+  //     //   el.classList.add('labelRed')
+  //     //   console.log('---recived the message---')
+  //     // }
+  //   })
+  // },
   computed: {
     fullPath: function () {
       return modPath.join(modPath.resolve(this.root), this.filename)
     }
   },
   methods: {
+    // showDifferentLabels() {
+      
+    // },
     onClick () {
       this.$emit('click', this._props)
     }

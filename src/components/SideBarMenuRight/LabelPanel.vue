@@ -44,7 +44,6 @@ export default {
   methods: {
     getLabels () {
       return [...document.getElementById('label-panel').getElementsByTagName('label')]
-      
     },
     getCheckboxes () {
       return this.getLabels().map(item => item.getElementsByTagName('input')[0])
@@ -65,9 +64,6 @@ export default {
       var texts = this.getLabels().map(item => item.innerText.trim())
       var idx = texts.indexOf(this.predictedLabel)
       this.getLabels().map((item, index) => item.style.color = index == idx ? 'red' : null)
-    },
-    updateDifferentLabelColor () {
-      
     }
   },
   data () {
