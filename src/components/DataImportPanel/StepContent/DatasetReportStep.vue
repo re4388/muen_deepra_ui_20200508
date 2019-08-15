@@ -104,6 +104,7 @@ export default {
   data () {
     return {
       totalLabels: '',
+      fileCounts: 0,
       normalFiles: 0,
       unlabeledFiles: 0,
       missedFiles: 0
