@@ -8,7 +8,8 @@ const defaultState = {
   completedStageIndex: 0,
   predictionOutput: {
     content: null
-  }
+  },
+  predictedLabels: []
 }
 
 const state = {}
@@ -27,6 +28,9 @@ const getters = {
   },
   predictionOutput() {
     return state.predictionOutput
+  },
+  predictedLabels() {
+    return state.predictedLabels
   }
 }
 
@@ -45,6 +49,9 @@ const mutations = {
   },
   SET_PREDICTION_OUTPUT(state, payload) {
     state.predictionOutput = payload
+  },
+  SET_PREDICTED_LABELS(state, payload) {
+    state.predictedLabels = payload
   },
   RESET_ALL_STATE(state) {
     initializeState(state, defaultState)
@@ -66,6 +73,9 @@ const actions = {
   },
   setPredictionOutput({ commit }, payload) {
     commit('SET_PREDICTION_OUTPUT', payload)
+  },
+  setPredictedLabels({ commit }, payload) {
+    commit('SET_PREDICTED_LABELS', payload)
   },
   resetAllState({ commit }) {
     commit('RESET_ALL_STATE')

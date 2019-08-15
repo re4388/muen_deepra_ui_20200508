@@ -8,15 +8,18 @@
         :isSingleSelection="isSingleSelection"
         :isDisabled="false"
         :selectedLabel="selectedLabel"
+        :predictedLabel="predictedLabel"
         :is="'LabelPanel'">
       </components>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
       <div class="rightsideBlockTitle"><h3>DataSet</h3></div>
       <div><img class="datasetImg" src="../../assets/people.png"></div>
-      <div id="show__list">
+      <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
-        <ImageBox :images="images"/>
+          <div>
+            <ImageBox :images="images" class="imageBox"/>
+          </div>
       </div>
     </div>
     <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
@@ -53,15 +56,20 @@ export default {
   },
   created () {
     EventBus.$once('viewerDatasetChanged',()=>{
+      console.log('--- processing with event viewerDatasetChanged')
       EventBus.$emit('notifyImageTotalNumber', this.images.length)
 
       let dataset = this.$store.getters['Viewer/currentDataset']
       this.labels = dataset.details.labelReport.labels
+      console.log(this.labels)
       this.taskType = dataset.taskType
       this.selectedImage = this.images[0]
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
+      console.log('--- current selected image: ')
+      console.log(obj.item)
       this.selectedImage = obj.item
+      this.selectedImageIndex = obj.index
     })
   },
   beforeDestroy () {
@@ -73,7 +81,8 @@ export default {
       pathCollector: null,
       labels: [],
       taskType: '',
-      selectedImage: null
+      selectedImage: null,
+      selectedImageIndex: 0
     }
   },
   computed: {
@@ -83,8 +92,22 @@ export default {
     selectedLabel () {
       return this.selectedImage === null ? '' : this.selectedImage.label
     },
+    predictedLabel () {
+      console.log('---- predictedLabel: ')
+      console.log(this.predictedLabels)
+      console.log(this.selectedImageIndex)
+      console.log(this.predictedLabels[this.selectedImageIndex])
+      console.log('--- selected image: ')
+      console.log('---check the difference between select and predict---')
+      console.log(this.predictedLabels[this.selectedImageIndex])
+      return String(this.predictedLabels[this.selectedImageIndex])
+      // if (this.selectedImage.label === this.predictedLabels[this.selectedImageIndex]) {
+      //   console.log('---different label info---')
+      // }
+    },
     ...mapState({
       images: state => state.Viewer.parsedFileList,
+      predictedLabels: state => state.Testing.predictedLabels
     })
   },
   methods: {
@@ -121,54 +144,14 @@ export default {
 .datasetImg {
   padding: 30px;
 }
+.data__set > div {
+  position: relative; 
+}
 .datasetImg:hover{
   background: rgb(199, 199, 199);
 }
 .noteTitle {
   padding-bottom: 20px;
-}
-.imgList {
-  width: 300px;
-  height: 300px;
-  overflow: scroll;
-  margin: 0 auto;
-  list-style-type: none;
-  text-align: left;
-  position: relative;
-}
-.imgList::-webkit-scrollbar { 
-    display: none; 
-}
-.box {
-  width: 300px;
-  height: 300px;
-  overflow: hidden;
-  position: fixed;
-  top: 350px;
-  right: 150px;
-  padding: 0px;
-}
-.title {
-  background: #000;
-  width: 100%;
-  position: absolute;
-  right: -400px;
-  transition: all 1s;
-  overflow: hidden;
-}
-.show {
-  right: 0px;
-}
-.catalog {
-  width: 300px;
-  height: 40px;
-  background: #777777;
-  position: relative;
-  top: 240px;
-  left: 0;
-  z-index: 20;
-  line-height: 40px;
-  color: white;
 }
 #label-panel {
   max-height: 150px;

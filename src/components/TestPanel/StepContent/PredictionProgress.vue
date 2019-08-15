@@ -18,6 +18,7 @@
 <script>
 import predictionService from '@/api/prediction_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { converterDict } from '@/utils/label_converter.js'
 
 export default {
   name: 'PredictionProgress',
@@ -74,6 +75,13 @@ export default {
         this.$store.dispatch('DataImport/updateDatasetInfo', {
           'details.labelReport.labels': result.labels
         })
+        let taskType = this.$store.getters['DataImport/datasetInfo'].taskType
+        let labelConvert = new converterDict[taskType](result.prediction, result.labels)
+        let predictedLabels = labelConvert.convertAll()
+        let temp = predictedLabels[0]
+        console.log(predictedLabels)
+        console.log(predictedLabels[0])
+        this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       })
       this.$emit('onProgressFinished', true)
     },
@@ -91,7 +99,8 @@ export default {
       progressValueMin: 0,
       progressValueMax: 100,
       isTrainingStarted: false,
-      log: ''
+      log: '',
+      temp: 0
     }
   }
 }

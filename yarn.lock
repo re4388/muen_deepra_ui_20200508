@@ -12285,7 +12285,7 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue-tippy@^4.0.0-beta.6:
+vue-tippy@^4.0.0-beta.4:
   version "4.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-4.0.0-beta.6.tgz#2fbf79a4991bac54f7de6600260a07dd46ebcd73"
   integrity sha512-OuJK1lJQdYtcV1y+GsBD7MtWdETJR8iLpcPbd0doa0ESWYvXMSumnrR/Yl0unLzsVYy4J5VqIR+Avu6JiO4ZWw==
