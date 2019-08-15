@@ -13,7 +13,11 @@ files.keys().forEach(key => {
 
 function initializeState (target, defaults) {
   for (var key in defaults) {
-    target[key] = defaults[key]
+    if (Array.isArray(target[key])) {
+      target[key] = new Array()
+    } else {
+      target[key] = defaults[key]
+    }
   }
 }
 
