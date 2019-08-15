@@ -90,7 +90,8 @@ export default {
       return this.indexNumber + 1
     },
     ...mapState({
-      fileList: state => state.Viewer.parsedFileList
+      fileList: state => state.Viewer.parsedFileList,
+      predictedLabels: state => state.Testing.predictedLabels
     })
   },
   data () {
@@ -108,22 +109,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$scroll-bar-width: 5px;
 .imgList {
-  width: 317px;
+  width: 305px;
   height: 320px;
-  overflow: scroll;
   margin: 0 auto;
   list-style-type: none;
   text-align: left;
   position: relative;
   top: -20px;
   padding-bottom: 20px;
+  overflow-y: scroll;
+    &::-webkit-scrollbar {
+    width: $scroll-bar-width;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #808080;
+      // border-radius: $scroll-bar-width;
+      z-index: 21;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #0f0f0f;
+      // border-radius: $scroll-bar-width;
+    }
+  }
 }
 // .imgList::-webkit-scrollbar { 
 //     display: none; 
 // }
+
 .catalog {
-  width: 300px;
+  width: 305px;
   height: 20px;
   background: #777777;
   position: relative;
@@ -135,10 +155,10 @@ export default {
 }
 .box {
   height: 320px;
-  width: 317px;
+  width: 305px;
   overflow: hidden;
   position: fixed;
-  top: 350px;
+  top: 330px;
   right: 150px;
   padding: 0px;
   padding-bottom: 20px;
@@ -154,7 +174,6 @@ export default {
 .show {
   right: 0px;
 }
-
 .imgList-wrapper {
   position: relative;
 }

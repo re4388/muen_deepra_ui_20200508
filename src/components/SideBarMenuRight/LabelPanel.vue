@@ -7,7 +7,7 @@
       </label>
     </template>
   </div>
-</template>   
+</template> 
      
 <script>
 import { EventBus } from '@/event_bus.js'
@@ -19,20 +19,32 @@ export default {
     selectedIndex: Number,
     selectedLabel: String,
     isSingleSelection: Boolean,
-    isDisabled: Boolean
+    isDisabled: Boolean,
+    predictedLabel: String
+  },
+  mounted () {
+    // this.updateCheckedLabel()
   },
   updated () {
     // call this method to update label until the whole component is rendered
-    this.updateLabel()
+    // this.updateLabel()
+    this.updateCheckedLabel()
+    this.updateLabelColor()
   },
   watch: {
     selectedLabel (newVal, oldVal) {
-      this.updateLabel()
+      this.updateCheckedLabel()
+    },
+    predictedLabel (newVal, oldVal) {
+      console.log('--- predicted label changed')
+      console.log(`${newVal}, ${oldVal}`)
+      this.updateLabelColor()
     }
   },
   methods: {
     getLabels () {
       return [...document.getElementById('label-panel').getElementsByTagName('label')]
+      
     },
     getCheckboxes () {
       return this.getLabels().map(item => item.getElementsByTagName('input')[0])
@@ -42,10 +54,20 @@ export default {
       var checkboxes = this.getCheckboxes()
       checkboxes.map(item => item.checked = item === evnt.target ? true : false)
     },
-    updateLabel () {
+    updateCheckedLabel () {
       var texts = this.getLabels().map(item => item.innerText.trim())
       var idx = texts.indexOf(this.selectedLabel)
       this.getCheckboxes().map((item, index) => item.checked = index == idx ? true : false)
+    },
+    updateLabelColor () {
+      if (this.predictedLabel === '') return
+      console.log(this.predictedLabel) 
+      var texts = this.getLabels().map(item => item.innerText.trim())
+      var idx = texts.indexOf(this.predictedLabel)
+      this.getLabels().map((item, index) => item.style.color = index == idx ? 'red' : null)
+    },
+    updateDifferentLabelColor () {
+      
     }
   },
   data () {

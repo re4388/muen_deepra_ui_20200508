@@ -1,5 +1,6 @@
 <template>
   <div class="thumbnail" id="thumbnail" @click="onClick">
+  <!-- <div class="thumbnail labelRed" id="thumbnail" @click="onClick"> -->
     <div class="layer-container">
       <img :src=fullPath class="main-content"/>
     </div>

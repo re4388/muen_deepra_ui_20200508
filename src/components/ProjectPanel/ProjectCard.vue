@@ -67,6 +67,7 @@ export default {
         keepRoot: false,
       })
       EventBus.$emit('entryChanged', 'project')
+      this.$store.dispatch('setCurrentEntry', 'project')
       this.$router.push('/project-profile')
     },
     showModalDeleteProject () {
