@@ -168,7 +168,6 @@ export default {
     };
   },
 
-
   created() {},
 
   mounted() {
@@ -249,19 +248,25 @@ export default {
 
     getModelHistory() {
       let projectInfo = this.$store.getters["Project/currentProject"];
-  
+
       return new Promise((resolve, reject) => {
         ModelManager.GetModelListByProject(projectInfo.uuid).then(result => {
           let re = /(train_[0-9]+_[0-9]+)/;
           let modelHistory = [];
+
           for (let i = 0; i < result.model_list.length; i++) {
             let model_path = result.model_list[i];
-            modelHistory.push(model_path.match(re)[0]);
+            
+            if (modFs.existsSync(model_path + '/../' + 'validation')) {
+              // console.log("exist");
+              modelHistory.push(model_path.match(re)[0]);
+              this.modelId = modelHistory[modelHistory.length - 1];
+              this.modelDatas = modelHistory;
+            } else {
+              console.log( model_path + '/../' + 'validation ' + ": folder no exist");
+            }
           }
           // console.log(modelHistory);
-          this.modelId = modelHistory[modelHistory.length - 1];
-          this.modelDatas = modelHistory;
-
           resolve(true);
         });
       });
