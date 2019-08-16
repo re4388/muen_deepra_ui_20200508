@@ -1,5 +1,5 @@
 let grpc = require('grpc')
-let protoLoader = require('@grpc/proto-loader')
+let protoLoader = require('@ln-zap/proto-loader')
 
 let backendConfig = require('./backend.json')
 let grpcServerAddress = `${backendConfig.server.ip}:${backendConfig.server.port}`
