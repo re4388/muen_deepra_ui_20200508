@@ -10,6 +10,9 @@
       <p>(Click "cancel" button to discard changes)</p>
       <p>(Click the "x" sign to close this dialog and continue editing)</p>
     </b-modal>
+    <b-modal ref="modal-no-change-notification" title="No change have to be saved" ok-only>
+      <p>There is no change have to be saved.</p>
+    </b-modal>
   </div>
 </template>
 

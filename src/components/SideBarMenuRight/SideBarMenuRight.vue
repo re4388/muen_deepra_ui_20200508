@@ -27,9 +27,13 @@
       <div class="noteTitle rightsideBlockTitle"><h5>Edit Log<br> &amp; <br>Note</h5><br></div>
       <div class="note"><p>20190523</p></div>
       <div class="note"><p>Model 1 Predict as Label1</p></div>
-    </div>    
+    </div>
+    <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
+      <b-button id="btn-save-changes" variant="light" @click="onSaveChanges">Save</b-button>
+    </div>
   </div>
-</template>        
+</template>
+
 <script>
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
 import LabelPanel from './LabelPanel.vue'
@@ -111,10 +115,15 @@ export default {
     })
   },
   methods: {
-    showImgList() {
+    showImgList () {
       this.isShowingImgList = !this.isShowingImgList
       let el = document.querySelector('.title')
       el.classList.toggle('show')
+    },
+    onSaveChanges () {
+      let num = this.$store.getters['Label/modifiedSamples'].length
+      let selectedModal = num === 0 ? 'modal-no-change-notification' : 'modal-confirm-changes'
+      this.$parent.$refs[selectedModal].show()
     }
   }
 }
