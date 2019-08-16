@@ -42,12 +42,14 @@ function getValidationOutput (projectInfo) {
   })
 }
 
-function exportFiles (projectInfo, location) {
+function exportFiles(projectInfo, location, traied_model_loc) {
   let validationService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ValidationService'
   )
+  
   return new Promise((resolve, reject) => {
     validationService.ExportFiles({
+      traied_model_loc: traied_model_loc,
       project_info_json: JSON.stringify(projectInfo),
       location: location
     }, (err, resp) => {
