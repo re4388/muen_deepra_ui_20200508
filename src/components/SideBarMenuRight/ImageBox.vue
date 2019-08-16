@@ -15,6 +15,8 @@
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
+                  :differentLabels="differentLabels"
+                  :style="differentLabels.indexOf(index) !== -1 ? { 'border': '1px solid red' } : { }"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
@@ -43,6 +45,9 @@ export default {
       this.total = imageTotalNumber
       this.initializeComponent()
     })
+    EventBus.$once('showDifference', (differentLabels) => {
+      this.differentLabels = differentLabels
+    })
   },
   mounted(){
     const listElm = document.querySelector('#imgList');
@@ -52,8 +57,6 @@ export default {
         this.loadMore();
       }
     });
-    // Initially load some items.
-    // this.loadMore();
   },
   methods: {
     initializeComponent () {
@@ -78,7 +81,7 @@ export default {
   },
   props: {
     currentImageSrc: String,
-    images: Array
+    images: Array,
   },
   watch: {
     indexNumber () {
@@ -102,7 +105,9 @@ export default {
       currentIndex: 0,
       indexNumber: 0,
       total: '',
-      batchSize: 40
+      batchSize: 40,
+      differentLabels: [],
+      isDifferent: true
     }
   }
 }
@@ -111,8 +116,8 @@ export default {
 <style lang="scss" scoped>
 $scroll-bar-width: 5px;
 .imgList {
-  width: 305px;
-  height: 320px;
+  width: 315px;
+  height: 329px;
   margin: 0 auto;
   list-style-type: none;
   text-align: left;
@@ -141,24 +146,23 @@ $scroll-bar-width: 5px;
 // .imgList::-webkit-scrollbar { 
 //     display: none; 
 // }
-
 .catalog {
-  width: 305px;
+  width: 315px;
   height: 20px;
   background: #777777;
   position: relative;
-  top: 300px;
+  top: 309px;
   left: 0;
   z-index: 20;
   line-height: 20px;
   color: white;
 }
 .box {
-  height: 320px;
-  width: 305px;
+  height: 328px;
+  width: 315px;
   overflow: hidden;
   position: fixed;
-  top: 330px;
+  top: 338px;
   right: 150px;
   padding: 0px;
   padding-bottom: 20px;
@@ -181,7 +185,12 @@ $scroll-bar-width: 5px;
   overflow: auto;
 }
 .imgList-item {
-  margin-top: 1px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 60px;
+  height: 60px;
+  margin-top: 0px;
   border-left: none;
   border-right: none;
   border-top: none;
@@ -204,5 +213,12 @@ $scroll-bar-width: 5px;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0
+}
+.labelRed {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: 1px solid red;
+  box-shadow: 0 0 0 5px white;
 }
 </style>

@@ -46,6 +46,30 @@ export default {
   },
   created () {
     this.fetchData()
+    // be able to compare with the parsedFileLIstLabels and the predictedLables
+    EventBus.$on('viewerDatasetChanged', () => {
+      let temp = this.$store.getters['Viewer/parsedFileList']
+      let predictedLabels = this.$store.getters['Testing/predictedLabels']
+      let parsedFileListLabels = temp.map(function (obj) {
+        return parseInt(obj.label, 10)
+      })
+      // compare two arrays and then return the index of the difference
+      // if (predictedLabels !== parsedFileListLabels) {
+      //   console.log('---it is different----')
+      // }
+      let findDivergence = function (predictedLabels, parsedFileListLabels) {
+        let result = []
+        let i
+        for (i = 0; i < predictedLabels.length; i++){
+          if (predictedLabels[i] !== parsedFileListLabels[i]) {
+            result.push(i);
+          }
+        }
+        return result
+      };
+      let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
+      EventBus.$emit('showDifference', differentLabels)
+    })
   },
   mounted () {
     EventBus.$emit('pageChanged', {
@@ -63,12 +87,14 @@ export default {
       next(true)
     }
   },
+  beforeDestroy() {
+    EventBus.$off('viewerDatasetChanged')
+  },
   methods: {
     // when the viewerDatasetChanged, get the current dataset from store and emit the message
     fetchData () {
       let currentProject = this.$store.getters['Project/currentProject']
       let dataset = this.$store.getters['DataImport/datasetInfo']
-
       let parseDataProcess = (result) => {
         let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
         pathCollector.parseFileList().then((result) => {

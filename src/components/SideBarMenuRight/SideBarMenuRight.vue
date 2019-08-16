@@ -19,7 +19,12 @@
       <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
           <div>
-            <ImageBox :images="images" class="imageBox"/>
+            <!-- TODO: complete the feature of `differentLabels` -->
+            <!-- :differentLabels="differentLabels" -->
+            <ImageBox
+            class="imageBox"
+            :images="images"
+            />
           </div>
       </div>
     </div>
@@ -55,24 +60,26 @@ export default {
   watch: {
     isShowingImgList() {},
     selectedImage (newVal, oldVal) {
-      console.log('Information of selected image: ')
-      console.log(newVal)
+      // console.log('Information of selected image: ')
+      // console.log(newVal)
     }
   },
   created () {
     EventBus.$once('viewerDatasetChanged',()=>{
       console.log('--- processing with event viewerDatasetChanged')
       EventBus.$emit('notifyImageTotalNumber', this.images.length)
-
+      
       let dataset = this.$store.getters['Viewer/currentDataset']
       this.labels = dataset.details.labelReport.labels
-      console.log(this.labels)
+      // console.log(this.labels)
       this.taskType = dataset.taskType
       this.selectedImage = this.images[0]
+      let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
-      console.log('--- current selected image: ')
-      console.log(obj.item)
+      // console.log('--- current selected image:')
+      // console.log(obj.item)
+      // console.log(obj.index)
       this.selectedImage = obj.item
       this.selectedImageIndex = obj.index
     })
@@ -104,8 +111,8 @@ export default {
       return labelToBeDisplay
     },
     predictedLabel () {
-      console.log('---- predictedLabel: ')
-      console.log(this.predictedLabels[this.selectedImageIndex])
+      // console.log('---- predictedLabel: ')
+      // console.log(this.predictedLabels[this.selectedImageIndex])
       return String(this.predictedLabels[this.selectedImageIndex])
     },
     ...mapState({

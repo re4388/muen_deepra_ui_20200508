@@ -60,7 +60,6 @@ export default {
     },
     updateLabelColor () {
       if (this.predictedLabel === '') return
-      console.log(this.predictedLabel) 
       var texts = this.getLabels().map(item => item.innerText.trim())
       var idx = texts.indexOf(this.predictedLabel)
       this.getLabels().map((item, index) => item.style.color = index === idx ? 'red' : null)
