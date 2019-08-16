@@ -18,6 +18,7 @@
 <script>
 import validationService from '@/api/validation_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { converterDict } from '@/utils/label_converter.js'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -81,8 +82,10 @@ export default {
       // Get validation output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
-        this.$store.dispatch('Validation/setAllDatasetOutput', result)
-        console.log(result)
+        let modelDetails = JSON.parse(this.$store.getters['Model/currentModel'].details_json)
+        let labelConverter = new converterDict[modelDetails['task_type']](result.prediction, result.labels)
+        let predictedLabels = labelConverter.convertAll()
+        this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       })
       this.$emit('onProgressFinished', true)
     },
