@@ -54,8 +54,6 @@ export default {
     // Check whether there are samples modified.
     // If true, send a request to backend to handle them.
     let modifiedSamples = this.$store.getters['Label/modifiedSamples']
-    console.log(modifiedSamples)
-
     if (modifiedSamples.length !== 0) {
       this.$refs['modal-confirm-changes'].show()
     } else {

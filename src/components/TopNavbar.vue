@@ -1,7 +1,9 @@
 <template>
   <div id="top-navbar" class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap">
     <div class="page-indicator-container">
-      <a id="brand" class="navbar-brand" href="#" @click.prevent="onClick">{{ brandText }}</a>
+      <router-link :to="{path: '/'}">
+        <a id="brand">{{ brandText }}</a>
+      </router-link>
       <a id="page-indicator"> {{ pageIndicatorDisplay }} </a>
     </div>
   </div>
@@ -28,18 +30,6 @@ export default {
     })
   },
   methods: {
-    onClick() {
-      this.$store.dispatch('setCurrentEntry', 'main')
-      EventBus.$emit('entryChanged', 'main')
-      // Reset state
-      this.$store.dispatch('DataImport/resetAllState')
-      this.$store.dispatch('Project/resetAllState')
-      this.$store.dispatch('Validation/resetAllState')
-      this.$store.dispatch('Testing/resetAllState')
-      this.$store.dispatch('Label/resetAllState')
-      EventBus.$emit('pageChanged', '')
-      this.$router.push('/')
-    }
   },
   computed: {
     pageIndicatorDisplay: function () {
@@ -73,14 +63,15 @@ $navbar-height: 56px;
   min-height: $navbar-height;
 }
 #brand {
+  color: white;
   position: relative;
   width: 136px;
   left: 0px;
-  margin: 0px;
+  margin: 20px;
+  font-size: 18px;
 }
 #page-indicator {
   color: white;
   font: bold;
-  // font-size: 16px;
 }
 </style>
