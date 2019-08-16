@@ -1,5 +1,5 @@
 <template>
-  <div class="thumbnail labelRed" id="thumbnail" @click="onClick">
+  <div class="thumbnail" id="thumbnail" @click="onClick">
   <!-- <div class="thumbnail labelRed" id="thumbnail" @click="onClick"> -->
     <div class="layer-container">
       <img :src=fullPath class="main-content"/>
@@ -17,7 +17,7 @@ export default {
   props: {
     root: String,
     filename: String,
-    isDifferent: Boolean
+    
   },
   // watch: {
   //   '$route': 'renewData'
@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     // showDifferentLabels() {
-      
     // },
     onClick () {
       this.$emit('click', this._props)

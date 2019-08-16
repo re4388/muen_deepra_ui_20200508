@@ -12,11 +12,12 @@
             <div class="imgList " id="imgList">
               <template class="imgList-item" id="imgList-item" v-for="(item, index) in loadedImages">
                 <!-- TODO: complete the feature of `isDifferent` -->
+                <!--  :differentLabels="differentLabels"-->
                 <thumbnail
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :isDifferent="differentLabels.indexOf(index) === -1 ? false : true" 
+                  :isDifferent="differentLabels.indexOf(index) === -1 ? false : true"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
@@ -81,12 +82,21 @@ export default {
   props: {
     currentImageSrc: String,
     images: Array,
-    differentLabels: Array  // todo
+    // differentLabels: Array  // TODO
   },
   watch: {
     indexNumber () {
       return this.indexNumber
     }
+  },
+  created () {
+    EventBus.$once('showDifference', (differentLabels) => {
+      console.log('---recived the message about differentLabels---')
+      console.log(differentLabels)
+      // console.log(differentLabels.indexOf(99))
+      // let el = ddocument.querySelector('.thumbnail')
+      // el.classList.add('labelRed')
+    })
   },
   computed: {
     currentImageIndex () {
@@ -105,7 +115,8 @@ export default {
       currentIndex: 0,
       indexNumber: 0,
       total: '',
-      batchSize: 40
+      batchSize: 40,
+      differentLabels: Array
     }
   }
 }

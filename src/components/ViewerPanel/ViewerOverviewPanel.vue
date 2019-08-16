@@ -35,10 +35,13 @@ export default {
   },
   created () {
     this.fetchData()
+    // be able to compare with the parsedFileLIstLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
       var temp = this.$store.getters['Viewer/parsedFileList']
       var predictedLabels = this.$store.getters['Testing/predictedLabels']
       var parsedFileListLabels = temp.map(function (obj) {
+        // TODO: parseInt is no need
+        // return obj.label
         return parseInt(obj.label, 10)
       })
       console.log(temp)
@@ -58,9 +61,9 @@ export default {
         }
        return result;
       };
-      // show the index between two different arrays
       console.log(findDivergence(predictedLabels, parsedFileListLabels))
-      EventBus.$emit('showDifference', findDivergence(predictedLabels, parsedFileListLabels))
+      let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
+      EventBus.$emit('showDifference', differentLabels)
     })
   },
   mounted () {

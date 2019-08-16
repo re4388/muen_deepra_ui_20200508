@@ -19,7 +19,10 @@
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
           <div>
             <!-- TODO: complete the feature of `differentLabels` -->
-            <ImageBox :images="images" :differentLabels="differentLabels" class="imageBox"/>
+            <ImageBox
+            class="imageBox"
+            :images="images"
+            />
           </div>
       </div>
     </div>
@@ -68,25 +71,11 @@ export default {
       let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
-      console.log('--- current selected image: 123')
+      console.log('--- current selected image:')
       console.log(obj.item)
       console.log(obj.index)
       this.selectedImage = obj.item
       this.selectedImageIndex = obj.index
-    })
-    EventBus.$on('showDifference', (differentLabels) => {
-      console.log('---recived the message---')
-      console.log(differentLabels)
-
-      // let el = ddocument.querySelector('.thumbnail')
-      // el.classList.add('labelRed')
-      // console.log('---recived the message---')
-      // var showDifferentLabels = function () {
-      //   console.log(showDifferentLabels)
-      //   let el = ddocument.querySelector('.thumbnail')
-      //   el.classList.add('labelRed')
-      //   console.log('---recived the message---')
-      // }
     })
   },
   beforeDestroy () {
@@ -99,7 +88,7 @@ export default {
       labels: [],
       taskType: '',
       selectedImage: null,
-      selectedImageIndex: 0
+      selectedImageIndex: 0,
     }
   },
   computed: {

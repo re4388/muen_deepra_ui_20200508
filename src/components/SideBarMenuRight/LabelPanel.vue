@@ -27,7 +27,6 @@ export default {
   },
   updated () {
     // call this method to update label until the whole component is rendered
-    // this.updateLabel()
     this.updateCheckedLabel()
     this.updateLabelColor()
   },
