@@ -82,8 +82,8 @@ export default {
       // Get validation output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
-        let modelDetails = JSON.parse(this.$store.getters['Model/currentModel'].details_json)
-        let labelConverter = new converterDict[modelDetails['task_type']](result.prediction, result.labels)
+        let taskType = this.$store.getters['Project/taskType']
+        let labelConverter = new converterDict[taskType](result.prediction, result.labels)
         let predictedLabels = labelConverter.convertAll()
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       })
