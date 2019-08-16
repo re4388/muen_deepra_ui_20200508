@@ -13,9 +13,7 @@
     <div v-if="tabs === null">
       <b-alert show variant="dark">
         <a href="#" class="alert-link">
-          <router-link
-            to="/project-overview"
-          >Please train a project or choose Model History below</router-link>
+          <router-link to="/project-overview">Please train a project or choose Model History below</router-link>
         </a>
       </b-alert>
     </div>
@@ -98,13 +96,13 @@
 
       <!-- export files related to validation, maybe we should group this with `div` tag -->
       <b-button
-        block pill
+        block
+        pill
         size="sm"
         class="mt-4"
         variant="outline-dark"
-        @click="$refs.exportFolderInput[0].click()">
-        Export
-      </b-button>
+        @click="$refs.exportFolderInput[0].click()"
+      >Export</b-button>
       <input
         id="exportFolderInput"
         type="file"
@@ -113,7 +111,6 @@
         webkitdirectory
         @change="onExport"
       />
-
     </Tab>
   </div>
 </template>
@@ -146,7 +143,8 @@ import GraphDisplay from "../InfoDisplay/GraphDisplay";
 import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
 
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from "vuex";
+import { Promise } from "q";
 
 export default {
   name: "Tabs",
@@ -165,16 +163,19 @@ export default {
       views: [], //  => [ 'class 0','class 1','class 2'...]
       currentView: "",
       newThreshold: 0,
-      modelId: "",
+      modelId: "not ready",
       modelDatas: []
     };
   },
 
-  created() {
+
+  created() {},
+
+  mounted() {
     this.dataInit();
   },
 
-  mounted() {},
+  updated() {},
 
   computed: {
     selectedMatrixData() {
@@ -191,8 +192,8 @@ export default {
         return "currentUsed";
       }
     },
-    ...mapGetters('Validation', {
-      exportLocation: 'outputLocation'
+    ...mapGetters("Validation", {
+      exportLocation: "outputLocation"
     })
   },
 
@@ -218,6 +219,9 @@ export default {
 
     loadFromHistory() {
       let projectInfo = this.$store.getters["Project/currentProject"];
+      console.log("---");
+      console.log(this.modelId);
+      console.log("---");
       let filePath = modPath.join(
         projectInfo.location,
         "deepra_output",
@@ -245,56 +249,61 @@ export default {
 
     getModelHistory() {
       let projectInfo = this.$store.getters["Project/currentProject"];
-      ModelManager.GetModelListByProject(projectInfo.uuid).then(result => {
-        let re = /(train_[0-9]+_[0-9]+)/;
-        let modelHistory = [];
-        for (let i = 0; i < result.model_list.length; i++) {
-          let model_path = result.model_list[i];
-          modelHistory.push(model_path.match(re)[0]);
-        }
-        // console.log(modelHistory);
-        this.modelId = modelHistory[modelHistory.length-1];
-        this.modelDatas = modelHistory;
+  
+      return new Promise((resolve, reject) => {
+        ModelManager.GetModelListByProject(projectInfo.uuid).then(result => {
+          let re = /(train_[0-9]+_[0-9]+)/;
+          let modelHistory = [];
+          for (let i = 0; i < result.model_list.length; i++) {
+            let model_path = result.model_list[i];
+            modelHistory.push(model_path.match(re)[0]);
+          }
+          // console.log(modelHistory);
+          this.modelId = modelHistory[modelHistory.length - 1];
+          this.modelDatas = modelHistory;
+
+          resolve(true);
+        });
       });
     },
 
     dataInit() {
-      console.log('--- Tabs: get data from validation result ---')
+      console.log("--- Tabs: get data from validation result ---");
       let data = vueUtils.clone(
         this.$store.getters["Validation/validationOutput"]
       );
-      // let data = localJson;
-      // let data = localJson2;
-      this.getModelHistory();
+      this.getModelHistory().then(result => {
+        if (data.content === null) {
+          console.log("--- Tabs: get data from history record ---");
+          this.getModelHistory();
+          this.loadFromHistory();
+        } else {
+          let tabData = generateModel(data.labels, data.metrics);
+          this.tabs = tabData;
 
-      if (data.content === null) {
-        console.log('--- Tabs: get data from history record ---')
-        this.getModelHistory();
-        this.loadFromHistory();
-      } else {
-        let tabData = generateModel(data.labels, data.metrics);
-        this.tabs = tabData;
-
-        this.$emit("model-data", {
-          result: tabData
-        });
-        this.getView();
-        this.currentView = this.views[0];
-      }
+          this.$emit("model-data", {
+            result: tabData
+          });
+          this.getView();
+          this.currentView = this.views[0];
+        }
+      });
     },
 
-    ...mapActions('Validation', {
-      setExportLocation: 'setOutputLocation'
+    ...mapActions("Validation", {
+      setExportLocation: "setOutputLocation"
     }),
 
-    onExport (evnt) {
-      let projectInfo = this.$store.getters["Project/currentProject"]
-      if (evnt.target.files.length === 0) return
-      let outputLocation = evnt.target.files[0].path
-      let traied_model_loc = this.modelId
-      validationService.exportFiles(projectInfo, outputLocation, traied_model_loc).then((result) => {
-          console.log(result)
-      })
+    onExport(evnt) {
+      let projectInfo = this.$store.getters["Project/currentProject"];
+      if (evnt.target.files.length === 0) return;
+      let outputLocation = evnt.target.files[0].path;
+      let traied_model_loc = this.modelId;
+      validationService
+        .exportFiles(projectInfo, outputLocation, traied_model_loc)
+        .then(result => {
+          console.log(result);
+        });
     }
   },
 
@@ -326,7 +335,7 @@ export default {
   z-index: 2;
 }
 #btn-export-files {
-    // visibility: hidden;
-    display: none;
+  // visibility: hidden;
+  display: none;
 }
 </style>
