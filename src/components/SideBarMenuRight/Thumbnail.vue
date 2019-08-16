@@ -1,8 +1,9 @@
 <template>
   <div class="thumbnail" id="thumbnail" @click="onClick">
-  <!-- <div class="thumbnail labelRed" id="thumbnail" @click="onClick"> -->
     <div class="layer-container">
-      <img :src=fullPath class="main-content"/>
+      <img 
+      :src=fullPath
+      class="main-content"/>
     </div>
   </div>
 </template>   
@@ -16,42 +17,14 @@ export default {
   name: 'Thumbnail',
   props: {
     root: String,
-    filename: String,
-    
+    filename: String
   },
-  // watch: {
-  //   '$route': 'renewData'
-  // },
-  // created() {
-  //   this.renewData()
-  //   EventBus.$on('showDifference', () => {
-  //     var showDifferentLabels = function () {
-  //       let el = ddocument.querySelector('.thumbnail')
-  //       el.classList.add('labelRed')
-  //       console.log('---recived the message---')
-  //     }
-  //   })
-  // },
-  // updated() {
-  //   EventBus.$on('showDifference', () => {
-  //     let el = ddocument.querySelector('.thumbnail')
-  //       el.classList.add('labelRed')
-  //     // var showDifferentLabels = function () {
-  //     //   console.log(showDifferentLabels)
-  //     //   let el = ddocument.querySelector('.thumbnail')
-  //     //   el.classList.add('labelRed')
-  //     //   console.log('---recived the message---')
-  //     // }
-  //   })
-  // },
   computed: {
     fullPath: function () {
       return modPath.join(modPath.resolve(this.root), this.filename)
     }
   },
   methods: {
-    // showDifferentLabels() {
-    // },
     onClick () {
       this.$emit('click', this._props)
     }
@@ -65,6 +38,9 @@ export default {
 }
 .thumbnail {
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  // box-shadow: 0 0 0 2px black;
   width: 60px;
   height: 60px;
   display: inline-flex;
@@ -72,6 +48,7 @@ export default {
   flex-wrap: nowrap;
   justify-content: center;
   padding: 3px;
+  margin: 1px;
   z-index: 9;
   position: relative;
 }
@@ -79,11 +56,13 @@ export default {
   content: "";
   display: inline-flex;
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  top: 1;
+  right: 1;
+  bottom: 1;
+  left: 1;
   background: #42ab427d;
+  width: 60px;
+  height: 60px;
 }
 .labelGreen::before {
   content: "";

@@ -22,9 +22,6 @@ export default {
     isDisabled: Boolean,
     predictedLabel: String
   },
-  mounted () {
-    // this.updateCheckedLabel()
-  },
   updated () {
     // call this method to update label until the whole component is rendered
     this.updateCheckedLabel()
@@ -59,7 +56,7 @@ export default {
     },
     updateLabelColor () {
       if (this.predictedLabel === '') return
-      console.log(this.predictedLabel) 
+      // console.log(this.predictedLabel) 
       var texts = this.getLabels().map(item => item.innerText.trim())
       var idx = texts.indexOf(this.predictedLabel)
       this.getLabels().map((item, index) => item.style.color = index == idx ? 'red' : null)

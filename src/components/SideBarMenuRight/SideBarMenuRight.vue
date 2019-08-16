@@ -19,6 +19,7 @@
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
           <div>
             <!-- TODO: complete the feature of `differentLabels` -->
+            <!-- :differentLabels="differentLabels" -->
             <ImageBox
             class="imageBox"
             :images="images"
@@ -54,8 +55,8 @@ export default {
   watch: {
     isShowingImgList() {},
     selectedImage (newVal, oldVal) {
-      console.log('Information of selected image: ')
-      console.log(newVal)
+      // console.log('Information of selected image: ')
+      // console.log(newVal)
     }
   },
   created () {
@@ -65,15 +66,15 @@ export default {
       
       let dataset = this.$store.getters['Viewer/currentDataset']
       this.labels = dataset.details.labelReport.labels
-      console.log(this.labels)
+      // console.log(this.labels)
       this.taskType = dataset.taskType
       this.selectedImage = this.images[0]
       let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
-      console.log('--- current selected image:')
-      console.log(obj.item)
-      console.log(obj.index)
+      // console.log('--- current selected image:')
+      // console.log(obj.item)
+      // console.log(obj.index)
       this.selectedImage = obj.item
       this.selectedImageIndex = obj.index
     })
@@ -88,7 +89,7 @@ export default {
       labels: [],
       taskType: '',
       selectedImage: null,
-      selectedImageIndex: 0,
+      selectedImageIndex: 0
     }
   },
   computed: {
@@ -99,8 +100,8 @@ export default {
       return this.selectedImage === null ? '' : this.selectedImage.label
     },
     predictedLabel () {
-      console.log('---- predictedLabel: ')
-      console.log(this.predictedLabels[this.selectedImageIndex])
+      // console.log('---- predictedLabel: ')
+      // console.log(this.predictedLabels[this.selectedImageIndex])
       return String(this.predictedLabels[this.selectedImageIndex])
     },
     ...mapState({
