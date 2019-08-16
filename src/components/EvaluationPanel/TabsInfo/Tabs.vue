@@ -291,7 +291,8 @@ export default {
       let projectInfo = this.$store.getters["Project/currentProject"]
       if (evnt.target.files.length === 0) return
       let outputLocation = evnt.target.files[0].path
-      validationService.exportFiles(projectInfo, outputLocation).then((result) => {
+      let traied_model_loc = this.modelId
+      validationService.exportFiles(projectInfo, outputLocation, traied_model_loc).then((result) => {
           console.log(result)
       })
     }
