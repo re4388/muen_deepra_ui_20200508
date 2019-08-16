@@ -4,14 +4,18 @@ let protoPath = './src/api/protos/validation.proto'
 let protoPackageName = 'validation'
 
 
-function startValidation (projectInfo, trainingOutput, handlerProgress, handlerEnd) {
+function startValidation (
+  projectInfo, trainingOutput, handlerProgress, handlerEnd, options={
+    datasetType: ''
+  }) {
   let validationService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ValidationService'
   )
 
   let call = validationService.StartValidation({
     project_info_json: JSON.stringify(projectInfo),
-    training_output_json: JSON.stringify(vueUtils.clone(trainingOutput))
+    training_output_json: JSON.stringify(vueUtils.clone(trainingOutput)),
+    dataset_type: options.datasetType
   })
   call.on('data', (resp) => {
     console.log(resp)

@@ -41,6 +41,7 @@ import StepContent from '@/components/Pipeline/StepContent.vue'
 import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
 import TrainingProgress from './StepContent/TrainingProgress.vue'
 import ValidationStep from './StepContent/ValidationStep.vue'
+import PredictOnDatasetStep from './StepContent/PredictOnDatasetStep.vue'
 import { EventBus } from '@/event_bus.js'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -51,7 +52,8 @@ export default {
     StepContent,
     ResourcesCheckStep,
     TrainingProgress,
-    ValidationStep
+    ValidationStep,
+    PredictOnDatasetStep
   },
   mounted () {
     EventBus.$emit('pageChanged', 'Training')
@@ -118,6 +120,11 @@ export default {
           id: 2,
           title: 'Validation',
           contentType: 'ValidationStep'
+        },
+        {
+          id: 3,
+          title: 'Predict on dataset',
+          contentType: 'PredictOnDatasetStep',
         }
       ],
       stepOfTraining: 1,

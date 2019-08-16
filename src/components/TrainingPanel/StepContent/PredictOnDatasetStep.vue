@@ -1,5 +1,5 @@
 <template>
-  <div class="validation-step d-flex flex-column">
+  <div class="predict-on-dataset-step d-flex flex-column">
     <div class="title text-content">{{ content.title }}</div>
     <div class="progress">
       <div class="progress-bar" role="progressbar"
@@ -21,7 +21,7 @@ import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'ValidationStep',
+  name: 'PredictOnDatasetStep',
   components: {
     logDisplay
   },
@@ -70,7 +70,7 @@ export default {
         handlerProgress,
         handlerEnd,
         {
-          datasetType: 'valid_set'
+          datasetType: 'all'
         }
       )
     },
@@ -81,7 +81,7 @@ export default {
       // Get validation output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
-        this.$store.dispatch('Validation/setValidationOutput', result)
+        this.$store.dispatch('Validation/setAllDatasetOutput', result)
         console.log(result)
       })
       this.$emit('onProgressFinished', true)
@@ -117,7 +117,7 @@ export default {
   margin: 0px 0px 20px 0px;
   min-height: 15px;
 }
-.validation-step {
+.predict-on-dataset-step {
   color: black;
   padding: 20px;
 }
