@@ -11,6 +11,7 @@
      
 <script>
 import { EventBus } from '@/event_bus.js'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'LabelPanel',
@@ -49,7 +50,7 @@ export default {
       var checkboxes = this.getCheckboxes()
       checkboxes.map(item => {
         return item.checked = item === evnt.target ?
-          (this.modificationLogger(evnt.target) || true) : false
+          (this.modificationLogger(evnt.target.parentElement) || true) : false
       })
     },
     updateCheckedLabel () {
@@ -65,13 +66,19 @@ export default {
       this.getLabels().map((item, index) => item.style.color = index === idx ? 'red' : null)
     },
     modificationLogger (target) {
-      let newLabel = target.parentElement.innerText.trim()
+      let newLabel = target.innerText.trim()
       if (newLabel !== this.selectedLabel) {
-        let temp = Object.assign({}, this.$store.getters['Viewer/parsedFileList'][this.srcIndex])
-        temp.label = newLabel
-        this.$store.dispatch('Label/updateModifiedSample', temp)
+        this.$store.dispatch('Label/updateModifiedSample', {
+          sample: this.parsedFileList[this.srcIndex],
+          newLabel: newLabel
+        })
       }
     }
+  },
+  computed: {
+    ...mapGetters('Viewer', {
+      parsedFileList: 'parsedFileList'
+    })
   },
   data () {
     return {

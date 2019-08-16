@@ -7,6 +7,8 @@
       @cancel="discardModifiedSamples"
     >
       <p>Some annotations of samples are changed, do you want to save them?</p>
+      <p>(Click "cancel" button to discard changes)</p>
+      <p>(Click the "x" sign to close this dialog and continue editing)</p>
     </b-modal>
   </div>
 </template>

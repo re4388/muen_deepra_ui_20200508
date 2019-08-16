@@ -17,13 +17,28 @@ const getters = {
   }
 }
 
+function indexOfModifiedSamples (target) {
+  return state.modifiedSamples.map(x => x.filename).indexOf(target.filename)
+}
+
 const mutations = {
   UPDATE_MODIFIED_SAMPLE (state, payload) {
-    let idx = state.modifiedSamples.map(x => x.filename).indexOf(payload.filename)
+    // NOTE: minimal required keys in payload.sample: 'filename', 'label'
+    let sample = payload.sample
+    let newLabel = payload.newLabel
+
+    let idx = indexOfModifiedSamples(sample)
     if (idx === -1) {
-      state.modifiedSamples.push(payload)
+      let record = Object.assign({}, sample)
+      // Dynamically add this property `orignalLabel`
+      record['orignalLabel'] = sample.label
+      record.label = newLabel
+      state.modifiedSamples.push(record)
+    } else if (state.modifiedSamples[idx].orignalLabel === newLabel) {
+      // Remove record if the label of incoming payload equals to the original label.
+      state.modifiedSamples.splice(idx, 1)
     } else {
-      state.modifiedSamples[idx] = payload
+      state.modifiedSamples[idx].label = newLabel
     }
   },
   RESET_ALL_STATE (state) {

@@ -91,7 +91,13 @@ export default {
       return this.taskType != 'multilabel' ? true : false
     },
     selectedLabel () {
-      return this.selectedImage === null ? '' : this.selectedImage.label
+      if (this.selectedImage === null) return ''
+      // XXX: We have to check whether the label of selected image has been modified.
+      //   If true, we have to return the modified label rather than the original label.
+      //   Otherwise, we cannot show the modified result to `LabelPanel`.
+      let idx = this.modifiedSamples.map(x => x.filename).indexOf(this.selectedImage.filename)
+      let labelToBeDisplay = idx === -1 ? this.selectedImage.label : this.modifiedSamples[idx].label
+      return labelToBeDisplay
     },
     predictedLabel () {
       console.log('---- predictedLabel: ')
@@ -100,7 +106,8 @@ export default {
     },
     ...mapState({
       images: state => state.Viewer.parsedFileList,
-      predictedLabels: state => state.Testing.predictedLabels
+      predictedLabels: state => state.Testing.predictedLabels,
+      modifiedSamples: state => state.Label.modifiedSamples
     })
   },
   methods: {
