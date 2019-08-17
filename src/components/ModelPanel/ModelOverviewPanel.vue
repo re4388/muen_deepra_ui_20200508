@@ -30,7 +30,7 @@ export default {
   },
   mounted () {
     this.fetchModelData()
-    EventBus.$emit('pageChanged', 'ModelOverview')
+    EventBus.$emit('pageChanged', this.$route.meta.title)
   },
   beforeDestroy () {
     EventBus.$off('modelDeleted')

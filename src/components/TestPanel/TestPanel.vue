@@ -58,6 +58,7 @@ export default {
       pages: ['Test'],
       keepRoot: true,
     })
+    EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   methods: {
     initializeComponent () {

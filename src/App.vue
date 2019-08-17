@@ -49,7 +49,7 @@ export default {
     })
   },
   mounted () {
-    console.log(this.$store.getters.currentEntry)
+    // console.log(this.$store.getters.currentEntry)
   },
   methods: {
     initializeComponent () {

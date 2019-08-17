@@ -44,7 +44,7 @@ export default {
   computed: {
     pageIndicatorDisplay: function () {
       if (this.pageIndicatorInfo.pages.length === 0) {
-        return ''
+        return 'Welcome to DeepRA'
       } else {
         let indicator = ['']
         indicator.push(...this.pageIndicatorInfo.pages)

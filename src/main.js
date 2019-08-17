@@ -9,16 +9,25 @@ import 'chart.js';
 import 'vue-chartjs';
 
 // FontAwesome
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFolder, faCube } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  library
+} from '@fortawesome/fontawesome-svg-core';
+import {
+  faFolder,
+  faCube
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  FontAwesomeIcon
+} from '@fortawesome/vue-fontawesome';
 library.add(faFolder);
 library.add(faCube);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 
 // VueTippy
-import VueTippy, { VueComponent } from 'vue-tippy';
+import VueTippy, {
+  VueComponent
+} from 'vue-tippy';
 Vue.use(VueTippy);
 
 // VueZoomer
@@ -49,8 +58,7 @@ import ModelProfile from './components/ModelPanel/ModelProfile.vue'
 import TestPanel from './components/TestPanel/TestPanel.vue'
 
 const router = new VueRouter({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Base',
       component: BasePanel
@@ -58,47 +66,74 @@ const router = new VueRouter({
     {
       path: '/project-overview',
       name: 'ProjectOverview',
-      component: ProjectOverviewPanel
+      component: ProjectOverviewPanel,
+      meta: {
+        title: 'Project Overview'
+      }
     },
     {
       path: '/model-overview',
       name: 'ModelOverview',
-      component: ModelOverviewPanel
+      component: ModelOverviewPanel,
+      meta: {
+        title: 'Model Overview'
+      }
     },
     {
       path: '/import-data',
       name: 'ImportData',
-      component: DataImportPanel
+      component: DataImportPanel,
+      meta: {
+        title: 'Project Overview > Import Data'
+      }
     },
     {
       path: '/training',
       name: 'Training',
-      component: TrainingPanel
+      component: TrainingPanel,
+      meta: {
+        title: 'Project Overview > Train'
+      }
     },
     {
       path: '/viewer-overview',
       name: 'ViewerOverview',
-      component: ViewerOverviewPanel
+      component: ViewerOverviewPanel,
+      meta: {
+        title: 'Project Overview > Viewer'
+      }
     },
     {
       path: '/evaluation',
       name: 'Evaluate',
-      component: EvaluationPanel
+      component: EvaluationPanel,
+      meta: {
+        title: 'Project Overview > Evaluate'
+      }
     },
     {
       path: '/project-profile',
       name: 'ProjectProfile',
-      component: ProjectProfile
+      component: ProjectProfile,
+      meta: {
+        title: 'Project Overview > Profile'
+      }
     },
     {
       path: '/model-profile',
       name: 'ModelProfile',
-      component: ModelProfile
+      component: ModelProfile,
+      meta: {
+        title: 'Model Overview > Profile'
+      }
     },
     {
       path: '/testing',
       name: 'Test',
-      component: TestPanel
+      component: TestPanel,
+      meta: {
+        title: 'Model Overview > Test'
+      }
     }
   ]
 })
@@ -106,8 +141,8 @@ const router = new VueRouter({
 import App from './App.vue';
 import store from './store';
 new Vue({
-	el: '#app',
-	store,
-	router,
-	render: (h) => h(App)
+  el: '#app',
+  store,
+  router,
+  render: (h) => h(App)
 });

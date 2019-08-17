@@ -37,7 +37,7 @@ export default {
   },
   mounted () {
     this.fetchProjectData()
-    EventBus.$emit('pageChanged', 'ProjectOverview')
+    EventBus.$emit('pageChanged', this.$route.meta.title)
   },
   beforeDestroy () {
     EventBus.$off('projectDeleted')
