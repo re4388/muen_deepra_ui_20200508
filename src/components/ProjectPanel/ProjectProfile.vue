@@ -80,6 +80,7 @@ export default {
     //     keepRoot: true,
     //   })
     EventBus.$emit('pageChanged', this.$route.meta.title)
+    EventBus.$emit('showProjectName', this.name)
     },
     
     fetechProjectData () {
@@ -88,6 +89,7 @@ export default {
         projectService.getProject(this.project.uuid).then((result) => {
           this.project = result.project
           this.dataset = result.dataset
+          console.log(this.project.name)
           resolve(result)
         })
       })

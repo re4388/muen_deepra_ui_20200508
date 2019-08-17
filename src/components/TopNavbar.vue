@@ -3,6 +3,8 @@
     <div class="page-indicator-container">
       <a id="brand" class="navbar-brand" href="#" @click.prevent="onClick">{{ brandText }}</a>
       <a id="page-indicator"> {{ pageIndicatorDisplay }} </a>
+      <a id="page-indicator"> {{  showPojectName }} </a>
+      
     </div>
   </div>
 </template>
@@ -16,6 +18,15 @@ export default {
     brandText: String
   },
   created () {
+    EventBus.$on('showProjectName', projectNameInfo => {
+      let projectNameFormat=''
+      if (projectNameInfo === 'notInsideProject') {
+        projectNameFormat=''
+      } else {
+        projectNameFormat = '>>>>> Current Project Name: ' + projectNameInfo
+      }
+      this.showPojectName = projectNameFormat
+    }),
     EventBus.$on('pageChanged', (info) => {
       if (typeof(info) === 'string') {
         this.pageIndicatorInfo = {
@@ -38,6 +49,7 @@ export default {
       this.$store.dispatch('Testing/resetAllState')
       this.$store.dispatch('Label/resetAllState')
       EventBus.$emit('pageChanged', '')
+      EventBus.$emit('showProjectName', 'notInsideProject')
       this.$router.push('/')
     }
   },
@@ -54,8 +66,10 @@ export default {
       }
     },
   },
+  // showProjectName
   data () {
     return {
+      showPojectName:'',
       pageIndicator: '',
       pageIndicatorInfo: {
         pages: [],
