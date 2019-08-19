@@ -1,5 +1,15 @@
 <template>
   <div class="container">
+    <!-- TEST EXPORT MODAL -->
+    <b-modal id="bv-modal-example" hide-footer>
+      <template slot="modal-title">
+        Summary Export
+      </template>
+      <div class="d-block text-center">
+        <p class="text-center mt-1">{{ showExportMsg }}</p>
+      </div>
+      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close</b-button>
+    </b-modal>
     <!-- Confusion Matrix 的 Modal -->
     <div>
       <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
@@ -13,7 +23,7 @@
     <div v-if="tabs === null">
       <b-alert show variant="dark">
         <a href="#" class="alert-link">
-          <router-link to="/project-overview">Please train a project or choose Model History below</router-link>
+          <router-link to="/project-overview">Please train a project or select the existing project</router-link>
         </a>
       </b-alert>
     </div>
@@ -22,15 +32,15 @@
     <div class="text-left">
       <b-dropdown id="dropdown-1" text="Model History" class="m-md-2">
         <b-dropdown-item
-          v-for="modelData in modelDatas"
-          :key="modelData.name"
-          @click="modelDataChage(modelData)"
-        >{{ modelData }}</b-dropdown-item>
+          v-for="modelName in modelNames"
+          :key="modelName + Date.now()"
+          @click="modelNameChage(modelName)"
+        >{{ modelName }}</b-dropdown-item>
       </b-dropdown>
     </div>
-    <p class="text-left">{{ modelId}}</p>
+    <p :class="{ 'text-left': true, 'text-warning':loadModelError }">{{ modelId}}</p>
 
-    <!-- tabs 麵包屑 -->
+    <!-- tabs Breadcrumb -->
     <div class="m-0 bg-white text-white">
       <b-tabs
         class="text-info"
@@ -41,30 +51,30 @@
           v-for="tab in tabs"
           :key="tab.name"
           :title="tab.name"
-          @click.prevent="changeView(tab)"
+          @click.prevent="changeTab(tab)"
         ></b-tab>
       </b-tabs>
     </div>
 
-    <!-- 每一個lable/Tab 的元件們 -->
+    <!-- use slot to put components in Tab component -->
     <Tab
       v-for="tab in tabs"
       :key="tab.id"
       :name="tab.name"
-      :current-view="currentView"
-      class="currentView container"
+      :current-tab="currentTab"
+      class="currentTab container"
     >
-      <!-- tab 標題 -->
+      <!-- tab title -->
       <div class="row" slot="title">
         <h5 class="col-12 text-center text-light m-0 mt-3">{{ tab.name | capitalize }}</h5>
       </div>
 
-      <!-- MetricsDisplay -->
+      <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
         <MetricsDisplay :metrics-data=" tab.metrics" class="col-12" />
       </div>
 
-      <!-- GraphDisplay -->
+      <!-- GraphDisplay component -->
       <GraphDisplay
         class="outterGrpah"
         slot="GraphDisplay"
@@ -72,7 +82,7 @@
         :new-threshold="newThreshold"
       />
 
-      <!-- ThresholdAdjustment -->
+      <!-- ThresholdAdjustment component -->
       <ThresholdAdjustment
         slot="ThresholdAdjustment"
         class="mt-3"
@@ -81,7 +91,7 @@
         @threshold-change="ThresholdChange"
       ></ThresholdAdjustment>
 
-      <!-- Confusion Matrix 的按鈕 -->
+      <!-- Confusion Matrix component Button -->
       <b-button
         block
         pill
@@ -91,7 +101,7 @@
         variant="outline-dark"
       >Confusion Matrix</b-button>
 
-      <!-- relable 的按鈕  還沒建立 TODO:-->
+      <!-- relable button TODO:-->
       <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relable</b-button>
 
       <!-- export files related to validation, maybe we should group this with `div` tag -->
@@ -112,7 +122,7 @@
         @change="onExport"
       />
     </Tab>
-    <p class="text-center mt-1">{{ showExportMsg }}</p>
+    
   </div>
 </template>
 
@@ -123,21 +133,21 @@ import localJson from "../deepra_mnistV2.json";
 // binary data
 import localJson2 from "../binary_data.json";
 
-// import data
+// import dataProcess, which process data from gRPC
 import { generateModel } from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
 
-// import gRPC
+// import gRPC service
 import validationService from "@/api/validation_service.js";
 import projectManager from "@/api/projects_service.js";
 import ModelManager from "@/api/models_service.js";
 
 // import utilties
 import modPath from "path";
-import modFs, { constants } from "fs";
+import modFs, { constants, exists } from "fs";
 import fileFetcher from "@/utils/file_fetcher.js";
 import vueUtils from "@/api/vue_utils.js";
 
-// import components
+// import vue components
 import Tab from "./Tab";
 import MetricsDisplay from "../InfoDisplay/MetricsDisplay";
 import GraphDisplay from "../InfoDisplay/GraphDisplay";
@@ -161,118 +171,129 @@ export default {
   data() {
     return {
       tabs: null,
-      views: [], //  => [ 'class 0','class 1','class 2'...]
-      currentView: "",
+      tabList: [], //  => [ 'class 0','class 1','class 2'...]
+      currentTab: "",
       newThreshold: 0,
-      modelId: "not ready",
-      modelDatas: [],
-      showExportMsg: ""
+      modelId: "",
+      modelNames: [],
+      showExportMsg: "",
+      loadModelError: false
     };
   },
 
-  created() {},
-
-  mounted() {
+  created() {
     this.dataInit();
   },
 
-  updated() {},
+  mounted() {},
 
   computed: {
+    currentProjectData() {
+      return this.$store.getters["Project/currentProject"];
+    },
+
     selectedMatrixData() {
-      // views data is async, so need to skip operation when no views
-      if (this.views.length === 0) {
+      // tabList got data is async, so need to skip operation when no tabList
+      if (this.tabList.length === 0) {
         return;
       }
       // get the current view index
-      let currentTab = this.views.indexOf(this.currentView);
+      let currentTab = this.tabList.indexOf(this.currentTab);
       return this.tabs[currentTab]["confusionMatrixInfo"];
     },
-    activeClass() {
-      if (this.currentView === "all class") {
-        return "currentUsed";
-      }
-    },
+
     ...mapGetters("Validation", {
       exportLocation: "outputLocation"
     })
   },
 
   methods: {
-    modelDataChage(id) {
+    modelNameChage(id) {
       this.modelId = id;
       this.modelChange();
     },
 
-    getView() {
-      this.views = this.tabs.map(key => {
+    getTabList() {
+      this.tabList = this.tabs.map(key => {
         return key.name;
       });
     },
+    
+    InitTab(){
+      this.getTabList();
+      this.currentTab = this.tabList[0];
+    },
 
-    changeView(tab) {
-      this.currentView = tab.name;
+    changeTab(tab) {
+      this.currentTab = tab.name;
     },
 
     ThresholdChange(obj) {
       this.newThreshold = obj.result;
     },
 
-    loadFromHistory() {
-      let projectInfo = this.$store.getters["Project/currentProject"];
-      console.log("---");
-      console.log(this.modelId);
-      console.log("---");
+    loadMoel() {
+      console.log("currentProjectData:", this.currentProjectData);
+      console.log("current model id:", this.modelId);
       let filePath = modPath.join(
-        projectInfo.location,
+        this.currentProjectData.location,
         "deepra_output",
         this.modelId,
         "validation"
       );
 
       let fn = modPath.join(filePath, "validation_output.json");
-      fileFetcher.readJson(fn, true).then(result => {
-        console.log("--- begin to read local json ---");
-        let tabData = generateModel(result.labels, result.metrics);
-        this.tabs = tabData;
+      fileFetcher
+        .readJson(fn, true)
+        .then(result => {
+          console.log("--- fetch local json ---");
+          this.loadModelError = false;
+          let tabData = generateModel(result.labels, result.metrics);
+          this.tabs = tabData;
 
-        this.$emit("model-data", {
-          result: tabData
+          // send tabData to EvaluationPanel.vue
+          this.$emit("model-data", {
+            result: tabData
+          });
+          this.InitTab()
+
+        })
+        .catch(err => {
+          this.loadModelError = true;
+          console.log("the err:", err);
+          this.modelId = "no such file or directory";
+          
         });
-        this.getView();
-        this.currentView = this.views[0];
-      });
     },
 
     modelChange() {
-      this.loadFromHistory();
+      this.loadMoel();
     },
 
-    getModelHistory() {
-      let projectInfo = this.$store.getters["Project/currentProject"];
-
+    getModelList() {
       return new Promise((resolve, reject) => {
-        ModelManager.GetModelListByProject(projectInfo.uuid).then(result => {
-          let re = /(train_[0-9]+_[0-9]+)/;
-          let modelHistory = [];
+        ModelManager.GetModelListByProject(this.currentProjectData.uuid).then(
+          result => {
+            let re = /(train_[0-9]+_[0-9]+)/;
+            let modelHistory = [];
 
-          for (let i = 0; i < result.model_list.length; i++) {
-            let model_path = result.model_list[i];
+            for (let i = 0; i < result.model_list.length; i++) {
+              let model_path = result.model_list[i];
 
-            if (modFs.existsSync(model_path + "/../" + "validation")) {
-              // console.log("exist");
-              modelHistory.push(model_path.match(re)[0]);
-              this.modelId = modelHistory[modelHistory.length - 1];
-              this.modelDatas = modelHistory;
-            } else {
-              console.log(
-                model_path + "/../" + "validation " + ": folder no exist"
-              );
+              if (modFs.existsSync(model_path + "/../" + "validation")) {
+                modelHistory.push(model_path.match(re)[0]);
+                this.modelId = modelHistory[modelHistory.length - 1];
+                this.modelNames = modelHistory;
+              } else {
+                console.log(
+                  model_path + "/../" + "validation " + ": folder no exist"
+                );
+              }
             }
+            // console.log(modelHistory);
+            resolve(true);
           }
-          // console.log(modelHistory);
-          resolve(true);
-        });
+        );
       });
     },
 
@@ -281,20 +302,23 @@ export default {
       let data = vueUtils.clone(
         this.$store.getters["Validation/validationOutput"]
       );
-      this.getModelHistory().then(result => {
+      this.getModelList().then(result => {
         if (data.content === null) {
           console.log("--- Tabs: get data from history record ---");
-          this.getModelHistory();
-          this.loadFromHistory();
+          this.getModelList();
+          this.loadMoel();
         } else {
+          // generate processed data
           let tabData = generateModel(data.labels, data.metrics);
           this.tabs = tabData;
 
+          // send tabData to EvaluationPanel.vue
           this.$emit("model-data", {
             result: tabData
           });
-          this.getView();
-          this.currentView = this.views[0];
+
+          // Tab init
+          this.InitTab()
         }
       });
     },
@@ -303,18 +327,20 @@ export default {
       setExportLocation: "setOutputLocation"
     }),
 
+
     onExport(evnt) {
-      let projectInfo = this.$store.getters["Project/currentProject"];
       if (evnt.target.files.length === 0) return;
       let outputLocation = evnt.target.files[0].path;
       let traied_model_loc = this.modelId;
       validationService
-        .exportFiles(projectInfo, outputLocation, traied_model_loc)
+        .exportFiles(this.currentProjectData, outputLocation, traied_model_loc)
         .then(result => {
           console.log(result);
-
           this.showExportMsg =
             "Files has been successfully move to folder :  " + outputLocation;
+          this.$bvModal.show("bv-modal-example");
+
+          t;
         });
     }
   },

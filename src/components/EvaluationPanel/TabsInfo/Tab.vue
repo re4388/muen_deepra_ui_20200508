@@ -1,6 +1,6 @@
 <template>
-    <!-- 上層有loop thru每一個tab的name, 又<a>會觸發currentView -->
-    <div v-if="name === currentView" class="tab">
+    <!-- 上層有loop thru每一個tab的name, 又<a>會觸發currentTab -->
+    <div v-if="name === currentTab" class="tab">
         <slot name="title"></slot>
         <slot name="MetricsDisplay"></slot>
 
@@ -10,7 +10,7 @@
                     <slot name="GraphDisplay"></slot>
                 </div>
 
-                <div class="col-sm-auto threshold" v-if="currentView !== 'all class'">
+                <div class="col-sm-auto threshold" v-if="currentTab !== 'all class'">
                     <slot name="ThresholdAdjustment"></slot>
                 </div>
                 <slot />
@@ -26,7 +26,7 @@ export default {
         name: {
             type: String
         },
-        currentView: {
+        currentTab: {
             type: String
         }
     },
@@ -38,7 +38,7 @@ export default {
     },
     computed: {
         activeClass() {
-            if (this.currentView === "all class") {
+            if (this.currentTab === "all class") {
                 return "col-sm-12";
             } else {
                 return "col-sm-8 ";
