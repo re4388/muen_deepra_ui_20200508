@@ -238,7 +238,7 @@ export default {
       );
 
       let fn = modPath.join(filePath, "validation_output.json");
-      fileFetcher.readJson(fn, true).then(result => {
+      fileFetcher.readJson(fn, false).then(result => {
         console.log("--- begin to read local json ---");
         let tabData = generateModel(result.labels, result.metrics);
         this.tabs = tabData;
