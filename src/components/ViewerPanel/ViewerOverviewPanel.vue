@@ -72,10 +72,11 @@ export default {
     })
   },
   mounted () {
-    EventBus.$emit('pageChanged', {
-      pages: ['Viewer'],
-      keepRoot: true,
-    })
+    // EventBus.$emit('pageChanged', {
+    //   pages: ['Viewer'],
+    //   keepRoot: true,
+    // })
+     EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   beforeRouteLeave (to, from, next) {
     // Check whether there are samples modified.

@@ -39,6 +39,8 @@ import ImportDatasetStep from './StepContent/ImportDatasetStep.vue'
 import DatasetReportStep from './StepContent/DatasetReportStep.vue'
 import FinalizationStep from './StepContent/FinalizationStep.vue'
 
+import { EventBus } from '@/event_bus.js'
+
 export default {
   name: 'DataImportPanel',
   components: {
@@ -47,6 +49,9 @@ export default {
     ImportDatasetStep,
     DatasetReportStep,
     FinalizationStep
+  },
+  mounted(){
+    EventBus.$emit('pageChanged', this.$route.meta.title)
   },
   created: function () {
     this.initializeComponent()

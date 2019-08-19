@@ -50,7 +50,7 @@
             }
           },
           {
-            title: 'image',
+            title: 'Viewer',
             href: '/viewer-overview',
             icon: {
               element: 'font-awesome-icon',

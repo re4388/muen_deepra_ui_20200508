@@ -56,7 +56,7 @@ export default {
     PredictOnDatasetStep
   },
   mounted () {
-    EventBus.$emit('pageChanged', 'Training')
+    EventBus.$emit('pageChanged', this.$route.meta.title)
     console.log('Current project')
     console.log(this.$store.getters['Project/currentProject'])
   },

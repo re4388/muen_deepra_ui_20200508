@@ -5,6 +5,8 @@
         <a id="brand">{{ brandText }}</a>
       </router-link>
       <a id="page-indicator"> {{ pageIndicatorDisplay }} </a>
+      <a id="page-indicator"> {{  showPojectName }} </a>
+      
     </div>
   </div>
 </template>
@@ -18,6 +20,15 @@ export default {
     brandText: String
   },
   created () {
+    EventBus.$on('showProjectName', projectNameInfo => {
+      let projectNameFormat=''
+      if (projectNameInfo === 'notInsideProject') {
+        projectNameFormat=''
+      } else {
+        projectNameFormat = '> Project Name: ' + projectNameInfo
+      }
+      this.showPojectName = projectNameFormat
+    }),
     EventBus.$on('pageChanged', (info) => {
       if (typeof(info) === 'string') {
         this.pageIndicatorInfo = {
@@ -34,18 +45,20 @@ export default {
   computed: {
     pageIndicatorDisplay: function () {
       if (this.pageIndicatorInfo.pages.length === 0) {
-        return ''
+        return 'Welcome to DeepRA'
       } else {
         let indicator = ['']
         indicator.push(...this.pageIndicatorInfo.pages)
         // this.pageIndicator = this.pageIndicatorInfo.keepRoot ?
         //   this.pageIndicator + indicator.join(' > ') : indicator.join(' > ')
-        return indicator.join(' > ')
+        return indicator.join('')
       }
     },
   },
+  // showProjectName
   data () {
     return {
+      showPojectName:'',
       pageIndicator: '',
       pageIndicatorInfo: {
         pages: [],

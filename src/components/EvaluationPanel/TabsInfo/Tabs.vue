@@ -112,6 +112,7 @@
         @change="onExport"
       />
     </Tab>
+    <p class="text-center mt-1">{{ showExportMsg }}</p>
   </div>
 </template>
 
@@ -164,7 +165,8 @@ export default {
       currentView: "",
       newThreshold: 0,
       modelId: "not ready",
-      modelDatas: []
+      modelDatas: [],
+      showExportMsg: ""
     };
   },
 
@@ -256,14 +258,16 @@ export default {
 
           for (let i = 0; i < result.model_list.length; i++) {
             let model_path = result.model_list[i];
-            
-            if (modFs.existsSync(model_path + '/../' + 'validation')) {
+
+            if (modFs.existsSync(model_path + "/../" + "validation")) {
               // console.log("exist");
               modelHistory.push(model_path.match(re)[0]);
               this.modelId = modelHistory[modelHistory.length - 1];
               this.modelDatas = modelHistory;
             } else {
-              console.log( model_path + '/../' + 'validation ' + ": folder no exist");
+              console.log(
+                model_path + "/../" + "validation " + ": folder no exist"
+              );
             }
           }
           // console.log(modelHistory);
@@ -308,6 +312,9 @@ export default {
         .exportFiles(projectInfo, outputLocation, traied_model_loc)
         .then(result => {
           console.log(result);
+
+          this.showExportMsg =
+            "Files has been successfully move to folder :  " + outputLocation;
         });
     }
   },
