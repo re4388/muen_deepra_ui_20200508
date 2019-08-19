@@ -4,14 +4,14 @@ let protoPackageName = 'prediction'
 let protoPath = `./src/api/protos/${protoPackageName}.proto`
 
 
-function startPrediction (modelUuid, datasetInfo, handlerProgress, handlerEnd) {
+function startPrediction (modelUuid, datasetUuid, handlerProgress, handlerEnd) {
   let predictionService = protoUtils.getServicer(
     protoPath, protoPackageName, 'PredictionService'
   )
 
   let call = predictionService.StartPrediction({
     model_uuid: modelUuid,
-    dataset_uuid: datasetInfo.uuid
+    dataset_uuid: datasetUuid
   })
   call.on('data', (resp) => {
     console.log(resp)

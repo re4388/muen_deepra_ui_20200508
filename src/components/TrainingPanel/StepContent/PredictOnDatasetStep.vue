@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import validationService from '@/api/validation_service.js'
+import predictionService from '@/api/prediction_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
 import { converterDict } from '@/utils/label_converter.js'
 import { mapActions, mapGetters } from 'vuex'
@@ -61,27 +61,20 @@ export default {
       }
       let projectInfo = this.$store.getters['Project/currentProject']
       let trainingOutput = this.$store.getters['Training/trainingOutput']
-      console.log(projectInfo)
-      console.log(trainingOutput)
 
       this.toggleIsValidating()
-      let call = validationService.startValidation(
-        projectInfo,
-        trainingOutput,
+      let call = predictionService.startPrediction(
+        trainingOutput.model_uuid,
+        projectInfo.dataset_uuid,
         handlerProgress,
-        handlerEnd,
-        {
-          datasetType: 'all'
-        }
+        handlerEnd
       )
     },
     finishValidation () {
-      console.log('Validation is finished')
       this.toggleIsValidating()
 
-      // Get validation output (e.g. output directory)
-      let projectInfo = this.$store.getters['Project/currentProject']
-      validationService.getValidationOutput(projectInfo).then((result) => {
+      predictionService.getPredictionOutput().then((result) => {
+        this.$store.dispatch('Testing/setPredictionOutput', result)
         let taskType = this.$store.getters['Project/taskType']
         let labelConverter = new converterDict[taskType](result.prediction, result.labels)
         let predictedLabels = labelConverter.convertAll()
