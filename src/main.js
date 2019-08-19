@@ -100,7 +100,7 @@ const router = new VueRouter({
       name: 'ViewerOverview',
       component: ViewerOverviewPanel,
       meta: {
-        title: 'Project Overview > Viewer'
+        title: 'Viewer'
       }
     },
     {

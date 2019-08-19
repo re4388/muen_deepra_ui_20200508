@@ -23,7 +23,7 @@ export default {
       if (projectNameInfo === 'notInsideProject') {
         projectNameFormat=''
       } else {
-        projectNameFormat = '>>>>> Current Project Name: ' + projectNameInfo
+        projectNameFormat = '> Project Name: ' + projectNameInfo
       }
       this.showPojectName = projectNameFormat
     }),
@@ -62,7 +62,7 @@ export default {
         indicator.push(...this.pageIndicatorInfo.pages)
         // this.pageIndicator = this.pageIndicatorInfo.keepRoot ?
         //   this.pageIndicator + indicator.join(' > ') : indicator.join(' > ')
-        return indicator.join(' > ')
+        return indicator.join('')
       }
     },
   },
