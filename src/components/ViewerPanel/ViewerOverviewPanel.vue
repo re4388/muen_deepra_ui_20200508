@@ -76,7 +76,7 @@ export default {
     //   pages: ['Viewer'],
     //   keepRoot: true,
     // })
-     EventBus.$emit('pageChanged',this.$route.meta.title)
+    EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   beforeRouteLeave (to, from, next) {
     // Check whether there are samples modified.
@@ -143,6 +143,7 @@ export default {
       ).then((result) => {
         console.log(result)
         this.$store.dispatch('Label/resetAllState')  // TODO: remove this line
+        this.fetchData()  // fetch modified data to refresh the content in this page
       })
     },
     discardModifiedSamples () {
