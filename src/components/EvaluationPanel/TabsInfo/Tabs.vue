@@ -91,8 +91,15 @@
         variant="outline-dark"
       >Confusion Matrix</b-button>
 
-      <!-- relable 的按鈕  還沒建立 TODO:-->
-      <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relable</b-button>
+      <!-- relablel 的按鈕 -->
+      <b-button
+        block
+        pill
+        size="sm"
+        class="mt-4"
+        variant="outline-dark"
+        @click="onBtnRelabelClick"
+      >Relabel</b-button>
 
       <!-- export files related to validation, maybe we should group this with `div` tag -->
       <b-button
@@ -302,6 +309,10 @@ export default {
     ...mapActions("Validation", {
       setExportLocation: "setOutputLocation"
     }),
+
+    onBtnRelabelClick () {
+      this.$router.push('/viewer-overview')
+    },
 
     onExport(evnt) {
       let projectInfo = this.$store.getters["Project/currentProject"];
