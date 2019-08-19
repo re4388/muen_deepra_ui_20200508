@@ -71,7 +71,7 @@
 
       <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
-        <MetricsDisplay :metrics-data=" tab.metrics" class="col-12" />
+        <MetricsDisplay :metrics-data=" tab.metrics" :currentTab="currentTab" class="col-12" />
       </div>
 
       <!-- GraphDisplay component -->

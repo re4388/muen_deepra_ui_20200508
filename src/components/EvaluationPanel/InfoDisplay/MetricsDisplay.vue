@@ -3,11 +3,11 @@
         <table class="table table-bordered table-sm mb-1">
             <thead class="thead-dark">
                 <tr>
-                    <th>Sensitivity</th>
-                    <th>Specificity</th>
-                    <th>Precision</th>
-                    <th>F1 score</th>
-                    <th>AUC</th>
+                    <th>{{Sensitivity}}</th>
+                    <th>{{specificity }}</th>
+                    <th>{{precision }}</th>
+                    <th>{{f1Score }}</th>
+                    <th>{{auc }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,16 +30,49 @@ export default {
     props: {
         metricsData: {
             type: Object
-        }
+        },
+        currentTab: {
+            type: String
+        },
+    },
+    mounted(){
+        // console.log(this.currentTab)
     },
     data() {
         return {
             anotationText: `
-        We use test dataset to evaluate the model.
-        This table shows sensitivity ,specificity, precision, F1 score, AUC. F1
-        score : 2 * Precision * Sensitivity / (Precision Sensitivity). AUC: Area under ROC curve
-        `
+                We use test dataset to evaluate the model.
+                This table shows sensitivity ,specificity, precision, F1 score, AUC. F1
+                score : 2 * Precision * Sensitivity / (Precision Sensitivity). AUC: Area under ROC curve
+                `,
         };
+    },
+    computed:{
+        Sensitivity(){
+            return this.currentTab ==='all class'?
+            'Micro Specificity':
+            'Specificity'
+        },
+        specificity(){
+            return this.currentTab ==='all class'?
+            'Micro Specificity':
+            'Specificity'
+        },
+        precision(){
+            return this.currentTab ==='all class'?
+            'Micro Precision':
+            'Precision'
+        },
+        f1Score(){
+            return this.currentTab ==='all class'?
+            'Micro F1 Score':
+            'F1 Score'
+        },
+        auc(){
+            return this.currentTab ==='all class'?
+            'Weighted AUC':
+            'AUC'
+        }  
     },
     filters: {
         numberFormater(val) {
