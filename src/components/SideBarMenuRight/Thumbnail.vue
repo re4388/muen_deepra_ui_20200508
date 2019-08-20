@@ -27,6 +27,7 @@ export default {
   methods: {
     onClick () {
       this.$emit('click', this._props)
+      // console.log(this._props.filename)
     }
   }
 }
@@ -76,5 +77,13 @@ export default {
 }
 .labelRed {
   border: 1px solid red;
+}
+.metadataDisplay {
+  color: white;
+  position: fixed;
+  top: 700px;
+  left: 50px;
+  // background: blue;
+  padding: 10px;
 }
 </style>

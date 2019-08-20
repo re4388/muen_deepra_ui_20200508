@@ -22,8 +22,9 @@
             <!-- TODO: complete the feature of `differentLabels` -->
             <!-- :differentLabels="differentLabels" -->
             <ImageBox
-            class="imageBox"
-            :images="images"
+              v-if="isShowingImgList"
+              class="imageBox"
+              :images="images"
             />
           </div>
       </div>
@@ -77,11 +78,13 @@ export default {
       let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
-      // console.log('--- current selected image:')
-      // console.log(obj.item)
-      // console.log(obj.index)
+      console.log('--- current selected image:')
+      console.log(obj.item)
+      console.log(obj.index)
       this.selectedImage = obj.item
       this.selectedImageIndex = obj.index
+      // console.log(this.selectedImage.filename)
+      EventBus.$emit('showSelectedFilename', this.selectedImage.filename)
     })
   },
   beforeDestroy () {
@@ -123,9 +126,10 @@ export default {
     })
   },
   methods: {
-    showImgList () {
+    showImgList (e) {
       this.isShowingImgList = !this.isShowingImgList
       let el = document.querySelector('.title')
+      if (el === null) return
       el.classList.toggle('show')
     },
     onSaveChanges () {
@@ -150,6 +154,7 @@ export default {
   height: 100%;
   overflow: scroll;
   overflow-x:hidden;
+  z-index: 999;
 }
 .rightsideBlock {
   border-bottom: 1px solid white;

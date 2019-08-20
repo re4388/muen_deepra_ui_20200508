@@ -1,7 +1,7 @@
 <template>
   <div id="image-box" class="image-box">
     <div class="box">
-      <div class="title">
+      <div class="title show">
         <div class="catalog">{{ currentImageIndex }} / {{ total }}</div>
           <div class="imgList-wrapper">
             <transition name="fade">
@@ -41,7 +41,7 @@ export default {
     thumbnail
   },
   created () {
-    EventBus.$once('notifyImageTotalNumber', (imageTotalNumber)=>{
+    EventBus.$on('notifyImageTotalNumber', (imageTotalNumber)=>{
       this.total = imageTotalNumber
       this.initializeComponent()
     })
@@ -50,6 +50,7 @@ export default {
     })
   },
   mounted(){
+    this.initializeComponent()
     const listElm = document.querySelector('#imgList');
     listElm.addEventListener('scroll', e => {
       let condition = listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight
@@ -57,6 +58,9 @@ export default {
         this.loadMore();
       }
     });
+  },
+  beforeDestroy() {
+    EventBus.$off('notifyImageTotalNumber')
   },
   methods: {
     initializeComponent () {
@@ -92,6 +96,9 @@ export default {
     currentImageIndex () {
       return this.indexNumber + 1
     },
+    total () {
+      return this.fileList.length
+    },
     ...mapState({
       fileList: state => state.Viewer.parsedFileList,
       predictedLabels: state => state.Testing.predictedLabels
@@ -104,7 +111,7 @@ export default {
       loadedImages: [],
       currentIndex: 0,
       indexNumber: 0,
-      total: '',
+      // total: '',
       batchSize: 40,
       differentLabels: [],
       isDifferent: true
@@ -162,7 +169,7 @@ $scroll-bar-width: 5px;
   width: 315px;
   overflow: hidden;
   position: fixed;
-  top: 338px;
+  top: 300px;
   right: 150px;
   padding: 0px;
   padding-bottom: 20px;
