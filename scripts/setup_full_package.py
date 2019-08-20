@@ -1,7 +1,8 @@
 import os
 import os.path as osp
-from subprocess import Popen, check_call, CalledProcessError
+from subprocess import Popen, check_call, CalledProcessError, DEVNULL
 from shutil import copyfile, rmtree, which
+from sys import platform as sys_platform
 from getpass import getpass
 import glob
 
@@ -36,7 +37,7 @@ def main():
     cwd = osp.normpath(osp.join(osp.dirname(__file__), '..'))
     wd_autodl = osp.join(cwd, 'autodl')
     wd_deepra = osp.join(cwd, 'deerpa')
-    is_bash_available = which('rmdir') is None
+    is_bash_available = 'win' not in sys_platform
     cmd_clean = 'rm -rf -y ./{}' if is_bash_available else 'echo y | rmdir /s .\{}'
 
     cmd_pairs = [
@@ -61,8 +62,9 @@ def main():
     # Check whether given gitea-credential is valid for accessing gitea
     try:
         cmd = 'git ls-remote http://{}@10.0.4.52:3000/muen/autodl.git'.format(git_credential)
-        resp = check_call(cmd.split())
+        resp = check_call(cmd.split(), stderr=DEVNULL)
     except CalledProcessError as ex_call_error:
+        ex_call_error.args[1].pop()  # avoid showing user credential from error message
         raise ValueError('Given git credential is invalid.') from ex_call_error
 
     for _cmd, _cwd, use_shell in cmd_pairs:

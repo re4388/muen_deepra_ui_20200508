@@ -7,10 +7,31 @@
 </template>
 
 <script>
+import { EventBus } from '@/event_bus.js'
 
 export default {
   name: 'BasePanel',
   components: {
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.resetStates()
+    })
+  },
+  methods: {
+    resetStates () {
+      this.$store.dispatch('setCurrentEntry', 'main')
+      EventBus.$emit('entryChanged', 'main')
+
+      // Reset state
+      this.$store.dispatch('DataImport/resetAllState')
+      this.$store.dispatch('Project/resetAllState')
+      this.$store.dispatch('Validation/resetAllState')
+      this.$store.dispatch('Testing/resetAllState')
+      this.$store.dispatch('Label/resetAllState')
+
+      EventBus.$emit('pageChanged', '')
+    }
   }
 }
 </script>

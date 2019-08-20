@@ -68,7 +68,10 @@ export default {
         projectInfo,
         trainingOutput,
         handlerProgress,
-        handlerEnd
+        handlerEnd,
+        {
+          datasetType: 'valid_set'
+        }
       )
     },
     finishValidation () {

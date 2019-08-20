@@ -19,7 +19,12 @@
       <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
           <div>
-            <ImageBox :images="images" class="imageBox"/>
+            <!-- TODO: complete the feature of `differentLabels` -->
+            <!-- :differentLabels="differentLabels" -->
+            <ImageBox
+            class="imageBox"
+            :images="images"
+            />
           </div>
       </div>
     </div>
@@ -27,9 +32,13 @@
       <div class="noteTitle rightsideBlockTitle"><h5>Edit Log<br> &amp; <br>Note</h5><br></div>
       <div class="note"><p>20190523</p></div>
       <div class="note"><p>Model 1 Predict as Label1</p></div>
-    </div>    
+    </div>
+    <div class="rightsideBlock edit__logp-2 flex-fill bd-highlight">
+      <b-button id="btn-save-changes" variant="light" @click="onSaveChanges">Save</b-button>
+    </div>
   </div>
-</template>        
+</template>
+
 <script>
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
 import LabelPanel from './LabelPanel.vue'
@@ -51,29 +60,32 @@ export default {
   watch: {
     isShowingImgList() {},
     selectedImage (newVal, oldVal) {
-      console.log('Information of selected image: ')
-      console.log(newVal)
+      // console.log('Information of selected image: ')
+      // console.log(newVal)
     }
   },
   created () {
-    EventBus.$once('viewerDatasetChanged',()=>{
+    EventBus.$on('viewerDatasetChanged', () => {
       console.log('--- processing with event viewerDatasetChanged')
       EventBus.$emit('notifyImageTotalNumber', this.images.length)
-
+      
       let dataset = this.$store.getters['Viewer/currentDataset']
       this.labels = dataset.details.labelReport.labels
-      console.log(this.labels)
+      // console.log(this.labels)
       this.taskType = dataset.taskType
       this.selectedImage = this.images[0]
+      let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
-      console.log('--- current selected image: ')
-      console.log(obj.item)
+      // console.log('--- current selected image:')
+      // console.log(obj.item)
+      // console.log(obj.index)
       this.selectedImage = obj.item
       this.selectedImageIndex = obj.index
     })
   },
   beforeDestroy () {
+    EventBus.$off('viewerDatasetChanged')
     EventBus.$off('onNavigationImageClicked')
   },
   data () {
@@ -91,23 +103,35 @@ export default {
       return this.taskType != 'multilabel' ? true : false
     },
     selectedLabel () {
-      return this.selectedImage === null ? '' : this.selectedImage.label
+      if (this.selectedImage === null) return ''
+      // XXX: We have to check whether the label of selected image has been modified.
+      //   If true, we have to return the modified label rather than the original label.
+      //   Otherwise, we cannot show the modified result to `LabelPanel`.
+      let idx = this.modifiedSamples.map(x => x.filename).indexOf(this.selectedImage.filename)
+      let labelToBeDisplay = idx === -1 ? this.selectedImage.label : this.modifiedSamples[idx].label
+      return labelToBeDisplay
     },
     predictedLabel () {
-      console.log('---- predictedLabel: ')
-      console.log(this.predictedLabels[this.selectedImageIndex])
+      // console.log('---- predictedLabel: ')
+      // console.log(this.predictedLabels[this.selectedImageIndex])
       return String(this.predictedLabels[this.selectedImageIndex])
     },
     ...mapState({
       images: state => state.Viewer.parsedFileList,
-      predictedLabels: state => state.Testing.predictedLabels
+      predictedLabels: state => state.Testing.predictedLabels,
+      modifiedSamples: state => state.Label.modifiedSamples
     })
   },
   methods: {
-    showImgList() {
+    showImgList () {
       this.isShowingImgList = !this.isShowingImgList
       let el = document.querySelector('.title')
       el.classList.toggle('show')
+    },
+    onSaveChanges () {
+      let num = this.$store.getters['Label/modifiedSamples'].length
+      let selectedModal = num === 0 ? 'modal-no-change-notification' : 'modal-confirm-changes'
+      this.$parent.$refs[selectedModal].show()
     }
   }
 }

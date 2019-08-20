@@ -89,7 +89,9 @@ export default {
         projectService.getProject(this.project.uuid).then((result) => {
           this.project = result.project
           this.dataset = result.dataset
-          console.log(this.project.name)
+          // XXX: save task type into store for further usage, but this might need
+          //   to be refactored
+          this.$store.dispatch('Project/setTaskType', this.dataset['task_type'])
           resolve(result)
         })
       })

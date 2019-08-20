@@ -1,5 +1,5 @@
 <template>
-  <div class="prediction-progress d-flex flex-column">
+  <div class="predict-on-dataset-step d-flex flex-column">
     <div class="title text-content">{{ content.title }}</div>
     <div class="progress">
       <div class="progress-bar" role="progressbar"
@@ -19,19 +19,27 @@
 import predictionService from '@/api/prediction_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
 import { converterDict } from '@/utils/label_converter.js'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'PredictionProgress',
+  name: 'PredictOnDatasetStep',
   components: {
     logDisplay
   },
   props: {
     content: Object
   },
-  created: function () {
-    this.startPrediction()
+  mounted () {
+    this.startValidation()
   },
   methods: {
+    ...mapActions ('Training', {
+      unlockStage: 'unlockStage',
+      setCompletedStageIndex: 'setCompletedStageIndex'
+    }),
+    ...mapActions ('Validation', {
+      toggleIsValidating: 'toggleIsValidating'
+    }),
     setProgressRange (rngMin, rngMax) {
       this.progressValueMin = rngMin
       this.progressValueMax = rngMax
@@ -42,64 +50,59 @@ export default {
       }
       this.progressValue = (val * this.progressValueMax).toFixed(2)
     },
-    startPrediction () {
-      let model = this.$store.getters['Model/currentModel']
-      let datasetInfo = this.$store.getters['DataImport/datasetInfo']
+    startValidation () {
+      if (this.isValidating) return
 
-      console.log('--- start prediction ---')
-
-      let handlerProgress = (resp) =>{
+      let handlerProgress = (resp) => {
         this.updateProgressBar(resp)
       }
-      let handlerEnd = (resp) =>{
-        this.finishPrediction()
+      let handlerEnd = (resp) => {
+        this.finishValidation()
       }
+      let projectInfo = this.$store.getters['Project/currentProject']
+      let trainingOutput = this.$store.getters['Training/trainingOutput']
 
+      this.toggleIsValidating()
       let call = predictionService.startPrediction(
-        model.uuid,
-        datasetInfo.uuid,
+        trainingOutput.model_uuid,
+        projectInfo.dataset_uuid,
         handlerProgress,
         handlerEnd
       )
     },
-    finishPrediction () {
-      console.log('Prediction is finished')
+    finishValidation () {
+      this.toggleIsValidating()
 
       predictionService.getPredictionOutput().then((result) => {
         this.$store.dispatch('Testing/setPredictionOutput', result)
-        console.log('--- Prediction output:')
-        console.log(result)
-
-        // Update the label list of cached `datasetInfo`, so that the correct label
-        // set can be displayed in label panel.
-        this.$store.dispatch('DataImport/updateDatasetInfo', {
-          'details.labelReport.labels': result.labels
-        })
-        let taskType = this.$store.getters['DataImport/datasetInfo'].taskType
+        let taskType = this.$store.getters['Project/taskType']
         let labelConverter = new converterDict[taskType](result.prediction, result.labels)
         let predictedLabels = labelConverter.convertAll()
-        console.log(predictedLabels)
-        console.log(predictedLabels[0])
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       })
       this.$emit('onProgressFinished', true)
     },
     checkContent () {
+      if (this.isValidating) return
+
       return new Promise((resolve, reject) => {
-        this.$store.dispatch('Testing/unlockStage')
-        this.$store.dispatch('Testing/setCompletedStageIndex', this.content.id)
+        this.unlockStage()
+        this.setCompletedStageIndex(this.content.id)
         resolve(true)
       })
     }
+  },
+  computed: {
+    ...mapGetters('Validation', {
+      isValidating: 'isValidating'
+    })
   },
   data () {
     return {
       progressValue: 0,
       progressValueMin: 0,
       progressValueMax: 100,
-      isTrainingStarted: false,
-      log: '',
-      temp: 0
+      log: ''
     }
   }
 }
@@ -110,7 +113,7 @@ export default {
   margin: 0px 0px 20px 0px;
   min-height: 15px;
 }
-.prediction-progress {
+.predict-on-dataset-step {
   color: black;
   padding: 20px;
 }

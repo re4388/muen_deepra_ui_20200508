@@ -7,6 +7,11 @@
       @cancel="discardModifiedSamples"
     >
       <p>Some annotations of samples are changed, do you want to save them?</p>
+      <p>(Click "cancel" button to discard changes)</p>
+      <p>(Click the "x" sign to close this dialog and continue editing)</p>
+    </b-modal>
+    <b-modal ref="modal-no-change-notification" title="No change have to be saved" ok-only>
+      <p>There is no change have to be saved.</p>
     </b-modal>
   </div>
 </template>
@@ -41,32 +46,56 @@ export default {
   },
   created () {
     this.fetchData()
+    // be able to compare with the parsedFileLIstLabels and the predictedLables
+    EventBus.$on('viewerDatasetChanged', () => {
+      let temp = this.$store.getters['Viewer/parsedFileList']
+      let predictedLabels = this.$store.getters['Testing/predictedLabels']
+      let parsedFileListLabels = temp.map(function (obj) {
+        return parseInt(obj.label, 10)
+      })
+      // compare two arrays and then return the index of the difference
+      // if (predictedLabels !== parsedFileListLabels) {
+      //   console.log('---it is different----')
+      // }
+      let findDivergence = function (predictedLabels, parsedFileListLabels) {
+        let result = []
+        let i
+        for (i = 0; i < predictedLabels.length; i++){
+          if (predictedLabels[i] !== parsedFileListLabels[i]) {
+            result.push(i);
+          }
+        }
+        return result
+      };
+      let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
+      EventBus.$emit('showDifference', differentLabels)
+    })
   },
   mounted () {
     // EventBus.$emit('pageChanged', {
     //   pages: ['Viewer'],
     //   keepRoot: true,
     // })
-     EventBus.$emit('pageChanged',this.$route.meta.title)
+    EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   beforeRouteLeave (to, from, next) {
     // Check whether there are samples modified.
     // If true, send a request to backend to handle them.
     let modifiedSamples = this.$store.getters['Label/modifiedSamples']
-    console.log(modifiedSamples)
-
     if (modifiedSamples.length !== 0) {
       this.$refs['modal-confirm-changes'].show()
     } else {
       next(true)
     }
   },
+  beforeDestroy() {
+    EventBus.$off('viewerDatasetChanged')
+  },
   methods: {
     // when the viewerDatasetChanged, get the current dataset from store and emit the message
     fetchData () {
       let currentProject = this.$store.getters['Project/currentProject']
       let dataset = this.$store.getters['DataImport/datasetInfo']
-
       let parseDataProcess = (result) => {
         let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
         pathCollector.parseFileList().then((result) => {
@@ -114,6 +143,7 @@ export default {
       ).then((result) => {
         console.log(result)
         this.$store.dispatch('Label/resetAllState')  // TODO: remove this line
+        this.fetchData()  // fetch modified data to refresh the content in this page
       })
     },
     discardModifiedSamples () {

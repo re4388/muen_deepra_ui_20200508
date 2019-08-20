@@ -2,9 +2,7 @@
   <div class="container">
     <!-- TEST EXPORT MODAL -->
     <b-modal id="bv-modal-example" hide-footer>
-      <template slot="modal-title">
-        Summary Export
-      </template>
+      <template slot="modal-title">Summary Export</template>
       <div class="d-block text-center">
         <p class="text-center mt-1">{{ showExportMsg }}</p>
       </div>
@@ -101,8 +99,15 @@
         variant="outline-dark"
       >Confusion Matrix</b-button>
 
-      <!-- relable button TODO:-->
-      <b-button block pill size="sm" class="mt-4" variant="outline-dark">Relable</b-button>
+      <!-- relablel 的按鈕 -->
+      <b-button
+        block
+        pill
+        size="sm"
+        class="mt-4"
+        variant="outline-dark"
+        @click="onBtnRelabelClick"
+      >Relabel</b-button>
 
       <!-- export files related to validation, maybe we should group this with `div` tag -->
       <b-button
@@ -122,7 +127,6 @@
         @change="onExport"
       />
     </Tab>
-    
   </div>
 </template>
 
@@ -218,8 +222,8 @@ export default {
         return key.name;
       });
     },
-    
-    InitTab(){
+
+    InitTab() {
       this.getTabList();
       this.currentTab = this.tabList[0];
     },
@@ -244,10 +248,9 @@ export default {
 
       let fn = modPath.join(filePath, "validation_output.json");
       fileFetcher
-        .readJson(fn, true)
+        .readJson(fn, false)
         .then(result => {
-          console.log("--- fetch local json ---");
-          this.loadModelError = false;
+          console.log("--- begin to read local json ---");
           let tabData = generateModel(result.labels, result.metrics);
           this.tabs = tabData;
 
@@ -255,14 +258,12 @@ export default {
           this.$emit("model-data", {
             result: tabData
           });
-          this.InitTab()
-
+          this.InitTab();
         })
         .catch(err => {
           this.loadModelError = true;
           console.log("the err:", err);
           this.modelId = "no such file or directory";
-          
         });
     },
 
@@ -318,7 +319,7 @@ export default {
           });
 
           // Tab init
-          this.InitTab()
+          this.InitTab();
         }
       });
     },
@@ -327,6 +328,9 @@ export default {
       setExportLocation: "setOutputLocation"
     }),
 
+    onBtnRelabelClick() {
+      this.$router.push("/viewer-overview");
+    },
 
     onExport(evnt) {
       if (evnt.target.files.length === 0) return;

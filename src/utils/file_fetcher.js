@@ -26,6 +26,7 @@ class DatasetPathCollector {
         this.header = this.fileList.splice(0, 1)[0].split(',')
         let idxFilename = this.header.indexOf(this.colFilename)
         let idxLabel = this.header.indexOf(this.colLabel)
+        console.log(this.colLabel)
 
         this.fileList = this.fileList.map(function(x) {
           var splitted = x.split(',')
