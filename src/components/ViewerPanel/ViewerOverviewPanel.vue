@@ -13,6 +13,9 @@
     <b-modal ref="modal-no-change-notification" title="No change have to be saved" ok-only>
       <p>There is no change have to be saved.</p>
     </b-modal>
+    <div class="metadataDisplay">
+      {{ selectedImageFilename }}
+    </div>
   </div>
 </template>
 
@@ -38,7 +41,8 @@ export default {
     return {
       image: null,
       loading: true,
-      dataset: null
+      dataset: null,
+      selectedImageFilename: null
     }
   },
   watch: {
@@ -55,7 +59,7 @@ export default {
       })
       // compare two arrays and then return the index of the difference
       // if (predictedLabels !== parsedFileListLabels) {
-      //   console.log('---it is different----')
+        // console.log('---it is different----')
       // }
       let findDivergence = function (predictedLabels, parsedFileListLabels) {
         let result = []
@@ -69,6 +73,10 @@ export default {
       };
       let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
       EventBus.$emit('showDifference', differentLabels)
+    }),
+    EventBus.$on('showSelectedFilename', (selectedImageFilename)=>{
+      this.selectedImageFilename = selectedImageFilename
+      // console.log(this.selectedImageFilename)
     })
   },
   mounted () {
@@ -166,6 +174,13 @@ export default {
   // max-width: 100%;
 }
 .toolbar {
-  height: 85%;
+  height: 100%;
+}
+.metadataDisplay {
+  color: white;
+  position: fixed;
+  top: 880px;
+  left: 170px;
+  user-select:none;
 }
 </style>

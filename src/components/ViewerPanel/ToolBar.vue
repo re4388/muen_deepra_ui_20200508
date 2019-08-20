@@ -62,7 +62,7 @@
       <div class="wrap__2 d-inline-flex flex-fill flex-column justfy-content-center align-self-center;" style="width:100%; height:100%;">
         <v-zoomer class="zoomer d-inline-flex flex-column">
           <imagvue 
-            v-model="imageUrl"
+            v-model="url"
             id="imgExample"
             class="imgExample d-inline-flex justify-content-center"            
             :filters="isOpenFilters"
@@ -111,6 +111,7 @@ export default {
     thumbnail
   },
   created(){
+    console.log('----loading----')
     this.initializeComponent()
     // methods-1
     // when (once) receive the message about viewerDatasetChange, 
@@ -118,9 +119,11 @@ export default {
     // and let the firstImage equal to the first item from the fileList
     // finally, join the root and filename for imageUrl using
     EventBus.$once('viewerDatasetChanged',()=>{
+      console.log('----loading----')
       // Parse path of images from dataset and assign to `this.images`
       let firstImage = this.$store.getters['Viewer/parsedFileList'][0]
       let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
+      console.log(firstImage.filename)
       this.url = joined
     }),
     // // methods-2
@@ -136,12 +139,11 @@ export default {
     // when onNavigationImageClicked, join the root and filename for imageUrl using
 
     EventBus.$on('onNavigationImageClicked',(obj)=>{
-      // console.log(obj)
       let item = obj.item
       let joined = modPath.join(modPath.resolve(item.root), item.filename)
-      // console.log(joined)
+      console.log('----loading----')
       this.url = joined
-    })  
+    })
   },
   methods: {
     initializeComponent() {
@@ -177,27 +179,38 @@ export default {
       }
     }
   },
+  // watch: {
+  //   url (newVal, oldVal) {
+  //     let el = document.getElementById('imgExample')
+  //     if (el === null) return ''
+  //     el.src = newVal
+  //   }
+  // },
   computed: {
     fixedRatioHeight () {
       return this.filters['width']
     },
-    dropShadow() {
+    dropShadow() {  
       return this.dropShadowJson
     },
     fullPath: function() {
       return modPath.join(modPath.resolve(this.root), this.filename)
     },
-    imageUrl: function() {
-      console.log('----loading----')
-      console.log(this.url)
-      let el = document.getElementById('imgExample')
-      if (el === null) return ''
-      el.src = this.url
-      return this.url
-    }
+    // imageUrl () {
+    //   // console.log('----loading----')
+    //   // console.log(this.url)
+    //   // let el = document.getElementById('imgExample')
+    //   // if (el === null) return this.url
+    //   // el.src = this.url
+    //   return this.url
+    // },
+    // imageUrl: {
+    //   get () { return this.url }
+    // }
   },
   data() {
     return {
+      selectedImageFilename: null,
       pathCollector: null,
       cnt: 0,
       width: 0,
@@ -227,17 +240,17 @@ export default {
 
 <style lang="scss" scoped>
 .wrap__1 {
-  box-sizing: border-box;
+  // box-sizing: border-box;
   background-color: rgb(0, 0, 0);
-  height: 114px;
+  // height: 114px;
 }
 .wrap__2 {
   object-fit: contain;
 }
-
 // 下拉式選取區塊
 .drop-down-menu {
   height: 50px;
+  line-height: 100%;
 }
 ul { 
 /* 取消ul預設的內縮及樣式 */
@@ -250,6 +263,8 @@ ul.drop-down-menu {
 }
 ul.drop-down-menu li {
   position: relative;
+  display: block;
+  z-index: 998;
 }
 ul.drop-down-menu > li:last-child {
   border-right: none;
@@ -275,23 +290,20 @@ ul.drop-down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
 ul.drop-down-menu ul { /*隱藏次選單*/
   display: none;
 }
-ul.drop-down-menu ul li:last-child {
-  border-bottom: none;
-}
-ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
-  z-index: 25;
-  top: 10px;
-  left: 90%;
-}
+// ul.drop-down-menu ul li:last-child {
+//   border-bottom: none;
+// }
+// ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
+//   z-index: 25;
+//   top: 10px;
+//   left: 90%;
+// }
 #imgExample {
   object-fit: contain;
   height: 100%;
+  z-index: -1;
 }
-// .vue-zoomer {
-//   overflow: hidden;
-// }
-// .zoomer {
-//   height: 600px;
-// }
+.selectOption {
 
+}
 </style>
