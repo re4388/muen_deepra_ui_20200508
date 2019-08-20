@@ -8,21 +8,18 @@ class ProjectInfo {
   constructor(content) {
     this.content = content
   }
-  static parseFromResponse(resp) {
-  }
+  static parseFromResponse(resp) {}
 }
 
-class ProjectList {
-}
+class ProjectList {}
 
-function createProject (name, description, location, datatsetUuid) {
+function createProject(name, description, location, datatsetUuid) {
   let projectManagementService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ProjectManagement'
   )
 
   return new Promise((resolve, reject) => {
-    projectManagementService.CreateProject(
-      {
+    projectManagementService.CreateProject({
         name: name,
         description: description,
         location: location,
@@ -38,7 +35,7 @@ function createProject (name, description, location, datatsetUuid) {
   })
 }
 
-function getProjectList () {
+function getProjectList() {
   let projectManagementService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ProjectManagement'
   )
@@ -56,42 +53,82 @@ function getProjectList () {
   })
 }
 
-function getProject (uuid) {
+function getProject(uuid) {
   let projectManagementService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ProjectManagement'
   )
 
   return new Promise((resolve, reject) => {
-    projectManagementService.GetProject(
-      {uuid: uuid}, (err, resp) => {
-        if (err != null) {
+    projectManagementService.GetProject({
+      uuid: uuid
+    }, (err, resp) => {
+      if (err != null) {
+        console.log(err)
+      }
+      console.log('------ got project from backend -----')
+      console.log(resp)
+      resolve(resp)
+    })
+  })
+}
+
+function deleteProject(uuid) {
+  let projectManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ProjectManagement'
+  )
+
+  return new Promise((resolve, reject) => {
+    projectManagementService.DeleteProject({
+      uuid: uuid
+    }, (err, resp) => {
+      if (err != null) {
+        console.log(err)
+        reject(err)
+      }
+      if (!resp.success) {
+        reject(false)
+      }
+      console.log('------ project is deleted -----')
+      resolve(resp.success)
+    })
+  })
+}
+
+function updateProjectName(uuid, name) {
+  let projectManagementService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ProjectManagement'
+  )
+
+  return new Promise((resolve, reject) => {
+    projectManagementService.updateProjectName({
+        uuid: uuid,
+        name: name,
+      },
+      (err, resp) => {
+        if (err !== null) {
           console.log(err)
         }
-        console.log('------ got project from backend -----')
-        console.log(resp)
         resolve(resp)
       }
     )
   })
 }
 
-function deleteProject (uuid) {
+function updateProjectDesc(uuid, desc) {
   let projectManagementService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ProjectManagement'
   )
 
   return new Promise((resolve, reject) => {
-    projectManagementService.DeleteProject(
-      {uuid: uuid}, (err, resp) => {
-        if (err != null) {
+    projectManagementService.updateProjectDesc({
+        uuid: uuid,
+        desc: desc,
+      },
+      (err, resp) => {
+        if (err !== null) {
           console.log(err)
-          reject(err)
         }
-        if (!resp.success) {
-          reject(false)
-        }
-        console.log('------ project is deleted -----')
-        resolve(resp.success)
+        resolve(resp)
       }
     )
   })
@@ -102,5 +139,7 @@ export default {
   getProjectList,
   getProject,
   deleteProject,
-  ProjectInfo
+  ProjectInfo,
+  updateProjectName,
+  updateProjectDesc,
 }

@@ -343,8 +343,6 @@ export default {
           this.showExportMsg =
             "Files has been successfully move to folder :  " + outputLocation;
           this.$bvModal.show("bv-modal-example");
-
-          t;
         });
     }
   },
