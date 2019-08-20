@@ -18,7 +18,7 @@
         </b-dropdown>
       </div>
     </div>
-    <div class="content d-flex flex-row">
+    <div class="content d-flex flex-row overflow-auto">
       <div class="image-section flex-column">
         <div class="thumbnail-section"></div>
         <div class="tag-section">
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="text-section flex-fill align-items-start flex-column">
-        <p class="description flex-fill">Description: {{ description }}</p>
+        <p class="description flex-fill">Description: {{ projectDescription }}</p>
         <p class="creation-date">Created: {{ creationDate }}</p>
         <a class="btn-open-project" @click="openProject">
           <div class="content">Open</div>
@@ -36,28 +36,60 @@
     <b-modal ref="modal-delete-project" title="delete" @ok="deleteProject">
       <p>Are you sure that you want to delete this project?</p>
     </b-modal>
-    <b-modal ref="modal-edit-project" title="Double click to edit" @ok="updateInfo">
-      <p>
-        Name:
-        <b @dblclick="edit = true" v-if="edit === false">{{ projectName }}</b>
-      
-      <input
-        v-if="edit === true"
-        v-model="projectName"
-        v-on:blur="edit=false; $emit('update')"
-        @keyup.enter="edit=false; $emit('update')"
-      />
-      </p>
-      <p>
-        Description:
-        <b @dblclick="edit2 = true" v-if="edit2 === false">{{ projectDescription }}</b>
-      <input
-        v-if="edit2 === true"
-        v-model="projectDescription"
-        v-on:blur="edit2=false; $emit('update')"
-        @keyup.enter="edit2=false; $emit('update')"
-      />
-      </p>
+    <b-modal
+      v-b-modal.modal-prevent-closing
+      ref="modal-edit-project"
+      title="Double click To Edit"
+      @ok="updateInfo"
+      @close="resetModal"
+      @cancel="resetModal"
+    >
+      <div>
+        <b>Name:</b>
+        <p @dblclick="editName = true" 
+        v-if="editName === false">
+        {{ projectName }}
+        </p>
+        <input
+          id="modal-prevent-closing"
+          v-if="editName === true"
+          v-model.trim="projectName"
+          v-on:blur="editName=false; $emit('update')"
+          @keyup.enter="editName=false; $emit('update')"
+          type="text"
+          class="form-control"
+          placeholder="e.g. project no.1"
+        />
+
+        
+      </div>
+
+      <div>
+        <b>Description:</b>
+        <p @dblclick="editDesc = true" 
+        v-if="editDesc === false">
+        {{ projectDescription }}
+        </p>
+        <textarea
+          class="form-control"
+          rows="5"
+          id="Description"
+          v-if="editDesc === true"
+          v-model.trim="projectDescription"
+          v-on:blur="editDesc=false; $emit('update')"
+          @keyup.enter="editDesc=false; $emit('update')"
+          type="text"
+          placeholder="e.g. this is my first AI project..."
+        ></textarea>
+      </div>
+      <div class="text-warning">
+        <p v-if="editErrors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li v-for="error in editErrors" :key="error.key">{{ error }}</li>
+        </ul>
+        </p>
+      </div>
     </b-modal>
   </div>
 </template>
@@ -74,16 +106,14 @@ export default {
   },
   data() {
     return {
-      edit: false,
-      edit2: false,
+      editName: false,
+      editDesc: false,
+      editErrors: [],
       projectName: this.details.name,
-      projectDescription: this.details.description
+      projectDescription: this.details.description,
     };
   },
   computed: {
-    description: function() {
-      return this.projectDescription;
-    },
     creationDate: function() {
       let date = new Date();
       let ts = this.details.creation_timestamp;
@@ -114,6 +144,8 @@ export default {
     },
     showModalEditProject() {
       this.$refs["modal-edit-project"].show();
+      // clear the error field
+      this.editErrors = []
     },
     deleteProject() {
       console.log(this.details.uuid);
@@ -132,6 +164,9 @@ export default {
       projectService
         .updateProjectName(this.details.uuid, this.projectName)
         .then(result => {
+          console.log("backend name update");
+          // below line is to reload the project to update the this.detial.name
+          EventBus.$emit("projectDeleted");
         });
     },
 
@@ -139,17 +174,60 @@ export default {
       projectService
         .updateProjectDesc(this.details.uuid, this.projectDescription)
         .then(result => {
+          console.log("backend description update");
+          // below line is to reload the project to update the this.detial.description
+          EventBus.$emit("projectDeleted");
         });
     },
 
-    updateInfo() {
-      if (this.projectName !== this.details.name) {
-        this.updateName();
+    updateInfo(event) {
+      //TODO: see if I can refacot below
+      if (this.projectName === "") {
+        event.preventDefault()
+        if(!this.editErrors.includes('Name required.')) {
+          this.editErrors.push('Name required.')
+        }
+        this.editName = true
+      } else {
+        if(this.editErrors.includes('Name required.')) {
+          this.editErrors = this.editErrors.filter(item => item !== 'Name required.')
+        }
       }
 
-      if (this.projectDescription !== this.details.description) {
-        this.updateDescription();
+      if (this.projectDescription === "") {
+        event.preventDefault()
+        if(!this.editErrors.includes('Description required.')) {
+          this.editErrors.push('Description required.')
+        }
+        this.editDesc = true
+      } else {
+        if(this.editErrors.includes('Description required.')) {
+          this.editErrors = this.editErrors.filter(item => item !== 'Description required.')
+        }
       }
+
+      if( this.projectName !== "") {
+        this.editErrors
+      }
+
+
+      if (this.projectName !== "" && this.projectDescription !== "") {
+        if (this.projectName !== this.details.name) {
+          this.updateName();
+        }
+
+        if (this.projectDescription !== this.details.description) {
+          this.updateDescription();
+        }
+
+        console.log(this.details.name);
+      }
+    },
+    resetModal() {
+      // console.log("Qq");
+      // console.log(this.details.name);
+      this.projectName = this.details.name;
+      this.projectDescription = this.details.description;
     }
   }
 };
