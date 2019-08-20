@@ -50,22 +50,22 @@ export default {
     computed:{
         Sensitivity(){
             return this.currentTab ==='all class'?
-            'Micro Specificity':
-            'Specificity'
+            'Macro Sensitivity':
+            'Sensitivity'
         },
         specificity(){
             return this.currentTab ==='all class'?
-            'Micro Specificity':
+            'Macro Specificity':
             'Specificity'
         },
         precision(){
             return this.currentTab ==='all class'?
-            'Micro Precision':
+            'Macro Precision':
             'Precision'
         },
         f1Score(){
             return this.currentTab ==='all class'?
-            'Micro F1 Score':
+            'Macro F1 Score':
             'F1 Score'
         },
         auc(){
