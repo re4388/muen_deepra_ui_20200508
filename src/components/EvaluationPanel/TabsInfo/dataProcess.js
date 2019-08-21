@@ -23,10 +23,10 @@ class BaseModel {
             id: 0,
             name: 'all class',
             metrics: {
-                Sensitivity: this.metric['micro_recall'] || 'not available yet',
-                Specificity: this.metric['micro_specificity'] || 'not available yet',
-                Precision: this.metric['micro_precision'] || 'not available yet',
-                F1score: this.metric['micro_f1_score'] || 'not available yet',
+                Sensitivity: this.metric['macro_recall'] || 'not available yet',
+                Specificity: this.metric['macro_specificity'] || 'not available yet',
+                Precision: this.metric['macro_precision'] || 'not available yet',
+                F1score: this.metric['macro_f1_score'] || 'not available yet',
                 AUC: this.metric['weighted_roc_auc'] || 'not available yet'
             },
             grpah: {

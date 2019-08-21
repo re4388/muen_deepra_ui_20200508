@@ -59,9 +59,10 @@ function GetModelListByProject(uuid) {
       if (err != null) {
         console.log(err)
       }
-      console.log('------ got modelList based on Project ID -----')
-      console.log(resp)
+      
+      // console.log(resp)
       resolve(resp)
+      console.log('------ grpc GetModelListByProject completed -----')
     })
   })
 }

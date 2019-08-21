@@ -1,94 +1,263 @@
 <template>
   <div class="project-card d-flex flex-column">
     <div class="title-section d-flex flex-row">
-      <h4 class="title flex-fill">{{ details.name }}</h4>
+      <h4 class="title flex-fill">{{ projectName }}</h4>
       <div class="dropdown-wrapper">
         <b-dropdown class="dropdown-list" right size="sm">
           <b-dropdown-item
             class="dropdown-item-delete"
             variant="danger"
             @click="showModalDeleteProject"
-          >
-            Delete
-          </b-dropdown-item>
+          >Delete</b-dropdown-item>
+          <b-dropdown-item
+            class="dropdown-item-edit"
+            variant="danger"
+            :name="projectName"
+            @click="showModalEditProject"
+          >Edit</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
-    <div class="content d-flex flex-row">
+    <div class="content d-flex flex-row overflow-auto">
       <div class="image-section flex-column">
-        <div class="thumbnail-section">
-        </div>
+        <div class="thumbnail-section"></div>
         <div class="tag-section">
           <p>tags</p>
         </div>
       </div>
       <div class="text-section flex-fill align-items-start flex-column">
-        <p class="description flex-fill">Description: {{ description }}</p>
-        <p class="creation-date">Created: {{ creationDate }}</p>
         <a class="btn-open-project" @click="openProject">
           <div class="content">Open</div>
         </a>
+        <p class="creation-date">Created: {{ creationDate }}</p>
+        <br>
+        <p class="description flex-fill">Description: {{ projectDescription }}</p>
+        
+        
       </div>
     </div>
     <b-modal ref="modal-delete-project" title="delete" @ok="deleteProject">
       <p>Are you sure that you want to delete this project?</p>
     </b-modal>
+    <b-modal
+      v-b-modal.modal-prevent-closing
+      ref="modal-edit-project"
+      title="Project Info"
+      @ok="updateInfo"
+      @close="resetModal"
+      @cancel="resetModal"
+    >
+      <div>    
+        <b>Name:</b>
+        <p @dblclick="editName = true" 
+        v-if="editName === false">
+        {{ projectName }}
+        </p>
+        <input
+          id="modal-prevent-closing"
+          v-if="editName === true"
+          v-model.trim="projectName"
+          v-on:blur="inputUpdate"
+          @keyup.enter="inputUpdate"
+          type="text"
+          class="form-control"
+          placeholder="e.g. project no.42"
+        />
+      </div>
+
+      <div>
+        <b>Description:</b>
+        <p @dblclick="editDesc = true" 
+        v-if="editDesc === false">
+        {{ projectDescription }}
+        </p>
+        <textarea
+          class="form-control"
+          rows="5"
+          id="Description"
+          v-if="editDesc === true"
+          v-model.trim="projectDescription"
+          v-on:blur="textAreaUpdate"
+          @keyup.enter="textAreaUpdate"
+          type="text"
+          placeholder="e.g. this will be a fantasic project..."
+        ></textarea>
+      </div>
+      <div class="text-warning">
+        <p v-if="editErrors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li v-for="error in editErrors" :key="error.key">{{ error }}</li>
+        </ul>
+        </p>
+      </div>
+    </b-modal>
   </div>
 </template>
 
+
 <script>
-import projectService from '@/api/projects_service.js'
-import { EventBus } from '@/event_bus.js'
+import projectService from "@/api/projects_service.js";
+import { EventBus } from "@/event_bus.js";
 
 export default {
-  name: 'ProjectCard',
+  name: "ProjectCard",
   props: {
     details: Object
   },
+  data() {
+    return {
+      editName: false,
+      editDesc: false,
+      editErrors: [],
+      projectName: this.details.name,
+      projectDescription: this.details.description,
+    };
+  },
   computed: {
-    description: function () {
-      return this.details.description
-    },
-    creationDate: function () {
-      let date = new Date()
-      let ts = this.details.creation_timestamp
+    creationDate: function() {
+      let date = new Date();
+      let ts = this.details.creation_timestamp;
       // unit: milisecond
-      date.setTime(ts.seconds + '000')
-      return date.toUTCString().split(' ').slice(0, 5).join(' ')
+      date.setTime(ts.seconds + "000");
+      return date
+        .toUTCString()
+        .split(" ")
+        .slice(0, 5)
+        .join(" ");
     }
   },
   methods: {
-    openProject () {
-      this.$store.dispatch('Project/setCurrentProject', this.details)
-      console.log('---- saved project info : ')
-      console.log(this.$store.getters['Project/currentProject'])
-      EventBus.$emit('pageChanged', {
+
+    openProject() {
+      this.$store.dispatch("Project/setCurrentProject", this.details);
+      console.log("---- saved project info : ");
+      console.log(this.$store.getters["Project/currentProject"]);
+      EventBus.$emit("pageChanged", {
         pages: [`Project: ${this.details.name}`],
-        keepRoot: false,
-      })
-      EventBus.$emit('entryChanged', 'project')
-      this.$store.dispatch('setCurrentEntry', 'project')
-      this.$router.push('/project-profile')
+        keepRoot: false
+      });
+      EventBus.$emit("entryChanged", "project");
+      this.$store.dispatch("setCurrentEntry", "project");
+      this.$router.push("/project-profile");
     },
-    showModalDeleteProject () {
-      this.$refs['modal-delete-project'].show()
+    showModalDeleteProject() {
+      this.$refs["modal-delete-project"].show();
     },
-    deleteProject () {
-      console.log(this.details.uuid)
-      projectService.deleteProject(this.details.uuid).then((result) =>{
-        console.log(result)
-        EventBus.$emit('projectDeleted')
-      }).catch((result) => {
-        alert('project is failed to be deleted')
-        // console.log('Project')
-      })
-    }
-  },
-  data () {
-    return {
-    }
+    deleteProject() {
+      console.log(this.details.uuid);
+      projectService
+        .deleteProject(this.details.uuid)
+        .then(result => {
+          console.log(result);
+          EventBus.$emit("projectDeleted");
+        })
+        .catch(result => {
+          alert("project is failed to be deleted");
+          // console.log('Project')
+        });
+    },
+    showModalEditProject() {
+      // refs to modal to show
+      this.$refs["modal-edit-project"].show();
+
+      // clear the error field
+      this.editErrors = []
+
+      // turn on edit mode when open the edit modal
+      this.editName = true
+      this.editDesc = true
+    },
+
+    updateName() {
+      projectService
+        .updateProjectName(this.details.uuid, this.projectName)
+        .then(result => {
+          // below line is to reload project to update the this.detial.name
+          EventBus.$emit("projectDeleted");
+        });
+    },
+
+    updateDescription() {
+      projectService
+        .updateProjectDesc(this.details.uuid, this.projectDescription)
+        .then(result => {
+          // below line is to reload project to update the this.detial.description
+          EventBus.$emit("projectDeleted");
+        });
+    },
+
+    updateInfo(event) {
+      this.inputNameValidate(event)
+      this.inputDescValidate(event)
+
+      let bothInputsNotEmpty = (this.projectName !== "" && this.projectDescription !== "")
+      let inputNameChanged = (this.projectName !== this.details.name)
+      let inputDescChanged = (this.projectDescription !== this.details.description)
+
+      if (bothInputsNotEmpty) {
+        if (inputNameChanged) {
+          this.updateName();
+        }
+        if (inputDescChanged) {
+          this.updateDescription();
+        }
+      }
+    },
+
+    inputDescValidate(event){
+      if (this.projectDescription === "") {
+        event.preventDefault()
+        if(!this.editErrors.includes('Description required.')) {
+          this.editErrors.push('Description required.')
+        }
+        // remain edit mode when not closing up the edit modal
+        this.editDesc = true
+      } else {
+        if(this.editErrors.includes('Description required.')) {
+          this.editErrors = this.editErrors.filter(item => item !== 'Description required.')
+        }
+      }
+    },
+
+    inputNameValidate(event){
+      if (this.projectName === "") {
+        event.preventDefault()
+        if(!this.editErrors.includes('Name required.')) {
+          this.editErrors.push('Name required.')
+        }
+        // remain edit mode when not closing up the edit modal
+        this.editName = true
+      } else {
+        if(this.editErrors.includes('Name required.')) {
+          this.editErrors = this.editErrors.filter(item => item !== 'Name required.')
+        }
+      }
+    },
+    // when user cancel or close the edit tab...
+    resetModal() {
+      // reset the name and description
+      this.projectName = this.details.name;
+      this.projectDescription = this.details.description;
+    },
+
+    inputUpdate(){
+      // only turn off edit mode and update when user have input
+      if (this.projectName !== "") {
+        this.editName=false 
+        this.$emit('update')
+      } 
+    },
+
+    textAreaUpdate(){
+      // only turn off edit mode and update when user have input
+      if (this.projectDescription !== "") {
+        this.editDesc=false 
+        this.$emit('update')
+      } 
+    },
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -134,28 +303,28 @@ $card-min-width: 600px;
 }
 .image-section {
   background-color: rgb(175, 175, 175);
-  width: $card-min-width*0.4;
+  width: $card-min-width * 0.4;
   height: auto;
   margin-bottom: 10px;
 }
 .thumbnail-section {
   background-color: rgb(150, 150, 150);
-  height: $card-height*0.5;
+  height: $card-height * 0.5;
 }
 .tag-section {
   color: white;
   text-align: left;
   padding: 15px;
   background-color: rgb(0, 25, 75);
-  width: $card-min-width*0.4;
-  height: $card-height*0.25;
+  width: $card-min-width * 0.4;
+  height: $card-height * 0.25;
 }
 .text-section {
   padding: 0px 10px;
 }
 .description {
   text-align: left;
-  height: $card-height*0.45;
+  height: $card-height * 0.45;
   margin-bottom: 0px;
 }
 .creation-date {
@@ -170,7 +339,7 @@ $card-min-width: 600px;
 
 .dropdown-list {
   position: relative;
-  margin: .5rem;
+  margin: 0.5rem;
   height: 20px;
 }
 
