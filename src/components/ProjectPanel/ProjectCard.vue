@@ -26,11 +26,13 @@
         </div>
       </div>
       <div class="text-section flex-fill align-items-start flex-column">
-        <p class="description flex-fill">Description: {{ projectDescription }}</p>
-        <p class="creation-date">Created: {{ creationDate }}</p>
         <a class="btn-open-project" @click="openProject">
           <div class="content">Open</div>
         </a>
+        <p class="creation-date">Created: {{ creationDate }}</p>
+        <p class="description flex-fill">Description: {{ projectDescription }}</p>
+        
+        
       </div>
     </div>
     <b-modal ref="modal-delete-project" title="delete" @ok="deleteProject">
