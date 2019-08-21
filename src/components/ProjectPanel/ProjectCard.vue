@@ -149,6 +149,8 @@ export default {
       this.$refs["modal-edit-project"].show();
       // clear the error field
       this.editErrors = []
+      this.editName = true
+      this.editDesc = true
     },
     deleteProject() {
       console.log(this.details.uuid);
@@ -232,7 +234,7 @@ export default {
       this.projectName = this.details.name;
       this.projectDescription = this.details.description;
     },
-    
+
     inputUpdate(){
       if (this.projectName !== "") {
         this.editName=false 
