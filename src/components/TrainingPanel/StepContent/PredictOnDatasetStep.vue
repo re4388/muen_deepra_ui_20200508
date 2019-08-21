@@ -61,8 +61,6 @@ export default {
       }
       let projectInfo = this.$store.getters['Project/currentProject']
       let trainingOutput = this.$store.getters['Training/trainingOutput']
-      console.log(projectInfo)
-      console.log(trainingOutput)
 
       this.toggleIsValidating()
       let call = validationService.startValidation(
@@ -70,16 +68,12 @@ export default {
         trainingOutput,
         handlerProgress,
         handlerEnd,
-        {
-          datasetType: 'all'
-        }
+        {datasetType: 'all'}
       )
     },
     finishValidation () {
-      console.log('Validation is finished')
       this.toggleIsValidating()
 
-      // Get validation output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
         let taskType = this.$store.getters['Project/taskType']

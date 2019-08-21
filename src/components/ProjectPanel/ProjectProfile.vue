@@ -75,11 +75,14 @@ export default {
       this.name = this.project.name
       this.description = this.project.description
       this.location = this.project.location
-      EventBus.$emit('pageChanged', {
-        pages: ['Profile'],
-        keepRoot: true,
-      })
+    //   EventBus.$emit('pageChanged', {
+    //     pages: ['Profile'],
+    //     keepRoot: true,
+    //   })
+    EventBus.$emit('pageChanged', this.$route.meta.title)
+    EventBus.$emit('showProjectName', this.name)
     },
+    
     fetechProjectData () {
       return new Promise((resolve, reject) => {
         this.project = this.$store.getters['Project/currentProject']

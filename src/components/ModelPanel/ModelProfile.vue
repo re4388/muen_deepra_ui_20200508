@@ -50,10 +50,11 @@ export default {
     })
   },
   mounted () {
-    EventBus.$emit('pageChanged', {
-      pages: ['Model profile'],
-      keepRoot: true,
-    })
+    // EventBus.$emit('pageChanged', {
+    //   pages: ['Model profile'],
+    //   keepRoot: true,
+    // })
+    EventBus.$emit('pageChanged',  this.$route.meta.title)
   },
   methods: {
     initializeComponent () {

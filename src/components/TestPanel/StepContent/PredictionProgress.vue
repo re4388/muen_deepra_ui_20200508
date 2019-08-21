@@ -57,7 +57,7 @@ export default {
 
       let call = predictionService.startPrediction(
         model.uuid,
-        datasetInfo,
+        datasetInfo.uuid,
         handlerProgress,
         handlerEnd
       )

@@ -66,7 +66,7 @@ export default {
     }
   },
   created () {
-    EventBus.$once('viewerDatasetChanged',()=>{
+    EventBus.$on('viewerDatasetChanged', () => {
       console.log('--- processing with event viewerDatasetChanged')
       EventBus.$emit('notifyImageTotalNumber', this.images.length)
       
@@ -88,6 +88,7 @@ export default {
     })
   },
   beforeDestroy () {
+    EventBus.$off('viewerDatasetChanged')
     EventBus.$off('onNavigationImageClicked')
   },
   data () {
