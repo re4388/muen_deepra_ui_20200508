@@ -30,6 +30,7 @@
           <div class="content">Open</div>
         </a>
         <p class="creation-date">Created: {{ creationDate }}</p>
+        <br>
         <p class="description flex-fill">Description: {{ projectDescription }}</p>
         
         
