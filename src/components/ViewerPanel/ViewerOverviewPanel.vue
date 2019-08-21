@@ -56,6 +56,7 @@ export default {
       let predictedLabels = this.$store.getters['Testing/predictedLabels']
       let parsedFileListLabels = temp.map(function (obj) {
         return parseInt(obj.label, 10)
+        // return obj.label
       })
       // compare two arrays and then return the index of the difference
       // if (predictedLabels !== parsedFileListLabels) {
@@ -72,7 +73,12 @@ export default {
         return result
       };
       let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
-      EventBus.$emit('showDifference', differentLabels)
+      // console.log(predictedLabels)
+      // console.log(parsedFileListLabels) 
+      // console.log(differentLabels)
+      this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
+      // console.log(differentLabels)
+      // EventBus.$emit('showDifference', differentLabels)
     }),
     EventBus.$on('showSelectedFilename', (selectedImageFilename)=>{
       this.selectedImageFilename = selectedImageFilename
@@ -80,10 +86,6 @@ export default {
     })
   },
   mounted () {
-    // EventBus.$emit('pageChanged', {
-    //   pages: ['Viewer'],
-    //   keepRoot: true,
-    // })
     EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   beforeRouteLeave (to, from, next) {

@@ -137,7 +137,6 @@ export default {
     // this.url = joined
     // })
     // when onNavigationImageClicked, join the root and filename for imageUrl using
-
     EventBus.$on('onNavigationImageClicked',(obj)=>{
       let item = obj.item
       let joined = modPath.join(modPath.resolve(item.root), item.filename)
@@ -179,13 +178,6 @@ export default {
       }
     }
   },
-  // watch: {
-  //   url (newVal, oldVal) {
-  //     let el = document.getElementById('imgExample')
-  //     if (el === null) return ''
-  //     el.src = newVal
-  //   }
-  // },
   computed: {
     fixedRatioHeight () {
       return this.filters['width']
@@ -195,18 +187,7 @@ export default {
     },
     fullPath: function() {
       return modPath.join(modPath.resolve(this.root), this.filename)
-    },
-    // imageUrl () {
-    //   // console.log('----loading----')
-    //   // console.log(this.url)
-    //   // let el = document.getElementById('imgExample')
-    //   // if (el === null) return this.url
-    //   // el.src = this.url
-    //   return this.url
-    // },
-    // imageUrl: {
-    //   get () { return this.url }
-    // }
+    }
   },
   data() {
     return {
@@ -290,20 +271,9 @@ ul.drop-down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
 ul.drop-down-menu ul { /*隱藏次選單*/
   display: none;
 }
-// ul.drop-down-menu ul li:last-child {
-//   border-bottom: none;
-// }
-// ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
-//   z-index: 25;
-//   top: 10px;
-//   left: 90%;
-// }
 #imgExample {
   object-fit: contain;
   height: 100%;
   z-index: -1;
-}
-.selectOption {
-
 }
 </style>

@@ -33,8 +33,8 @@ export default {
       this.updateCheckedLabel()
     },
     predictedLabel (newVal, oldVal) {
-      console.log('--- predicted label changed')
-      console.log(`${newVal}, ${oldVal}`)
+      // console.log('--- predicted label changed')
+      // console.log(`${newVal}, ${oldVal}`)
       this.updateLabelColor()
     }
   },

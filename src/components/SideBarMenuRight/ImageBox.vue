@@ -7,7 +7,7 @@
             <transition name="fade">
               <div class="loading" v-show="loading">
                 <span class="fa fa-spinner fa-spin"></span> Loading
-              </div>
+              </div>            
             </transition>
             <div class="imgList " id="imgList">
               <template class="imgList-item" id="imgList-item" v-for="(item, index) in loadedImages">
@@ -15,12 +15,11 @@
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :differentLabels="differentLabels"
                   :style="differentLabels.indexOf(index) !== -1 ? { 'border': '1px solid red' } : { }"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
-            </div>          
+            </div>       
           </div>
       </div>
     </div>
@@ -44,10 +43,7 @@ export default {
     EventBus.$on('notifyImageTotalNumber', (imageTotalNumber)=>{
       this.total = imageTotalNumber
       this.initializeComponent()
-    })
-    EventBus.$once('showDifference', (differentLabels) => {
-      this.differentLabels = differentLabels
-    })
+    })    
   },
   mounted(){
     this.initializeComponent()
@@ -57,7 +53,7 @@ export default {
       if(condition) {
         this.loadMore();
       }
-    });
+    })
   },
   beforeDestroy() {
     EventBus.$off('notifyImageTotalNumber')
@@ -101,7 +97,8 @@ export default {
     },
     ...mapState({
       fileList: state => state.Viewer.parsedFileList,
-      predictedLabels: state => state.Testing.predictedLabels
+      predictedLabels: state => state.Testing.predictedLabels,
+      differentLabels: state => state.Testing.differentLabels
     })
   },
   data () {
@@ -111,9 +108,7 @@ export default {
       loadedImages: [],
       currentIndex: 0,
       indexNumber: 0,
-      // total: '',
       batchSize: 40,
-      differentLabels: [],
       isDifferent: true
     }
   }
@@ -141,18 +136,13 @@ $scroll-bar-width: 5px;
   &:hover {
     &::-webkit-scrollbar-track {
       background-color: #808080;
-      // border-radius: $scroll-bar-width;
       z-index: 21;
     }
     &::-webkit-scrollbar-thumb {
       background-color: #0f0f0f;
-      // border-radius: $scroll-bar-width;
     }
   }
 }
-// .imgList::-webkit-scrollbar { 
-//     display: none; 
-// }
 .catalog {
   width: 315px;
   height: 20px;
@@ -227,5 +217,9 @@ $scroll-bar-width: 5px;
   -webkit-box-sizing: border-box;
   border: 1px solid red;
   box-shadow: 0 0 0 5px white;
+}
+.changeStyle {
+  position: relative;
+  top: -20px;
 }
 </style>

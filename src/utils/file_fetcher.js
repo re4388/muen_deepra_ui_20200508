@@ -18,7 +18,7 @@ class DatasetPathCollector {
     return new Promise((resolve, reject) => {
       readCsv(this.labelFile).then((result) => {
         // TODO: rewrite this
-        console.log('--- parsing file list')
+        // console.log('--- parsing file list')
         let folderPath = this.folderPath
         let ext = this.fileExtension
         this.fileList = result.split(/\r\n|\n/)

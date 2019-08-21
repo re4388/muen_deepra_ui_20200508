@@ -27,7 +27,6 @@ export default {
   methods: {
     onClick () {
       this.$emit('click', this._props)
-      // console.log(this._props.filename)
     }
   }
 }
@@ -41,7 +40,6 @@ export default {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  // box-shadow: 0 0 0 2px black;
   width: 60px;
   height: 60px;
   display: inline-flex;
