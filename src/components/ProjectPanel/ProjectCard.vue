@@ -44,9 +44,7 @@
       @close="resetModal"
       @cancel="resetModal"
     >
-    
-      <div>
-        
+      <div>    
         <b>Name:</b>
         <p @dblclick="editName = true" 
         v-if="editName === false">
@@ -60,7 +58,7 @@
           @keyup.enter="inputUpdate"
           type="text"
           class="form-control"
-          placeholder="e.g. project no.1"
+          placeholder="e.g. project no.42"
         />
       </div>
 
@@ -79,7 +77,7 @@
           v-on:blur="textAreaUpdate"
           @keyup.enter="textAreaUpdate"
           type="text"
-          placeholder="e.g. this is my first AI project..."
+          placeholder="e.g. this will be a fantasic project..."
         ></textarea>
       </div>
       <div class="text-warning">
@@ -90,8 +88,6 @@
         </ul>
         </p>
       </div>
-      <!-- TODO: add a little instruction -->
-      <!-- <b-badge variant="light">double click to edit</b-badge> -->
     </b-modal>
   </div>
 </template>
@@ -145,13 +141,6 @@ export default {
     showModalDeleteProject() {
       this.$refs["modal-delete-project"].show();
     },
-    showModalEditProject() {
-      this.$refs["modal-edit-project"].show();
-      // clear the error field
-      this.editErrors = []
-      this.editName = true
-      this.editDesc = true
-    },
     deleteProject() {
       console.log(this.details.uuid);
       projectService
@@ -165,11 +154,22 @@ export default {
           // console.log('Project')
         });
     },
+    showModalEditProject() {
+      // refs to modal to show
+      this.$refs["modal-edit-project"].show();
+
+      // clear the error field
+      this.editErrors = []
+
+      // turn on edit mode when open the edit modal
+      this.editName = true
+      this.editDesc = true
+    },
+
     updateName() {
       projectService
         .updateProjectName(this.details.uuid, this.projectName)
         .then(result => {
-          console.log("backend name update");
           // below line is to reload project to update the this.detial.name
           EventBus.$emit("projectDeleted");
         });
@@ -179,74 +179,77 @@ export default {
       projectService
         .updateProjectDesc(this.details.uuid, this.projectDescription)
         .then(result => {
-          console.log("backend description update");
           // below line is to reload project to update the this.detial.description
           EventBus.$emit("projectDeleted");
         });
     },
 
     updateInfo(event) {
-      //TODO: see if I can refacot below
-      if (this.projectName === "") {
-        event.preventDefault()
-        if(!this.editErrors.includes('Name required.')) {
-          this.editErrors.push('Name required.')
+      this.inputNameValidate(event)
+      this.inputDescValidate(event)
+
+      let bothInputsNotEmpty = (this.projectName !== "" && this.projectDescription !== "")
+      let inputNameChanged = (this.projectName !== this.details.name)
+      let inputDescChanged = (this.projectDescription !== this.details.description)
+
+      if (bothInputsNotEmpty) {
+        if (inputNameChanged) {
+          this.updateName();
         }
-        this.editName = true
-      } else {
-        if(this.editErrors.includes('Name required.')) {
-          this.editErrors = this.editErrors.filter(item => item !== 'Name required.')
+        if (inputDescChanged) {
+          this.updateDescription();
         }
       }
+    },
 
+    inputDescValidate(event){
       if (this.projectDescription === "") {
         event.preventDefault()
         if(!this.editErrors.includes('Description required.')) {
           this.editErrors.push('Description required.')
         }
+        // remain edit mode when not closing up the edit modal
         this.editDesc = true
       } else {
         if(this.editErrors.includes('Description required.')) {
           this.editErrors = this.editErrors.filter(item => item !== 'Description required.')
         }
       }
+    },
 
-      if( this.projectName !== "") {
-        this.editErrors
-      }
-
-
-      if (this.projectName !== "" && this.projectDescription !== "") {
-        if (this.projectName !== this.details.name) {
-          this.updateName();
+    inputNameValidate(event){
+      if (this.projectName === "") {
+        event.preventDefault()
+        if(!this.editErrors.includes('Name required.')) {
+          this.editErrors.push('Name required.')
         }
-
-        if (this.projectDescription !== this.details.description) {
-          this.updateDescription();
+        // remain edit mode when not closing up the edit modal
+        this.editName = true
+      } else {
+        if(this.editErrors.includes('Name required.')) {
+          this.editErrors = this.editErrors.filter(item => item !== 'Name required.')
         }
-
-        console.log(this.details.name);
       }
     },
+    // when user cancel or close the edit tab...
     resetModal() {
-      // console.log("Qq");
-      // console.log(this.details.name);
+      // reset the name and description
       this.projectName = this.details.name;
       this.projectDescription = this.details.description;
     },
 
     inputUpdate(){
+      // only turn off edit mode and update when user have input
       if (this.projectName !== "") {
         this.editName=false 
-        console.log('qq')
         this.$emit('update')
       } 
     },
 
     textAreaUpdate(){
+      // only turn off edit mode and update when user have input
       if (this.projectDescription !== "") {
         this.editDesc=false 
-        console.log('qq')
         this.$emit('update')
       } 
     },
