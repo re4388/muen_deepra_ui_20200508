@@ -264,7 +264,8 @@ ul.drop-down-menu {
 ul.drop-down-menu li {
   position: relative;
   display: block;
-  z-index: 998;
+
+
 }
 ul.drop-down-menu > li:last-child {
   border-right: none;
