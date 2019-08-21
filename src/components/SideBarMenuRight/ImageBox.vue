@@ -9,7 +9,6 @@
                 <span class="fa fa-spinner fa-spin"></span> Loading
               </div>            
             </transition>
-            <!-- <button class="changeStyle" type="button" @="changeStyle">click me</button> -->
             <div class="imgList " id="imgList">
               <template class="imgList-item" id="imgList-item" v-for="(item, index) in loadedImages">
                 <thumbnail
@@ -55,18 +54,9 @@ export default {
         this.loadMore();
       }
     })
-    // EventBus.$on('showDifference', (differentLabels) => {
-    //   this.differentLabels = differentLabels
-    //   // this.$set(this.differentLabels)
-    //   console.log(this.differentLabels)
-    //   console.log(this.differentLabels.indexOf(32))
-    //   console.log(this.differentLabels.indexOf(33))
-    //   console.log(this.differentLabels.indexOf(122))
-    // })  
   },
   beforeDestroy() {
     EventBus.$off('notifyImageTotalNumber')
-    // EventBus.$off('showDifference')
   },
   methods: {
     initializeComponent () {
@@ -118,9 +108,7 @@ export default {
       loadedImages: [],
       currentIndex: 0,
       indexNumber: 0,
-      // total: '',
       batchSize: 40,
-      // differentLabels: [],
       isDifferent: true
     }
   }
@@ -148,18 +136,13 @@ $scroll-bar-width: 5px;
   &:hover {
     &::-webkit-scrollbar-track {
       background-color: #808080;
-      // border-radius: $scroll-bar-width;
       z-index: 21;
     }
     &::-webkit-scrollbar-thumb {
       background-color: #0f0f0f;
-      // border-radius: $scroll-bar-width;
     }
   }
 }
-// .imgList::-webkit-scrollbar { 
-//     display: none; 
-// }
 .catalog {
   width: 315px;
   height: 20px;

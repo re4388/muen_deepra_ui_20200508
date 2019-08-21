@@ -45,16 +45,13 @@ export default {
     startPrediction () {
       let model = this.$store.getters['Model/currentModel']
       let datasetInfo = this.$store.getters['DataImport/datasetInfo']
-
-      console.log('--- start prediction ---')
-
+      // console.log('--- start prediction ---')
       let handlerProgress = (resp) =>{
         this.updateProgressBar(resp)
       }
       let handlerEnd = (resp) =>{
         this.finishPrediction()
       }
-
       let call = predictionService.startPrediction(
         model.uuid,
         datasetInfo.uuid,
@@ -63,12 +60,12 @@ export default {
       )
     },
     finishPrediction () {
-      console.log('Prediction is finished')
+      // console.log('Prediction is finished')
 
       predictionService.getPredictionOutput().then((result) => {
         this.$store.dispatch('Testing/setPredictionOutput', result)
-        console.log('--- Prediction output:')
-        console.log(result)
+        // console.log('--- Prediction output:')
+        // console.log(result)
 
         // Update the label list of cached `datasetInfo`, so that the correct label
         // set can be displayed in label panel.
@@ -78,8 +75,6 @@ export default {
         let taskType = this.$store.getters['DataImport/datasetInfo'].taskType
         let labelConverter = new converterDict[taskType](result.prediction, result.labels)
         let predictedLabels = labelConverter.convertAll()
-        console.log(predictedLabels)
-        console.log(predictedLabels[0])
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       })
       this.$emit('onProgressFinished', true)

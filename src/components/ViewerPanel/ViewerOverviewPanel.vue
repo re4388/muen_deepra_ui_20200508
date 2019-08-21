@@ -73,23 +73,19 @@ export default {
         return result
       };
       let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
-      console.log(predictedLabels)
-      console.log(parsedFileListLabels) 
-      console.log(differentLabels)
+      // console.log(predictedLabels)
+      // console.log(parsedFileListLabels) 
+      // console.log(differentLabels)
       this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
-      console.log(differentLabels)
-      EventBus.$emit('showDifference', differentLabels)
+      // console.log(differentLabels)
+      // EventBus.$emit('showDifference', differentLabels)
     }),
     EventBus.$on('showSelectedFilename', (selectedImageFilename)=>{
       this.selectedImageFilename = selectedImageFilename
-      console.log(this.selectedImageFilename)
+      // console.log(this.selectedImageFilename)
     })
   },
   mounted () {
-    // EventBus.$emit('pageChanged', {
-    //   pages: ['Viewer'],
-    //   keepRoot: true,
-    // })
     EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   beforeRouteLeave (to, from, next) {
