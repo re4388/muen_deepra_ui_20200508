@@ -14,7 +14,7 @@
             variant="danger"
             :name="projectName"
             @click="showModalEditProject"
-          >Rename</b-dropdown-item>
+          >Edit</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -39,12 +39,14 @@
     <b-modal
       v-b-modal.modal-prevent-closing
       ref="modal-edit-project"
-      title="Double click To Edit"
+      title="Project Info"
       @ok="updateInfo"
       @close="resetModal"
       @cancel="resetModal"
     >
+    
       <div>
+        
         <b>Name:</b>
         <p @dblclick="editName = true" 
         v-if="editName === false">
@@ -54,14 +56,12 @@
           id="modal-prevent-closing"
           v-if="editName === true"
           v-model.trim="projectName"
-          v-on:blur="editName=false; $emit('update')"
-          @keyup.enter="editName=false; $emit('update')"
+          v-on:blur="inputUpdate"
+          @keyup.enter="inputUpdate"
           type="text"
           class="form-control"
           placeholder="e.g. project no.1"
         />
-
-        
       </div>
 
       <div>
@@ -76,8 +76,8 @@
           id="Description"
           v-if="editDesc === true"
           v-model.trim="projectDescription"
-          v-on:blur="editDesc=false; $emit('update')"
-          @keyup.enter="editDesc=false; $emit('update')"
+          v-on:blur="textAreaUpdate"
+          @keyup.enter="textAreaUpdate"
           type="text"
           placeholder="e.g. this is my first AI project..."
         ></textarea>
@@ -90,6 +90,8 @@
         </ul>
         </p>
       </div>
+      <!-- TODO: add a little instruction -->
+      <!-- <b-badge variant="light">double click to edit</b-badge> -->
     </b-modal>
   </div>
 </template>
@@ -127,6 +129,7 @@ export default {
     }
   },
   methods: {
+
     openProject() {
       this.$store.dispatch("Project/setCurrentProject", this.details);
       console.log("---- saved project info : ");
@@ -165,7 +168,7 @@ export default {
         .updateProjectName(this.details.uuid, this.projectName)
         .then(result => {
           console.log("backend name update");
-          // below line is to reload the project to update the this.detial.name
+          // below line is to reload project to update the this.detial.name
           EventBus.$emit("projectDeleted");
         });
     },
@@ -175,7 +178,7 @@ export default {
         .updateProjectDesc(this.details.uuid, this.projectDescription)
         .then(result => {
           console.log("backend description update");
-          // below line is to reload the project to update the this.detial.description
+          // below line is to reload project to update the this.detial.description
           EventBus.$emit("projectDeleted");
         });
     },
@@ -228,7 +231,23 @@ export default {
       // console.log(this.details.name);
       this.projectName = this.details.name;
       this.projectDescription = this.details.description;
-    }
+    },
+    
+    inputUpdate(){
+      if (this.projectName !== "") {
+        this.editName=false 
+        console.log('qq')
+        this.$emit('update')
+      } 
+    },
+
+    textAreaUpdate(){
+      if (this.projectDescription !== "") {
+        this.editDesc=false 
+        console.log('qq')
+        this.$emit('update')
+      } 
+    },
   }
 };
 </script>
