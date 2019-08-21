@@ -115,8 +115,8 @@ export default {
       return labelToBeDisplay
     },
     predictedLabel () {
-      // console.log('---- predictedLabel: ')
-      // console.log(this.predictedLabels[this.selectedImageIndex])
+      console.log('---- predictedLabel: ')
+      console.log(this.predictedLabels[this.selectedImageIndex])
       return String(this.predictedLabels[this.selectedImageIndex])
     },
     ...mapState({

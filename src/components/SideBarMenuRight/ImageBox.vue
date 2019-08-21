@@ -7,20 +7,20 @@
             <transition name="fade">
               <div class="loading" v-show="loading">
                 <span class="fa fa-spinner fa-spin"></span> Loading
-              </div>
+              </div>            
             </transition>
+            <!-- <button class="changeStyle" type="button" @="changeStyle">click me</button> -->
             <div class="imgList " id="imgList">
               <template class="imgList-item" id="imgList-item" v-for="(item, index) in loadedImages">
                 <thumbnail
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :differentLabels="differentLabels"
                   :style="differentLabels.indexOf(index) !== -1 ? { 'border': '1px solid red' } : { }"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
-            </div>          
+            </div>       
           </div>
       </div>
     </div>
@@ -44,10 +44,7 @@ export default {
     EventBus.$on('notifyImageTotalNumber', (imageTotalNumber)=>{
       this.total = imageTotalNumber
       this.initializeComponent()
-    })
-    EventBus.$once('showDifference', (differentLabels) => {
-      this.differentLabels = differentLabels
-    })
+    })    
   },
   mounted(){
     this.initializeComponent()
@@ -57,10 +54,19 @@ export default {
       if(condition) {
         this.loadMore();
       }
-    });
+    })
+    // EventBus.$on('showDifference', (differentLabels) => {
+    //   this.differentLabels = differentLabels
+    //   // this.$set(this.differentLabels)
+    //   console.log(this.differentLabels)
+    //   console.log(this.differentLabels.indexOf(32))
+    //   console.log(this.differentLabels.indexOf(33))
+    //   console.log(this.differentLabels.indexOf(122))
+    // })  
   },
   beforeDestroy() {
     EventBus.$off('notifyImageTotalNumber')
+    // EventBus.$off('showDifference')
   },
   methods: {
     initializeComponent () {
@@ -101,7 +107,8 @@ export default {
     },
     ...mapState({
       fileList: state => state.Viewer.parsedFileList,
-      predictedLabels: state => state.Testing.predictedLabels
+      predictedLabels: state => state.Testing.predictedLabels,
+      differentLabels: state => state.Testing.differentLabels
     })
   },
   data () {
@@ -113,7 +120,7 @@ export default {
       indexNumber: 0,
       // total: '',
       batchSize: 40,
-      differentLabels: [],
+      // differentLabels: [],
       isDifferent: true
     }
   }
@@ -227,5 +234,9 @@ $scroll-bar-width: 5px;
   -webkit-box-sizing: border-box;
   border: 1px solid red;
   box-shadow: 0 0 0 5px white;
+}
+.changeStyle {
+  position: relative;
+  top: -20px;
 }
 </style>
