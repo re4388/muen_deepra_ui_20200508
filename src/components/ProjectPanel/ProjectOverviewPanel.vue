@@ -32,6 +32,7 @@ export default {
     // created project card after they finish the data import phase from
     // `DataImportPanel`)
     EventBus.$on('projectDeleted', () => {
+      console.log('qq')
       this.fetchProjectData()
     })
   },
@@ -51,7 +52,10 @@ export default {
     },
     fetchProjectData () {
       projectManager.getProjectList().then((result) => {
-        if (result.project_list.length == 0) return
+        if (result.project_list.length === 0) {
+          this.projects = []
+          console.log(this.projects)
+        }
         this.projects = result.project_list
         console.log(this.projects)
       })

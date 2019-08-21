@@ -76,6 +76,13 @@ export default {
     },
     filters: {
         numberFormater(val) {
+            // console.log(val)
+            if(val=== -1){
+                return "NAN"
+            }
+            if(val=== 'not available yet'){
+                return "NAN"
+            }
             return Math.round(parseFloat(val) * 10000) / 100 + " %";
         }
     }
