@@ -76,7 +76,7 @@ export default {
     },
     filters: {
         numberFormater(val) {
-            console.log(val)
+            // console.log(val)
             if(val=== -1){
                 return "NAN"
             }
