@@ -35,8 +35,8 @@ export default {
             type: String
         },
     },
-    mounted(){
-        // console.log(this.metricsData)
+    updated(){
+        // console.log('metric updated')
     },
     data() {
         return {

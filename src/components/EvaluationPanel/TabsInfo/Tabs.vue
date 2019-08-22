@@ -69,7 +69,12 @@
 
       <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
-        <MetricsDisplay :metrics-data=" tab.metrics" :currentTab="currentTab" class="col-12" />
+        <MetricsDisplay 
+          :metrics-data=" tab.metrics" 
+          :graph-test="tab.grpah"
+          :currentTab="currentTab" 
+          class="col-12" 
+        />
       </div>
 
       <!-- GraphDisplay component -->
@@ -159,7 +164,7 @@ import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
 
 import { mapGetters, mapActions } from "vuex";
-import { Promise } from "q";
+// import { Promise } from "q";
 
 export default {
   name: "Tabs",
@@ -184,6 +189,11 @@ export default {
       loadModelError: false
     };
   },
+  // watch:{
+  //   modelId(){
+  //     this.loadMoel();
+  //   }
+  // },
 
   created() {
     this.dataInit();
@@ -225,7 +235,11 @@ export default {
 
     InitTab() {
       this.getTabList();
+      // this.currentTab = null
+      // console.log(this.currentTab)
       this.currentTab = this.tabList[0];
+      // console.log(this.currentTab)
+      
     },
 
     changeTab(tab) {
@@ -260,6 +274,10 @@ export default {
             result: tabData
           });
           this.InitTab();
+          // add sth to reflash the graph
+          // console.log(this.currentTab)
+          // this.currentTab = this.tabList[0];
+
         })
         .catch(err => {
           this.loadModelError = true;
