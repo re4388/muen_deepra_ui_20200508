@@ -250,6 +250,7 @@ export default {
       fileFetcher
         .readJson(fn, false)
         .then(result => {
+          this.loadModelError = false;
           console.log("--- begin to read local json ---");
           let tabData = generateModel(result.labels, result.metrics);
           this.tabs = tabData;

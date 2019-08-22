@@ -14,7 +14,7 @@
     "serve_grpc": "node \"./scripts/run_api_server_and_electron_app.js\"",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "test:unit": "jest --no-cache",
+    "test:unit": "jest --no-cache --verbose",
     "test:integration": "python -m pytest ./tests --headless"
   },
   "main": "background.js",

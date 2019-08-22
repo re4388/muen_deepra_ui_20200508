@@ -3,44 +3,77 @@ import {
   createLocalVue
 } from '@vue/test-utils'
 import VueRouter from 'vue-router'
-import EvaluationPanel from '@/components/EvaluationPanel/EvaluationPanel.vue'
-import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 
 
 
+import EvaluationPanel from '@/components/EvaluationPanel/EvaluationPanel.vue'
+import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
+
+
 
 describe('EvaluationPanel.vue', () => {
-  it('is a Vue instance', () => {
 
-    // const wrapper = shallowMount(EvaluationPanel)
+  let mocks;
+
+  beforeEach(() => {
+    mocks = {
+      $route: {
+        meta: {
+          title: 'mock'
+        }
+      }
+    }
+  })
+
+
+  it('is a Vue instance', () => {
+    const wrapper = shallowMount(EvaluationPanel, {
+      mocks
+    })
     expect(wrapper.isVueInstance).toBeTruthy()
   })
 
   it('renders the "tabs" component', () => {
-    const wrapper = shallowMount(EvaluationPanel)
+    const wrapper = shallowMount(EvaluationPanel, {
+      mocks
+    })
     expect(wrapper.find(Tabs).exists()).toBe(true)
   })
 
-  it('renders out the data', () => {
+  it('shall renders title', () => {
     const wrapper = shallowMount(EvaluationPanel, {
-      mocks: {
-        $route: {
-          meta: {
-            title: 'mock'
-          }
-        }
-      }
+      mocks
     })
-    const wrapper = shallowMount(EvaluationPanel)
     wrapper.setData({
       title: 'here are the title',
-      description: 'here are the description'
-
     })
     expect(wrapper.text()).toContain('here are the title')
-    expect(wrapper.text()).toContain('here are the description')
+  })
+
+
+  it('shall receive the passed obj', () => {
+
+    // need to mock a method called and mount with component
+    let modelInfo = jest.fn()
+    const wrapper = shallowMount(EvaluationPanel, {
+      mocks,
+      methods:{
+        modelInfo
+      }
+    })
+
+    // find Tabs component and emit 'model-data'
+    wrapper.find(Tabs).vm.$emit('model-data')
+
+    // check if the method "modelInfo" is called
+    expect(modelInfo).toHaveBeenCalled()
+
+  })
+
+  it('description', () => {
+
   })
 })
 
