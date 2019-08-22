@@ -34,11 +34,11 @@ import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.
 import ThresholdAdjustment from '@/components/EvaluationPanel/InfoDisplay/ThresholdAdjustment.vue'
 
 describe('Tab.vue', () => {
-  it('renders tab component when v-if return true', () => {
+  it('renders tab component when "name" is equal to "currentTab"', () => {
     const wrapper = shallowMount(Tab, {
       propsData: {
-        name: 'AllTabInfo',
-        currentView: 'AllTabInfo'
+        name: 'all class',
+        currentTab: 'all class'
       }
     })
     expect(wrapper.find('.tab').exists()).toBe(true)

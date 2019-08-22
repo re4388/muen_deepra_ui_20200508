@@ -16,7 +16,7 @@ import VueC3 from "vue-c3";
 import "c3/c3.min.css";
 
 export default {
-    name: "GraphDisplay2",
+    name: "GraphDisplay",
     components: {
         VueC3
     },
@@ -27,7 +27,7 @@ export default {
         },
         newThreshold: {
             type: Number
-        }
+        },
     },
 
     data() {
@@ -43,6 +43,9 @@ export default {
     mounted() {
         this.initData(); // must to initdata first, then init C3 options
         this.handler.$emit("init", this.options); // init C3 options
+    },
+    updated(){
+        console.log('grpahDate')
     },
     computed: {
         // c3 options, data和各種設定都在這邊，動態的所以放在computed
@@ -142,6 +145,11 @@ export default {
         newThreshold() {
             console.log("this.newThreshold", this.newThreshold);
             this.showAnnotation();
+        },
+        graphData(){
+            // console.log('DD')
+            this.initData()
+            this.handler.$emit("init", this.options);
         }
     },
     methods: {

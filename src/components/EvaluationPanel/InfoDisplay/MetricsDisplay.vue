@@ -35,8 +35,8 @@ export default {
             type: String
         },
     },
-    mounted(){
-        // console.log(this.currentTab)
+    updated(){
+        console.log('metric updated')
     },
     data() {
         return {

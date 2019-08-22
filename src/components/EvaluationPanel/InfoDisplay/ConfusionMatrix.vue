@@ -161,6 +161,9 @@ export default {
         this.init();
     },
     created() {},
+    // updated(){
+    //     console.log('')
+    // },
     methods: {
         // 顯示toop tip
         showTooptip(key, key2) {

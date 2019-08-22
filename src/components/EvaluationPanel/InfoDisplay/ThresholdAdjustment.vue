@@ -54,6 +54,9 @@ export default {
     created() {
         // console.log(this.graphData["dataColumn"][0]);
     },
+    // updated(){
+    //     console.log('qq')
+    // },
     methods: {
         myProvider(ctx) {
             let items = [

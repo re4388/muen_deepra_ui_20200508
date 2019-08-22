@@ -41,6 +41,7 @@
     <!-- tabs Breadcrumb -->
     <div class="m-0 bg-white text-white">
       <b-tabs
+        v-model="tabIndex"
         class="text-info"
         no-nav-style
         active-nav-item-class="font-weight-bold text-uppercase text-dark"
@@ -64,12 +65,17 @@
     >
       <!-- tab title -->
       <div class="row" slot="title">
-        <h5 class="col-12 text-center text-light m-0 mt-3">{{ tab.name | capitalize }}</h5>
+        <h5 class="col-12 text-center text-light m-0 mt-3"> {{ tab.name | capitalize }}</h5>
       </div>
+      
 
       <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
-        <MetricsDisplay :metrics-data=" tab.metrics" :currentTab="currentTab" class="col-12" />
+        <MetricsDisplay 
+          :metrics-data=" tab.metrics"
+          :currentTab="currentTab" 
+          class="col-12" 
+        />
       </div>
 
       <!-- GraphDisplay component -->
@@ -159,7 +165,7 @@ import ThresholdAdjustment from "../InfoDisplay/ThresholdAdjustment";
 import ConfusionMatrix from "../InfoDisplay/ConfusionMatrix";
 
 import { mapGetters, mapActions } from "vuex";
-import { Promise } from "q";
+// import { Promise } from "q";
 
 export default {
   name: "Tabs",
@@ -181,9 +187,15 @@ export default {
       modelId: "",
       modelNames: [],
       showExportMsg: "",
-      loadModelError: false
+      loadModelError: false,
+      tabIndex:0,
     };
   },
+  // watch:{
+  //   modelId(){
+  //     this.loadMoel();
+  //   }
+  // },
 
   created() {
     this.dataInit();
@@ -226,6 +238,8 @@ export default {
     InitTab() {
       this.getTabList();
       this.currentTab = this.tabList[0];
+      this.tabIndex = 0
+      
     },
 
     changeTab(tab) {
@@ -250,6 +264,7 @@ export default {
       fileFetcher
         .readJson(fn, false)
         .then(result => {
+          this.loadModelError = false;
           console.log("--- begin to read local json ---");
           let tabData = generateModel(result.labels, result.metrics);
           this.tabs = tabData;
@@ -259,6 +274,10 @@ export default {
             result: tabData
           });
           this.InitTab();
+          // add sth to reflash the graph
+          // console.log(this.currentTab)
+          // this.currentTab = this.tabList[0];
+
         })
         .catch(err => {
           this.loadModelError = true;
