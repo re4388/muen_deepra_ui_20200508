@@ -46,7 +46,6 @@ export default {
     },
     updated(){
         console.log('grpahDate')
-        // console.log(this.graphData)
     },
     computed: {
         // c3 options, data和各種設定都在這邊，動態的所以放在computed

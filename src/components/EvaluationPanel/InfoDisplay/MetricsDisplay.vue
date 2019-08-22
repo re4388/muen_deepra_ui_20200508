@@ -36,7 +36,7 @@ export default {
         },
     },
     updated(){
-        // console.log('metric updated')
+        console.log('metric updated')
     },
     data() {
         return {

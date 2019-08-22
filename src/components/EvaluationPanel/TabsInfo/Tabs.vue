@@ -70,8 +70,7 @@
       <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
         <MetricsDisplay 
-          :metrics-data=" tab.metrics" 
-          :graph-test="tab.grpah"
+          :metrics-data=" tab.metrics"
           :currentTab="currentTab" 
           class="col-12" 
         />
