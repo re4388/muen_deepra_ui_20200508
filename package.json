@@ -66,6 +66,7 @@
     "electron": "^5.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^24.8.0",
     "jest-transform-stub": "^2.0.0",
     "lodash.debounce": "^4.0.8",
@@ -94,7 +95,10 @@
       "vue"
     ],
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "c3": "<rootDir>/__mocks__/c3.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy"
     },
     "transform": {
       ".*\\.(vue)$": "vue-jest",

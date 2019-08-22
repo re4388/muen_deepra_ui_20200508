@@ -12,18 +12,26 @@ import MetricDisplay from '../MetricsDisplay.vue'
 
 describe('MetricDisplay.vue', () => {
 
-  it('redered our the key part of the anotationText data', () => {
+  it('shall redered our anotation', () => {
     const wrapper = shallowMount(MetricDisplay)
-    expect(wrapper.text()).toContain('2*Precision*Sensitivity/(Precision Sensitivity)')
+    expect(wrapper.text()).toContain('2 * Precision * Sensitivity / (Precision Sensitivity)')
   })
 
-  it('shall render out the props metricsData data', () => {
+
+  it('shall have props "metricsData" work correctly', () => {
     const metricsData = {
-      foo: "bar"
+      foo: "AUC 90 %"
     }
     const wrapper = shallowMount(MetricDisplay, {
+      // stub fake props for real propsData
       propsData: {
-        metricsData
+        metricsData:{
+          AUC: 0.9,
+          F1score: 0.1,
+          Precision: 0.1,
+          Sensitivity: 0.1,
+          Specificity: 0.1
+        }
       }
     })
     expect(wrapper.text()).toContain(metricsData.foo)
@@ -31,11 +39,3 @@ describe('MetricDisplay.vue', () => {
 
 })
 
-
-
-//  ask later on, can't imp and don't know why, I think it's about css find path
-// it('shall render out 5 element', () => {
-//   // window.items = [{},{},{},{},{}]
-//   const wrapper = shallowMount(MetricDisplay)
-//   expect(wrapper.findAll('td')).toHaveLength(5)
-// })

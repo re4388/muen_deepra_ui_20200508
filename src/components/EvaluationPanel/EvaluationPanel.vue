@@ -50,11 +50,7 @@ export default {
         }
     },
     mounted() {
-        // EventBus.$emit('pageChanged', {
-        //     pages: ['Evaluation'],
-        //     keepRoot: true,
-        // })
-         EventBus.$emit('pageChanged',this.$route.meta.title)
+        EventBus.$emit('pageChanged',this.$route.meta.title)
     },
     computed: {
         imageNumber() {

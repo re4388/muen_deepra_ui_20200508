@@ -1,14 +1,20 @@
 import {
-  shallowMount
+  shallowMount,
+  createLocalVue
 } from '@vue/test-utils'
+import VueRouter from 'vue-router'
 import EvaluationPanel from '@/components/EvaluationPanel/EvaluationPanel.vue'
 import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
+const localVue = createLocalVue()
+localVue.use(VueRouter)
+
+
 
 
 describe('EvaluationPanel.vue', () => {
-
   it('is a Vue instance', () => {
-    const wrapper = shallowMount(EvaluationPanel)
+
+    // const wrapper = shallowMount(EvaluationPanel)
     expect(wrapper.isVueInstance).toBeTruthy()
   })
 
@@ -18,6 +24,15 @@ describe('EvaluationPanel.vue', () => {
   })
 
   it('renders out the data', () => {
+    const wrapper = shallowMount(EvaluationPanel, {
+      mocks: {
+        $route: {
+          meta: {
+            title: 'mock'
+          }
+        }
+      }
+    })
     const wrapper = shallowMount(EvaluationPanel)
     wrapper.setData({
       title: 'here are the title',

@@ -40,28 +40,51 @@ import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.
 import ThresholdAdjustment from '@/components/EvaluationPanel/InfoDisplay/ThresholdAdjustment.vue'
 
 
+
+const localVue = createLocalVue()
+localVue.use(Vuex)
+
+
+
 describe('Tabs.vue', () => {
   it('renders the "Tab" component', () => {
     const wrapper = shallowMount(Tabs)
     expect(wrapper.find(Tab).exists()).toBe(true)
   })
 
-  it('renders the "MetricsDisplay" component', () => {
-    const wrapper = shallowMount(Tabs)
-    expect(wrapper.find(MetricsDisplay).exists()).toBe(true)
-  })
 
-
-  it('renders the "GraphDisplay" component', () => {
-    const wrapper = shallowMount(Tabs)
-    expect(wrapper.find(GraphDisplay).exists()).toBe(true)
-  })
-
+  beforeEach(() => {
+        store = new Vuex.Store({
+            modules: {
+              auth: {
+                state: {},
+                getters: {
+                  myFunc: jest.fn()
+                }
+              },
+              actions
+            })
+        })
 
   it('renders the "ThresholdAdjustment" component', () => {
-    const wrapper = shallowMount(Tabs)
+    const wrapper = shallowMount(Tabs, {store, localVue})
     expect(wrapper.find(ThresholdAdjustment).exists()).toBe(true)
   })
+
+
+  // it('renders the "MetricsDisplay" component', () => {
+  //   const wrapper = shallowMount(Tabs)
+  //   expect(wrapper.find(MetricsDisplay).exists()).toBe(true)
+  // })
+
+
+  // it('renders the "GraphDisplay" component', () => {
+  //   const wrapper = shallowMount(Tabs)
+  //   expect(wrapper.find(GraphDisplay).exists()).toBe(true)
+  // })
+
+
+
 
   it("renders necessay number of Tab", () => {
     const wrapper = shallowMount(Tabs)
@@ -104,8 +127,8 @@ describe('Tabs.vue', () => {
 
   it('shall call testMethod when event emitted from ThresholdAdjustment', () => {
     let testMethod = jest.fn()
-    const wrapper = shallowMount(Tabs,{
-      methods:{
+    const wrapper = shallowMount(Tabs, {
+      methods: {
         ThresholdChange: testMethod
       }
     })

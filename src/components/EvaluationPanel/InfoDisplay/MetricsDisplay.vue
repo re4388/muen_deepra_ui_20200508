@@ -36,7 +36,7 @@ export default {
         },
     },
     mounted(){
-        // console.log(this.currentTab)
+        // console.log(this.metricsData)
     },
     data() {
         return {
