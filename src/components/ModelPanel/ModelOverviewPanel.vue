@@ -41,7 +41,9 @@ export default {
   methods: {
     fetchModelData () {
       modelManager.getModelList().then((result) => {
-        if (result.model_list.length == 0) return
+        if (result.model_list.length === 0) {
+          this.models = []
+        }
         // TODO: sort by created timestamp
         this.models = result.model_list
         console.log(this.models)

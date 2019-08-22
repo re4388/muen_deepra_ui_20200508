@@ -46,11 +46,11 @@ function getValidationOutput (projectInfo) {
   })
 }
 
-function exportFiles(projectInfo, location, traied_model_loc) {
+function exportFiles (projectInfo, location, traied_model_loc) {
   let validationService = protoUtils.getServicer(
     protoPath, protoPackageName, 'ValidationService'
   )
-  
+
   return new Promise((resolve, reject) => {
     validationService.ExportFiles({
       traied_model_loc: traied_model_loc,
@@ -64,8 +64,26 @@ function exportFiles(projectInfo, location, traied_model_loc) {
   })
 }
 
+function getOrderedFileList (projectInfo, datasetType, sortBy) {
+  let validationService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'ValidationService'
+  )
+
+  return new Promise((resolve, reject) => {
+    validationService.GetOrderedFileList({
+      project_info_json: JSON.stringify(projectInfo),
+      dataset_type: datasetType,
+      sort_by: sortBy
+    }, (err, resp) => {
+      let result = JSON.parse(resp['ordered_list_json'])
+      resolve(result)
+    })
+  })
+}
+
 export default {
   startValidation,
   getValidationOutput,
-  exportFiles
+  exportFiles,
+  getOrderedFileList
 }
