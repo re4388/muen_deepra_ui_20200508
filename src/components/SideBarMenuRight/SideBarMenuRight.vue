@@ -22,6 +22,7 @@
             <!-- TODO: complete the feature of `differentLabels` -->
             <!-- TOOD: `v-if="isShowingImgList"` is remove temporary, add it back later -->
             <ImageBox
+              v-show="isShowingImgList"
               class="imageBox"
               :images="images"
             />
@@ -67,16 +68,17 @@ export default {
   created () {
     EventBus.$on('viewerDatasetChanged', () => {
       // console.log('--- processing with event viewerDatasetChanged')
-      EventBus.$emit('notifyImageTotalNumber', this.images.length)    
+      EventBus.$emit('notifyImageTotalNumber', this.images.length)
       let dataset = this.$store.getters['Viewer/currentDataset']
       this.labels = dataset.details.labelReport.labels
       this.taskType = dataset.taskType
       this.selectedImage = this.images[0]
+      this.firstImageFilename = this.images[0].filename
       let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
       // console.log(obj.item)
-      console.log(obj.index)
+      // console.log(obj.index)
       this.selectedImage = obj.item
       this.selectedImageIndex = obj.item.index
       // console.log(this.selectedImage.filename)
