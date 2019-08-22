@@ -42,7 +42,7 @@ export default {
       image: null,
       loading: true,
       dataset: null,
-      selectedImageFilename: null
+      selectedImageFilename: ''
     }
   },
   watch: {
@@ -52,9 +52,12 @@ export default {
     this.fetchData()
     // be able to compare with the parsedFileListLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
+      let firstImageFilename = this.$store.getters['Viewer/parsedFileList'].map(item => item.filename)[0]
+      this.selectedImageFilename = firstImageFilename
+
       let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
       let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
-
+      
       if (predictedLabels.length !== 0) {
         let differentLabels = []
         predictedLabels.reduce((acc, item, i) => {
@@ -66,7 +69,11 @@ export default {
       }
     }),
     EventBus.$on('showSelectedFilename', (selectedImageFilename)=>{
-      this.selectedImageFilename = selectedImageFilename
+      if (this.selectedImageFilename === null) {
+        this.selectedImageFilename = this.firstImageFilename
+      } else {
+        this.selectedImageFilename = selectedImageFilename
+      }
     })
   },
   mounted () {
@@ -163,9 +170,10 @@ export default {
 }
 .metadataDisplay {
   color: white;
-  position: fixed;
-  top: 880px;
-  left: 170px;
+  position: relative;
+  top: -80px;
+  left: -200px;
   user-select:none;
+  width: 620px;
 }
 </style>
