@@ -41,6 +41,7 @@
     <!-- tabs Breadcrumb -->
     <div class="m-0 bg-white text-white">
       <b-tabs
+        v-model="tabIndex"
         class="text-info"
         no-nav-style
         active-nav-item-class="font-weight-bold text-uppercase text-dark"
@@ -64,8 +65,9 @@
     >
       <!-- tab title -->
       <div class="row" slot="title">
-        <h5 class="col-12 text-center text-light m-0 mt-3">{{ tab.name | capitalize }}</h5>
+        <h5 class="col-12 text-center text-light m-0 mt-3"> {{ tab.name | capitalize }}</h5>
       </div>
+      
 
       <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
@@ -185,7 +187,8 @@ export default {
       modelId: "",
       modelNames: [],
       showExportMsg: "",
-      loadModelError: false
+      loadModelError: false,
+      tabIndex:0,
     };
   },
   // watch:{
@@ -234,10 +237,8 @@ export default {
 
     InitTab() {
       this.getTabList();
-      // this.currentTab = null
-      // console.log(this.currentTab)
       this.currentTab = this.tabList[0];
-      // console.log(this.currentTab)
+      this.tabIndex = 0
       
     },
 
