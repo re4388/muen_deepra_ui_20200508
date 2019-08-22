@@ -80,8 +80,13 @@ export default {
         let labelConverter = new converterDict[taskType](result.prediction, result.labels)
         let predictedLabels = labelConverter.convertAll()
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
+      }).then(() => {
+        validationService.getOrderedFileList(projectInfo, 'all', 'prob.').then((result) => {
+          // TODO: uncomment this line to enable sorting file list according to loss
+          // this.$store.dispatch('Validation/setOrderedFileList', result)
+          this.$emit('onProgressFinished', true)
+        })
       })
-      this.$emit('onProgressFinished', true)
     },
     checkContent () {
       if (this.isValidating) return
