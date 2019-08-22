@@ -50,35 +50,21 @@ export default {
   },
   created () {
     this.fetchData()
-    // be able to compare with the parsedFileLIstLabels and the predictedLables
+    // be able to compare with the parsedFileListLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
       let temp = this.$store.getters['Viewer/parsedFileList']
-      let predictedLabels = this.$store.getters['Testing/predictedLabels']
-      let parsedFileListLabels = temp.map(function (obj) {
-        return parseInt(obj.label, 10)
-        // return obj.label
-      })
-      // compare two arrays and then return the index of the difference
-      // if (predictedLabels !== parsedFileListLabels) {
-        // console.log('---it is different----')
-      // }
-      let findDivergence = function (predictedLabels, parsedFileListLabels) {
-        let result = []
-        let i
-        for (i = 0; i < predictedLabels.length; i++){
-          if (predictedLabels[i] !== parsedFileListLabels[i]) {
-            result.push(i);
-          }
-        }
-        return result
-      };
-      let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
+      let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
+      let parsedFileListLabels = temp.map(item => item.label)
       // console.log(predictedLabels)
-      // console.log(parsedFileListLabels) 
+      // console.log(parsedFileListLabels)
+      let differentLabels = []
+      predictedLabels.reduce((acc, item, i) => {
+        if (predictedLabels[i] !== parsedFileListLabels[i]) {
+          differentLabels.push(i)
+        }
+      })
       // console.log(differentLabels)
       this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
-      // console.log(differentLabels)
-      // EventBus.$emit('showDifference', differentLabels)
     }),
     EventBus.$on('showSelectedFilename', (selectedImageFilename)=>{
       this.selectedImageFilename = selectedImageFilename
@@ -173,9 +159,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  // border: 1px solid red;
-  // max-height: 100%;
-  // max-width: 100%;
 }
 .toolbar {
   height: 100%;
