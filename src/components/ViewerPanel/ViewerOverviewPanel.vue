@@ -52,23 +52,21 @@ export default {
     this.fetchData()
     // be able to compare with the parsedFileListLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
-      let temp = this.$store.getters['Viewer/parsedFileList']
       let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
-      let parsedFileListLabels = temp.map(item => item.label)
-      // console.log(predictedLabels)
-      // console.log(parsedFileListLabels)
-      let differentLabels = []
-      predictedLabels.reduce((acc, item, i) => {
-        if (predictedLabels[i] !== parsedFileListLabels[i]) {
-          differentLabels.push(i)
-        }
-      })
-      // console.log(differentLabels)
-      this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
+      let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
+
+      if (predictedLabels.length !== 0) {
+        let differentLabels = []
+        predictedLabels.reduce((acc, item, i) => {
+          if (predictedLabels[i] !== parsedFileListLabels[i]) {
+            differentLabels.push(i)
+          }
+        })
+        this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
+      }
     }),
     EventBus.$on('showSelectedFilename', (selectedImageFilename)=>{
       this.selectedImageFilename = selectedImageFilename
-      // console.log(this.selectedImageFilename)
     })
   },
   mounted () {
@@ -96,10 +94,10 @@ export default {
         let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
         pathCollector.parseFileList().then((result) => {
           this.$store.dispatch('Viewer/setParsedFileList', pathCollector.fileList)
-          // console.log('ready to emit event `viewerDatasetChanged`')
-          EventBus.$emit('viewerDatasetChanged')
+
           // Notify that loading is complete
           this.loading = false
+          EventBus.$emit('viewerDatasetChanged')
         })
       }
 

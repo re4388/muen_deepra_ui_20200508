@@ -1,7 +1,7 @@
 <template>
   <div id="image-box" class="image-box">
     <div class="box">
-      <div class="title show">
+      <div class="title">
         <div class="catalog">{{ currentImageIndex }} / {{ total }}</div>
           <div class="imgList-wrapper">
             <transition name="fade">
@@ -15,7 +15,7 @@
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :style="differentLabels.indexOf(index) !== -1 ? { 'border': '1px solid red' } : { }"
+                  :style="differentLabels.indexOf(item.index) !== -1 ? { 'border': '1px solid red' } : { }"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
@@ -39,14 +39,7 @@ export default {
   components: {
     thumbnail
   },
-  created () {
-    EventBus.$on('notifyImageTotalNumber', (imageTotalNumber)=>{
-      this.total = imageTotalNumber
-      this.initializeComponent()
-    })    
-  },
-  mounted(){
-    this.initializeComponent()
+  mounted () {
     const listElm = document.querySelector('#imgList');
     listElm.addEventListener('scroll', e => {
       let condition = listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight
@@ -60,11 +53,15 @@ export default {
   },
   methods: {
     initializeComponent () {
-      this.loadedImages = this.fileList.slice(this.currentIndex, this.currentIndex+this.batchSize)
+      this.loadedImages = this.images.slice(this.currentIndex, this.currentIndex+this.batchSize)
       this.currentIndex += this.batchSize
+      this.isInitialized = true
     },
     showClickedThumbnail (item, index) {
       EventBus.$emit('onNavigationImageClicked', {item, index})
+      console.log('--- selected image:')
+      console.log(item)
+      console.log(`ground truth: ${item.label}, predicted: ${this.predictedLabels[item.index]}`)
       this.indexNumber = index === undefined ? 0 : index
     },
     loadMore () {
@@ -84,19 +81,22 @@ export default {
     images: Array,
   },
   watch: {
-    indexNumber () {
-      return this.indexNumber
-    }
+    indexNumber () {},
+    images (newVal, oldVal) {
+      // XXX: source of `images` is generated from asynchronous operation, so that we cannot
+      //   updated `loadedImages` when this component is just created / mounted.
+      if (this.isInitialized) return
+      this.initializeComponent()
+    },
   },
   computed: {
     currentImageIndex () {
       return this.indexNumber + 1
     },
     total () {
-      return this.fileList.length
+      return this.images.length
     },
-    ...mapState({
-      fileList: state => state.Viewer.parsedFileList,
+    ...mapState ({
       predictedLabels: state => state.Testing.predictedLabels,
       differentLabels: state => state.Testing.differentLabels
     })
@@ -109,7 +109,8 @@ export default {
       currentIndex: 0,
       indexNumber: 0,
       batchSize: 40,
-      isDifferent: true
+      isDifferent: true,
+      isInitialized: false,
     }
   }
 }

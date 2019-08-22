@@ -20,8 +20,8 @@
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
           <div>
             <!-- TODO: complete the feature of `differentLabels` -->
+            <!-- TOOD: `v-if="isShowingImgList"` is remove temporary, add it back later -->
             <ImageBox
-              v-if="isShowingImgList"
               class="imageBox"
               :images="images"
             />
@@ -75,11 +75,10 @@ export default {
       let temp = this.images.label
     })
     EventBus.$on('onNavigationImageClicked', (obj) => {
-      // console.log('--- current selected image:')
       // console.log(obj.item)
       console.log(obj.index)
       this.selectedImage = obj.item
-      this.selectedImageIndex = obj.index
+      this.selectedImageIndex = obj.item.index
       // console.log(this.selectedImage.filename)
       EventBus.$emit('showSelectedFilename', this.selectedImage.filename)
     })
@@ -112,10 +111,18 @@ export default {
       return labelToBeDisplay
     },
     predictedLabel () {
-      return String(this.predictedLabels[this.selectedImageIndex])
+      if (this.selectedImage === null) return String(this.predictedLabels[0])
+      return String(this.predictedLabels[this.selectedImage.index])
+    },
+    images () {
+      // XXX: Automatically reorder the file list when order list is available.
+      //   However, we might need to make user able to switch this mode off.
+      let orderFileList = this.$store.getters['Validation/orderedFileList']
+      let parsedFileList = this.$store.getters['Viewer/parsedFileList']
+      if (orderFileList === null) return this.$store.getters['Viewer/parsedFileList']
+      return orderFileList.indices.map(i => parsedFileList[i])
     },
     ...mapState({
-      images: state => state.Viewer.parsedFileList,
       predictedLabels: state => state.Testing.predictedLabels,
       modifiedSamples: state => state.Label.modifiedSamples
     })

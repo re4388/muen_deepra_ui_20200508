@@ -77,13 +77,12 @@ export default {
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
         let taskType = this.$store.getters['Project/taskType']
-        let labelConverter = new converterDict[taskType](result.prediction, result.labels)
+        let labelConverter = new converterDict[taskType](result.prediction, result.labels.map(String))
         let predictedLabels = labelConverter.convertAll()
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       }).then(() => {
         validationService.getOrderedFileList(projectInfo, 'all', 'prob.').then((result) => {
-          // TODO: uncomment this line to enable sorting file list according to loss
-          // this.$store.dispatch('Validation/setOrderedFileList', result)
+          this.$store.dispatch('Validation/setOrderedFileList', result)
           this.$emit('onProgressFinished', true)
         })
       })
