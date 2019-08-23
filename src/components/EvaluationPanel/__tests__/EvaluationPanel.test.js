@@ -10,7 +10,9 @@ localVue.use(VueRouter)
 
 import EvaluationPanel from '@/components/EvaluationPanel/EvaluationPanel.vue'
 import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
-import {wrap} from 'module';
+import {
+  wrap
+} from 'module';
 
 
 
@@ -59,7 +61,7 @@ describe('EvaluationPanel.vue', () => {
     let modelInfo = jest.fn()
     const wrapper = shallowMount(EvaluationPanel, {
       mocks,
-      methods:{
+      methods: {
         modelInfo
       }
     })
@@ -75,28 +77,24 @@ describe('EvaluationPanel.vue', () => {
     const wrapper = shallowMount(EvaluationPanel, {
       mocks
     })
-      const localThis = {
-        modelData:[{
-          "grpah":{
-            "image":42
-          }
-        }]
-      }
-      expect(EvaluationPanel.computed.imageNumber.call(localThis)).toBe(42)
+    const localThis = {
+      modelData: [{
+        "grpah": {
+          "image": 42
+        }
+      }]
+    }
+    expect(EvaluationPanel.computed.imageNumber.call(localThis)).toBe(42)
   })
 
   it('computed: "folderNumber" work properly', () => {
-    const wrapper = shallowMount(EvaluationPanel, {
-      mocks
-    })
-    const localThis = {
-      modelData: [{},{},{}]
-    }
 
+    const localThis = {
+      modelData: [{}, {}, {}]
+    }
     const onlyOneFdoler = {
       modelData: [{}]
     }
-
     // the actual computed is return length - 1
     expect(EvaluationPanel.computed.folderNumber.call(localThis)).toBe(2)
 
@@ -106,6 +104,10 @@ describe('EvaluationPanel.vue', () => {
 
 
 })
+
+
+
+
 
 // folderNumber
 // this.modelData.length

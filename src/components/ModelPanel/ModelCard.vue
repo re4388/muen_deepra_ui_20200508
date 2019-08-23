@@ -23,13 +23,16 @@
         </div>
       </div>
       <div class="text-section flex-fill align-items-start flex-column">
-        <div class="metric-info flex-fill">
-          <p>Log loss: {{ logLoss }}</p>
-        </div>
-        <p class="creation-date">Created: {{ creationDate }}</p>
         <a class="btn-select-model" @click="selectModel">
           <div class="content">Select</div>
         </a>
+        <p class="creation-date">Created: {{ creationDate }}</p>
+        <br>
+        <div class="metric-info flex-fill">
+          <p>Log loss: {{ logLoss }}</p>
+        </div>
+        
+        
       </div>
     </div>
     <b-modal ref="modal-delete-model" title="delete" @ok="deleteModel">
