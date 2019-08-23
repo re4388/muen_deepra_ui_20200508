@@ -31,17 +31,14 @@ export default {
         }
     },
     data() {
-        return {
-            isShow: true
-            // activeClass:'col-8'
-        };
+        return {};
     },
     computed: {
         activeClass() {
             if (this.currentTab === "all class") {
                 return "col-sm-12";
             } else {
-                return "col-sm-8 ";
+                return "col-sm-8";
             }
         }
     }

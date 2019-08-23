@@ -86,9 +86,7 @@ describe('EvaluationPanel.vue', () => {
   })
 
   it('computed: "folderNumber" work properly', () => {
-    const wrapper = shallowMount(EvaluationPanel, {
-      mocks
-    })
+
     const localThis = {
       modelData: [{},{},{}]
     }

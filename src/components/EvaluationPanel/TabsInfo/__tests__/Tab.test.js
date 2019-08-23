@@ -1,29 +1,3 @@
-// GuideLines
-// 
-// Input: 
-// user input
-// props received
-// 
-// Output: 
-// render out any key part of html 
-// child component? 
-// function invocation? 
-// Vue event?
-//
-/////////////////////////////////////////////////////////////
-//
-// Output: HTML render parts
-// when name === currentView
-// render out the tab
-//  
-// received props ->
-//  1.name
-//  2.currentView
-// 
-// 3.function/methods call
-//  no
-
-
 import {
   shallowMount,
   mount
@@ -34,7 +8,7 @@ import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.
 import ThresholdAdjustment from '@/components/EvaluationPanel/InfoDisplay/ThresholdAdjustment.vue'
 
 describe('Tab.vue', () => {
-  it('renders tab component when "name" is equal to "currentTab"', () => {
+  it('component: renders "tab" when "name" is equal to "currentTab"', () => {
     const wrapper = shallowMount(Tab, {
       propsData: {
         name: 'all class',
@@ -44,17 +18,17 @@ describe('Tab.vue', () => {
     expect(wrapper.find('.tab').exists()).toBe(true)
   })
 
-  it('will not render tab when v-if return false', () => {
+  it('component: not render "tab" when "name" is not equal to "currentTab"', () => {
     const wrapper = shallowMount(Tab, {
       propsData: {
-        name: 'AllTabInfo',
-        currentView: ' not AllTabInfo'
+        name: 'all class',
+        currentTab: ' not all class'
       }
     })
     expect(wrapper.find('.tab').exists()).toBe(false)
   })
 
-  it("will render slot correctly", () => {
+  it("component: slot works correctly", () => {
     const wrapper = shallowMount(Tab, {
       slots: {
         default: MetricsDisplay
@@ -62,4 +36,34 @@ describe('Tab.vue', () => {
     })
     expect(wrapper.find("table").text()).toContain("Sensitivity")
   })
+
+  it("computed: 'activeClass' works correctly when currentTab is 'all class'", () => {
+    let activeClass = jest.fn()
+    const wrapper = shallowMount(Tab, {
+      propsData: {
+        name: 'all class',
+        currentTab: 'all class'
+      },
+      computed:{
+        activeClass
+      }
+    })
+    expect(wrapper.contains('col-sm-12'))
+  })
+
+  it("computed: 'activeClass' works correctly when currentTab is not 'all class'", () => {
+    let activeClass = jest.fn()
+    const wrapper = shallowMount(Tab, {
+      propsData: {
+        name: 'all class',
+        currentTab: ' not all class'
+      },
+      computed: {
+        activeClass
+      }
+    })
+    expect(wrapper.contains('col-sm-8'))
+  })
+
+
 })

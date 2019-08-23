@@ -35,9 +35,9 @@ export default {
             type: String
         },
     },
-    updated(){
-        console.log('metric updated')
-    },
+    // updated(){
+    //     console.log('metric updated')
+    // },
     data() {
         return {
             anotationText: `
