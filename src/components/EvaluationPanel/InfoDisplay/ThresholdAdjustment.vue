@@ -10,7 +10,7 @@
                         min="1"
                         :max="step"
                         step="1"
-                        v-model.lazy.number="slider2"
+                        v-model.lazy.number="slider"
                         @change="ThresholdChange"
                     />
                 </div>
@@ -42,8 +42,7 @@ export default {
 
     data() {
         return {
-            slider: 0,
-            slider2: 1,
+            slider: 1,
             // TODO: still need to connect to backend data
             totalImages: this.graphData["image"],
             step: this.graphData["dataColumn"][0].length - 1 //elt 0 is threshold string
@@ -52,25 +51,14 @@ export default {
     },
 
     created() {
-        // console.log(this.graphData["dataColumn"][0]);
+        // console.log(this.slider);
     },
     // updated(){
-    //     console.log('qq')
+    //     console.log('test')
     // },
     methods: {
-        myProvider(ctx) {
-            let items = [
-                {
-                    "Total images": this.imageNumber,
-                    Precision: this.precision,
-                    Recall: this.recall
-                }
-            ];
-
-            return items || [];
-        },
         ThresholdChange() {
-            let val = this.slider2;
+            let val = this.slider;
             this.$emit("threshold-change", {
                 result: val
             });
@@ -78,13 +66,13 @@ export default {
     },
     computed: {
         threshold() {
-            return this.graphData["dataColumn"][0][this.slider2].toFixed(2);
+            return this.graphData["dataColumn"][0][this.slider].toFixed(2);
         },
         precision() {
-            return this.graphData["dataColumn"][1][this.slider2].toFixed(2);
+            return this.graphData["dataColumn"][1][this.slider].toFixed(2);
         },
         recall() {
-            return this.graphData["dataColumn"][2][this.slider2].toFixed(2);
+            return this.graphData["dataColumn"][2][this.slider].toFixed(2);
         }
     }
 };
