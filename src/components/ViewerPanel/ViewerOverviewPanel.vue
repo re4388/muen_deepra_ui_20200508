@@ -52,19 +52,18 @@ export default {
     this.fetchData()
     // be able to compare with the parsedFileListLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
-      let firstImageFilename = this.$store.getters['Viewer/parsedFileList'].map(item => item.filename)[0]
+      // let firstImageFilename = this.$store.getters['Viewer/parsedFileList'].map(item => item.filename)[0]
+      let firstImageFilename = this.$store.getters['Viewer/parsedFileList'][0].filename
       this.selectedImageFilename = firstImageFilename
 
       let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
       let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
       
       if (predictedLabels.length !== 0) {
-        let differentLabels = []
-        predictedLabels.reduce((acc, item, i) => {
-          if (predictedLabels[i] !== parsedFileListLabels[i]) {
-            differentLabels.push(i)
-          }
-        })
+        let differentLabels = predictedLabels.reduce((acc, item, i) => {
+          if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { acc.push(i) }
+          return acc
+        }, [])
         this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
       }
     }),
