@@ -130,10 +130,32 @@ function updateLabel (projectUuid, modified_content) {
   })
 }
 
+function deleteDataset (datasetUuid, removeLabelFile=false) {
+  let datasetManagementServicer = protoUtils.getServicer(
+    protoPath, protoPackageName, 'DatasetManagementServicer'
+  )
+
+  return new Promise((resolve, reject) => {
+    datasetManagementServicer.DeleteDataset(
+      {
+        dataset_uuid: datasetUuid,
+        remove_label_file: removeLabelFile
+      },
+      (err, resp) => {
+        if (err != null) {
+          console.log(err)
+        }
+        resolve(resp)
+      }
+    )
+  })
+}
+
 export default {
   DatasetInfo,
   importDataset,
   parseLabelFile,
   getDatasetInfo,
-  updateLabel
+  updateLabel,
+  deleteDataset
 }
