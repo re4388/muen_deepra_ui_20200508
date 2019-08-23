@@ -3,11 +3,14 @@
     <ToolBar class="toolbar"/>    
     <SidebarRight/>
     <b-modal ref="modal-confirm-changes" title="Save changes?"
+      cancel-title="discard"
+      cancel-variant="danger"
+      ok-title="save"
+      ok-variant="success"
       @ok="saveModifiedSamples"
       @cancel="discardModifiedSamples"
     >
       <p>Some annotations of samples are changed, do you want to save them?</p>
-      <p>(Click "cancel" button to discard changes)</p>
       <p>(Click the "x" sign to close this dialog and continue editing)</p>
     </b-modal>
     <b-modal ref="modal-no-change-notification" title="No change have to be saved" ok-only>
