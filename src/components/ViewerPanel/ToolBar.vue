@@ -81,6 +81,11 @@
           </imagvue>
         </v-zoomer>    
       </div>
+
+      <div class="metadataDisplay">
+        {{ this.imageFilename }}
+      </div>
+
   </div>
 </template>
 
@@ -119,12 +124,11 @@ export default {
     // and let the firstImage equal to the first item from the fileList
     // finally, join the root and filename for imageUrl using
     EventBus.$once('viewerDatasetChanged',()=>{
-      console.log('----loading----')
       // Parse path of images from dataset and assign to `this.images`
       let firstImage = this.$store.getters['Viewer/parsedFileList'][0]
       let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
-      console.log(firstImage.filename)
       this.url = joined
+      this.imageFilename = firstImage.filename
     }),
     // // methods-2
     // // when receive the message adout "onFirstImageLoaded"
@@ -140,16 +144,12 @@ export default {
     EventBus.$on('onNavigationImageClicked',(obj)=>{
       let item = obj.item
       let joined = modPath.join(modPath.resolve(item.root), item.filename)
-      console.log('----loading----')
       this.url = joined
+      this.imageFilename = item.filename
     })
   },
   methods: {
     initializeComponent() {
-    },
-    showImgList: function() {
-      let el = document.querySelector('.title')
-      el.classList.toggle('show')
     },
     onLoadEvent() {
       console.log("Image on load!");
@@ -161,7 +161,6 @@ export default {
         }
       }
     },
-    // when click the 'reset' buttom, the filters' value will set to default
     setToDefault() {
       this.filters = this.defaultValues();
     },
@@ -179,19 +178,10 @@ export default {
     }
   },
   computed: {
-    fixedRatioHeight () {
-      return this.filters['width']
-    },
-    dropShadow() {  
-      return this.dropShadowJson
-    },
-    fullPath: function() {
-      return modPath.join(modPath.resolve(this.root), this.filename)
-    }
   },
   data() {
     return {
-      selectedImageFilename: null,
+      imageFilename: null,
       pathCollector: null,
       cnt: 0,
       width: 0,
@@ -202,7 +192,6 @@ export default {
       isOpenFilters: true ,
       filters: {
         // maintain the aspect ratio
-        // width: 500,
         contrast: 100,
         brightness: 100,
         grayscale: 0,
@@ -221,9 +210,7 @@ export default {
 
 <style lang="scss" scoped>
 .wrap__1 {
-  // box-sizing: border-box;
   background-color: rgb(0, 0, 0);
-  // height: 114px;
 }
 .wrap__2 {
   object-fit: contain;
@@ -275,5 +262,12 @@ ul.drop-down-menu ul { /*隱藏次選單*/
   object-fit: contain;
   height: 100%;
   z-index: -1;
+}
+.metadataDisplay {
+  color: white;
+  position: absolute;
+  bottom: 50px;
+  margin-left: 20px;
+  user-select:none;
 }
 </style>
