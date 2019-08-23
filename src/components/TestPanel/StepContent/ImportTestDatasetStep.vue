@@ -77,7 +77,6 @@ export default {
   methods: {
     initializeContent () {
       this.$store.dispatch('Testing/setCurrentStage', 'importDataset')
-      this.$store.dispatch('DataImport/resetAllState')
       this.selectedFolder = this.$store.getters['DataImport/selectedFolder']
       this.$refs.inputFolderBrowser.setFiles([this.selectedFolder])
     },
@@ -124,6 +123,7 @@ export default {
             colLabel: this.colLabel
           }
         ).then((result) => {
+          this.$store.dispatch('DataImport/resetAllState')
           this.$store.dispatch('DataImport/setDatasetInfo', result.content)
           this.$store.dispatch('Testing/unlockStage')
           this.$store.dispatch('Testing/setCompletedStageIndex', this.content.id)
