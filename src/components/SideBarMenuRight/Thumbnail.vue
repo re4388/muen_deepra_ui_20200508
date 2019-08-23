@@ -12,7 +12,6 @@
 import modPath from 'path'
 import { EventBus } from '@/event_bus.js'
 
-
 export default {
   name: 'Thumbnail',
   props: {
@@ -63,25 +62,14 @@ export default {
   width: 60px;
   height: 60px;
 }
-.labelGreen::before {
-  content: "";
-  display: inline-flex;
-  position: absolute;
-  top: 0;
-  left: 45px;
-  width: 15px;
-  height: 15px;
-  background: #42ab427d;
-}
-.labelRed {
-  border: 1px solid red;
-}
-.metadataDisplay {
-  color: white;
-  position: fixed;
-  top: 700px;
-  left: 50px;
-  // background: blue;
-  padding: 10px;
-}
+// .labelGreen::before {
+//   content: "";
+//   display: inline-flex;
+//   position: absolute;
+//   top: 0;
+//   left: 45px;
+//   width: 15px;
+//   height: 15px;
+//   background: #42ab427d;
+// }
 </style>

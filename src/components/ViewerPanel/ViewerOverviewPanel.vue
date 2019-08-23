@@ -13,9 +13,6 @@
     <b-modal ref="modal-no-change-notification" title="No change have to be saved" ok-only>
       <p>There is no change have to be saved.</p>
     </b-modal>
-    <div class="metadataDisplay">
-      {{ selectedImageFilename }}
-    </div>
   </div>
 </template>
 
@@ -41,8 +38,7 @@ export default {
     return {
       image: null,
       loading: true,
-      dataset: null,
-      selectedImageFilename: ''
+      dataset: null
     }
   },
   watch: {
@@ -52,9 +48,8 @@ export default {
     this.fetchData()
     // be able to compare with the parsedFileListLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
-      // let firstImageFilename = this.$store.getters['Viewer/parsedFileList'].map(item => item.filename)[0]
-      let firstImageFilename = this.$store.getters['Viewer/parsedFileList'][0].filename
-      this.selectedImageFilename = firstImageFilename
+      // let firstImageFilename = this.$store.getters['Viewer/parsedFileList'][0].filename
+      // this.selectedImageFilename = firstImageFilename
 
       let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
       let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
@@ -62,16 +57,10 @@ export default {
       if (predictedLabels.length !== 0) {
         let differentLabels = predictedLabels.reduce((acc, item, i) => {
           if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { acc.push(i) }
+          // console.log(acc)
           return acc
         }, [])
         this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
-      }
-    }),
-    EventBus.$on('showSelectedFilename', (selectedImageFilename)=>{
-      if (this.selectedImageFilename === null) {
-        this.selectedImageFilename = this.firstImageFilename
-      } else {
-        this.selectedImageFilename = selectedImageFilename
       }
     })
   },
@@ -166,13 +155,5 @@ export default {
 }
 .toolbar {
   height: 100%;
-}
-.metadataDisplay {
-  color: white;
-  position: relative;
-  top: -80px;
-  left: -200px;
-  user-select:none;
-  width: 620px;
 }
 </style>

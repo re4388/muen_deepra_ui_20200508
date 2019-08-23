@@ -110,7 +110,7 @@ export default {
       indexNumber: 0,
       batchSize: 40,
       isDifferent: true,
-      isInitialized: false,
+      isInitialized: false
     }
   }
 }
@@ -211,13 +211,6 @@ $scroll-bar-width: 5px;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0
-}
-.labelRed {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  border: 1px solid red;
-  box-shadow: 0 0 0 5px white;
 }
 .changeStyle {
   position: relative;
