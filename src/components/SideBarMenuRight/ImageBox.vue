@@ -59,9 +59,9 @@ export default {
     },
     showClickedThumbnail (item, index) {
       EventBus.$emit('onNavigationImageClicked', {item, index})
-      console.log('--- selected image:')
-      console.log(item)
-      console.log(`ground truth: ${item.label}, predicted: ${this.predictedLabels[item.index]}`)
+      // console.log('--- selected image:')
+      // console.log(item)
+      // console.log(`ground truth: ${item.label}, predicted: ${this.predictedLabels[item.index]}`)
       this.indexNumber = index === undefined ? 0 : index
     },
     loadMore () {

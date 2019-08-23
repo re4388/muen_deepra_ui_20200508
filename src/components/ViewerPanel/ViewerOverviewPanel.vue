@@ -126,6 +126,13 @@ export default {
       })
     },
     saveModifiedSamples () {
+      let modifiedSamples = this.$store.getters['Label/modifiedSamples']
+      let temp = modifiedSamples.map(item => item.label === '')
+      let result = temp.reduce((acc, item) => {return acc || item})
+      if (result) {
+        alert('There are some samples were not annotated!!')
+        return
+      }
       datasetService.updateLabel(
         this.$store.getters['Project/currentProject'].uuid,
         this.$store.getters['Label/modifiedSamples']

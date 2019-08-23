@@ -267,7 +267,6 @@ ul.drop-down-menu ul { /*隱藏次選單*/
   color: white;
   position: absolute;
   bottom: 50px;
-  // left: 170px;
   margin-left: 20px;
   user-select:none;
 }
