@@ -58,6 +58,7 @@ function importDataset (
       (err, resp) => {
         if (err !== null) {
           console.log(err)
+          reject(err.details)
         }
         if (resp == null) {
           reject(
