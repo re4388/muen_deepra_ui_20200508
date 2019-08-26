@@ -11,6 +11,8 @@
 <script>
 import modPath from 'path'
 import { EventBus } from '@/event_bus.js'
+// import { mapState } from 'vuex'
+
 
 export default {
   name: 'Thumbnail',
@@ -22,6 +24,9 @@ export default {
     fullPath: function () {
       return modPath.join(modPath.resolve(this.root), this.filename)
     }
+    // ...mapState ({
+    //   differentLabels: state => state.Label.modifiedSamples
+    // })
   },
   methods: {
     onClick () {
