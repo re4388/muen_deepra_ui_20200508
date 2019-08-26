@@ -80,9 +80,9 @@
 
       <!-- GraphDisplay component -->
       <GraphDisplay
-        class="outterGrpah"
+        class="outterGraph"
         slot="GraphDisplay"
-        :graph-data="tab.grpah"
+        :graph-data="tab.graph"
         :new-threshold="newThreshold"
       />
 
@@ -91,7 +91,7 @@
         slot="ThresholdAdjustment"
         class="mt-3"
         :threshold-data="tab.threshold"
-        :graph-data="tab.grpah"
+        :graph-data="tab.graph"
         @threshold-change="ThresholdChange"
       ></ThresholdAdjustment>
 
@@ -326,7 +326,7 @@ export default {
       let data = vueUtils.clone(
         this.$store.getters["Validation/validationOutput"]
       );
-      // let data = localJsonRegression
+      //  blet data = localJsonRegression
 
 
       this.getModelList().then(result => {
@@ -386,7 +386,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.outterGrpah {
+.outterGraph {
   display: flex;
   flex-direction: row;
   justify-content: center;

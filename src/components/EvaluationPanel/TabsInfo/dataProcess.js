@@ -29,7 +29,7 @@ class BaseModel {
         F1score: this.metric['micro_f1_score'] || 'not available yet',
         AUC: this.metric['weighted_roc_auc'] || 'not available yet'
       },
-      grpah: {
+      graph: {
         modelType: checkModel(this.metric),
         ChartTitle: 'ROC Chart',
         xAxisLabel: '1 - Specificity (False Positive Rate)',
@@ -179,7 +179,7 @@ class BaseModel {
           F1score: this.metric['report_per_labels'][i]['f1'] || 'not available yet',
           AUC: this.metric['roc_auc'][i] || 'not available yet'
         },
-        grpah: {
+        graph: {
           modelType: checkModel(this.metric),
           ChartTitle: 'Precision Recall Curve',
           xAxisLabel: 'Threshold',
@@ -284,8 +284,7 @@ class RegressionModel extends BaseModel {
 
 
   addRegressionData() {
-    // console.log(this.allData[0].grpah.distFromLine)
-    this.allData[0]['grpah']['distFromLine'] = [...this.metric['distFromLine']]
+    this.allData[0]['graph']['distFromLine'] = [...this.metric['distFromLine']]
   }
 
   generateData() {
@@ -384,5 +383,11 @@ function generateModel(labels, metric) {
 
 
 export {
-  generateModel
+  generateModel,
+  BaseModel,
+  BinaryModel,
+  RegressionModel,
+  MultiClassModel,
+  checkModel
+
 }

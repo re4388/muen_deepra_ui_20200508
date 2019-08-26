@@ -107,9 +107,3 @@ describe('EvaluationPanel.vue', () => {
 
 
 
-
-
-// folderNumber
-// this.modelData.length
-
-// we analyzed {{ imageNumber }} image

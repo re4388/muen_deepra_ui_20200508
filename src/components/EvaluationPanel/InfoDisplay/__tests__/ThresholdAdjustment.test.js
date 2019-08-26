@@ -13,7 +13,7 @@ localVue.use(BootstrapVue)
 import ThresholdAdjustment from '../ThresholdAdjustment.vue'
 
 
-// mock computed functions
+// mock computed and methods functions
 let precision = jest.fn()
 let threshold = jest.fn()
 let recall = jest.fn()
@@ -21,7 +21,7 @@ let ThresholdChange = jest.fn()
 
 
 
-// factory functiomn to load complex props
+// factory func to load complex props
 const factory = () => {
   return shallowMount(ThresholdAdjustment, {
     localVue,
@@ -88,14 +88,13 @@ describe('ThresholdAdjustment.vue', () => {
 
 
   it('method:"ThresholdChange" invoke when input change', () => {
-
     let wrapper = factory()
     wrapper.setData({
       slider: 1,
     })
     wrapper.find('input').trigger('change')
     expect(ThresholdChange).toHaveBeenCalled()
-    wrapper.vm.$emit('thresholdChange')
+    // wrapper.vm.$emit('thresholdChange')
     // console.log(wrapper.emitted().thresholdChange)
   })
 
