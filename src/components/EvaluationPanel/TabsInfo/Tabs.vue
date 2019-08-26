@@ -139,9 +139,11 @@
 <script>
 /***** local Fake data to locally test *****/
 // minist data
-import localJson from "../deepra_mnistV2.json";
+import localJson from "../multi_class_mnist.json";
 // binary data
 import localJson2 from "../binary_data.json";
+// regression data
+import localJsonRegression from '../regression_data.json'
 
 // import dataProcess, which process data from gRPC
 import { generateModel } from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
@@ -193,7 +195,7 @@ export default {
   },
   // watch:{
   //   modelId(){
-  //     this.loadMoel();
+  //     this.loadModal();
   //   }
   // },
 
@@ -250,7 +252,7 @@ export default {
       this.newThreshold = obj.result;
     },
 
-    loadMoel() {
+    loadModal() {
       console.log("currentProjectData:", this.currentProjectData);
       console.log("current model id:", this.modelId);
       let filePath = modPath.join(
@@ -287,7 +289,7 @@ export default {
     },
 
     modelChange() {
-      this.loadMoel();
+      this.loadModal();
     },
 
     getModelList() {
@@ -319,14 +321,19 @@ export default {
 
     dataInit() {
       console.log("--- Tabs: get data from validation result ---");
+
+      // FIXME: to switch to fakedata
       let data = vueUtils.clone(
         this.$store.getters["Validation/validationOutput"]
       );
+      // let data = localJsonRegression
+
+
       this.getModelList().then(result => {
         if (data.content === null) {
           console.log("--- Tabs: get data from history record ---");
           this.getModelList();
-          this.loadMoel();
+          this.loadModal();
         } else {
           // generate processed data
           let tabData = generateModel(data.labels, data.metrics);
