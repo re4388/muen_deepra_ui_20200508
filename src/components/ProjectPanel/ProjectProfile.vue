@@ -38,8 +38,9 @@
           <span class="text-title">Label file:</span>
           <b-form-select
             id="input-label-file"
-            v-model="selectedLabelFile"
+            v-model="selectedLabelFileUuid"
             :options="labelFileList"
+            @change="selectedLabelFileChanged"
           >
           </b-form-select>
         </div>
@@ -64,6 +65,7 @@
 
 <script>
 import projectService from '@/api/projects_service.js'
+import datasetService from '@/api/dataset_service.js'
 import labelService from '@/api/label_service.js'
 import { EventBus } from '@/event_bus.js'
 
@@ -92,7 +94,9 @@ export default {
         }).reverse()
 
         // Set default value of `b-form-select`
-        this.selectedLabelFile = this.labelFileList[0].value
+        let currLabelFileUuid = JSON.parse(this.dataset['details_json'])['label_file_uuid']
+        let idx = this.labelFileList.map(item => item.value).indexOf(currLabelFileUuid)
+        this.selectedLabelFileUuid = this.labelFileList[idx].value
       })
     })
   },
@@ -105,14 +109,10 @@ export default {
       this.name = this.project.name
       this.description = this.project.description
       this.location = this.project.location
-      //   EventBus.$emit('pageChanged', {
-      //     pages: ['Profile'],
-      //     keepRoot: true,
-      //   })
+
       EventBus.$emit('pageChanged', this.$route.meta.title)
       EventBus.$emit('showProjectName', this.name)
     },
-    
     fetechProjectData () {
       return new Promise((resolve, reject) => {
         this.project = this.$store.getters['Project/currentProject']
@@ -128,6 +128,15 @@ export default {
     },
     redirectToPage () {
       this.$router.push('/training')
+    },
+    selectedLabelFileChanged () {
+      datasetService.changeLabel(
+        this.project['dataset_uuid'],
+        this.selectedLabelFileUuid
+      ).then((result) => {
+        // refresh cached metadata
+        this.fetechProjectData()
+      })
     }
   },
   computed: {
@@ -173,7 +182,7 @@ export default {
       timestamp: '',
       location: '',
       labelFileList: [],
-      selectedLabelFile: ''
+      selectedLabelFileUuid: ''
     }
   }
 }
