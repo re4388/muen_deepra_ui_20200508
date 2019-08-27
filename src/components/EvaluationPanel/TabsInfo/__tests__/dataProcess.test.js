@@ -378,14 +378,18 @@ it('function generateModel works', () => {
   // // let generateData = jest.fn()
   // let pushAllClass = jest.fn()
   // let pushEachClass = jest.fn()
-  // let callThis = {
+  // let localThis = {
   //   pushAllClass,
   //   pushEachClass,
   //   allData: "foo"
   // }
 
+  // let MultiClassModel = jest.fn( () => {
+  //   let pushAllClass = jest.fn()
+  // }
+  // )
 
-  // console.log(generateModel.call(callThis, labels, metric))
+  // console.log(generateModel(labels, metric))
 
 
 })

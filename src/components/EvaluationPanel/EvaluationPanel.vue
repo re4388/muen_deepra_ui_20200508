@@ -46,7 +46,7 @@ export default {
     methods: {
         modelInfo(obj) {
             this.modelData = obj.result;
-            // console.log("eva", this.modelData);
+            console.log("eva", this.modelData);
         }
     },
     mounted() {
@@ -57,7 +57,7 @@ export default {
             if (this.modelData === null) {
                 return;
             }
-            return this.modelData[0]["grpah"]["image"];
+            return this.modelData[0]["graph"]["image"];
         },
         // here I proxy number of class as number of folders
         folderNumber() {

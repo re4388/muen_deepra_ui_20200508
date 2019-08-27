@@ -144,7 +144,4 @@ describe('ThresholdAdjustment.vue', () => {
 
 
 
-
-
-
 })
