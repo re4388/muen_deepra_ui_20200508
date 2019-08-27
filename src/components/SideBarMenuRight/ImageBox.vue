@@ -15,7 +15,8 @@
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :style="[differentLabels.indexOf(item.index) !== -1 ? { 'border': '1px solid red' } :  { }, modifiedIndices.indexOf(item.index) !== -1 ? { 'background': 'yellow' } : { 'background': 'green' } ]"
+                  :isDifferent="isDifferentArray.indexOf(index) !== -1"
+                  :isModified="isModifiedArray.indexOf(index) !== -1"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
@@ -27,6 +28,8 @@
 </template>   
      
 <script>
+// :isModified="modifiedSamples.map((item) => item.index).indexOf(index) !== -1"
+
 import thumbnail from './Thumbnail.vue'
 import { EventBus } from '@/event_bus.js'
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
@@ -79,7 +82,7 @@ export default {
   },
   props: {
     currentImageSrc: String,
-    images: Array,
+    images: Array
   },
   watch: {
     indexNumber () {},
@@ -94,7 +97,10 @@ export default {
     currentImageIndex () {
       return this.indexNumber + 1
     },
-    modifiedIndices () {
+    isDifferentArray () {
+      return this.differentLabels
+    },
+    isModifiedArray () {
       return this.modifiedSamples.map((item) => item.index)
     },
     total () {
@@ -105,7 +111,6 @@ export default {
       differentLabels: state => state.Testing.differentLabels,
       modifiedSamples: state => state.Label.modifiedSamples
     })
-
   },
   data () {
     return {
@@ -118,10 +123,21 @@ export default {
       isInitialized: false
     }
   }
-}
+} 
 </script>
 
 <style lang="scss" scoped>
+.edited::after {
+  content: "";
+  display: inline-flex;
+  position: absolute;
+  background: rgba(230, 230, 112, 0.5);
+  width: 60px;
+  height: 60px;
+  background-image: url('../../assets/edit.png');
+  background-repeat: no-repeat; 
+}
+
 $scroll-bar-width: 5px;
 .imgList {
   width: 315px;

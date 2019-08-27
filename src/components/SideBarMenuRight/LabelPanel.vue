@@ -67,8 +67,8 @@ export default {
     modificationLogger (target) {
       let checked = target.getElementsByTagName('input')[0].checked
       let newLabel = checked ? target.innerText.trim() : ''
-      console.log(this.parsedFileList[this.srcIndex])
-      console.log(newLabel)
+      // console.log(this.parsedFileList[this.srcIndex])
+      // console.log(newLabel)
       if (newLabel !== this.selectedLabel) {
         this.$store.dispatch('Label/updateModifiedSample', {
           sample: this.parsedFileList[this.srcIndex],

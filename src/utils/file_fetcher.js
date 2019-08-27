@@ -26,8 +26,8 @@ class DatasetPathCollector {
 
         // remove utf-8 BOM
         if (this.header.charCodeAt(0) === 0xFEFF) {this.header = this.header.substr(1)}
-
-        let idxFilename = this.header.split(',').indexOf(this.colFilename)
+        this.header = this.header.split(',')
+        let idxFilename = this.header.indexOf(this.colFilename)
         let idxLabel = this.header.indexOf(this.colLabel)
 
         this.fileList = this.fileList.map(function(x, index) {
