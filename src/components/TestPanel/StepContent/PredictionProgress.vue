@@ -19,6 +19,7 @@
 import predictionService from '@/api/prediction_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
 import { converterDict } from '@/utils/label_converter.js'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'PredictionProgress',
@@ -32,6 +33,11 @@ export default {
     this.startPrediction()
   },
   methods: {
+    ...mapActions('Testing', {
+      unlockStage: 'unlockStage',
+      setCompletedStageIndex: 'setCompletedStageIndex',
+      toggleIsTesting: 'toggleIsTesting',
+    }),
     setProgressRange (rngMin, rngMax) {
       this.progressValueMin = rngMin
       this.progressValueMax = rngMax
@@ -43,15 +49,19 @@ export default {
       this.progressValue = (val * this.progressValueMax).toFixed(2)
     },
     startPrediction () {
+      if (this.isTesting) return
+
       let model = this.$store.getters['Model/currentModel']
       let datasetInfo = this.$store.getters['DataImport/datasetInfo']
-      // console.log('--- start prediction ---')
+
       let handlerProgress = (resp) =>{
         this.updateProgressBar(resp)
       }
       let handlerEnd = (resp) =>{
         this.finishPrediction()
       }
+
+      this.toggleIsTesting()
       let call = predictionService.startPrediction(
         model.uuid,
         datasetInfo.uuid,
@@ -60,12 +70,8 @@ export default {
       )
     },
     finishPrediction () {
-      // console.log('Prediction is finished')
-
       predictionService.getPredictionOutput().then((result) => {
         this.$store.dispatch('Testing/setPredictionOutput', result)
-        // console.log('--- Prediction output:')
-        // console.log(result)
 
         // Update the label list of cached `datasetInfo`, so that the correct label
         // set can be displayed in label panel.
@@ -77,15 +83,23 @@ export default {
         let predictedLabels = labelConverter.convertAll()
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
       })
+      this.toggleIsTesting()
       this.$emit('onProgressFinished', true)
     },
     checkContent () {
+      if (this.isTesting) return
+
       return new Promise((resolve, reject) => {
-        this.$store.dispatch('Testing/unlockStage')
-        this.$store.dispatch('Testing/setCompletedStageIndex', this.content.id)
+        this.unlockStage()
+        this.setCompletedStageIndex(this.content.id)
         resolve(true)
       })
     }
+  },
+  computed: {
+    ...mapGetters('Testing', {
+      isTesting: 'isTesting'
+    })
   },
   data () {
     return {
