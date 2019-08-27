@@ -141,6 +141,8 @@ export default {
           this.$store.dispatch('Testing/unlockStage')
           this.$store.dispatch('Testing/setCompletedStageIndex', this.content.id)
           resolve(true)
+        }).catch((err) => {
+          alert(err)
         })
       })
     },

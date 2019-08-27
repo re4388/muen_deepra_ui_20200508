@@ -1,7 +1,7 @@
 <template>
   <div class="step-pipeline">
     <div id="container">
-      <div class="rect"></div>
+      <div class="pipeline-rect" id="pipeline-rect"></div>
       <template v-for="(item, index) in contentList" class="pipeline">
         <pipeline-element
           ref="pipelineElement"
@@ -38,6 +38,13 @@ export default {
   methods: {
     initializeComponent () {
       this.activatePipelineElement(this.indexActivated)
+      // Dynamically set the height of `pipeline-rect`
+      let pes = document.getElementsByClassName('pipeline-element')
+      let peRect = pes[0].getBoundingClientRect()
+      let start = peRect.y + peRect.height/2
+      let end = pes[pes.length-1].getBoundingClientRect().y + peRect.height/2
+      let value = String(end + peRect.height/2 - start) + 'px'
+      document.getElementById('pipeline-rect').style.height = value
     },
     notifySelection (selectedId) {
       if (!this.enableSelectionOnClicked) return
@@ -72,11 +79,8 @@ export default {
   position: absolute;
   z-index: 10;
 }
-// TODO: rewrite this as a dynamic style (height can be changed according to
-// the number of steps)
-.rect {
+.pipeline-rect {
   background-color: rgb(80, 80 ,80);
-  height: 215px;
   width: 20px;
   position: absolute;
   margin-left: 40px;

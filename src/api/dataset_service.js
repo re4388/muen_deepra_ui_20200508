@@ -58,6 +58,7 @@ function importDataset (
       (err, resp) => {
         if (err !== null) {
           console.log(err)
+          reject(err.details)
         }
         if (resp == null) {
           reject(
@@ -130,6 +131,27 @@ function updateLabel (projectUuid, modified_content) {
   })
 }
 
+function changeLabel (datsetUuid, labelFileUuid) {
+  let datasetManagementServicer = protoUtils.getServicer(
+    protoPath, protoPackageName, 'DatasetManagementServicer'
+  )
+
+  return new Promise((resolve, reject) => {
+    datasetManagementServicer.ChangeLabel(
+      {
+        dataset_uuid: datsetUuid,
+        label_file_uuid: labelFileUuid
+      },
+      (err, resp) => {
+        if (err != null) {
+          console.log(err)
+        }
+        resolve(resp)
+      }
+    )
+  })
+}
+
 function deleteDataset (datasetUuid, removeLabelFile=false) {
   let datasetManagementServicer = protoUtils.getServicer(
     protoPath, protoPackageName, 'DatasetManagementServicer'
@@ -157,5 +179,6 @@ export default {
   parseLabelFile,
   getDatasetInfo,
   updateLabel,
+  changeLabel,
   deleteDataset
 }
