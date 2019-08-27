@@ -19,7 +19,6 @@ import {
 describe('EvaluationPanel.vue', () => {
 
   let mocks;
-
   beforeEach(() => {
     mocks = {
       $route: {
@@ -31,6 +30,7 @@ describe('EvaluationPanel.vue', () => {
   })
 
 
+
   it('is a Vue instance', () => {
     const wrapper = shallowMount(EvaluationPanel, {
       mocks
@@ -38,12 +38,18 @@ describe('EvaluationPanel.vue', () => {
     expect(wrapper.isVueInstance).toBeTruthy()
   })
 
+
+
+  
   it('component: "tabs" renders properly', () => {
     const wrapper = shallowMount(EvaluationPanel, {
       mocks
     })
     expect(wrapper.find(Tabs).exists()).toBe(true)
   })
+
+
+
 
   it('data: title render properly', () => {
     const wrapper = shallowMount(EvaluationPanel, {
@@ -54,6 +60,8 @@ describe('EvaluationPanel.vue', () => {
     })
     expect(wrapper.text()).toContain('here are the title')
   })
+
+
 
 
   it('communicate: receive the model-data from Tabs and invoke method properly', () => {
@@ -73,13 +81,16 @@ describe('EvaluationPanel.vue', () => {
 
   })
 
+
+
+
   it('computed: "imageNumber" work properly', () => {
     const wrapper = shallowMount(EvaluationPanel, {
       mocks
     })
     const localThis = {
       modelData: [{
-        "grpah": {
+        "graph": {
           "image": 42
         }
       }]
@@ -87,8 +98,10 @@ describe('EvaluationPanel.vue', () => {
     expect(EvaluationPanel.computed.imageNumber.call(localThis)).toBe(42)
   })
 
-  it('computed: "folderNumber" work properly', () => {
 
+
+
+  it('computed: "folderNumber" work properly', () => {
     const localThis = {
       modelData: [{}, {}, {}]
     }
@@ -101,7 +114,6 @@ describe('EvaluationPanel.vue', () => {
     // check when we have only one folder, we set the number to 1
     expect(EvaluationPanel.computed.folderNumber.call(onlyOneFdoler)).toBe(1)
   })
-
 
 })
 

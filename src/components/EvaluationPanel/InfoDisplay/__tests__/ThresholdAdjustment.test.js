@@ -94,8 +94,6 @@ describe('ThresholdAdjustment.vue', () => {
     })
     wrapper.find('input').trigger('change')
     expect(ThresholdChange).toHaveBeenCalled()
-    // wrapper.vm.$emit('thresholdChange')
-    // console.log(wrapper.emitted().thresholdChange)
   })
 
   it('method:"ThresholdChange" had emiited properly', () => {

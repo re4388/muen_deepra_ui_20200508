@@ -13,7 +13,7 @@ import * as d3 from "d3";
 import VueC3 from "vue-c3";
 import "c3/c3.min.css";
 export default {
-  name: "GraphDisplay2",
+  name: "GraphDisplay",
   components: {
     VueC3
   },
@@ -222,21 +222,21 @@ export default {
               }
               // 架設 html
               text = `
-                            <table ${pos} class='c3-tooltip'>
-                                <tr>
-                                    <th colspan='2'> 與回歸線差距 </th>
-                                </tr> 
-                                <tr class='c3-tooltip-name-${d[0].id}'>
-                                    <td class='name'>
-                                    <span style='background-color:${bgcolor}'></span>
-                                    ${d[0].id}
-                                    </td>
-                                    <td class='value'>
-                                    ${dist[d[0].index]} 
-                                    </td>
-                                </tr>
-                            </table> 
-                            `;
+                    <table ${pos} class='c3-tooltip'>
+                        <tr>
+                            <th colspan='2'> 與回歸線差距 </th>
+                        </tr> 
+                        <tr class='c3-tooltip-name-${d[0].id}'>
+                            <td class='name'>
+                            <span style='background-color:${bgcolor}'></span>
+                            ${d[0].id}
+                            </td>
+                            <td class='value'>
+                            ${dist[d[0].index]} 
+                            </td>
+                        </tr>
+                    </table> 
+                    `;
               return text;
             } else {
               return this.getTooltipContent(
@@ -289,7 +289,7 @@ export default {
       this.dist = this.graphData["distFromLine"];
     },
     showAnnotation() {
-      console.log("threshold", this.dataColumn[0][this.newThreshold]);
+      // console.log("threshold", this.dataColumn[0][this.newThreshold]);
       this.handler.$emit("dispatch", chart => {
         chart.tooltip.show({
           x: this.dataColumn[0][this.newThreshold]

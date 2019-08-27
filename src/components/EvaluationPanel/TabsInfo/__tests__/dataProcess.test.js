@@ -159,7 +159,7 @@ it('RegressionModel method addRegressionData work', () => {
     }
   }
   const obj = new RegressionModel(labels, metric);
-  expect(obj.addRegressionData.call(localthis)).toBe(undefined);
+  expect(obj.addRegressionData.call(localthis)).toBe(null);
 })
 
 it('RegressionModel method generateData work', () => {
@@ -329,67 +329,100 @@ it('function checkModel works', () => {
 })
 
 
-// TODO: not yet implement
-it('function generateModel works', () => {
-  // const labels = [0, 1]
-  // const metric = {
-  //   "thresholds_prcurve": {
-  //     "0": [
-  //       1, 2, 3
-  //     ],
-  //     "1": [
-  //       1, 2, 3
-  //     ]
-  //   },
-  //   "precision_prcurve": {
-  //     "0": [
-  //       1, 2, 3
-  //     ],
-  //     "1": [
-  //       1, 2, 3
-  //     ]
-  //   },
-  //   "recall_prcurve": {
-  //     "0": [
-  //       1, 2, 3
-  //     ],
-  //     "1": [
-  //       1, 2, 3
-  //     ]
-  //   },
-  //   'fpr_roccurve': {
-  //     "0": [
-  //       1, 2, 3
-  //     ],
-  //     "1": [
-  //       1, 2, 3
-  //     ]
-  //   },
-  //   "tpr_roccurve": {
-  //     "0": [
-  //       1, 2, 3
-  //     ],
-  //     "1": [
-  //       1, 2, 3
-  //     ]
-  //   },
-  // }
-
-  // // let generateData = jest.fn()
-  // let pushAllClass = jest.fn()
-  // let pushEachClass = jest.fn()
-  // let localThis = {
-  //   pushAllClass,
-  //   pushEachClass,
-  //   allData: "foo"
-  // }
-
-  // let MultiClassModel = jest.fn( () => {
-  //   let pushAllClass = jest.fn()
-  // }
-  // )
-
-  // console.log(generateModel(labels, metric))
 
 
+
+
+
+
+// use jest to mock sperate class methods inside external module
+jest.mock('@/components/EvaluationPanel/TabsInfo/dataProcess.js', () => {
+  const mockDataProcess = jest.requireActual('@/components/EvaluationPanel/TabsInfo/dataProcess.js')
+  mockDataProcess.MultiClassModel.prototype.pushAllClass = function () {
+    // console.log('---  MultiClassModel pushAllClass is mocked')
+    return null
+  }
+  mockDataProcess.MultiClassModel.prototype.pushEachClass = function () {
+    // console.log('--- MultiClassModel pushEachClass is mocked')
+    return null
+  }
+
+  mockDataProcess.RegressionModel.prototype.pushAllClass = function () {
+    // console.log('---  RegressionModel pushAllClass is mocked')
+    return null
+  }
+  mockDataProcess.RegressionModel.prototype.addRegressionData = function () {
+    // console.log('---  RegressionModel addRegressionData is mocked')
+    return null
+  }
+
+  mockDataProcess.BinaryModel.prototype.pushAllClass = function () {
+    // console.log('---  binaryModel pushAllClass is mocked')
+    return null
+  }
+
+
+  return mockDataProcess
 })
+
+describe('generateModel', () => {
+  it('execute class method based on different metric strcuture', () => {
+    const labels = [0, 1]
+    let metric1 = {
+      'fpr_roccurve': {
+        "0": [
+          1, 2, 3
+        ],
+        "1": [
+          1, 2, 3
+        ]
+      },
+    }
+    let metric2 = {
+      "distFromLine": [1, 2, 3],
+      'fpr_roccurve': []
+    }
+
+    let metric3 = {
+      'fpr_roccurve': [1, 2, 3]
+    }
+
+
+    expect(generateModel(labels, metric1)).toBeTruthy()
+    expect(generateModel(labels, metric2)).toBeTruthy()
+    expect(generateModel(labels, metric3)).toBeTruthy()
+
+  })
+})
+
+
+
+
+// function generateModel(labels, metric) {
+//   if (checkModel(metric) === 'multiType') {
+//     return new MultiClassModel(labels, metric).generateData()
+//   }
+//   if (checkModel(metric) === 'regression') {
+//     return new RegressionModel(labels, metric).generateData()
+//   } else {
+//     return new BinaryModel(labels, metric).generateData()
+//   }
+// }
+
+// function checkModel(metric) {
+//   if (!Array.isArray(metric['fpr_roccurve'])) {
+//     return 'multiType'
+//   }
+//   if (metric['distFromLine']) { // if this specific field exist..
+//     return 'regression'
+//   } else {
+//     return 'binaryModel'
+//   }
+// }
+
+
+//  generateData() {
+//    this.pushAllClass()
+//    this.pushEachClass()
+//    return this.allData
+//  }

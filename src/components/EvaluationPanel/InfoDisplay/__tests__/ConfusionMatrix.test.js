@@ -64,7 +64,7 @@ describe('ConfusionMatrix.vue', () => {
 
 
 
-  it('when componentmounted, "init" method has been called', () => {
+  it('when component mounted, "init" method has been called', () => {
     let init = jest.fn()
     const wrapper = shallowMount(ConfusionMatrix, {
       propsData: {
@@ -80,7 +80,6 @@ describe('ConfusionMatrix.vue', () => {
         init,
       }
     })
-
     expect(init).toHaveBeenCalled()
   })
 
