@@ -173,10 +173,10 @@ class BaseModel {
         id: `${i + 1}`,
         name: `class ${this.labels[i]}`,
         metrics: {
-          Sensitivity: this.metric['report_per_labels'][i]['recall'] || 'not available yet',
-          Specificity: this.metric['report_per_labels'][i]['specificity'] || 'not available yet',
-          Precision: this.metric['report_per_labels'][i]['precision'] || 'not available yet',
-          F1score: this.metric['report_per_labels'][i]['f1'] || 'not available yet',
+          Sensitivity: this.metric['report_per_labels'][this.labels[i]]['recall'] || 'not available yet',
+          Specificity: this.metric['report_per_labels'][this.labels[i]]['specificity'] || 'not available yet',
+          Precision: this.metric['report_per_labels'][this.labels[i]]['precision'] || 'not available yet',
+          F1score: this.metric['report_per_labels'][this.labels[i]]['f1'] || 'not available yet',
           AUC: this.metric['roc_auc'][i] || 'not available yet'
         },
         graph: {
@@ -193,7 +193,7 @@ class BaseModel {
         },
         confusionMatrixInfo: {
           confusionMatrix: [
-            ...this.metric['report_per_labels'][i]['content']
+            ...this.metric['report_per_labels'][this.labels[i]]['content']
             // below code is for mutiple matrix in one class
             // ...this.metric['matrix_threshold'][i]
             // [1, 0],
@@ -358,7 +358,6 @@ class MultiClassModel extends BaseModel {
 
 // return model Type, use 'fpr_roccurve' data structure to check model type
 function checkModel(metric) {
-
   if (!Array.isArray(metric['fpr_roccurve'])) {
     return 'multiType'
   }
@@ -367,7 +366,7 @@ function checkModel(metric) {
   } else {
     return 'binaryModel'
   }
-}
+} 
 
 
 function generateModel(labels, metric) {
@@ -391,3 +390,5 @@ export {
   checkModel
 
 }
+
+
