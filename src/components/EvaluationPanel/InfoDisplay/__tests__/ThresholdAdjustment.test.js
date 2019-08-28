@@ -92,6 +92,7 @@ describe('ThresholdAdjustment.vue', () => {
     wrapper.setData({
       slider: 1,
     })
+    // console.log(wrapper)
     wrapper.find('input').trigger('change')
     expect(ThresholdChange).toHaveBeenCalled()
   })
