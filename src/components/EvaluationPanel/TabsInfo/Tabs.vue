@@ -80,9 +80,9 @@
 
       <!-- GraphDisplay component -->
       <GraphDisplay
-        class="outterGrpah"
+        class="outterGraph"
         slot="GraphDisplay"
-        :graph-data="tab.grpah"
+        :graph-data="tab.graph"
         :new-threshold="newThreshold"
       />
 
@@ -91,7 +91,7 @@
         slot="ThresholdAdjustment"
         class="mt-3"
         :threshold-data="tab.threshold"
-        :graph-data="tab.grpah"
+        :graph-data="tab.graph"
         @threshold-change="ThresholdChange"
       ></ThresholdAdjustment>
 
@@ -133,6 +133,9 @@
         @change="onExport"
       />
     </Tab>
+
+
+
   </div>
 </template>
 
@@ -216,8 +219,8 @@ export default {
         return;
       }
       // get the current view index
-      let currentTab = this.tabList.indexOf(this.currentTab);
-      return this.tabs[currentTab]["confusionMatrixInfo"];
+      let currentTabIndex = this.tabList.indexOf(this.currentTab);
+      return this.tabs[currentTabIndex]["confusionMatrixInfo"]
     },
 
     ...mapGetters("Validation", {
@@ -253,8 +256,8 @@ export default {
     },
 
     loadModal() {
-      console.log("currentProjectData:", this.currentProjectData);
-      console.log("current model id:", this.modelId);
+      // console.log("currentProjectData:", this.currentProjectData);
+      // console.log("current model id:", this.modelId);
       let filePath = modPath.join(
         this.currentProjectData.location,
         "deepra_output",
@@ -283,7 +286,7 @@ export default {
         })
         .catch(err => {
           this.loadModelError = true;
-          console.log("the err:", err);
+          // console.log("readJson err:", err);
           this.modelId = "no such file or directory";
         });
     },
@@ -314,8 +317,10 @@ export default {
             }
             // console.log(modelHistory);
             resolve(true);
-          }
-        );
+          })
+          .catch(err => {
+          console.log("GetModelListByProject err:", err);
+        });
       });
     },
 
@@ -326,7 +331,7 @@ export default {
       let data = vueUtils.clone(
         this.$store.getters["Validation/validationOutput"]
       );
-      // let data = localJsonRegression
+      //  blet data = localJsonRegression
 
 
       this.getModelList().then(result => {
@@ -347,7 +352,10 @@ export default {
           // Tab init
           this.InitTab();
         }
-      });
+      })
+      .catch(err => {
+          console.log("getModelList err:", err);
+        });
     },
 
     ...mapActions("Validation", {
@@ -369,6 +377,9 @@ export default {
           this.showExportMsg =
             "Files has been successfully move to folder :  " + outputLocation;
           this.$bvModal.show("bv-modal-example");
+        })
+        .catch(err => {
+          console.log("exportFiles err:", err);
         });
     }
   },
@@ -386,7 +397,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.outterGrpah {
+.outterGraph {
   display: flex;
   flex-direction: row;
   justify-content: center;

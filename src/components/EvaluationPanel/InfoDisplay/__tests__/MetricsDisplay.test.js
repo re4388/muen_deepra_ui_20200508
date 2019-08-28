@@ -2,9 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import MetricDisplay from '../MetricsDisplay.vue';
 import {JestEnvironment} from '@jest/environment';
 
-// shall redered our the the key part of the anotationText data
-// shall redner out the metricsData data
-// shall received the props "metricsData" -> need to test on parent comp
+
 
 describe('MetricDisplay.vue', () => {
 	it('data: "anotationText" render properly', () => {
@@ -87,10 +85,3 @@ describe('MetricDisplay.vue', () => {
     
 	});
 });
-
-
-
-//  filters: {
-//      numberFormater(val) {
-//        // console.log(val)
-//        if (val === -1) {

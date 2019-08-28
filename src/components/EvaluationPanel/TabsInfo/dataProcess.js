@@ -29,7 +29,7 @@ class BaseModel {
         F1score: this.metric['micro_f1_score'] || 'not available yet',
         AUC: this.metric['weighted_roc_auc'] || 'not available yet'
       },
-      grpah: {
+      graph: {
         modelType: checkModel(this.metric),
         ChartTitle: 'ROC Chart',
         xAxisLabel: '1 - Specificity (False Positive Rate)',
@@ -173,13 +173,13 @@ class BaseModel {
         id: `${i + 1}`,
         name: `class ${this.labels[i]}`,
         metrics: {
-          Sensitivity: this.metric['report_per_labels'][i]['recall'] || 'not available yet',
-          Specificity: this.metric['report_per_labels'][i]['specificity'] || 'not available yet',
-          Precision: this.metric['report_per_labels'][i]['precision'] || 'not available yet',
-          F1score: this.metric['report_per_labels'][i]['f1'] || 'not available yet',
+          Sensitivity: this.metric['report_per_labels'][this.labels[i]]['recall'] || 'not available yet',
+          Specificity: this.metric['report_per_labels'][this.labels[i]]['specificity'] || 'not available yet',
+          Precision: this.metric['report_per_labels'][this.labels[i]]['precision'] || 'not available yet',
+          F1score: this.metric['report_per_labels'][this.labels[i]]['f1'] || 'not available yet',
           AUC: this.metric['roc_auc'][i] || 'not available yet'
         },
-        grpah: {
+        graph: {
           modelType: checkModel(this.metric),
           ChartTitle: 'Precision Recall Curve',
           xAxisLabel: 'Threshold',
@@ -193,7 +193,7 @@ class BaseModel {
         },
         confusionMatrixInfo: {
           confusionMatrix: [
-            ...this.metric['report_per_labels'][i]['content']
+            ...this.metric['report_per_labels'][this.labels[i]]['content']
             // below code is for mutiple matrix in one class
             // ...this.metric['matrix_threshold'][i]
             // [1, 0],
@@ -284,8 +284,7 @@ class RegressionModel extends BaseModel {
 
 
   addRegressionData() {
-    // console.log(this.allData[0].grpah.distFromLine)
-    this.allData[0]['grpah']['distFromLine'] = [...this.metric['distFromLine']]
+    this.allData[0]['graph']['distFromLine'] = [...this.metric['distFromLine']]
   }
 
   generateData() {
@@ -359,7 +358,6 @@ class MultiClassModel extends BaseModel {
 
 // return model Type, use 'fpr_roccurve' data structure to check model type
 function checkModel(metric) {
-
   if (!Array.isArray(metric['fpr_roccurve'])) {
     return 'multiType'
   }
@@ -368,7 +366,7 @@ function checkModel(metric) {
   } else {
     return 'binaryModel'
   }
-}
+} 
 
 
 function generateModel(labels, metric) {
@@ -384,5 +382,13 @@ function generateModel(labels, metric) {
 
 
 export {
-  generateModel
+  generateModel,
+  BaseModel,
+  BinaryModel,
+  RegressionModel,
+  MultiClassModel,
+  checkModel
+
 }
+
+
