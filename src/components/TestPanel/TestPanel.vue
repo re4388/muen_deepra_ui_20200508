@@ -16,7 +16,7 @@
         />
       </div>
       <div class="control-section">
-        <a class="btn-flow-control" @click="progressToNextStep">
+        <a class="btn-flow-control" ref="btnFlowControl" @click="progressToNextStep">
           <div class="content">
             <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
             <p v-else>Next</p>
@@ -92,13 +92,24 @@ export default {
       // TODO: save meta data by backend
     },
     redirectToPage () {
+      // TODO: reset status
       this.$router.push('/model-profile')
+    },
+    toggleBtnFlowControl () {
+      let el = this.$refs['btnFlowControl'].getElementsByClassName('content')[0]
+      el.style.backgroundColor = this.isTesting ? 'rgb(175, 175, 175)' : 'rgba(0, 150, 150, 0.75)'
     }
   },
   computed: {
     ...mapGetters('Testing', {
-      isCurrentStageLocked: 'isCurrentStageLocked'
+      isCurrentStageLocked: 'isCurrentStageLocked',
+      isTesting: 'isTesting'
     })
+  },
+  watch: {
+    isTesting () {
+      this.toggleBtnFlowControl()
+    }
   },
   data () {
     return {
