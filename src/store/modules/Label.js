@@ -26,6 +26,8 @@ const mutations = {
     // NOTE: minimal required keys in payload.sample: 'filename', 'label'
     let sample = payload.sample
     let newLabel = payload.newLabel
+    // Ignore modification if the original annotation is marked as an empty one (NA)
+    if (sample.label === '#' || sample.label === '') return
 
     let idx = indexOfModifiedSamples(sample)
     if (idx === -1) {

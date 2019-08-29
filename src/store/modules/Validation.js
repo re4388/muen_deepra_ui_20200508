@@ -9,7 +9,8 @@ const defaultState = {
   },
   allDatasetOutput: {
     content: null
-  }
+  },
+  orderedFileList: null
 }
 
 const state = {}
@@ -22,6 +23,9 @@ const getters = {
   },
   allDatasetOutput () {
     return state.allDatasetOutput
+  },
+  orderedFileList () {
+    return state.orderedFileList
   },
   isValidating () {
     return state.isValidating
@@ -38,6 +42,9 @@ const mutations = {
   SET_ALL_DATASET_OUTPUT (state, payload) {
     state.allDatasetOutput = payload
   },
+  SET_ORDERED_FILE_LIST (state, payload) {
+    state.orderedFileList = payload
+  },
   TOGGLE_IS_VALIDATING (state) {
     state.isValidating = !state.isValidating
   }
@@ -52,6 +59,9 @@ const actions = {
   },
   setAllDatasetOutput ({ commit }, payload) {
     commit('SET_ALL_DATASET_OUTPUT', payload)
+  },
+  setOrderedFileList ({ commit }, payload) {
+    commit('SET_ORDERED_FILE_LIST', payload)
   },
   toggleIsValidating ({ commit }) {
     commit('TOGGLE_IS_VALIDATING')

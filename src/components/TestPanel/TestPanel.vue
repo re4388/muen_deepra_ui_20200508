@@ -16,7 +16,7 @@
         />
       </div>
       <div class="control-section">
-        <a class="btn-flow-control" @click="progressToNextStep">
+        <a class="btn-flow-control" ref="btnFlowControl" @click="progressToNextStep">
           <div class="content">
             <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
             <p v-else>Next</p>
@@ -39,6 +39,7 @@ import ImportDatasetStep from './StepContent/ImportTestDatasetStep.vue'
 // TODO: reuse existing component `TrainingPanel/StepContent/ResourcesCheckStep.vue`
 import ResourcesCheckStep from './StepContent/ResourcesCheckStep.vue'
 import PredictionProgress from './StepContent/PredictionProgress.vue'
+import { mapGetters, mapActions } from 'vuex'
 import { EventBus } from '@/event_bus.js'
 
 export default {
@@ -61,6 +62,9 @@ export default {
     EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   methods: {
+    ...mapActions({
+      resetStageLock: 'Testing/resetStageLock'
+    }),
     initializeComponent () {
       this.$store.dispatch('Testing/resetAllState')
     },
@@ -74,23 +78,37 @@ export default {
       if (call === undefined) return
 
       call.then((result) => {
-        if (this.$store.getters['Testing/isCurrentStageLocked']) return
+        if (this.isCurrentStageLocked) return
 
-        // if (this.currentStep == this.stepContent.length - 1) {
-        //   this.finializeProjectCreation()
-        //   this.$router.push('/project-overview')
-        // }
-        if (this.currentStep < this.stepContent.length - 1) {
-          this.currentStep += 1
-          this.$store.dispatch('Testing/resetStageLock')
+        console.log(this.currentStep, this.stepContent.length - 1)
+        if (this.currentStep == this.stepContent.length - 1) {
+          this.$router.push('/viewer-overview')
         }
+        this.currentStep += 1
+        this.resetStageLock()
       })
     },
     finializeProjectCreation () {
       // TODO: save meta data by backend
     },
     redirectToPage () {
+      // TODO: reset status
       this.$router.push('/model-profile')
+    },
+    toggleBtnFlowControl () {
+      let el = this.$refs['btnFlowControl'].getElementsByClassName('content')[0]
+      el.style.backgroundColor = this.isTesting ? 'rgb(175, 175, 175)' : 'rgba(0, 150, 150, 0.75)'
+    }
+  },
+  computed: {
+    ...mapGetters('Testing', {
+      isCurrentStageLocked: 'isCurrentStageLocked',
+      isTesting: 'isTesting'
+    })
+  },
+  watch: {
+    isTesting () {
+      this.toggleBtnFlowControl()
     }
   },
   data () {

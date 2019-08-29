@@ -7,7 +7,7 @@
             <transition name="fade">
               <div class="loading" v-show="loading">
                 <span class="fa fa-spinner fa-spin"></span> Loading
-              </div>
+              </div>            
             </transition>
             <div class="imgList " id="imgList">
               <template class="imgList-item" id="imgList-item" v-for="(item, index) in loadedImages">
@@ -15,12 +15,12 @@
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :differentLabels="differentLabels"
-                  :style="differentLabels.indexOf(index) !== -1 ? { 'border': '1px solid red' } : { }"
+                  :isDifferent="isDifferentArray.indexOf(item.index) !== -1"
+                  :isModified="isModifiedArray.indexOf(item.index) !== -1"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
-            </div>          
+            </div>       
           </div>
       </div>
     </div>
@@ -31,40 +31,39 @@
 import thumbnail from './Thumbnail.vue'
 import { EventBus } from '@/event_bus.js'
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
-import { window } from 'd3-selection';
-import { connect } from 'http2';
-import { mapState } from 'vuex';
+import { window } from 'd3-selection'
+import { connect } from 'http2'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ImageBox',
   components: {
     thumbnail
   },
-  created () {
-    EventBus.$once('notifyImageTotalNumber', (imageTotalNumber)=>{
-      this.total = imageTotalNumber
-      this.initializeComponent()
-    })
-    EventBus.$once('showDifference', (differentLabels) => {
-      this.differentLabels = differentLabels
-    })
-  },
-  mounted(){
+  mounted () {
+    let func  = function FUNC_NAME (foo) {return foo.bar};
     const listElm = document.querySelector('#imgList');
     listElm.addEventListener('scroll', e => {
       let condition = listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight
       if(condition) {
         this.loadMore();
       }
-    });
+    })
+  },
+  beforeDestroy() {
+    EventBus.$off('notifyImageTotalNumber')
   },
   methods: {
     initializeComponent () {
-      this.loadedImages = this.fileList.slice(this.currentIndex, this.currentIndex+this.batchSize)
+      this.loadedImages = this.images.slice(this.currentIndex, this.currentIndex+this.batchSize)
       this.currentIndex += this.batchSize
+      this.isInitialized = true
     },
     showClickedThumbnail (item, index) {
       EventBus.$emit('onNavigationImageClicked', {item, index})
+      // console.log('--- selected image:')
+      // console.log(item)
+      // console.log(`ground truth: ${item.label}, predicted: ${this.predictedLabels[item.index]}`)
       this.indexNumber = index === undefined ? 0 : index
     },
     loadMore () {
@@ -81,20 +80,34 @@ export default {
   },
   props: {
     currentImageSrc: String,
-    images: Array,
+    images: Array
   },
   watch: {
-    indexNumber () {
-      return this.indexNumber
+    indexNumber () {},
+    images (newVal, oldVal) {
+      // XXX: source of `images` is generated from asynchronous operation, so that we cannot
+      //   updated `loadedImages` when this component is just created / mounted.
+      if (this.isInitialized) return
+      this.initializeComponent()
     }
   },
   computed: {
     currentImageIndex () {
       return this.indexNumber + 1
     },
-    ...mapState({
-      fileList: state => state.Viewer.parsedFileList,
-      predictedLabels: state => state.Testing.predictedLabels
+    isDifferentArray () {
+      return this.differentLabels
+    },
+    isModifiedArray () {
+      return this.modifiedSamples.map((item) => item.index)
+    },
+    total () {
+      return this.images.length
+    },
+    ...mapState ({
+      predictedLabels: state => state.Testing.predictedLabels,
+      differentLabels: state => state.Testing.differentLabels,
+      modifiedSamples: state => state.Label.modifiedSamples
     })
   },
   data () {
@@ -104,16 +117,25 @@ export default {
       loadedImages: [],
       currentIndex: 0,
       indexNumber: 0,
-      total: '',
       batchSize: 40,
-      differentLabels: [],
-      isDifferent: true
+      isInitialized: false
     }
   }
-}
+} 
 </script>
 
 <style lang="scss" scoped>
+.edited::after {
+  content: "";
+  display: inline-flex;
+  position: absolute;
+  background: rgba(230, 230, 112, 0.5);
+  width: 60px;
+  height: 60px;
+  background-image: url('../../assets/edit.png');
+  background-repeat: no-repeat; 
+}
+
 $scroll-bar-width: 5px;
 .imgList {
   width: 315px;
@@ -134,18 +156,13 @@ $scroll-bar-width: 5px;
   &:hover {
     &::-webkit-scrollbar-track {
       background-color: #808080;
-      // border-radius: $scroll-bar-width;
       z-index: 21;
     }
     &::-webkit-scrollbar-thumb {
       background-color: #0f0f0f;
-      // border-radius: $scroll-bar-width;
     }
   }
 }
-// .imgList::-webkit-scrollbar { 
-//     display: none; 
-// }
 .catalog {
   width: 315px;
   height: 20px;
@@ -162,7 +179,7 @@ $scroll-bar-width: 5px;
   width: 315px;
   overflow: hidden;
   position: fixed;
-  top: 338px;
+  top: 300px;
   right: 150px;
   padding: 0px;
   padding-bottom: 20px;
@@ -214,11 +231,8 @@ $scroll-bar-width: 5px;
 .fade-enter, .fade-leave-to {
   opacity: 0
 }
-.labelRed {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  border: 1px solid red;
-  box-shadow: 0 0 0 5px white;
+.changeStyle {
+  position: relative;
+  top: -20px;
 }
 </style>

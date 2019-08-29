@@ -33,8 +33,8 @@ export default {
       this.updateCheckedLabel()
     },
     predictedLabel (newVal, oldVal) {
-      console.log('--- predicted label changed')
-      console.log(`${newVal}, ${oldVal}`)
+      // console.log('--- predicted label changed')
+      // console.log(`${newVal}, ${oldVal}`)
       this.updateLabelColor()
     }
   },
@@ -48,9 +48,9 @@ export default {
     changeCheckedState (evnt) {
       if (!this.isSingleSelection) return
       var checkboxes = this.getCheckboxes()
+      this.modificationLogger(evnt.target.parentElement)
       checkboxes.map(item => {
-        return item.checked = item === evnt.target ?
-          (this.modificationLogger(evnt.target.parentElement) || true) : false
+        return item.checked = (item === evnt.target) ? (item.checked ? true : false) : false
       })
     },
     updateCheckedLabel () {
@@ -65,7 +65,10 @@ export default {
       this.getLabels().map((item, index) => item.style.color = index === idx ? 'red' : null)
     },
     modificationLogger (target) {
-      let newLabel = target.innerText.trim()
+      let checked = target.getElementsByTagName('input')[0].checked
+      let newLabel = checked ? target.innerText.trim() : ''
+      // console.log(this.parsedFileList[this.srcIndex])
+      // console.log(newLabel)
       if (newLabel !== this.selectedLabel) {
         this.$store.dispatch('Label/updateModifiedSample', {
           sample: this.parsedFileList[this.srcIndex],

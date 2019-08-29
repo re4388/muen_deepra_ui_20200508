@@ -34,6 +34,16 @@
             - missed: {{ missedFiles }}
           </div>
         </div>
+        <div class="label-file text-content">
+          <span class="text-title">Label file:</span>
+          <b-form-select
+            id="input-label-file"
+            v-model="selectedLabelFileUuid"
+            :options="labelFileList"
+            @change="selectedLabelFileChanged"
+          >
+          </b-form-select>
+        </div>
         <!-- <div calss="label-list-view">
           <b-list-group id="label-list-group">
             <template v-for="(item, index) in labelList">
@@ -55,6 +65,8 @@
 
 <script>
 import projectService from '@/api/projects_service.js'
+import datasetService from '@/api/dataset_service.js'
+import labelService from '@/api/label_service.js'
 import { EventBus } from '@/event_bus.js'
 
 export default {
@@ -64,6 +76,28 @@ export default {
   created () {
     this.fetechProjectData().then((result) => {
       this.initializeComponent()
+      labelService.getLabelList(this.project.dataset_uuid).then((result) => {
+        let timestampConverter = (ts) => {
+          let date = new Date()
+          date.setTime(ts.seconds + '000')
+          return date.toUTCString().split(' ').slice(0, 5).join(' ')
+        }
+
+        this.labelFileList = result.map((item, index) => {
+          let date = new Date()
+          let ts = this.project.creation_timestamp
+          date.setTime(ts.seconds + '000')  // unit: ms
+          return {
+            value: item.uuid,
+            text: `version_${index}, created at: ${timestampConverter(item.creation_timestamp)}`
+          }
+        }).reverse()
+
+        // Set default value of `b-form-select`
+        let currLabelFileUuid = JSON.parse(this.dataset['details_json'])['label_file_uuid']
+        let idx = this.labelFileList.map(item => item.value).indexOf(currLabelFileUuid)
+        this.selectedLabelFileUuid = this.labelFileList[idx].value
+      })
     })
   },
   methods: {
@@ -75,14 +109,10 @@ export default {
       this.name = this.project.name
       this.description = this.project.description
       this.location = this.project.location
-    //   EventBus.$emit('pageChanged', {
-    //     pages: ['Profile'],
-    //     keepRoot: true,
-    //   })
-    EventBus.$emit('pageChanged', this.$route.meta.title)
-    EventBus.$emit('showProjectName', this.name)
+
+      EventBus.$emit('pageChanged', this.$route.meta.title)
+      EventBus.$emit('showProjectName', this.name)
     },
-    
     fetechProjectData () {
       return new Promise((resolve, reject) => {
         this.project = this.$store.getters['Project/currentProject']
@@ -98,6 +128,15 @@ export default {
     },
     redirectToPage () {
       this.$router.push('/training')
+    },
+    selectedLabelFileChanged () {
+      datasetService.changeLabel(
+        this.project['dataset_uuid'],
+        this.selectedLabelFileUuid
+      ).then((result) => {
+        // refresh cached metadata
+        this.fetechProjectData()
+      })
     }
   },
   computed: {
@@ -142,6 +181,8 @@ export default {
       description: '',
       timestamp: '',
       location: '',
+      labelFileList: [],
+      selectedLabelFileUuid: ''
     }
   }
 }
@@ -180,6 +221,10 @@ export default {
   max-height: 400px;
   overflow: scroll;
   margin-bottom: 200px;
+}
+
+.input-label-file {
+  width: 600px;
 }
 
 .control-section {

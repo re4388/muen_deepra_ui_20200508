@@ -35,8 +35,8 @@
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList" />
         <div>
           <!-- TODO: complete the feature of `differentLabels` -->
-          <!-- :differentLabels="differentLabels" -->
-          <ImageBox class="imageBox" :images="images" />
+          <!-- TOOD: `v-if="isShowingImgList"` is remove temporary, add it back later -->
+          <ImageBox v-show="isShowingImgList" class="imageBox" :images="images" />
         </div>
       </div>
     </div>
@@ -95,22 +95,22 @@ export default {
   created() {
     this.dataInit();
     EventBus.$on("viewerDatasetChanged", () => {
-      console.log("--- processing with event viewerDatasetChanged");
+      // console.log('--- processing with event viewerDatasetChanged')
       EventBus.$emit("notifyImageTotalNumber", this.images.length);
-
       let dataset = this.$store.getters["Viewer/currentDataset"];
       this.labels = dataset.details.labelReport.labels;
-      // console.log(this.labels)
       this.taskType = dataset.taskType;
       this.selectedImage = this.images[0];
+      this.firstImageFilename = this.images[0].filename;
       let temp = this.images.label;
     });
     EventBus.$on("onNavigationImageClicked", obj => {
-      // console.log('--- current selected image:')
       // console.log(obj.item)
       // console.log(obj.index)
       this.selectedImage = obj.item;
-      this.selectedImageIndex = obj.index;
+      this.selectedImageIndex = obj.item.index;
+      // console.log(this.selectedImage.filename)
+      EventBus.$emit("showSelectedFilename", this.selectedImage.filename);
     });
   },
   beforeDestroy() {
@@ -149,12 +149,21 @@ export default {
       return labelToBeDisplay;
     },
     predictedLabel() {
-      // console.log('---- predictedLabel: ')
-      // console.log(this.predictedLabels[this.selectedImageIndex])
-      return String(this.predictedLabels[this.selectedImageIndex]);
+      if (this.selectedImage === null) return String(this.predictedLabels[0]);
+      console.log("--- current selected image");
+      console.log(this.selectedImage);
+      return String(this.predictedLabels[this.selectedImage.index]);
+    },
+    images() {
+      // XXX: Automatically reorder the file list when order list is available.
+      //   However, we might need to make user able to switch this mode off.
+      let orderFileList = this.$store.getters["Validation/orderedFileList"];
+      let parsedFileList = this.$store.getters["Viewer/parsedFileList"];
+      if (orderFileList === null)
+        return this.$store.getters["Viewer/parsedFileList"];
+      return orderFileList.indices.map(i => parsedFileList[i]);
     },
     ...mapState({
-      images: state => state.Viewer.parsedFileList,
       predictedLabels: state => state.Testing.predictedLabels,
       modifiedSamples: state => state.Label.modifiedSamples
     })
@@ -164,10 +173,10 @@ export default {
       this.getModelList()
         .then(result => {
           // if (data.content === null) {
-            console.log("--- Tabs: get data from history record ---");
-            this.getModelList();
-            this.loadModal();
-          // } 
+          console.log("--- Tabs: get data from history record ---");
+          this.getModelList();
+          this.loadModal();
+          // }
         })
         .catch(err => {
           console.log("getModelList err:", err);
@@ -243,9 +252,10 @@ export default {
           // this.modelId = "no such file or directory";
         });
     },
-    showImgList() {
+    showImgList(e) {
       this.isShowingImgList = !this.isShowingImgList;
       let el = document.querySelector(".title");
+      if (el === null) return;
       el.classList.toggle("show");
     },
     onSaveChanges() {
@@ -271,6 +281,7 @@ export default {
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  z-index: 999;
 }
 .rightsideBlock {
   border-bottom: 1px solid white;

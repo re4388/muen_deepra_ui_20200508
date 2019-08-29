@@ -214,4 +214,10 @@ export default {
 .dropdown-item:hover{
   background: none;
 }
+/deep/ .custom-file-label {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 </style>

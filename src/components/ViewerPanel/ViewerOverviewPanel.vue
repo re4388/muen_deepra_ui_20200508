@@ -3,11 +3,14 @@
     <ToolBar class="toolbar"/>    
     <SidebarRight/>
     <b-modal ref="modal-confirm-changes" title="Save changes?"
+      cancel-title="discard"
+      cancel-variant="danger"
+      ok-title="save"
+      ok-variant="success"
       @ok="saveModifiedSamples"
       @cancel="discardModifiedSamples"
     >
       <p>Some annotations of samples are changed, do you want to save them?</p>
-      <p>(Click "cancel" button to discard changes)</p>
       <p>(Click the "x" sign to close this dialog and continue editing)</p>
     </b-modal>
     <b-modal ref="modal-no-change-notification" title="No change have to be saved" ok-only>
@@ -46,36 +49,26 @@ export default {
   },
   created () {
     this.fetchData()
-    // be able to compare with the parsedFileLIstLabels and the predictedLables
+    // be able to compare with the parsedFileListLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
-      let temp = this.$store.getters['Viewer/parsedFileList']
-      let predictedLabels = this.$store.getters['Testing/predictedLabels']
-      let parsedFileListLabels = temp.map(function (obj) {
-        return parseInt(obj.label, 10)
-      })
-      // compare two arrays and then return the index of the difference
-      // if (predictedLabels !== parsedFileListLabels) {
-      //   console.log('---it is different----')
-      // }
-      let findDivergence = function (predictedLabels, parsedFileListLabels) {
-        let result = []
-        let i
-        for (i = 0; i < predictedLabels.length; i++){
-          if (predictedLabels[i] !== parsedFileListLabels[i]) {
-            result.push(i);
-          }
-        }
-        return result
-      };
-      let differentLabels = findDivergence(predictedLabels, parsedFileListLabels)
-      EventBus.$emit('showDifference', differentLabels)
+      let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
+      let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
+      let orderedFileList = this.$store.getters["Validation/orderedFileList"]
+      console.log(orderedFileList)
+
+      if (predictedLabels.length !== 0) {
+        let differentLabels = parsedFileListLabels.reduce((acc, item, i) => {
+          console.log(orderedFileList.indices)
+          if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { 
+            acc.push(i)
+            }
+            return acc
+        }, [])
+        this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
+      }
     })
   },
   mounted () {
-    // EventBus.$emit('pageChanged', {
-    //   pages: ['Viewer'],
-    //   keepRoot: true,
-    // })
     EventBus.$emit('pageChanged',this.$route.meta.title)
   },
   beforeRouteLeave (to, from, next) {
@@ -100,10 +93,10 @@ export default {
         let pathCollector = new fileFetecher.DatasetPathCollector(this.dataset)
         pathCollector.parseFileList().then((result) => {
           this.$store.dispatch('Viewer/setParsedFileList', pathCollector.fileList)
-          // console.log('ready to emit event `viewerDatasetChanged`')
-          EventBus.$emit('viewerDatasetChanged')
+
           // Notify that loading is complete
           this.loading = false
+          EventBus.$emit('viewerDatasetChanged')
         })
       }
 
@@ -137,6 +130,18 @@ export default {
       })
     },
     saveModifiedSamples () {
+      let modifiedSamples = this.$store.getters['Label/modifiedSamples']
+
+      EventBus.$emit('showChangedLabels',modifiedSamples)
+
+      console.log(modifiedSamples)
+      let temp = modifiedSamples.map(item => item.label === '')
+      console.log(temp)
+      let result = temp.reduce((acc, item) => {return acc || item})
+      if (result) {
+        alert('There are some samples were not annotated!!')
+        return
+      }
       datasetService.updateLabel(
         this.$store.getters['Project/currentProject'].uuid,
         this.$store.getters['Label/modifiedSamples']
@@ -144,6 +149,7 @@ export default {
         console.log(result)
         this.$store.dispatch('Label/resetAllState')  // TODO: remove this line
         this.fetchData()  // fetch modified data to refresh the content in this page
+        console.log(modifiedSamples)
       })
     },
     discardModifiedSamples () {
@@ -163,11 +169,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  // border: 1px solid red;
-  // max-height: 100%;
-  // max-width: 100%;
 }
 .toolbar {
-  height: 85%;
+  height: 100%;
 }
 </style>

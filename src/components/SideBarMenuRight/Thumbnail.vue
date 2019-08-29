@@ -1,8 +1,9 @@
 <template>
-  <div class="thumbnail" id="thumbnail" @click="onClick">
+  <div class="thumbnail" id="thumbnail" @click="onClick" :style="isDifferentStyle">
     <div class="layer-container">
       <img 
       :src=fullPath
+      :style="isModifiedStyle"
       class="main-content"/>
     </div>
   </div>
@@ -11,18 +12,31 @@
 <script>
 import modPath from 'path'
 import { EventBus } from '@/event_bus.js'
+// import { mapState } from 'vuex'
 
 
 export default {
   name: 'Thumbnail',
-  props: {
+  data () {
+    return {
+    }
+  },
+  props: {  
     root: String,
-    filename: String
+    filename: String,
+    isDifferent: Boolean,
+    isModified: Boolean
   },
   computed: {
     fullPath: function () {
       return modPath.join(modPath.resolve(this.root), this.filename)
-    }
+    },
+    isDifferentStyle () {
+      return this.isDifferent ? { 'border': '1px solid red' } : { }
+    },
+    isModifiedStyle () {
+      return this.isModified ? { 'border' : '1px solid rgba(230, 230, 112, 0.5)' } : { }
+    } 
   },
   methods: {
     onClick () {
@@ -40,7 +54,6 @@ export default {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  // box-shadow: 0 0 0 2px black;
   width: 60px;
   height: 60px;
   display: inline-flex;
@@ -64,17 +77,14 @@ export default {
   width: 60px;
   height: 60px;
 }
-.labelGreen::before {
-  content: "";
-  display: inline-flex;
-  position: absolute;
-  top: 0;
-  left: 45px;
-  width: 15px;
-  height: 15px;
-  background: #42ab427d;
-}
-.labelRed {
-  border: 1px solid red;
-}
+// .edited::after {
+//   content: "";
+//   display: inline-flex;
+//   position: absolute;
+//   background: rgba(230, 230, 112, 0.5);
+//   width: 60px;
+//   height: 60px;
+//   background-image: url('../../assets/edit.png');
+//   background-repeat: no-repeat; 
+// }
 </style>

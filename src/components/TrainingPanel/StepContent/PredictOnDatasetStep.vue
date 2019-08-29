@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import predictionService from '@/api/prediction_service.js'
+import validationService from '@/api/validation_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
 import { converterDict } from '@/utils/label_converter.js'
 import { mapActions, mapGetters } from 'vuex'
@@ -63,24 +63,29 @@ export default {
       let trainingOutput = this.$store.getters['Training/trainingOutput']
 
       this.toggleIsValidating()
-      let call = predictionService.startPrediction(
-        trainingOutput.model_uuid,
-        projectInfo.dataset_uuid,
+      let call = validationService.startValidation(
+        projectInfo,
+        trainingOutput,
         handlerProgress,
-        handlerEnd
+        handlerEnd,
+        {datasetType: 'all'}
       )
     },
     finishValidation () {
       this.toggleIsValidating()
 
-      predictionService.getPredictionOutput().then((result) => {
-        this.$store.dispatch('Testing/setPredictionOutput', result)
+      let projectInfo = this.$store.getters['Project/currentProject']
+      validationService.getValidationOutput(projectInfo).then((result) => {
         let taskType = this.$store.getters['Project/taskType']
-        let labelConverter = new converterDict[taskType](result.prediction, result.labels)
+        let labelConverter = new converterDict[taskType](result.prediction, result.labels.map(String))
         let predictedLabels = labelConverter.convertAll()
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
+      }).then(() => {
+        validationService.getOrderedFileList(projectInfo, 'all', 'prob.').then((result) => {
+          this.$store.dispatch('Validation/setOrderedFileList', result)
+          this.$emit('onProgressFinished', true)
+        })
       })
-      this.$emit('onProgressFinished', true)
     },
     checkContent () {
       if (this.isValidating) return

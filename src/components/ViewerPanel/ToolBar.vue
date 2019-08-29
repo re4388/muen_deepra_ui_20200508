@@ -62,7 +62,7 @@
       <div class="wrap__2 d-inline-flex flex-fill flex-column justfy-content-center align-self-center;" style="width:100%; height:100%;">
         <v-zoomer class="zoomer d-inline-flex flex-column">
           <imagvue 
-            v-model="imageUrl"
+            v-model="url"
             id="imgExample"
             class="imgExample d-inline-flex justify-content-center"            
             :filters="isOpenFilters"
@@ -81,6 +81,11 @@
           </imagvue>
         </v-zoomer>    
       </div>
+
+      <div class="metadataDisplay">
+        {{ this.imageFilename }}
+      </div>
+
   </div>
 </template>
 
@@ -111,6 +116,7 @@ export default {
     thumbnail
   },
   created(){
+    console.log('----loading----')
     this.initializeComponent()
     // methods-1
     // when (once) receive the message about viewerDatasetChange, 
@@ -122,6 +128,7 @@ export default {
       let firstImage = this.$store.getters['Viewer/parsedFileList'][0]
       let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
       this.url = joined
+      this.imageFilename = firstImage.filename
     }),
     // // methods-2
     // // when receive the message adout "onFirstImageLoaded"
@@ -134,21 +141,15 @@ export default {
     // this.url = joined
     // })
     // when onNavigationImageClicked, join the root and filename for imageUrl using
-
     EventBus.$on('onNavigationImageClicked',(obj)=>{
-      // console.log(obj)
       let item = obj.item
       let joined = modPath.join(modPath.resolve(item.root), item.filename)
-      // console.log(joined)
       this.url = joined
-    })  
+      this.imageFilename = item.filename
+    })
   },
   methods: {
     initializeComponent() {
-    },
-    showImgList: function() {
-      let el = document.querySelector('.title')
-      el.classList.toggle('show')
     },
     onLoadEvent() {
       console.log("Image on load!");
@@ -160,7 +161,6 @@ export default {
         }
       }
     },
-    // when click the 'reset' buttom, the filters' value will set to default
     setToDefault() {
       this.filters = this.defaultValues();
     },
@@ -178,26 +178,10 @@ export default {
     }
   },
   computed: {
-    fixedRatioHeight () {
-      return this.filters['width']
-    },
-    dropShadow() {
-      return this.dropShadowJson
-    },
-    fullPath: function() {
-      return modPath.join(modPath.resolve(this.root), this.filename)
-    },
-    imageUrl: function() {
-      console.log('----loading----')
-      console.log(this.url)
-      let el = document.getElementById('imgExample')
-      if (el === null) return ''
-      el.src = this.url
-      return this.url
-    }
   },
   data() {
     return {
+      imageFilename: null,
       pathCollector: null,
       cnt: 0,
       width: 0,
@@ -208,7 +192,6 @@ export default {
       isOpenFilters: true ,
       filters: {
         // maintain the aspect ratio
-        // width: 500,
         contrast: 100,
         brightness: 100,
         grayscale: 0,
@@ -227,17 +210,15 @@ export default {
 
 <style lang="scss" scoped>
 .wrap__1 {
-  box-sizing: border-box;
   background-color: rgb(0, 0, 0);
-  height: 114px;
 }
 .wrap__2 {
   object-fit: contain;
 }
-
 // 下拉式選取區塊
 .drop-down-menu {
   height: 50px;
+  line-height: 100%;
 }
 ul { 
 /* 取消ul預設的內縮及樣式 */
@@ -250,6 +231,8 @@ ul.drop-down-menu {
 }
 ul.drop-down-menu li {
   position: relative;
+  display: block;
+  z-index: 998;
 }
 ul.drop-down-menu > li:last-child {
   border-right: none;
@@ -275,23 +258,16 @@ ul.drop-down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
 ul.drop-down-menu ul { /*隱藏次選單*/
   display: none;
 }
-ul.drop-down-menu ul li:last-child {
-  border-bottom: none;
-}
-ul.drop-down-menu ul ul { /*第三層以後的選單位置與第二層不同*/
-  z-index: 25;
-  top: 10px;
-  left: 90%;
-}
 #imgExample {
   object-fit: contain;
   height: 100%;
+  z-index: -1;
 }
-// .vue-zoomer {
-//   overflow: hidden;
-// }
-// .zoomer {
-//   height: 600px;
-// }
-
+.metadataDisplay {
+  color: white;
+  position: absolute;
+  bottom: 50px;
+  margin-left: 20px;
+  user-select:none;
+}
 </style>

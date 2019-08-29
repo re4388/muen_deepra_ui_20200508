@@ -77,7 +77,6 @@ export default {
   methods: {
     initializeContent () {
       this.$store.dispatch('Testing/setCurrentStage', 'importDataset')
-      this.$store.dispatch('DataImport/resetAllState')
       this.selectedFolder = this.$store.getters['DataImport/selectedFolder']
       this.$refs.inputFolderBrowser.setFiles([this.selectedFolder])
     },
@@ -110,6 +109,10 @@ export default {
     checkContent () {
       console.log(this.selectedFolder)
       if (this.selectedFolder === '' || this.selectedFolder === null) return
+      if (this.selectedLabelFile !== '' && (this.colFilename === '' || this.colLabel === '')) {
+        alert('Column of file name and label should be selected.')
+        return
+      }
 
       return new Promise((resolve, reject) => {
         let model = this.$store.getters['Model/currentModel']
@@ -124,10 +127,22 @@ export default {
             colLabel: this.colLabel
           }
         ).then((result) => {
+          // TODO: call API to remove previous test dataset
+          // TODO: check the type of dataset before sending request to delete it?
+          let datasetUuid = this.$store.getters['DataImport/datasetInfo'].uuid
+          if (datasetUuid !== undefined) {
+            datasetService.deleteDataset(datasetUuid, true).then((result) => {
+              console.log(`Is previous dataset info deleted? ${result.success}`)
+            })
+          }
+
+          this.$store.dispatch('DataImport/resetAllState')
           this.$store.dispatch('DataImport/setDatasetInfo', result.content)
           this.$store.dispatch('Testing/unlockStage')
           this.$store.dispatch('Testing/setCompletedStageIndex', this.content.id)
           resolve(true)
+        }).catch((err) => {
+          alert(err)
         })
       })
     },
@@ -187,5 +202,11 @@ export default {
 }
 .dropdown-item:hover{
   background: none;
+}
+/deep/ .custom-file-label {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

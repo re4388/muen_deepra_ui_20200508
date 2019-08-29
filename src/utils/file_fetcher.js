@@ -18,19 +18,22 @@ class DatasetPathCollector {
     return new Promise((resolve, reject) => {
       readCsv(this.labelFile).then((result) => {
         // TODO: rewrite this
-        console.log('--- parsing file list')
+        // console.log('--- parsing file list')
         let folderPath = this.folderPath
         let ext = this.fileExtension
         this.fileList = result.split(/\r\n|\n/)
+        this.header = this.fileList.splice(0, 1)[0]
 
-        this.header = this.fileList.splice(0, 1)[0].split(',')
+        // remove utf-8 BOM
+        if (this.header.charCodeAt(0) === 0xFEFF) {this.header = this.header.substr(1)}
+        this.header = this.header.split(',')
         let idxFilename = this.header.indexOf(this.colFilename)
         let idxLabel = this.header.indexOf(this.colLabel)
-        console.log(this.colLabel)
 
-        this.fileList = this.fileList.map(function(x) {
+        this.fileList = this.fileList.map(function(x, index) {
           var splitted = x.split(',')
           return {
+            index: index,
             root: folderPath,
             filename: `${splitted[idxFilename]}${ext}`,
             label: splitted[idxLabel]

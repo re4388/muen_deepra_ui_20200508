@@ -9,7 +9,9 @@ const defaultState = {
   predictionOutput: {
     content: null
   },
-  predictedLabels: []
+  predictedLabels: [],
+  differentLabels: [],
+  isTesting: false
 }
 
 const state = {}
@@ -31,6 +33,12 @@ const getters = {
   },
   predictedLabels() {
     return state.predictedLabels
+  },
+  differentLabels() {
+    return state.differentLabels
+  },
+  isTesting() {
+    return state.isTesting
   }
 }
 
@@ -52,6 +60,12 @@ const mutations = {
   },
   SET_PREDICTED_LABELS(state, payload) {
     state.predictedLabels = payload
+  },
+  SET_DIFFERENT_LABELS(state, payload) {
+    state.differentLabels = payload
+  },
+  TOGGLE_IS_TESTING(state) {
+    state.isTesting = !state.isTesting
   },
   RESET_ALL_STATE(state) {
     initializeState(state, defaultState)
@@ -76,6 +90,12 @@ const actions = {
   },
   setPredictedLabels({ commit }, payload) {
     commit('SET_PREDICTED_LABELS', payload)
+  },
+  setDifferentLabels({ commit }, payload) {
+    commit('SET_DIFFERENT_LABELS', payload)
+  },
+  toggleIsTesting({ commit }) {
+    commit('TOGGLE_IS_TESTING')
   },
   resetAllState({ commit }) {
     commit('RESET_ALL_STATE')
