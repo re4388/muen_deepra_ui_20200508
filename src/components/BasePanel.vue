@@ -27,6 +27,7 @@ export default {
       this.$store.dispatch('DataImport/resetAllState')
       this.$store.dispatch('Project/resetAllState')
       this.$store.dispatch('Validation/resetAllState')
+      this.$store.dispatch('Training/resetAllState')
       this.$store.dispatch('Testing/resetAllState')
       this.$store.dispatch('Label/resetAllState')
 
