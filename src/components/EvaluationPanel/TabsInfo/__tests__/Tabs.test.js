@@ -307,34 +307,69 @@ describe('Tabs.vue', () => {
   // },
 
   // FIXME: promise implementation
-    it('methods: getModelList works', () => {
+  it('methods: getModelList works', () => {
 
-      // test('the data is peanut butter', () => {
-      //   return fetchData().then(data => {
-      //     expect(data).toBe('peanut butter');
-      //   });
-      // });
-      let localThis = {
-        currentProjectData: {
-          uuid: 'foo'
-        },
-        result:{
-          model_list:[1,2,3]  
-        },
-        ModelManager: {
-          GetModelListByProject(...args){
-            return new Promise((resolve, reject) => {
-              resolve(true)
-            }).catch(err => {
-              reject(true)
-            });
-          }
+    // test('the data is peanut butter', () => {
+    //   return fetchData().then(data => {
+    //     expect(data).toBe('peanut butter');
+    //   });
+    // });
+    let localThis = {
+      currentProjectData: {
+        uuid: 'foo'
+      },
+      result: {
+        model_list: [1, 2, 3]
+      },
+      ModelManager: {
+        GetModelListByProject(...args) {
+          return new Promise((resolve, reject) => {
+            if (true) {
+              setTimeout(() => {
+                resolve(' 3 sec to fulfilled');
+              }, 1000);
+            } else {
+              reject('reject')
+            }
+          })
         }
-
       }
-      expect(Tabs.methods.getModelList.call(localThis)).resolves.toBe(undefined)
-      // expect(Tabs.methods.getModelList.call(localThis)).toBe({})
+
+    }
+    // expect(Tabs.methods.getModelList.call(localThis)).toBe(undefined)
+    // expect(Tabs.methods.getModelList.call(localThis)).toBe({})
+  })
+
+  // this test mock getModelList but didn't go inside the fun
+  it('methods: getModelList works-2', () => {
+    const dataInit = jest.fn()
+
+    const getModelList = jest.fn((...args) => {
+      return new Promise((resolve, reject) => {
+        if (true) {
+          setTimeout(() => {
+            resolve(' 3 sec to fulfilled');
+          }, 1000);
+        } else {
+          reject('reject')
+        }
+      })
     })
+
+
+    const wrapper = shallowMount(Tabs, {
+      store,
+      localVue,
+      methods: {
+        dataInit,
+        getModelList,
+      },
+
+    })
+
+    getModelList()
+    expect(getModelList).toHaveBeenCalled()
+  })
 
 
 
@@ -381,7 +416,7 @@ describe('Tabs.vue', () => {
   })
 
 
-  // FIXME: how to test async?
+  // FIXME: just can't access validationService
   it('methods:onExport works', () => {
     // test when evnt.target.files.length === 0
     let evnt1 = {
@@ -391,23 +426,26 @@ describe('Tabs.vue', () => {
     }
     expect(Tabs.methods.onExport(evnt1)).toBe(undefined)
 
-
     let localThis2 = {
       showExportMsg: 'foo',
-      outputLocation: 'foo',
+      // outputLocation: 'foo',
       $bvModal: {
-        show() {
+        show(...args) {
           return null
         }
       },
 
-      modelId: 'foo',
+      // modelId: 'foo',
       validationService: {
         exportFiles(...args) {
           return new Promise((resolve, reject) => {
-            }, (err, resp) => {
-              resolve(true)
-            
+            if (true) {
+              setTimeout(() => {
+                resolve(' 3 sec to fulfilled');
+              }, 1000);
+            } else {
+              reject('reject')
+            }
           })
         }
       }
@@ -420,8 +458,40 @@ describe('Tabs.vue', () => {
         }]
       }
     }
-  // expect(Tabs.methods.onExport.call(localThis2, evnt2)).toBe(undefined)
+    // expect(Tabs.methods.onExport.call(localThis2, evnt2)).toBe(undefined)
+    // const spy = jest.spyOn(Tabs.methods.onExport);
+    // console.log(spy)
 
+  })
+
+  // FIXME: don't know how to trigger export method
+  it('methods:onExport works_test2', () => {
+    const dataInit = jest.fn()
+    const onExport = jest.fn((...args) => {
+      return new Promise((resolve, reject) => {
+        if (true) {
+          setTimeout(() => {
+            resolve(' 3 sec to fulfilled');
+          }, 1000);
+        } else {
+          reject('reject')
+        }
+      })
+    })
+    const wrapper = shallowMount(Tabs, {
+      store,
+      localVue,
+      methods: {
+        dataInit,
+        onExport,
+      },
+    })
+
+    // const tabWrapper = shallowMount(Tab)
+    // console.log(wrapper.element)
+    // expect(wrapper.find('.in-slot').text()).toBe('Hello world')
+    // wrapper.find('input').trigger('change')
+    // expect(onExport).toHaveBeenCalled()
 
   })
 

@@ -3,10 +3,6 @@ import {
   shallowMount,
   createLocalVue
 } from '@vue/test-utils'
-// let localVue = createLocalVue()
-// import * as d3 from "d3";
-// import VueC3 from "vue-c3";
-// localVue.use(VueC3)
 import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.vue'
 
 
@@ -32,7 +28,6 @@ describe('GraphDisplay', function () {
 
 
 
-  //FIXME: don't know how to deal with this.handler.$emit
   it('when mounted, initData is called', () => {
     let initData = jest.fn()
     // let handler = jest.fn()
@@ -67,17 +62,35 @@ describe('GraphDisplay', function () {
   })
 
 
-  // FIXME: don't know how to test this.handler.$emit
+  // showAnnotation() {
+  //   this.handler.$emit("dispatch", chart => {
+  //     chart.tooltip.show({
+  //       x: this.dataColumn[0][this.newThreshold]
+  //     });
+  //   });
+  // }
+
+
   it('methods: "showAnnotation" work properly', () => {
-    // let handler = jest.fn().mockReturnThis()
-    // let $emit = jest.fn()
-    // let localThis = {
-    //   handler,
-    //   $emit
-    // }
-    // wrapper.vm.handler.$emit('dispatch')
-    // expect(wrapper.emitted().dispatch).toBeTruthy()
-    // console.log(GraphDisplay.methods.showAnnotation)
+    let localThis = {
+      newThreshold: 0,
+      dataColumn: [
+        [1, 2, 3], 2, 3
+      ],
+      handler: {
+        $emit(...args) {
+          return null
+        }
+      },
+      chart: {
+        tooltip: {
+          show(...args) {
+            return null
+          }
+        }
+      }
+    }
+    expect(GraphDisplay.methods.showAnnotation.call(localThis)).toBeTruthy
   })
 
   it('computed: chartTitle, xAxisLabel, yAxisLabel, AxisYMax, AxisYMin, tickValue, type work properly', () => {
@@ -168,87 +181,139 @@ describe('GraphDisplay', function () {
     // expect(handler).toHaveBeenCalled()
   })
 
-  // FIXME: mutating the props cause console.error..
-  // how to change passed different props and test watch?
-  it('watch "newThreshold"', () => {
-    let showAnnotation = jest.fn()
-    const wrapper = shallowMount(GraphDisplay, {
-      propsData: {
-        graphData: {
-          axisSetting: [],
-          dataColumn: [],
-          distFromLine: [],
-        },
-        newThreshold: 23
-      },
-      methods: {
-        showAnnotation,
+
+  it('watch "newThreshold" work', () => {
+    let localThis = {
+      showAnnotation() {
+        return null
       }
-    })
-    // when
-    // wrapper.setData({
-    //   newThreshold: 24
-    // });
-    // wrapper.vm.newThreshold = 24
-    //then
-
-    // expect(showAnnotation).toHaveBeenCalled()
-
-
+    }
+    expect(GraphDisplay.watch.newThreshold.call(localThis)).toBe(undefined)
   })
 
-  // FIXME: 1. don't know how to chnage the graphDATA, 
-  // 2. initData called only in mounted
-  it('watch "graphData"', () => {
-    let initData = jest.fn()
-    const wrapper = shallowMount(GraphDisplay, {
-      propsData: {
-        graphData: {
-          axisSetting: [0, 1, 2],
-          dataColumn: [],
-          distFromLine: [],
-        },
-      },
-      methods: {
-        initData,
-      }
-    })
-    // when
-    wrapper.setData({
-      graphData: {
-        axisSetting: [1, 2, 3],
-        dataColumn: [],
-        distFromLine: [],
-      },
-    });
-    //then
-    // shall be 2 or need to test in another way
-    expect(initData).toHaveBeenCalledTimes(1)
 
+  it('watch "graphData" work', () => {
+    let localThis = {
+      initData() {
+        return null
+      },
+      handler: {
+        $emit(...args) {
+          return null
+        }
+      },
+      options: 'foo'
+    }
+    expect(GraphDisplay.watch.graphData.call(localThis)).toBe(undefined)
   })
 
 
   // FIXME: how to test computed->options->tooltip(key)
-  // it('test Optional tooltip', () => {
-  //   // const wrapper = shallowMount(GraphDisplay, {
-  //   //   propsData: {
-  //   //     graphData: {
-  //   //       axisSetting: [0, 1, 2],
-  //   //       dataColumn: [],
-  //   //       distFromLine: [],
-  //   //     },
-  //   //   },
-  //   //   methods: {
-  //   //     // initData,
-  //   //   }
-  //   // })
+  it('test Optional tooltip', () => {
+    let localThis = {
+      tooltip: {
+        format: {
+          title() {
+            return null
+          },
+          value() {
+            return null
+          }
+        }
+      }
+    }
 
-  //   console.log(GraphDisplay.find('table'))
+    // console.log(GraphDisplay.computed.options())
+    expect(GraphDisplay.computed.options.call(localThis)).toBeTruthy
 
-  // })
+  })
+
+  it('description', () => {
+    let localThis = {
+      handler: {
+        $emit(...args) {
+          return null
+        }
+      }
+
+    }
+    GraphDisplay.methods.showAnnotation.call(localThis)
 
 
+  })
 
+
+  //  {
+  //    padding: {
+  //      top: 0
+  //    },
+  //    title: {
+  //      show: false,
+  //      text: [Function: chartTitle],
+  //      position: 'top-center',
+  //      padding: {
+  //        top: 20,
+  //        right: 0,
+  //        bottom: 0,
+  //        left: 0
+  //      }
+  //    },
+  //    data: {
+  //      size: {
+  //        height: 1200,
+  //        width: 1200
+  //      },
+  //      xs: undefined,
+  //      columns: undefined,
+  //      type: [Function: type],
+  //      types: {
+  //        line: 'line'
+  //      },
+  //      colors: {
+  //        line: 'orange',
+  //        dependent_y_axis: '#00ff00',
+  //        precision: '#00ff00',
+  //        recall: 'orange',
+  //        'ROC curve': 'orange'
+  //      }
+  //    },
+  //    axis: {
+  //      x: {
+  //        show: true,
+  //        tick: [Object],
+  //        label: [Object]
+  //      },
+  //      y: {
+  //        show: true,
+  //        max: [Function: AxisYMax],
+  //        min: [Function: AxisYMin],
+  //        tick: [Object],
+  //        label: [Object]
+  //      }
+  //    },
+  //    tooltip: {
+  //      format: {
+  //        title: [Function: title],
+  //        value: [Function: value]
+  //      },
+  //      contents: [Function: contents]
+  //    },
+  //    point: {
+  //      show: false
+  //    },
+  //    grid: {
+  //      x: {
+  //        show: false
+  //      },
+  //      y: {
+  //        show: false
+  //      }
+  //    },
+  //    legend: {
+  //      show: true,
+  //      position: 'right'
+  //    }
+  //  }
 
 
 

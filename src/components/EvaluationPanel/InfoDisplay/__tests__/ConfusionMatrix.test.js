@@ -158,7 +158,9 @@ describe('ConfusionMatrix.vue', () => {
   //     .domain([this.minValue, this.maxValue])
   //     .range([this.startColor, this.endColor]);
   // },
-  // FIXME: don't know why undefined
+  // TODO: don't know why undefined
+  // for some reason, this code is covered!!
+  //  don't know why, anyhow! skipfirst!
   it('computed: colorMap work properly', () => {
     let maxValue = jest.fn().mockReturnValueOnce(10)
     let minValue = jest.fn().mockReturnValueOnce(10)
@@ -180,9 +182,7 @@ describe('ConfusionMatrix.vue', () => {
       startColor: "#ffffff",
       endColor: "#e67e22",
     })
-
     // expect(wrapper.find('g').attributes().fill).toBe('100')
-
   })
 
 

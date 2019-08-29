@@ -132,6 +132,7 @@
         webkitdirectory
         @change="onExport"
       />
+      <div class="in-slot">Hello world</div>
     </Tab>
 
 
