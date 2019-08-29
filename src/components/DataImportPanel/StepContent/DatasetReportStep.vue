@@ -13,7 +13,8 @@
         <br />
       </p>
       <p class="text-content">
-        Labels:
+        <!-- TODO: replace this by list group -->
+        Labels: {{ labels.join(', ') }}
         <br />
         Total labels: {{ totalLabels }}
         <br />
@@ -24,11 +25,11 @@
         Missed file counts: {{ missedFiles }}
         <br />
       </p>
-      <div v-if="dataSetError">
+      <div v-if="datasetError !== ''">
         <b-alert show dismissible variant="warning">
-          The imported dataset have unlabeled file or / and missed file!
-          Press "Cancel" to cancel import process; or
-          press "Next" to continue.
+          <!-- The imported dataset have unlabeled file or / and missed file! -->
+          {{ datasetErrorMessages[datasetError] }} <br/>
+          Press "Cancel" to cancel this process or press "Next" to continue.
         </b-alert>
       </div>
     </div>
@@ -80,6 +81,7 @@ export default {
       this.totalLabels = newContent.totalLabels;
 
       let labelReport = newContent.details.labelReport;
+      this.labels = labelReport.labels
       this.normalFiles = labelReport.normal;
       this.unlabeledFiles = labelReport.unlabeled;
       this.missedFiles = labelReport.missed;
@@ -134,12 +136,16 @@ export default {
         this.$store.dispatch("DataImport/setSelectedLabelFile", value);
       }
     },
+    datasetError () {
+      let datasetInfo = this.$store.getters['DataImport/datasetInfo']
+      if (datasetInfo.details.labelReport === undefined) return
 
-    dataSetError() {
       if (this.unlabeledFiles !== 0 || this.missedFiles !== 0) {
-        return true;
+        return 'annotationWarning';
+      } else if (datasetInfo.details.labelReport.labels.length <= 1) {
+        return 'singleAnnotationWarning'
       } else {
-        return false;
+        return '';
       }
     }
   },
@@ -149,7 +155,12 @@ export default {
       fileCounts: 0,
       normalFiles: 0,
       unlabeledFiles: 0,
-      missedFiles: 0
+      missedFiles: 0,
+      labels: [],
+      datasetErrorMessages: {
+        annotationWarning: 'There are unannotated files or / and files not existing in folder.',
+        singleAnnotationWarning: 'There is only one kind of annotation in given dataset.'
+      }
     };
   }
 };
