@@ -83,7 +83,13 @@
     "collectCoverage": false,
     "collectCoverageFrom": [
       "**/*.{js,vue}",
-      "!**/node_modules/**"
+      "!**/node_modules/**",
+      "src/**/{!(localtest)}.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/EvaluationPanel/localtest.js"
     ],
     "coverageReporters": [
       "html",

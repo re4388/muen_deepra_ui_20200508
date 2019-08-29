@@ -31,9 +31,6 @@ import GraphDisplay from '@/components/EvaluationPanel/InfoDisplay/GraphDisplay.
 import ThresholdAdjustment from '@/components/EvaluationPanel/InfoDisplay/ThresholdAdjustment.vue'
 import ConfusionMatrix from '@/components/EvaluationPanel/InfoDisplay/ConfusionMatrix.vue'
 import ViewerOverviewPanel from '@/components/ViewerPanel/ViewerOverviewPanel.vue'
-import {
-  nfapply
-} from 'q';
 
 
 const router = new VueRouter({
@@ -81,6 +78,7 @@ describe('Tabs.vue', () => {
       }
     })
     expect(wrapper.isVueInstance).toBeTruthy()
+    // console.log(wrapper.vm)
   })
 
 
@@ -308,12 +306,16 @@ describe('Tabs.vue', () => {
 
   // FIXME: promise implementation
   it('methods: getModelList works', () => {
+    let dataInit = jest.fn()
+    const wrapper = shallowMount(Tabs, {
+      store,
+      localVue,
+      methods: {
+        dataInit,
+      }
+    })
 
-    // test('the data is peanut butter', () => {
-    //   return fetchData().then(data => {
-    //     expect(data).toBe('peanut butter');
-    //   });
-    // });
+
     let localThis = {
       currentProjectData: {
         uuid: 'foo'
@@ -334,9 +336,16 @@ describe('Tabs.vue', () => {
           })
         }
       }
-
     }
-    // expect(Tabs.methods.getModelList.call(localThis)).toBe(undefined)
+    // wrapper.vm.$nextTick(() => {
+    //   expect(Tabs.methods.getModelList.call(localThis)).toBe({})
+    //   done()
+    // })
+
+    // expect(Tabs.methods.getModelList.call(localThis)).toBe({})
+
+
+    // await flushPromises()
     // expect(Tabs.methods.getModelList.call(localThis)).toBe({})
   })
 
@@ -416,6 +425,8 @@ describe('Tabs.vue', () => {
   })
 
 
+
+
   // FIXME: just can't access validationService
   it('methods:onExport works', () => {
     // test when evnt.target.files.length === 0
@@ -425,6 +436,9 @@ describe('Tabs.vue', () => {
       }
     }
     expect(Tabs.methods.onExport(evnt1)).toBe(undefined)
+
+    
+
 
     let localThis2 = {
       showExportMsg: 'foo',

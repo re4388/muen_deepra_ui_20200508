@@ -201,7 +201,7 @@ export default {
                   return name;
                 };
               let valueFormat =
-                config.tooltip_format_value || defaultValueFormat;
+              config.tooltip_format_value || defaultValueFormat;
               let text, i, title, value, name, bgcolor;
               name = nameFormat(d[0].name);
               value = valueFormat(d[0].value, d[0].ratio, d[0].id, d[0].index);

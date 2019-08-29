@@ -334,7 +334,6 @@ export default {
       );
       //  blet data = localJsonRegression
 
-
       this.getModelList().then(result => {
         if (data.content === null) {
           console.log("--- Tabs: get data from history record ---");
