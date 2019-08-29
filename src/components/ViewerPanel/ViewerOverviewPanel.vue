@@ -51,17 +51,18 @@ export default {
     this.fetchData()
     // be able to compare with the parsedFileListLabels and the predictedLables
     EventBus.$on('viewerDatasetChanged', () => {
-      // let firstImageFilename = this.$store.getters['Viewer/parsedFileList'][0].filename
-      // this.selectedImageFilename = firstImageFilename
-
       let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
       let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
-      
+      let orderedFileList = this.$store.getters["Validation/orderedFileList"]
+      console.log(orderedFileList)
+
       if (predictedLabels.length !== 0) {
-        let differentLabels = predictedLabels.reduce((acc, item, i) => {
-          if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { acc.push(i) }
-          // console.log(acc)
-          return acc
+        let differentLabels = parsedFileListLabels.reduce((acc, item, i) => {
+          console.log(orderedFileList.indices)
+          if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { 
+            acc.push(i)
+            }
+            return acc
         }, [])
         this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
       }
@@ -130,7 +131,12 @@ export default {
     },
     saveModifiedSamples () {
       let modifiedSamples = this.$store.getters['Label/modifiedSamples']
+
+      EventBus.$emit('showChangedLabels',modifiedSamples)
+
+      console.log(modifiedSamples)
       let temp = modifiedSamples.map(item => item.label === '')
+      console.log(temp)
       let result = temp.reduce((acc, item) => {return acc || item})
       if (result) {
         alert('There are some samples were not annotated!!')
@@ -143,6 +149,7 @@ export default {
         console.log(result)
         this.$store.dispatch('Label/resetAllState')  // TODO: remove this line
         this.fetchData()  // fetch modified data to refresh the content in this page
+        console.log(modifiedSamples)
       })
     },
     discardModifiedSamples () {

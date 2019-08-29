@@ -15,7 +15,8 @@
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :style="differentLabels.indexOf(item.index) !== -1 ? { 'border': '1px solid red' } : { }"
+                  :isDifferent="isDifferentArray.indexOf(item.index) !== -1"
+                  :isModified="isModifiedArray.indexOf(item.index) !== -1"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
@@ -30,9 +31,9 @@
 import thumbnail from './Thumbnail.vue'
 import { EventBus } from '@/event_bus.js'
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
-import { window } from 'd3-selection';
-import { connect } from 'http2';
-import { mapState } from 'vuex';
+import { window } from 'd3-selection'
+import { connect } from 'http2'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ImageBox',
@@ -40,6 +41,7 @@ export default {
     thumbnail
   },
   mounted () {
+    let func  = function FUNC_NAME (foo) {return foo.bar};
     const listElm = document.querySelector('#imgList');
     listElm.addEventListener('scroll', e => {
       let condition = listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight
@@ -78,7 +80,7 @@ export default {
   },
   props: {
     currentImageSrc: String,
-    images: Array,
+    images: Array
   },
   watch: {
     indexNumber () {},
@@ -87,18 +89,25 @@ export default {
       //   updated `loadedImages` when this component is just created / mounted.
       if (this.isInitialized) return
       this.initializeComponent()
-    },
+    }
   },
   computed: {
     currentImageIndex () {
       return this.indexNumber + 1
+    },
+    isDifferentArray () {
+      return this.differentLabels
+    },
+    isModifiedArray () {
+      return this.modifiedSamples.map((item) => item.index)
     },
     total () {
       return this.images.length
     },
     ...mapState ({
       predictedLabels: state => state.Testing.predictedLabels,
-      differentLabels: state => state.Testing.differentLabels
+      differentLabels: state => state.Testing.differentLabels,
+      modifiedSamples: state => state.Label.modifiedSamples
     })
   },
   data () {
@@ -109,14 +118,24 @@ export default {
       currentIndex: 0,
       indexNumber: 0,
       batchSize: 40,
-      isDifferent: true,
       isInitialized: false
     }
   }
-}
+} 
 </script>
 
 <style lang="scss" scoped>
+.edited::after {
+  content: "";
+  display: inline-flex;
+  position: absolute;
+  background: rgba(230, 230, 112, 0.5);
+  width: 60px;
+  height: 60px;
+  background-image: url('../../assets/edit.png');
+  background-repeat: no-repeat; 
+}
+
 $scroll-bar-width: 5px;
 .imgList {
   width: 315px;
