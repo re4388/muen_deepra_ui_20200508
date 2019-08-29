@@ -1,17 +1,23 @@
 <template>
   <div id="sidebar-right" class="sidebarRight d-flex flex-column">
-    <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
-      <div class="rightsideBlockTitle">
-        <!-- dropdown to select models record -->
-        <div>
-          <b-dropdown id="dropdown-1" text="Labels" class="m-md-2">
-            <b-dropdown-item
-              v-for="modelName in modelNames"
-              :key="modelName + Date.now()"
-              @click="modelNameChage(modelName)"
-            >{{ modelName }}</b-dropdown-item>
-          </b-dropdown>
-        </div>
+    <div>
+      <div>
+        <b-dropdown id="dropdown-offset"  offset="105" text="Labels" class="m-md-2 dropdown-manu">
+          <b-dropdown-item
+            class="dropdown-item"
+            v-for="modelName in modelNames"
+            :key="modelName + Date.now()"
+            @click="modelNameChage(modelName)"
+          >{{ modelName}}
+          </b-dropdown-item>
+        </b-dropdown>
+        
+        <p id="modelId" :class="{ 'text-left': true, 'text-warning':loadModelError }">
+          {{ modelId}}
+          </p>
+      </div>
+      <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
+        <div class="rightsideBlockTitle"></div>
       </div>
       <components
         id="label-panel"
@@ -67,6 +73,7 @@ import ModelManager from "@/api/models_service.js";
 import modFs, { constants, exists } from "fs";
 import modPath from "path";
 import fileFetcher from "@/utils/file_fetcher.js";
+import { converterDict } from "@/utils/label_converter.js";
 
 import ImageBox from "@/components/SideBarMenuRight/ImageBox.vue";
 import LabelPanel from "./LabelPanel.vue";
@@ -126,7 +133,8 @@ export default {
       selectedImage: null,
       selectedImageIndex: 0,
       modelNames: [],
-      modelId: ""
+      modelId: "",
+      loadModelError: false
     };
   },
   computed: {
@@ -224,16 +232,25 @@ export default {
         this.currentProjectData.location,
         "deepra_output",
         this.modelId,
-        "validation"
+        "validation_all"
       );
 
       let fn = modPath.join(filePath, "validation_output.json");
+
       fileFetcher
         .readJson(fn, false)
         .then(result => {
           // this.loadModelError = false;
+          this.loadModelError = false;
           console.log("--- begin to read local json ---");
           console.log(result);
+          let taskType = this.$store.getters["Project/taskType"];
+          let labelConverter = new converterDict[taskType](
+            result.prediction,
+            result.labels.map(String)
+          );
+          let predictedLabels = labelConverter.convertAll();
+          this.$store.dispatch("Testing/setPredictedLabels", predictedLabels);
           // let tabData = generateModel(result.labels, result.metrics);
           // this.tabs = tabData;
 
@@ -247,9 +264,9 @@ export default {
           // this.currentTab = this.tabList[0];
         })
         .catch(err => {
-          // this.loadModelError = true;
+          this.loadModelError = true;
           console.log("readJson err:", err);
-          // this.modelId = "no such file or directory";
+          this.modelId = "no such file or directory";
         });
     },
     showImgList(e) {
@@ -269,6 +286,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+#modelId{
+  font-size: 11px;
+  margin-top: 3px;
+  // text-align: left;
+}
+
+.dropdown-item {
+  // z-index: 1000;
+  font-size: 11px;
+  text-align: right;
+  // padding-left: 120px;
+  margin-left: 22px;
+  margin-bottom: 0%;
+  margin-top: 0%;
+  padding: 0%;
+  
+
+  // position: absolute;
+
+
+}
 .sidebarRight {
   position: absolute;
   top: 0;
