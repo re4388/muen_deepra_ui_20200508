@@ -114,6 +114,8 @@ export default {
     },
     predictedLabel () {
       if (this.selectedImage === null) return String(this.predictedLabels[0])
+      console.log('--- current selected image')
+      console.log(this.selectedImage)
       return String(this.predictedLabels[this.selectedImage.index])
     },
     images () {

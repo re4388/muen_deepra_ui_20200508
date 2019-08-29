@@ -53,11 +53,16 @@ export default {
     EventBus.$on('viewerDatasetChanged', () => {
       let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
       let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
+      let orderedFileList = this.$store.getters["Validation/orderedFileList"]
+      console.log(orderedFileList)
+
       if (predictedLabels.length !== 0) {
-        let differentLabels = predictedLabels.reduce((acc, item, i) => {
-          if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { acc.push(i) }
-          // console.log(acc/)
-          return acc
+        let differentLabels = parsedFileListLabels.reduce((acc, item, i) => {
+          console.log(orderedFileList.indices)
+          if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { 
+            acc.push(i)
+            }
+            return acc
         }, [])
         this.$store.dispatch('Testing/setDifferentLabels', differentLabels)
       }

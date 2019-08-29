@@ -47,17 +47,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .edited::after {
-//   content: "";
-//   display: inline-flex;
-//   position: absolute;
-//   background: rgba(230, 230, 112, 0.5);
-//   width: 60px;
-//   height: 60px;
-//   background-image: url('../../assets/edit.png');
-//   background-repeat: no-repeat; 
-// }
-
 .main-content {
   width: 40px;
 }
@@ -88,26 +77,14 @@ export default {
   width: 60px;
   height: 60px;
 }
-// .thumbnail::after {
+// .edited::after {
 //   content: "";
 //   display: inline-flex;
 //   position: absolute;
-//   top: 1;
-//   right: 1;
-//   bottom: 1;
-//   left: 1;
 //   background: rgba(230, 230, 112, 0.5);
 //   width: 60px;
 //   height: 60px;
-// }
-// .labelGreen::before {
-//   content: "";
-//   display: inline-flex;
-//   position: absolute;
-//   top: 0;
-//   left: 45px;
-//   width: 15px;
-//   height: 15px;
-//   background: #42ab427d;
+//   background-image: url('../../assets/edit.png');
+//   background-repeat: no-repeat; 
 // }
 </style>

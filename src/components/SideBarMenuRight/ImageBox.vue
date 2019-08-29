@@ -15,8 +15,8 @@
                   :key="index"
                   :root="item.root"
                   :filename="item.filename"
-                  :isDifferent="isDifferentArray.indexOf(index) !== -1"
-                  :isModified="isModifiedArray.indexOf(index) !== -1"
+                  :isDifferent="isDifferentArray.indexOf(item.index) !== -1"
+                  :isModified="isModifiedArray.indexOf(item.index) !== -1"
                   @click="showClickedThumbnail(item, index)"
                 />
               </template>
@@ -28,8 +28,6 @@
 </template>   
      
 <script>
-// :isModified="modifiedSamples.map((item) => item.index).indexOf(index) !== -1"
-
 import thumbnail from './Thumbnail.vue'
 import { EventBus } from '@/event_bus.js'
 import ToolBar from '@/components/ViewerPanel/ToolBar.vue'
