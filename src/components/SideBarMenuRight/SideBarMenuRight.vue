@@ -94,6 +94,7 @@ import { converterDict } from "@/utils/label_converter.js";
 
 import ImageBox from "@/components/SideBarMenuRight/ImageBox.vue";
 import LabelPanel from "./LabelPanel.vue";
+import RegressionLabelPanel from './RegressionLabelPanel.vue';
 import imageData from "./image_data.json";
 import { EventBus } from "@/event_bus.js";
 import fileFetecher from "@/utils/file_fetcher.js";
