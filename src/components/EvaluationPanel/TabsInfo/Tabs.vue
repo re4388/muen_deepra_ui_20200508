@@ -33,10 +33,10 @@
           v-for="modelName in modelNames"
           :key="modelName + Date.now()"
           @click="modelNameChage(modelName)"
-        >{{ modelName }}</b-dropdown-item>
+        >{{ modelName | modelIdFormater }}</b-dropdown-item>
       </b-dropdown>
     </div>
-    <p :class="{ 'text-left': true, 'text-warning':loadModelError }">{{ modelId}}</p>
+    <p :class="{ 'text-left': true, 'text-warning':loadModelError }">{{ modelId | modelIdFormater}}</p>
 
     <!-- tabs Breadcrumb -->
     <div class="m-0 bg-white text-white">
@@ -64,9 +64,9 @@
       class="currentTab container"
     >
       <!-- tab title -->
-      <div class="row" slot="title">
+      <!-- <div class="row" slot="title">
         <h5 class="col-12 text-center text-light m-0 mt-3"> {{ tab.name | capitalize }}</h5>
-      </div>
+      </div> -->
       
 
       <!-- MetricsDisplay component-->
@@ -258,26 +258,33 @@ export default {
     loadModal() {
       // console.log("currentProjectData:", this.currentProjectData);
       // console.log("current model id:", this.modelId);
+
+      // locate file path
       let filePath = modPath.join(
         this.currentProjectData.location,
         "deepra_output",
         this.modelId,
         "validation"
       );
+      let fn = modPath.join(filePath, "validation_output.json")
 
-      let fn = modPath.join(filePath, "validation_output.json");
+      // get file and process data
       fileFetcher
         .readJson(fn, false)
         .then(result => {
+          // set up err msg
           this.loadModelError = false;
           console.log("--- begin to read local json ---");
+
+          // process data by generateModel
           let tabData = generateModel(result.labels, result.metrics);
           this.tabs = tabData;
 
-          // send tabData to EvaluationPanel.vue
+          // emit data to EvaluationPanel.vue
           this.$emit("model-data", {
             result: tabData
           });
+
           this.InitTab();
           // add sth to reflash the graph
           // console.log(this.currentTab)
@@ -287,7 +294,8 @@ export default {
         .catch(err => {
           this.loadModelError = true;
           // console.log("readJson err:", err);
-          this.modelId = "no such file or directory";
+          // empty space for offset the filters effect
+          this.modelId = "      model doesn't exist";
         });
     },
 
@@ -295,6 +303,8 @@ export default {
       this.loadModal();
     },
 
+    // getModelList is asy, so make it return a promise to make sure we have resolve
+    // and then to process below
     getModelList() {
       return new Promise((resolve, reject) => {
         ModelManager.GetModelListByProject(this.currentProjectData.uuid).then(
@@ -325,22 +335,23 @@ export default {
     },
 
     dataInit() {
-      console.log("--- Tabs: get data from validation result ---");
+      console.log("--- dataInit invoke: get data from validation result ---");
 
-      // FIXME: to switch to fakedata
+      //TODO: use below line and comment out vueUtils lines can switch to fakedata
+      // let data = localJsonRegression
+
+      // use result from validationOutput
       let data = vueUtils.clone(
         this.$store.getters["Validation/validationOutput"]
       );
-      //  blet data = localJsonRegression
-
-
+      
       this.getModelList().then(result => {
-        if (data.content === null) {
+        if (data.content === null) {   // if not data, got from local history file
           console.log("--- Tabs: get data from history record ---");
           this.getModelList();
           this.loadModal();
         } else {
-          // generate processed data
+          // processed data
           let tabData = generateModel(data.labels, data.metrics);
           this.tabs = tabData;
 
@@ -349,7 +360,7 @@ export default {
             result: tabData
           });
 
-          // Tab init
+          // Breadcrumb tab init
           this.InitTab();
         }
       })
@@ -389,6 +400,9 @@ export default {
       if (!value) return "";
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
+    },
+    modelIdFormater: function(value) {
+      return value.slice(6)
     }
   }
 };
