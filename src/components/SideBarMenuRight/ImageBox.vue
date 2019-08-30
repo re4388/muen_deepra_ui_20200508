@@ -179,7 +179,7 @@ $scroll-bar-width: 5px;
   width: 315px;
   overflow: hidden;
   position: fixed;
-  top: 300px;
+  top: 250px;
   right: 150px;
   padding: 0px;
   padding-bottom: 20px;

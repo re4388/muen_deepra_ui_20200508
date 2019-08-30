@@ -10,12 +10,12 @@
         :selectedLabel="selectedLabel"
         :srcIndex="selectedImageIndex"
         :predictedLabel="predictedLabel"
-        :is="'LabelPanel'">
+        :is="'RegressionLabelPanel'">
       </components>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
       <div class="rightsideBlockTitle"><h3>DataSet</h3></div>
-      <div><img class="datasetImg" src="../../assets/people.png"></div>
+      <!-- <div><img class="datasetImg" src="../../assets/people.png"></div> -->
       <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList">
           <div>
@@ -43,6 +43,7 @@
 <script>
 import ImageBox from '@/components/SideBarMenuRight/ImageBox.vue';
 import LabelPanel from './LabelPanel.vue'
+import RegressionLabelPanel from './RegressionLabelPanel.vue'
 import imageData from './image_data.json'
 import { EventBus } from '@/event_bus.js'
 import fileFetecher from '@/utils/file_fetcher.js'
@@ -56,7 +57,8 @@ export default {
   name: 'SidebarRight',
   components: {
     ImageBox,
-    LabelPanel
+    LabelPanel,
+    RegressionLabelPanel
   },
   watch: {
     isShowingImgList() {},
