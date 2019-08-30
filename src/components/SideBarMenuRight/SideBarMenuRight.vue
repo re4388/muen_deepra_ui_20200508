@@ -3,28 +3,24 @@
     <div>
       <!-- model selection dropdown -->
       <div>
-        <b-dropdown 
-        boundary="window"
-        id="dropdown"  
-        text="Labels" 
-        class="m-md-2">
+        <b-dropdown boundary="window" id="dropdown" text="Labels" class="m-md-2 dropdownManu">
           <b-dropdown-item
             class="dropdownItem"
             v-for="modelName in modelNames"
             :key="modelName + Date.now()"
             @click="modelNameChage(modelName)"
-          >{{ modelName | modelIdFormater}}
-          </b-dropdown-item>
+          >{{ modelName | modelIdFormater}}</b-dropdown-item>
         </b-dropdown>
         <!-- error msg handle -->
-        <p class="modelId" :class="{ 'text-left': true, 'text-warning':loadModelError }">
-          {{ modelId | modelIdFormater}}
-          </p>
+        <p
+          class="modelId"
+          :class="{ 'text-left': true, 'text-warning':loadModelError }"
+        >{{ modelId | modelIdFormater}}</p>
       </div>
       <!-- not sure what below code is...?  by Ben -->
       <!-- <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
         <div class="rightsideBlockTitle"></div>
-      </div> -->
+      </div>-->
       <components
         id="label-panel"
         :labels="labels"
@@ -44,9 +40,7 @@
         <img class="datasetImg" src="../../assets/people.png" />
       </div>
       <div id="show__list" class="show__list">
-        <img class="datasetImg" src="../../assets/collections.png" 
-        @click="showImgList" 
-        />
+        <img class="datasetImg" src="../../assets/collections.png" @click="showImgList" />
         <div>
           <!-- TODO: complete the feature of `differentLabels` -->
           <!-- TOOD: `v-if="isShowingImgList"` is remove temporary, add it back later -->
@@ -64,7 +58,7 @@
         <br />
       </div>
       <div class="note">
-        <p>20190523</p>        
+        <p>20190523</p>
       </div>
       <div class="note">
         <p>Model 1 Predict as Label1</p>
@@ -147,7 +141,7 @@ export default {
   },
   filters: {
     modelIdFormater: function(value) {
-      return value.slice(6)
+      return value.slice(6);
     }
   },
   computed: {
@@ -289,13 +283,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.modelId{
+.modelId {
   font-size: 13px;
   margin-top: 3px;
   // text-align: left;
 }
 
+.dropdownManu{
+  height: auto;
+  max-height: 150px;
+  overflow-x: hidden;
+
+
+}
 .dropdownItem {
   font-size: 13px;
   // text-align: right;
@@ -304,11 +304,11 @@ export default {
   margin-bottom: 0%;
   margin-top: 0%;
   padding: 0%;
-  
+  // height: auto;
+  // max-height: 200px;
+  // overflow-x: hidden;
 
   // position: absolute;
-
-
 }
 .sidebarRight {
   position: absolute;

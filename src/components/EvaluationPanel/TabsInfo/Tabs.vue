@@ -27,16 +27,20 @@
     </div>
 
     <!-- dropdown to select models record -->
-    <div class="text-left">
-      <b-dropdown id="dropdown-1" text="Model History" class="m-md-2">
+    <div class="d-flex">
+      <b-dropdown text="Model History" class="m-2">
         <b-dropdown-item
           v-for="modelName in modelNames"
           :key="modelName + Date.now()"
           @click="modelNameChage(modelName)"
         >{{ modelName | modelIdFormater }}</b-dropdown-item>
       </b-dropdown>
+      <div class="pt-4 ml-2">
+        <p
+          :class="{ 'text-left': true, 'text-warning':loadModelError }"
+        >{{ modelId | modelIdFormater}}</p>
+      </div>
     </div>
-    <p :class="{ 'text-left': true, 'text-warning':loadModelError }">{{ modelId | modelIdFormater}}</p>
 
     <!-- tabs Breadcrumb -->
     <div class="m-0 bg-white text-white">
@@ -47,6 +51,7 @@
         active-nav-item-class="font-weight-bold text-uppercase text-dark"
       >
         <b-tab
+    
           v-for="tab in tabs"
           :key="tab.name"
           :title="tab.name"
@@ -66,16 +71,11 @@
       <!-- tab title -->
       <!-- <div class="row" slot="title">
         <h5 class="col-12 text-center text-light m-0 mt-3"> {{ tab.name | capitalize }}</h5>
-      </div> -->
-      
+      </div>-->
 
       <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
-        <MetricsDisplay 
-          :metrics-data=" tab.metrics"
-          :currentTab="currentTab" 
-          class="col-12" 
-        />
+        <MetricsDisplay :metrics-data=" tab.metrics" :currentTab="currentTab" class="col-12" />
       </div>
 
       <!-- GraphDisplay component -->
@@ -133,9 +133,6 @@
         @change="onExport"
       />
     </Tab>
-
-
-
   </div>
 </template>
 
@@ -146,7 +143,7 @@ import localJson from "../multi_class_mnist.json";
 // binary data
 import localJson2 from "../binary_data.json";
 // regression data
-import localJsonRegression from '../regression_data.json'
+import localJsonRegression from "../regression_data.json";
 
 // import dataProcess, which process data from gRPC
 import { generateModel } from "@/components/EvaluationPanel/TabsInfo/dataProcess.js";
@@ -193,7 +190,7 @@ export default {
       modelNames: [],
       showExportMsg: "",
       loadModelError: false,
-      tabIndex:0,
+      tabIndex: 0
     };
   },
   // watch:{
@@ -220,7 +217,7 @@ export default {
       }
       // get the current view index
       let currentTabIndex = this.tabList.indexOf(this.currentTab);
-      return this.tabs[currentTabIndex]["confusionMatrixInfo"]
+      return this.tabs[currentTabIndex]["confusionMatrixInfo"];
     },
 
     ...mapGetters("Validation", {
@@ -243,8 +240,7 @@ export default {
     InitTab() {
       this.getTabList();
       this.currentTab = this.tabList[0];
-      this.tabIndex = 0
-      
+      this.tabIndex = 0;
     },
 
     changeTab(tab) {
@@ -266,7 +262,7 @@ export default {
         this.modelId,
         "validation"
       );
-      let fn = modPath.join(filePath, "validation_output.json")
+      let fn = modPath.join(filePath, "validation_output.json");
 
       // get file and process data
       fileFetcher
@@ -289,7 +285,6 @@ export default {
           // add sth to reflash the graph
           // console.log(this.currentTab)
           // this.currentTab = this.tabList[0];
-
         })
         .catch(err => {
           this.loadModelError = true;
@@ -307,8 +302,8 @@ export default {
     // and then to process below
     getModelList() {
       return new Promise((resolve, reject) => {
-        ModelManager.GetModelListByProject(this.currentProjectData.uuid).then(
-          result => {
+        ModelManager.GetModelListByProject(this.currentProjectData.uuid)
+          .then(result => {
             let re = /(train_[0-9]+_[0-9]+)/;
             let modelHistory = [];
 
@@ -329,8 +324,8 @@ export default {
             resolve(true);
           })
           .catch(err => {
-          console.log("GetModelListByProject err:", err);
-        });
+            console.log("GetModelListByProject err:", err);
+          });
       });
     },
 
@@ -344,27 +339,29 @@ export default {
       let data = vueUtils.clone(
         this.$store.getters["Validation/validationOutput"]
       );
-      
-      this.getModelList().then(result => {
-        if (data.content === null) {   // if not data, got from local history file
-          console.log("--- Tabs: get data from history record ---");
-          this.getModelList();
-          this.loadModal();
-        } else {
-          // processed data
-          let tabData = generateModel(data.labels, data.metrics);
-          this.tabs = tabData;
 
-          // send tabData to EvaluationPanel.vue
-          this.$emit("model-data", {
-            result: tabData
-          });
+      this.getModelList()
+        .then(result => {
+          if (data.content === null) {
+            // if not data, got from local history file
+            console.log("--- Tabs: get data from history record ---");
+            this.getModelList();
+            this.loadModal();
+          } else {
+            // processed data
+            let tabData = generateModel(data.labels, data.metrics);
+            this.tabs = tabData;
 
-          // Breadcrumb tab init
-          this.InitTab();
-        }
-      })
-      .catch(err => {
+            // send tabData to EvaluationPanel.vue
+            this.$emit("model-data", {
+              result: tabData
+            });
+
+            // Breadcrumb tab init
+            this.InitTab();
+          }
+        })
+        .catch(err => {
           console.log("getModelList err:", err);
         });
     },
@@ -402,7 +399,7 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1);
     },
     modelIdFormater: function(value) {
-      return value.slice(6)
+      return value.slice(6);
     }
   }
 };
