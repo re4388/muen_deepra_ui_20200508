@@ -1,24 +1,30 @@
 <template>
   <div id="sidebar-right" class="sidebarRight d-flex flex-column">
     <div>
+      <!-- model selection dropdown -->
       <div>
-        <b-dropdown id="dropdown-offset"  offset="105" text="Labels" class="m-md-2 dropdown-manu">
+        <b-dropdown 
+        boundary="window"
+        id="dropdown"  
+        text="Labels" 
+        class="m-md-2">
           <b-dropdown-item
-            class="dropdown-item"
+            class="dropdownItem"
             v-for="modelName in modelNames"
             :key="modelName + Date.now()"
             @click="modelNameChage(modelName)"
-          >{{ modelName}}
+          >{{ modelName | modelIdFormater}}
           </b-dropdown-item>
         </b-dropdown>
-        
-        <p id="modelId" :class="{ 'text-left': true, 'text-warning':loadModelError }">
-          {{ modelId}}
+        <!-- error msg handle -->
+        <p class="modelId" :class="{ 'text-left': true, 'text-warning':loadModelError }">
+          {{ modelId | modelIdFormater}}
           </p>
       </div>
-      <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
+      <!-- not sure what below code is...?  by Ben -->
+      <!-- <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
         <div class="rightsideBlockTitle"></div>
-      </div>
+      </div> -->
       <components
         id="label-panel"
         :labels="labels"
@@ -38,7 +44,9 @@
         <img class="datasetImg" src="../../assets/people.png" />
       </div>
       <div id="show__list" class="show__list">
-        <img class="datasetImg" src="../../assets/collections.png" @click="showImgList" />
+        <img class="datasetImg" src="../../assets/collections.png" 
+        @click="showImgList" 
+        />
         <div>
           <!-- TODO: complete the feature of `differentLabels` -->
           <!-- TOOD: `v-if="isShowingImgList"` is remove temporary, add it back later -->
@@ -56,7 +64,7 @@
         <br />
       </div>
       <div class="note">
-        <p>20190523</p>
+        <p>20190523</p>        
       </div>
       <div class="note">
         <p>Model 1 Predict as Label1</p>
@@ -136,6 +144,11 @@ export default {
       modelId: "",
       loadModelError: false
     };
+  },
+  filters: {
+    modelIdFormater: function(value) {
+      return value.slice(6)
+    }
   },
   computed: {
     currentProjectData() {
@@ -251,22 +264,12 @@ export default {
           );
           let predictedLabels = labelConverter.convertAll();
           this.$store.dispatch("Testing/setPredictedLabels", predictedLabels);
-          // let tabData = generateModel(result.labels, result.metrics);
-          // this.tabs = tabData;
-
-          // send tabData to EvaluationPanel.vue
-          // this.$emit("model-data", {
-          //   result: tabData
-          // });
-          // this.InitTab();
-          // add sth to reflash the graph
-          // console.log(this.currentTab)
-          // this.currentTab = this.tabList[0];
         })
         .catch(err => {
           this.loadModelError = true;
           console.log("readJson err:", err);
-          this.modelId = "no such file or directory";
+          // empty space for offset the filters effect
+          this.modelId = "      model doesn't exist";
         });
     },
     showImgList(e) {
@@ -287,18 +290,17 @@ export default {
 
 <style lang="scss" scoped>
 
-#modelId{
-  font-size: 11px;
+.modelId{
+  font-size: 13px;
   margin-top: 3px;
   // text-align: left;
 }
 
-.dropdown-item {
-  // z-index: 1000;
-  font-size: 11px;
-  text-align: right;
+.dropdownItem {
+  font-size: 13px;
+  // text-align: right;
   // padding-left: 120px;
-  margin-left: 22px;
+  margin-left: 50px;
   margin-bottom: 0%;
   margin-top: 0%;
   padding: 0%;
@@ -342,6 +344,7 @@ export default {
   padding-bottom: 20px;
 }
 #label-panel {
-  max-height: 150px;
+  // max-height: 310px;
+  overflow: auto;
 }
 </style>
