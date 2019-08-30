@@ -51,9 +51,9 @@ const mutations = {
 }
 
 const actions = {
-  resetAllState ({ commit }) {
-    commit('RESET_ALL_STATE')
-  },
+  // resetAllState ({ commit }) {
+  //   commit('RESET_ALL_STATE')
+  // },
   setValidationOutput ({ commit }, payload) {
     commit('SET_VALIDATION_OUTPUT', payload)
   },
