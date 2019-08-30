@@ -2,21 +2,41 @@
   <div id="sidebar-right" class="sidebarRight d-flex flex-column">
     <div>
       <!-- model selection dropdown -->
+    <div class="dropdown">
       <div>
-        <b-dropdown boundary="window" id="dropdown" text="Labels" class="m-md-2 dropdownManu">
-          <b-dropdown-item
-            class="dropdownItem"
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          boundary="window"
+        >Labels
+        </button>
+        <span class="caret"></span>
+        <div class="dropdown-menu scrollable-menu" >
+          <a 
+          class="dropdownItem dropdown-item"
             v-for="modelName in modelNames"
             :key="modelName + Date.now()"
             @click="modelNameChage(modelName)"
-          >{{ modelName | modelIdFormater}}</b-dropdown-item>
-        </b-dropdown>
-        <!-- error msg handle -->
+            href="#">
+            {{ modelName | modelIdFormater }}
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-2 ml-2">
         <p
           class="modelId"
           :class="{ 'text-left': true, 'text-warning':loadModelError }"
         >{{ modelId | modelIdFormater}}</p>
       </div>
+    </div>
+
+
+
+
+      
       <!-- not sure what below code is...?  by Ben -->
       <!-- <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
         <div class="rightsideBlockTitle"></div>
@@ -296,20 +316,24 @@ export default {
 
 
 }
-.dropdownItem {
+.dropdown-item {
   font-size: 13px;
   // text-align: right;
   // padding-left: 120px;
-  margin-left: 50px;
-  margin-bottom: 0%;
-  margin-top: 0%;
+
+
+  // margin-bottom: 3px;
+  // margin-top: 0%;
   padding: 0%;
+  margin: 0%;
+  text-align: right;
   // height: auto;
   // max-height: 200px;
   // overflow-x: hidden;
-
-  // position: absolute;
+  // position: absolute
 }
+
+
 .sidebarRight {
   position: absolute;
   top: 0;
@@ -322,7 +346,7 @@ export default {
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
-  z-index: 999;
+  z-index: 998;
 }
 .rightsideBlock {
   border-bottom: 1px solid white;
@@ -347,4 +371,14 @@ export default {
   // max-height: 310px;
   overflow: auto;
 }
+
+.scrollable-menu {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+}
+
 </style>
+
+
+

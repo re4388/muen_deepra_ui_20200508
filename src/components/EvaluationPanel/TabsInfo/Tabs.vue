@@ -27,15 +27,27 @@
     </div>
 
     <!-- dropdown to select models record -->
-    <div class="d-flex">
-      <b-dropdown text="Model History" class="m-2">
-        <b-dropdown-item
+    <div class="dropdown d-flex">
+      <div>
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >Model History</button>
+        <span class="caret"></span>
+        <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
+          <a 
           v-for="modelName in modelNames"
           :key="modelName + Date.now()"
           @click="modelNameChage(modelName)"
-        >{{ modelName | modelIdFormater }}</b-dropdown-item>
-      </b-dropdown>
-      <div class="pt-4 ml-2">
+          class="dropdown-item" href="#">{{ modelName | modelIdFormater }}</a>
+        </div>
+      </div>
+
+      <div class="mt-2 ml-2">
         <p
           :class="{ 'text-left': true, 'text-warning':loadModelError }"
         >{{ modelId | modelIdFormater}}</p>
@@ -51,7 +63,6 @@
         active-nav-item-class="font-weight-bold text-uppercase text-dark"
       >
         <b-tab
-    
           v-for="tab in tabs"
           :key="tab.name"
           :title="tab.name"
@@ -425,5 +436,14 @@ export default {
 #btn-export-files {
   // visibility: hidden;
   display: none;
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+}
+.dropdown-menu {
+  width: auto;
 }
 </style>
