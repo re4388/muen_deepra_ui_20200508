@@ -318,16 +318,10 @@ export default {
 }
 .dropdown-item {
   font-size: 13px;
-  // text-align: right;
-  // padding-left: 120px;
-
-
-  // margin-bottom: 3px;
-  // margin-top: 0%;
-  padding: 0%;
-  margin: 0%;
+  padding: 2%;
+  margin: 2%;
   text-align: right;
-  // height: auto;
+
   // max-height: 200px;
   // overflow-x: hidden;
   // position: absolute
