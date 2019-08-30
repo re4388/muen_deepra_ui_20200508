@@ -1,13 +1,19 @@
 <template>
   <div class="regression-label-panel d-flex flex-column" id="regression-label-panel">
-    <template v-for="(item, index) in labels">
+    <!-- <template v-for="(item, index) in labels">
       <label :key="index" @change="changeCheckedState">
         <input type="checkbox" class="radio" :disabled="isDisabled">
-        {{ item }} 
-        <!-- <input type="checkbox" class="radio" :disabled="isDisabled">
-        {{ item }}  -->
-        <!-- <p class="textContent">{{ messages }}</p> -->
+        {{item}}
       </label>
+    </template> -->
+    <template>
+      <div>
+        <!-- <p>{{ messages }}</p> -->
+        <!-- <input type="text" v-model="labelEditInput"> -->
+        <input type="text" placeholder="1.2">
+        <input type="text" placeholder="1.5">
+        <button type="submit" @change="changeCheckedState">save</button>
+      </div>
     </template>
   </div>
 </template> 
