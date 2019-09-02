@@ -83,7 +83,7 @@ export default {
             if(val=== 'not available yet'){
                 return "NAN"
             }
-            return Math.round(parseFloat(val) * 10000) / 100 + " %";
+            return parseFloat(val).toFixed(4)
         }
     }
 };
