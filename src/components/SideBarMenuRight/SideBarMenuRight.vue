@@ -33,25 +33,12 @@
         :selectedLabel="selectedLabel"
         :srcIndex="selectedImageIndex"
         :predictedLabel="predictedLabel"
-<<<<<<< HEAD
         :is="'RegressionLabelPanel'">
       </components>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
       <div class="rightsideBlockTitle"><h3>DataSet</h3></div>
       <!-- <div><img class="datasetImg" src="../../assets/people.png"></div> -->
-=======
-        :is="'LabelPanel'"
-      ></components>
-    </div>
-    <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
-      <div class="rightsideBlockTitle">
-        <h3>DataSet</h3>
-      </div>
-      <div>
-        <img class="datasetImg" src="../../assets/people.png" />
-      </div>
->>>>>>> master
       <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" 
         @click="showImgList" 
