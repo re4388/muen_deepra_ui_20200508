@@ -263,6 +263,7 @@ export default {
       );
 
       let fn = modPath.join(filePath, "validation_output.json");
+      if (!modFs.existsSync(fn)) return
 
       fileFetcher
         .readJson(fn, false)
