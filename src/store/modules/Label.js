@@ -52,9 +52,6 @@ const actions = {
   updateModifiedSample ({ commit }, payload) {
     commit('UPDATE_MODIFIED_SAMPLE', payload)
   },
-  resetAllState ({ commit }) {
-    commit('RESET_ALL_STATE')
-  }
 }
 
 export default {

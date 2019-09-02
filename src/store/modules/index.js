@@ -9,35 +9,13 @@ const modules = {}
 files.keys().forEach(key => {
   // Skip this file
   if (key === './index.js') return
-
-
   modules[key.replace(/(\.\/|\.js)/g, '')] = files(key).default
-
 })
 
-console.log(modules)
 
-// let defaultState = {}
-
-
-
-
-
-class StoreWrapper {
-  static initializeState(target, defaults) {
-    console.log(this)
-    for (var key in defaults) {
-      if (Array.isArray(target[key])) {
-        target[key] = new Array()
-      } else {
-        target[key] = defaults[key]
-      }
-    }
-  }
-}
 
 function initializeState(target, defaults) {
-  console.log(this)
+  // console.log(this) this is undefefined, stric mode
   for (var key in defaults) {
     if (Array.isArray(target[key])) {
       target[key] = new Array()
@@ -47,8 +25,8 @@ function initializeState(target, defaults) {
   }
 }
 
+// loop Store modules and add resetAllState in actions
 for (const key in modules) {
-  console.log(modules[key])
   if (modules[key].hasOwnProperty('actions')) {
     modules[key]['actions']['resetAllState'] = function ({
       commit
@@ -57,15 +35,21 @@ for (const key in modules) {
     }
   }
 
+
+  // TODO: haven't find a way to factor out mutation RESET_ALL_STATE
   if (modules[key].hasOwnProperty('mutations')) {
     // modules[key]['mutations']['RESET_ALL_STATE'] = function (state) {
-    //   StoreWrapper.initializeState(state, defaultState)
+    //   initializeState(state, defaultState)
+      // StoreWrapper.initializeState(state, defaultState)
     // }
-    modules[key]['mutations']['RESET_ALL_STATE'] = StoreWrapper.initializeState
+    // modules[key]['mutations']['RESET_ALL_STATE'] = StoreWrapper.initializeState
+    // modules[key]['mutations']['RESET_ALL_STATE'] = new StoreWrapper(state, defaults).initializeState
   }
+
 }
 
-console.log(modules)
+
+// console.log(modules)
 
 function updateValue(target, payload) {
   let updater = (obj, entry, value) => {

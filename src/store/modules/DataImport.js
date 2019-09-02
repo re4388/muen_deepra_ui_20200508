@@ -109,9 +109,6 @@ const mutations = {
 }
 
 const actions = {
-  resetAllState({ commit }) {
-    commit('RESET_ALL_STATE')
-  },
   setCurrentStage({ commit }, payload) {
     commit('SET_CURRENT_STAGE', payload)
   },

@@ -67,9 +67,6 @@ const actions = {
   toggleIsTraining ({ commit }) {
     commit('TOGGLE_IS_TRAINING')
   },
-  // resetAllState ({ commit }) {
-  //   commit('RESET_ALL_STATE')
-  // }
 }
 
 export default {
