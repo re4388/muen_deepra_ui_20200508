@@ -12,10 +12,11 @@
         File counts (in folder): {{ fileCounts }}
         <br />
       </p>
-      <p class="text-content label-report">
+      <p class="text-content label-list">
         <!-- TODO: replace this by list group -->
-        Labels: {{ labels.join(', ') }}
-        <br />
+        Labels: {{ labelSummary }}
+      </p>
+      <p class="text-content label-report">
         Total labels: {{ totalLabels }}
         <br />
         Labeled file counts: {{ normalFiles }}
@@ -147,6 +148,18 @@ export default {
       } else {
         return '';
       }
+    },
+    labelSummary () {
+      // Default
+      if (this.datasetInfo.details.labelReport === undefined) return ''
+
+      if (this.taskType === 'regression') {
+        let labels = this.datasetInfo.details.labelReport.labels.map(parseFloat)
+        return `min: ${Math.min(...labels)}; max: ${Math.max(...labels)}`
+      } else {
+        let labels = this.datasetInfo.details.labelReport.labels
+        return labels.join(', ')
+      }
     }
   },
   data() {
@@ -167,16 +180,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$scroll-bar-width: 5px;
 .step-content {
   color: black;
   padding: 20px;
 }
 .text-content {
   text-align: left;
+  margin: 0px;
 }
-.label-report {
+.label-list {
   display: inline-block;
-  overflow: scroll;
-  max-height: 200px;
+  overflow-y: scroll;
+  max-height: 125px;
+  margin: 0px;
+  width: 100%;
+  // TODO: extract all duplicated style of scroll bar into a single file?
+  &::-webkit-scrollbar {
+    width: $scroll-bar-width;
+  }
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #A0A0A0;
+      border-radius: $scroll-bar-width;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #404040;
+      border-radius: $scroll-bar-width;
+    }
+  }
 }
 </style>

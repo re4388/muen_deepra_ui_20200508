@@ -189,6 +189,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$scroll-bar-width: 5px;
 .page-content {
   height: 100%;
   overflow: hidden;
@@ -214,8 +215,23 @@ export default {
 
 .label-list {
   display: inline-block;
-  overflow: scroll;
+  overflow-y: scroll;
   max-height: 200px;
+  width: 100%;
+  // TODO: extract all duplicated style of scroll bar into a single file?
+  &::-webkit-scrollbar {
+    width: $scroll-bar-width;
+  }
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #808080;
+      border-radius: $scroll-bar-width;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #0f0f0f;
+      border-radius: $scroll-bar-width;
+    }
+  }
 }
 .label-list-view {
   height: 400px;
