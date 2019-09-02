@@ -212,6 +212,11 @@ export default {
   margin: 30px;
 }
 
+.label-list {
+  display: inline-block;
+  overflow: scroll;
+  max-height: 200px;
+}
 .label-list-view {
   height: 400px;
   overflow: scroll;

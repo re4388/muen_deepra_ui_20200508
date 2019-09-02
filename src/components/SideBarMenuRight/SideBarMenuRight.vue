@@ -363,7 +363,7 @@ export default {
   padding-bottom: 20px;
 }
 #label-panel {
-  // max-height: 310px;
+  max-height: 310px;
   overflow: auto;
 }
 

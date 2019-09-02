@@ -12,7 +12,7 @@
         File counts (in folder): {{ fileCounts }}
         <br />
       </p>
-      <p class="text-content">
+      <p class="text-content label-report">
         <!-- TODO: replace this by list group -->
         Labels: {{ labels.join(', ') }}
         <br />
@@ -173,5 +173,10 @@ export default {
 }
 .text-content {
   text-align: left;
+}
+.label-report {
+  display: inline-block;
+  overflow: scroll;
+  max-height: 200px;
 }
 </style>
