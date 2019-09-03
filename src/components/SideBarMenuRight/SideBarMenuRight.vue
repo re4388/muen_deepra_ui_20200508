@@ -29,7 +29,7 @@
         :selectedLabel="selectedLabel"
         :srcIndex="selectedImageIndex"
         :predictedLabel="predictedLabel"
-        :is="'RegressionLabelPanel'">
+        :is="LabelPanelType[this.taskType]">
       </components>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
@@ -106,16 +106,14 @@ export default {
       let dataset = this.$store.getters["Viewer/currentDataset"];
       this.labels = dataset.details.labelReport.labels;
       this.taskType = dataset.taskType;
+      // console.log(this.taskType)
       this.selectedImage = this.images[0];
       this.firstImageFilename = this.images[0].filename;
       let temp = this.images.label;
     });
     EventBus.$on("onNavigationImageClicked", obj => {
-      // console.log(obj.item)
-      // console.log(obj.index)
       this.selectedImage = obj.item;
       this.selectedImageIndex = obj.item.index;
-      // console.log(this.selectedImage.filename)
       EventBus.$emit("showSelectedFilename", this.selectedImage.filename);
     });
   },
@@ -133,7 +131,13 @@ export default {
       selectedImageIndex: 0,
       modelNames: [],
       modelId: "",
-      loadModelError: false
+      loadModelError: false,
+      LabelPanelType: {
+        binary: 'LabelPanel',
+        multiclass: 'LabelPanel',
+        multilabel: 'LabelPanel',
+        regression: 'RegressionLabelPanel'
+      }
     };
   },
   filters: {
