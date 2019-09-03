@@ -34,9 +34,13 @@ export default {
         currentTab: {
             type: String
         },
+        graphData:{
+            type: Object
+        },
     },
-    // updated(){
-    //     console.log('metric updated')
+    // test what props passed in
+    // mounted(){
+    //     console.log(this.graphData.modelType)
     // },
     data() {
         return {
@@ -47,29 +51,34 @@ export default {
                 `,
         };
     },
+    methods:{
+        isMultiTypeandAllClass(){
+            return this.currentTab ==='all class' && this.graphData.modelType ==="multiType"
+        }
+    },
     computed:{
         Sensitivity(){
-            return this.currentTab ==='all class'?
+            return this.isMultiTypeandAllClass()?
             'Macro Sensitivity':
             'Sensitivity'
         },
         specificity(){
-            return this.currentTab ==='all class'?
+            return this.isMultiTypeandAllClass()?
             'Macro Specificity':
             'Specificity'
         },
         precision(){
-            return this.currentTab ==='all class'?
+            return this.isMultiTypeandAllClass()?
             'Macro Precision':
             'Precision'
         },
         f1Score(){
-            return this.currentTab ==='all class'?
+            return this.isMultiTypeandAllClass()?
             'Macro F1 Score':
             'F1 Score'
         },
         auc(){
-            return this.currentTab ==='all class'?
+            return this.isMultiTypeandAllClass()?
             'Weighted AUC':
             'AUC'
         }  
@@ -83,7 +92,7 @@ export default {
             if(val=== 'not available yet'){
                 return "NAN"
             }
-            return Math.round(parseFloat(val) * 10000) / 100 + " %";
+            return parseFloat(val).toFixed(4)
         }
     }
 };

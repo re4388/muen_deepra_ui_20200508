@@ -10,7 +10,10 @@
     </b-modal>
     <!-- Confusion Matrix 的 Modal -->
     <div>
-      <b-modal hide-footer centered id="modal-lg" title="Confusion Matrix">
+      <b-modal hide-footer centered size="cm" id="modal-lg" @shown="onModalShown">
+        <template slot="modal-header">
+          <h5 class="text-center">Confusion Matrix</h5>
+        </template>
         <h1>
           <ConfusionMatrix :data="selectedMatrixData" :new-threshold="newThreshold" />
         </h1>
@@ -39,11 +42,13 @@
         >Model History</button>
         <span class="caret"></span>
         <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
-          <a 
-          v-for="modelName in modelNames"
-          :key="modelName + Date.now()"
-          @click="modelNameChage(modelName)"
-          class="dropdown-item" href="#">{{ modelName | modelIdFormater }}</a>
+          <a
+            v-for="modelName in modelNames"
+            :key="modelName + Date.now()"
+            @click="modelNameChage(modelName)"
+            class="dropdown-item"
+            href="#"
+          >{{ modelName | modelIdFormater }}</a>
         </div>
       </div>
 
@@ -86,7 +91,12 @@
 
       <!-- MetricsDisplay component-->
       <div class="row mt-3" slot="MetricsDisplay">
-        <MetricsDisplay :metrics-data=" tab.metrics" :currentTab="currentTab" class="col-12" />
+        <MetricsDisplay 
+        :metrics-data=" tab.metrics" 
+        :graph-data="tab.graph"
+        :currentTab="currentTab" 
+        class="col-12" 
+        />
       </div>
 
       <!-- GraphDisplay component -->
@@ -237,6 +247,11 @@ export default {
   },
 
   methods: {
+    onModalShown(e) {
+      let el = document.getElementsByClassName("modal-cm")[0];
+      el.style.maxWidth = "1200px";
+      el.style.width = "1200px";
+    },
     modelNameChage(id) {
       this.modelId = id;
       this.modelChange();
@@ -419,6 +434,18 @@ export default {
 
 
 <style lang="scss" scoped>
+// .modal .modal-huge {
+//   max-width: 2000px;
+//   width: 2000px;
+// }
+
+// @media (min-width: 200px) {
+//   .modal .modal-huge {
+//     max-width: 250% !important;
+//     width: 250% !important;;
+//   }
+// }
+
 .outterGraph {
   display: flex;
   flex-direction: row;

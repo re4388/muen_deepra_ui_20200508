@@ -187,7 +187,7 @@ export default {
             }
           },
           contents: function(d, defaultTitleFormat, defaultValueFormat, color) {
-            console.log(d[0].id);
+            // console.log(d[0].id);
             if (d[0].id === "dependent_y_axis" || d[0].id === "line") {
               // Use default rendering
               let $$ = this;

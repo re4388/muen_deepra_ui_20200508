@@ -14,7 +14,7 @@ describe('MetricDisplay.vue', () => {
 
 	it('communicate: recevide props "metricsData" and reder properly', () => {
 		const metricsData = {
-			foo: 'AUC 90 %'
+			foo: `AUC ${Number(0.9).toFixed(3)}`
 		};
 		const wrapper = shallowMount(MetricDisplay, {
 			// stub fake props for real propsData
@@ -35,7 +35,10 @@ describe('MetricDisplay.vue', () => {
 		const wrapper = shallowMount(MetricDisplay, {
 			// stub fake props for real propsData
 			propsData: {
-				currentTab: 'all class'
+				currentTab: 'all class',
+				graphData: {
+					modelType: 'multiType'
+				}
 			}
 		});
 
