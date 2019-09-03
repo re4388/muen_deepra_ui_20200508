@@ -2,7 +2,7 @@
   <div class="label-panel d-flex flex-column" id="label-panel">
     <template v-for="(item, index) in labels">
       <label :key="index" @change="changeCheckedState">
-        <input type="checkbox" class="radio" :disabled="isDisabled">
+        <input type="checkbox" :disabled="isDisabled">
         {{item}}
       </label>
     </template>
@@ -33,8 +33,6 @@ export default {
       this.updateCheckedLabel()
     },
     predictedLabel (newVal, oldVal) {
-      // console.log('--- predicted label changed')
-      // console.log(`${newVal}, ${oldVal}`)
       this.updateLabelColor()
     }
   },
@@ -46,29 +44,39 @@ export default {
       return this.getLabels().map(item => item.getElementsByTagName('input')[0])
     },
     changeCheckedState (evnt) {
-      if (!this.isSingleSelection) return
-      var checkboxes = this.getCheckboxes()
+      // No matter which selection mode is, logger should be triggered
       this.modificationLogger(evnt.target.parentElement)
+
+      if (!this.isSingleSelection) return
+      let checkboxes = this.getCheckboxes()
       checkboxes.map(item => {
-        return item.checked = (item === evnt.target) ? (item.checked ? true : false) : false
+        return item.checked = (item === evnt.target) ? item.checked : false
       })
     },
     updateCheckedLabel () {
-      var texts = this.getLabels().map(item => item.innerText.trim())
-      var idx = texts.indexOf(this.selectedLabel)
-      this.getCheckboxes().map((item, index) => item.checked = index === idx)
+      let texts = this.getLabels().map(item => item.innerText.trim())
+      let indices = this.selectedLabel.split(',').map(x => texts.indexOf(x))
+      this.getCheckboxes().map((item, index) => item.checked = indices.indexOf(index) !== -1)
     },
     updateLabelColor () {
       if (this.predictedLabel === '') return
-      var texts = this.getLabels().map(item => item.innerText.trim())
-      var idx = texts.indexOf(this.predictedLabel)
-      this.getLabels().map((item, index) => item.style.color = index === idx ? 'red' : null)
+      let texts = this.getLabels().map(item => item.innerText.trim())
+      let indices = this.predictedLabel.split(',').map(x => texts.indexOf(x))
+      this.getLabels().map((item, index) => item.style.color = indices.indexOf(index) !== -1 ? 'red' : null)
     },
     modificationLogger (target) {
-      let checked = target.getElementsByTagName('input')[0].checked
-      let newLabel = checked ? target.innerText.trim() : ''
-      // console.log(this.parsedFileList[this.srcIndex])
-      // console.log(newLabel)
+      let checked, newLabel
+      if (!this.isSingleSelection) {
+        checked = this.getCheckboxes().map(x => x.checked)
+        newLabel = this.getLabels().reduce((collection, x, index) => {
+          if (checked[index]) { collection.push(x.innerText.trim()) }
+          return collection
+        }, []).join(',')
+      } else {
+        checked = target.getElementsByTagName('input')[0].checked
+        newLabel = checked ? target.innerText.trim() : ''
+      }
+
       if (newLabel !== this.selectedLabel) {
         this.$store.dispatch('Label/updateModifiedSample', {
           sample: this.parsedFileList[this.srcIndex],
