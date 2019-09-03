@@ -23,6 +23,10 @@ export default {
     isDisabled: Boolean,
     predictedLabel: String
   },
+  mounted () {
+    this.updateCheckedLabel()
+    this.updateLabelColor()
+  },
   updated () {
     // call this method to update label until the whole component is rendered
     this.updateCheckedLabel()

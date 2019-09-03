@@ -49,21 +49,14 @@
         :selectedLabel="selectedLabel"
         :srcIndex="selectedImageIndex"
         :predictedLabel="predictedLabel"
-        :is="'LabelPanel'"
-      ></components>
+        :is="labelPanelType[taskType]">
+      </components>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
-      <div class="rightsideBlockTitle">
-        <h3>DataSet</h3>
-      </div>
-      <div>
-        <img class="datasetImg" src="../../assets/people.png" />
-      </div>
+      <div class="rightsideBlockTitle"><h3>DataSet</h3></div>
       <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" @click="showImgList" />
         <div>
-          <!-- TODO: complete the feature of `differentLabels` -->
-          <!-- TOOD: `v-if="isShowingImgList"` is remove temporary, add it back later -->
           <ImageBox v-show="isShowingImgList" class="imageBox" :images="images" />
         </div>
       </div>
@@ -99,6 +92,7 @@ import { converterDict } from "@/utils/label_converter.js";
 
 import ImageBox from "@/components/SideBarMenuRight/ImageBox.vue";
 import LabelPanel from "./LabelPanel.vue";
+import RegressionLabelPanel from './RegressionLabelPanel.vue';
 import imageData from "./image_data.json";
 import { EventBus } from "@/event_bus.js";
 import fileFetecher from "@/utils/file_fetcher.js";
@@ -112,7 +106,8 @@ export default {
   name: "SidebarRight",
   components: {
     ImageBox,
-    LabelPanel
+    LabelPanel,
+    RegressionLabelPanel
   },
   watch: {
     isShowingImgList() {},
@@ -129,18 +124,18 @@ export default {
       let dataset = this.$store.getters["Viewer/currentDataset"];
       this.labels = dataset.details.labelReport.labels;
       this.taskType = dataset.taskType;
+      // console.log(this.taskType)
       this.selectedImage = this.images[0];
       this.firstImageFilename = this.images[0].filename;
       let temp = this.images.label;
     });
     EventBus.$on("onNavigationImageClicked", obj => {
-      // console.log(obj.item)
-      // console.log(obj.index)
       this.selectedImage = obj.item;
       this.selectedImageIndex = obj.item.index;
-      // console.log(this.selectedImage.filename)
       EventBus.$emit("showSelectedFilename", this.selectedImage.filename);
     });
+    console.log('--- selected label panel type:')
+    console.log(this.selectedLabelPanelType)
   },
   beforeDestroy() {
     EventBus.$off("viewerDatasetChanged");
@@ -156,7 +151,13 @@ export default {
       selectedImageIndex: 0,
       modelNames: [],
       modelId: "",
-      loadModelError: false
+      loadModelError: false,
+      labelPanelType: {
+        binary: 'LabelPanel',
+        multiclass: 'LabelPanel',
+        multilabel: 'LabelPanel',
+        regression: 'RegressionLabelPanel'
+      }
     };
   },
   filters: {
@@ -185,8 +186,8 @@ export default {
     },
     predictedLabel() {
       if (this.selectedImage === null) return String(this.predictedLabels[0]);
-      console.log("--- current selected image");
-      console.log(this.selectedImage);
+      // console.log("--- current selected image");
+      // console.log(this.selectedImage);
       return String(this.predictedLabels[this.selectedImage.index]);
     },
     images() {
@@ -348,7 +349,7 @@ export default {
   padding: 20px 0;
 }
 .rightsideBlockTitle {
-  margin: 10px 0 30px 0;
+  margin: 10px 0 20px 0;
 }
 .datasetImg {
   padding: 30px;
@@ -359,8 +360,8 @@ export default {
 .datasetImg:hover {
   background: rgb(199, 199, 199);
 }
-.noteTitle {
-  padding-bottom: 20px;
+.note > p {
+  margin: 0;
 }
 #label-panel {
   max-height: 310px;

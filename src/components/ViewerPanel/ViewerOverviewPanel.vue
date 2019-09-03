@@ -54,7 +54,6 @@ export default {
       let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
       let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
       let orderedFileList = this.$store.getters["Validation/orderedFileList"]
-
       if (predictedLabels.length !== 0) {
         let differentLabels = parsedFileListLabels.reduce((acc, item, i) => {
           if (predictedLabels[i] !== parsedFileListLabels[i] && parsedFileListLabels[i] !== '#') { 
