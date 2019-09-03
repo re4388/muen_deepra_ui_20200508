@@ -21,10 +21,6 @@
           {{ modelId | modelIdFormater}}
           </p>
       </div>
-      <!-- not sure what below code is...?  by Ben -->
-      <!-- <div class="rightsideBlock addLabel p-2 flex-fill bd-highlight">
-        <div class="rightsideBlockTitle"></div>
-      </div> -->
       <components
         id="label-panel"
         :labels="labels"
@@ -33,19 +29,16 @@
         :selectedLabel="selectedLabel"
         :srcIndex="selectedImageIndex"
         :predictedLabel="predictedLabel"
-        :is="'LabelPanel'">
+        :is="'RegressionLabelPanel'">
       </components>
     </div>
     <div class="rightsideBlock imageListBlock data__set p-2 flex-fill bd-highlight">
       <div class="rightsideBlockTitle"><h3>DataSet</h3></div>
-      <!-- <div><img class="datasetImg" src="../../assets/people.png"></div> -->
       <div id="show__list" class="show__list">
         <img class="datasetImg" src="../../assets/collections.png" 
         @click="showImgList" 
         />
         <div>
-          <!-- TODO: complete the feature of `differentLabels` -->
-          <!-- TOOD: `v-if="isShowingImgList"` is remove temporary, add it back later -->
           <ImageBox v-show="isShowingImgList" class="imageBox" :images="images" />
         </div>
       </div>
@@ -169,8 +162,8 @@ export default {
     },
     predictedLabel() {
       if (this.selectedImage === null) return String(this.predictedLabels[0]);
-      console.log("--- current selected image");
-      console.log(this.selectedImage);
+      // console.log("--- current selected image");
+      // console.log(this.selectedImage);
       return String(this.predictedLabels[this.selectedImage.index]);
     },
     images() {
@@ -287,13 +280,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .modelId{
   font-size: 13px;
   margin-top: 3px;
   // text-align: left;
 }
-
 .dropdownItem {
   font-size: 13px;
   // text-align: right;
@@ -302,11 +293,7 @@ export default {
   margin-bottom: 0%;
   margin-top: 0%;
   padding: 0%;
-  
-
   // position: absolute;
-
-
 }
 .sidebarRight {
   position: absolute;
@@ -327,7 +314,7 @@ export default {
   padding: 20px 0;
 }
 .rightsideBlockTitle {
-  margin: 10px 0 30px 0;
+  margin: 10px 0 20px 0;
 }
 .datasetImg {
   padding: 30px;
@@ -338,8 +325,8 @@ export default {
 .datasetImg:hover {
   background: rgb(199, 199, 199);
 }
-.noteTitle {
-  padding-bottom: 20px;
+.note > p {
+  margin: 0;
 }
 #label-panel {
   // max-height: 310px;
