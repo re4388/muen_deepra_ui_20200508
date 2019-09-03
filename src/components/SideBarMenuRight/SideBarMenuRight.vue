@@ -124,7 +124,6 @@ export default {
       let dataset = this.$store.getters["Viewer/currentDataset"];
       this.labels = dataset.details.labelReport.labels;
       this.taskType = dataset.taskType;
-      // console.log(this.taskType)
       this.selectedImage = this.images[0];
       this.firstImageFilename = this.images[0].filename;
       let temp = this.images.label;
@@ -134,8 +133,6 @@ export default {
       this.selectedImageIndex = obj.item.index;
       EventBus.$emit("showSelectedFilename", this.selectedImage.filename);
     });
-    console.log('--- selected label panel type:')
-    console.log(this.selectedLabelPanelType)
   },
   beforeDestroy() {
     EventBus.$off("viewerDatasetChanged");
@@ -315,8 +312,6 @@ export default {
   height: auto;
   max-height: 150px;
   overflow-x: hidden;
-
-
 }
 .dropdown-item {
   font-size: 13px;
@@ -364,7 +359,7 @@ export default {
   margin: 0;
 }
 #label-panel {
-  max-height: 310px;
+  max-height: 150px;
   overflow: auto;
 }
 
