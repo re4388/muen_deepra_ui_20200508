@@ -1,18 +1,14 @@
 <template>
   <div class="regression-label-panel d-flex flex-column" id="regression-label-panel">
-    <!-- <template v-for="(item, index) in labels">
-      <label :key="index" @change="changeCheckedState">
-        <input type="checkbox" class="radio" :disabled="isDisabled">
-        {{item}}
-      </label>
-    </template> -->
     <template>
-      <div>
-        <!-- <p>{{ messages }}</p> -->
-        <!-- <input type="text" v-model="labelEditInput"> -->
-        <input type="text" placeholder="1.2">
-        <input type="text" placeholder="1.5">
-        <button type="submit" @change="changeCheckedState">save</button>
+      <div class="originalLabel ">
+        <p class="info">originalLabel</p>
+        <p class="selectedLabel labelInfo" contenteditable="true">{{ selectedLabel }}</p>
+        <!-- <p class="predictedLabel labelInfo">{{ this.predictedLabel }}</p> -->
+        <p class="info">predictedLabel</p>
+        <p class="predictedLabel labelInfo">{{ message }}</p>
+        <button class="btnOverwrite" @click="overwriteLabelInfo"> overwrite / recover </button>
+        <!-- <button class="btnSave" type="submit" @change="changeCheckedState">save</button> -->
       </div>
     </template>
   </div>
@@ -32,105 +28,69 @@ export default {
     isDisabled: Boolean,
     predictedLabel: String
   },
+  data () {
+    return {
+      message: '1.5'
+    }
+  },
   created () {
-    // let predictedLabels = this.$store.getters['Testing/predictedLabels'].map(item => String(item))
-    // let parsedFileListLabels = this.$store.getters['Viewer/parsedFileList'].map(item => item.label)
   },
   updated () {
     // call this method to update label until the whole component is rendered
-    this.updateCheckedLabel()
-    // this.updatePredictedLabel()
-    this.updateLabelColor()
+    // this.updateCheckedLabel()
+    // this.updateLabelColor()
   },
   watch: {
-    selectedLabel (newVal, oldVal) {
-      this.updateCheckedLabel()
-    },
-    predictedLabel (newVal, oldVal) {
-      this.updateLabelColor()
-      // this.updatePredictedLabel()
-    },
-    messgaes: function (value) {
-      console.log(value)
-    }
+    // selectedLabel (newVal, oldVal) {
+    //   this.updateCheckedLabel()
+    // },
+    // predictedLabel (newVal, oldVal) {
+    //   this.updateLabelColor()
+    // }
   },
   methods: {
-    getLabels () {
-      return [...document.getElementById('label-panel').getElementsByTagName('label')]
+    getSelectedLabelInfo () {
+      return document.querySelector('.selectedLabel').innerText
     },
-    getCheckboxes () {
-      return this.getLabels().map(item => item.getElementsByTagName('input')[0])
-    },
-    addTextContent () {
-      return [...document.getElementById('label-panel').getElementsByClassName('textContent')]
-    },
-    changeCheckedState (evnt) {
-      if (!this.isSingleSelection) return
-      var checkboxes = this.getCheckboxes()
-      this.modificationLogger(evnt.target.parentElement)
-      checkboxes.map(item => {
-        return item.checked = (item === evnt.target) ? (item.checked ? true : false) : false
-      })
-    },
-    updateCheckedLabel () {
-      var texts = this.getLabels().map(item => item.innerText.trim())
-      var idx = texts.indexOf(this.selectedLabel)
-      this.getCheckboxes().map((item, index) => item.checked = index === idx)
-      console.log('---parsedFileListLabels')
-      console.log(idx)
-    },
-    // updatePredictedLabel () {
-    //   if (this.predictedLabel === '') return
-    //   var texts = this.getLabels().map(item => item.innerText.trim())
-    //   var idx = texts.indexOf(this.predictedLabel)
-    //   this.getLabels().map((item, index) => item.style.color = index === idx ? 'red' : null)
-    //   // this.getLabels().map((item, index) => item.innerText = "predictedLabels")
-    //   // this.getLabels().map((item, index) => item.style.color = index === idx ? showPredictedLabels : null)
-    //   console.log('---predictedLabels')
-    //   console.log(texts)
-    //   console.log(idx)
+    // getCheckboxes () {
+    //   return this.getLabels().map(item => item.getElementsByTagName('input')[0])
     // },
-    // updateMessage: function () {
-    //   this.message = this.message.split('').reverse().join('')
-    // },
-    updateLabelColor () {
-      if (this.predictedLabel === '') return
-      var texts = this.getLabels().map(item => item.innerText.trim())
-      var idx = texts.indexOf(this.predictedLabel)
-      this.getLabels().map((item, index) => item.style.color = index === idx ? 'red' : null)
-      // this.getLabels().map((item, index) => item.style.color = index === idx ? showPredictedLabels : null)
-      // this.getLabels().map((item, index) => item.innerText = "predictedLabels")
-      console.log('---predictedLabels')
-      console.log(idx)
-    },
-    modificationLogger (target) {
-      let checked = target.getElementsByTagName('input')[0].checked
-      let newLabel = checked ? target.innerText.trim() : ''
-      console.log(this.parsedFileList[this.srcIndex])
-      console.log(newLabel)
-      if (newLabel !== this.selectedLabel) {
-        this.$store.dispatch('Label/updateModifiedSample', {
-          sample: this.parsedFileList[this.srcIndex],
-          newLabel: newLabel
-        })
+    overwriteLabelInfo() {
+      // var el = document.querySelector('.selectedLabel').innerText
+      var el = this.getSelectedLabelInfo()
+      if (el !== this.message) {
+        document.querySelector('.selectedLabel').innerText = this.message
+      } else {
+        document.querySelector('.selectedLabel').innerText = this.selectedLabel
+        // console.log(originLabelInfo)
       }
+      // if (el !== this.message) {
+      //   el = this.message
+      // } else {
+      //   el = this.selectedLabel
+      //   // console.log(originLabelInfo)
+      // }
+      // console.log(this.message)
+      // console.log(el)
+      // this.selectedLabel = this.message.replace('{{ this.selectedLabel }}', '123')
     }
+    // modificationLogger (target) {
+    //   let checked = target.getElementsByTagName('input')[0].checked
+    //   let newLabel = checked ? target.innerText.trim() : ''
+    //   console.log(this.parsedFileList[this.srcIndex])
+    //   console.log(newLabel)
+    //   if (newLabel !== this.selectedLabel) {
+    //     this.$store.dispatch('Label/updateModifiedSample', {
+    //       sample: this.parsedFileList[this.srcIndex],
+    //       newLabel: newLabel
+    //     })
+    //   }
+    // }
   },
   computed: {
     ...mapGetters('Viewer', {
       parsedFileList: 'parsedFileList'
-    }),
-    ...mapGetters('Testing', {
-      predictedLabels: 'predictedLabels'
     })
-    // showPredictedLabels () {
-    //   alert('----show the PredictedLabels')
-    // }
-  },
-  data () {
-    return {
-      messages: 'predictedLabels'
-    }
   }
 }
 </script>
@@ -167,5 +127,40 @@ input[type="checkbox"] {
   width: 20px;
   height: 20px;
   vertical-align: middle;
+}
+.originalLabel {
+  margin: 15px 0;
+}
+.labelInfo {
+  width: 113px;
+  height: 40px;
+  background: white;
+  color: black;
+  text-align: center;
+  line-height: 40px;
+  margin-bottom: 5px;
+}
+.btn {
+  width: 100px;
+  border-style: none;
+}
+.btnOverwrite{
+  color: white;
+  width: 100px;
+  margin: 10px 0;
+  padding: 3px 0;
+  background: #6c757d;
+  border-style: none;
+  border-radius: 3px;
+}
+.btnOverwrite:hover{
+  background: #5a6268;
+}
+// .btnSave{
+//   background: red;
+// }
+.info {
+  padding: 0;
+  margin: 0;
 }
 </style>
