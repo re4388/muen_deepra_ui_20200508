@@ -5,16 +5,16 @@
       <div class="dropdown-wrapper">
         <b-dropdown class="dropdown-list" right size="sm">
           <b-dropdown-item
-            class="dropdown-item-delete"
-            variant="danger"
-            @click="showModalDeleteProject"
-          >Delete</b-dropdown-item>
-          <b-dropdown-item
             class="dropdown-item-edit"
             variant="danger"
             :name="projectName"
             @click="showModalEditProject"
           >Edit</b-dropdown-item>
+          <b-dropdown-item
+            class="dropdown-item-delete"
+            variant="danger"
+            @click="showModalDeleteProject"
+          >Delete</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
