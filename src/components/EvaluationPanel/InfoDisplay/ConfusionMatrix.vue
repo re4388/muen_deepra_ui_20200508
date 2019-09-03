@@ -109,13 +109,19 @@
 
         <!-- Text -->
 
-        <text font-size="16px" x="175" y="345" dy=".32em" text-anchor="end">Predicted Label</text>
+        <text 
+        font-size="16px" 
+        :x="0.6*width" 
+        :y="1.12*height" 
+        dy=".32em" 
+        text-anchor="end"
+        >Predicted Label</text>
 
         <text
           font-size="16px"
           writing-mode="tb"
-          x="-90"
-          y="180"
+          :x=" -0.25* width"
+          :y="0.6 * height"
           dy=".32em"
           text-anchor="end"
         >True Label</text>
@@ -141,13 +147,13 @@ export default {
   props: ["data", "newThreshold"],
   data() {
     return {
-      width: 250,
-      height: 250,
+      width: 600,
+      height: 600,
       margin: {
         top: 50,
-        right: 50,
+        right: 100,
         bottom: 100,
-        left: 100
+        left: 250
       },
       startColor: "#ffffff",
       endColor: "#e67e22",
