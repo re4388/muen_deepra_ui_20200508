@@ -133,10 +133,10 @@ export default {
       this.$store.dispatch("Project/setCurrentProject", this.details);
       console.log("---- saved project info : ");
       console.log(this.$store.getters["Project/currentProject"]);
-      EventBus.$emit("pageChanged", {
-        pages: [`Project: ${this.details.name}`],
-        keepRoot: false
-      });
+      // EventBus.$emit("pageChanged", {
+      //   pages: [`Project: ${this.details.name}`],
+      //   keepRoot: false
+      // });
       EventBus.$emit("entryChanged", "project");
       this.$store.dispatch("setCurrentEntry", "project");
       this.$router.push("/project-profile");

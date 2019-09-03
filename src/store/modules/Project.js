@@ -23,11 +23,9 @@ const getters = {
 }
 
 const mutations = {
-  
   RESET_ALL_STATE (state) {
     initializeState(state, defaultState)
   },
-
   SET_CURRENT_PROJECT (state, payload) {
     state.currentProject = payload
   },

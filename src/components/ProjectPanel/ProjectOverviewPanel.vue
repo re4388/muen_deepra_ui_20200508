@@ -32,7 +32,6 @@ export default {
     // created project card after they finish the data import phase from
     // `DataImportPanel`)
     EventBus.$on('projectDeleted', () => {
-      console.log('qq')
       this.fetchProjectData()
     })
   },
@@ -40,12 +39,16 @@ export default {
     this.fetchProjectData()
     EventBus.$emit('pageChanged', this.$route.meta.title)
   },
+
+  // why this?
   beforeDestroy () {
     EventBus.$off('projectDeleted')
   },
+  // why this?
   watch: {
     '$route': 'fetchProjectData'
   },
+
   methods: {
     createProject () {
       this.$router.push('/import-data')
