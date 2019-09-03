@@ -29,7 +29,8 @@ export default {
   },
   computed: {
     fullPath: function () {
-      return modPath.join(modPath.resolve(this.root), this.filename)
+      let resolvedRoot = this.root !== '' ? modPath.resolve(this.root) : ''
+      return modPath.join(resolvedRoot, this.filename)
     },
     isDifferentStyle () {
       return this.isDifferent ? { 'border': '1px solid red' } : { }

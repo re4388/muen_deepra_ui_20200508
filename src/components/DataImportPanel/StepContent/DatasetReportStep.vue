@@ -5,25 +5,24 @@
       <p class="text-content">
         Folder path: {{ folderPath }}
         <br />
-        Label file: {{ labelFile }}
+        Annotation file: {{ labelFile }}
         <br />
         Task type: {{ taskType }}
         <br />
         File counts (in folder): {{ fileCounts }}
         <br />
+        Annotation counts (in given annotaion file): {{ labelCounts }}
       </p>
       <p class="text-content label-list">
         <!-- TODO: replace this by list group -->
         Labels: {{ labelSummary }}
       </p>
       <p class="text-content label-report">
-        Total labels: {{ totalLabels }}
+        Labeled file counts (exists in annotaion file and folder): {{ normalFiles }}
         <br />
-        Labeled file counts: {{ normalFiles }}
+        Unlabeled file counts (exists in folder but not listed in annotation file): {{ unlabeledFiles }}
         <br />
-        Unlabeled file counts: {{ unlabeledFiles }}
-        <br />
-        Missed file counts: {{ missedFiles }}
+        Missed file counts (exists in annotation file but not in folder): {{ missedFiles }}
         <br />
       </p>
       <div v-if="datasetError !== ''">
@@ -77,9 +76,9 @@ export default {
     updateContent(newContent) {
       this.folderPath = newContent.folderPath;
       this.taskType = newContent.taskType;
-      this.fileCounts = newContent.fileCounts;
       this.labelFile = newContent.labelFile;
-      this.totalLabels = newContent.totalLabels;
+      this.fileCounts = newContent.fileCounts;
+      this.labelCounts = newContent.labelCounts;
 
       let labelReport = newContent.details.labelReport;
       this.labels = labelReport.labels
@@ -89,6 +88,8 @@ export default {
     },
     checkContent() {
       if (this.dataRecieved) {
+        // TODO: add a pop out modal / alert to notify user
+        // if count of missedFiles and unlabeledFiles is not 0
         return new Promise((resolve, reject) => {
           this.$store.dispatch("DataImport/unlockStage");
           this.$store.dispatch(
@@ -164,7 +165,7 @@ export default {
   },
   data() {
     return {
-      totalLabels: "",
+      labelCounts: 0,
       fileCounts: 0,
       normalFiles: 0,
       unlabeledFiles: 0,

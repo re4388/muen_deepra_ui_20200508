@@ -126,7 +126,8 @@ export default {
     EventBus.$once('viewerDatasetChanged',()=>{
       // Parse path of images from dataset and assign to `this.images`
       let firstImage = this.$store.getters['Viewer/parsedFileList'][0]
-      let joined = modPath.join(modPath.resolve(firstImage.root), firstImage.filename)
+      let resolvedRoot = firstImage.root !== '' ? modPath.resolve(firstImage.root) : ''
+      let joined = modPath.join(resolvedRoot, firstImage.filename)
       this.url = joined
       this.imageFilename = firstImage.filename
     }),
@@ -143,7 +144,8 @@ export default {
     // when onNavigationImageClicked, join the root and filename for imageUrl using
     EventBus.$on('onNavigationImageClicked',(obj)=>{
       let item = obj.item
-      let joined = modPath.join(modPath.resolve(item.root), item.filename)
+      let resolvedRoot = item.root !== '' ? modPath.resolve(item.root) : ''
+      let joined = modPath.join(resolvedRoot, item.filename)
       this.url = joined
       this.imageFilename = item.filename
     })

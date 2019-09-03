@@ -28,11 +28,7 @@ class DatasetInfo {
       fileExtension: details.file_extension,
     }
     content.fileCounts = details.file_counts
-    content.totalLabels = (
-      labelReport.normal +
-      labelReport.unlabeled +
-      labelReport.missed
-    )
+    content.labelCounts = details.labeled_file_counts
     console.log(content)
     return new DatasetInfo(content)
   }
