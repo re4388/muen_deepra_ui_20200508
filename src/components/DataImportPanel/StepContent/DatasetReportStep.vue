@@ -88,8 +88,9 @@ export default {
     },
     checkContent() {
       if (this.dataRecieved) {
-        // TODO: add a pop out modal / alert to notify user
-        // if count of missedFiles and unlabeledFiles is not 0
+        if (this.unlabeledFiles !== 0 || this.missedFiles !== 0) {
+          if (!confirm('Are you sure you want to continue?')) return
+        }
         return new Promise((resolve, reject) => {
           this.$store.dispatch("DataImport/unlockStage");
           this.$store.dispatch(
