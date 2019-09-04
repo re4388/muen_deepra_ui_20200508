@@ -3,6 +3,7 @@ import os.path as osp
 from subprocess import Popen, check_call, CalledProcessError, DEVNULL
 from shutil import copyfile, rmtree, which
 from sys import platform as sys_platform
+from sys import stdout
 from getpass import getpass
 import glob
 
@@ -29,10 +30,29 @@ def onerror(func, path, exc_info):
         raise
 
 
+def query_yes_no(question, default='no'):
+    valid = {'yes': True, 'y': True, 'no': False, 'n': False}
+    prompt = ' [y/n] '
+
+    import sys
+    while True:
+        stdout.write(question + prompt)
+        choice = input().lower()
+        if default is not None and choice == '':
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            stdout.write('Please respond with `yes` or `no` (or `y` or `n`).\n')
+
+
 def main():
     git_user = input('Please enter your user name on Gitea: ')
     git_pwd = getpass('Please enter your password on Gitea: ')
     git_credential = '{}:{}'.format(git_user, git_pwd)
+    install_in_dev_mode = query_yes_no('Install in development mode?')
+
+    deepra_option = '--install-option=mode={}'.format('dev' if install_in_dev_mode else 'dist')
 
     cwd = osp.normpath(osp.join(osp.dirname(__file__), '..'))
     wd_autodl = osp.join(cwd, 'autodl')
@@ -49,7 +69,7 @@ def main():
         # Install package `deepra` (backend)
         (('git clone http://{}@10.0.4.52:3000/muen/deepra.git'
         .format(git_credential)), cwd, False),
-        ('pip install .', osp.join(cwd, 'deepra'), False),
+        ('pip install . {}'.format(deepra_option), osp.join(cwd, 'deepra'), False),
         (cmd_clean.format('deepra'), cwd, True),
         # Install requirements of this project (`deepra_ui`)
         ('yarn install', cwd, True),
