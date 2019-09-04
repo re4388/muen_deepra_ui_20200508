@@ -10,9 +10,6 @@ localVue.use(VueRouter)
 
 import EvaluationPanel from '@/components/EvaluationPanel/EvaluationPanel.vue'
 import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
-import {
-  wrap
-} from 'module';
 
 
 
