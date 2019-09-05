@@ -371,7 +371,6 @@ export default {
           if (data.content === null) {
             // if not data, got from local history file
             console.log("--- Tabs: get data from history record ---");
-            this.getModelList();
             this.loadModal();
           } else {
             // processed data

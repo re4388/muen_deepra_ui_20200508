@@ -207,7 +207,6 @@ export default {
         .then(result => {
           // if (data.content === null) {
           console.log("--- Tabs: get data from history record ---");
-          this.getModelList();
           this.loadModal();
           // }
         })
