@@ -1,7 +1,3 @@
-// let result = {
-//   free: jest.fn().mockImplementation(() => 42)
-// }
-
 let result = {
   free: jest.fn( () => 42)
 }
@@ -23,8 +19,7 @@ export default {
 
 
 
-// below is the old format
-// above new code is more succinctly
+// below is the old format, and I replace to above new cod, which is more succinctly
 
   // getDiskUsage: jest.fn().mockImplementation(() => {
   //     return new Promise((resolve, reject) => {

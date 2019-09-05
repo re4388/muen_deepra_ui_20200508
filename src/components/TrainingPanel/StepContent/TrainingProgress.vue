@@ -74,7 +74,7 @@ export default {
       let projectInfo = this.$store.getters['Project/currentProject']
       trainingService.getTrainingOutput(projectInfo).then((result) => {
         this.$store.dispatch('Training/setTrainingOutput', result)
-      })
+      }).catch((result)=> {})
       this.$emit('onProgressFinished', true)
     },
     checkContent () {
