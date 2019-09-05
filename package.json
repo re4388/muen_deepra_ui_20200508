@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
@@ -66,6 +67,7 @@
     "electron": "^5.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "flush-promises": "^1.0.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.8.0",
     "jest-transform-stub": "^2.0.0",

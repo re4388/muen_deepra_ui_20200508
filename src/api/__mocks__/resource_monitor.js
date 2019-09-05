@@ -1,49 +1,45 @@
-const result = {
-  free:23,
+// let result = {
+//   free: jest.fn().mockImplementation(() => 42)
+// }
+
+let result = {
+  free: jest.fn( () => 42)
 }
 
 
 export default {
-  getDiskUsage: jest.fn().mockImplementation(() => {
-    return new Promise((resolve, reject) => {
-      // resolve(result)
-      reject(result)
-    })
-    // .then((result) => {
-    //   console.log(result)
-    //   throw new Error('Something failed');
-    //   // console.log(result['free'])
-    //   // console.log('Do this');
-    // }).catch((result) => {
-    //   console.log('Do that');
-    // })
-  }),
-
-  //  getDiskUsage() {
-  //    resourceMonitor.getDiskUsage().then((result) => {
-  //      this.freeDiskSpace = result['free'].toFixed(2)
-  //    })
-  //  },
-  getMemoryUsage: jest.fn().mockImplementation(() => {
-    return new Promise((resolve, reject) => {
-      resolve(result)
-    })
-    // .then((result) => {
-    //   throw new Error('Something failed');
-    // }).catch((result) => {
-    //   // console.log('Do that');
-    // })
-  }),
-  getGPUMemoryUsage: jest.fn().mockImplementation(() => {
-    return new Promise((resolve, reject) => {
-      resolve(true)
-    })
-    // .then((result) => {
-    //   throw new Error('Something failed');
-    //   // console.log('Do this');
-    // }).catch((result) => {
-    //   // console.log('Do that');
-    // })
-  })
+  getDiskUsage: jest.fn(() => Promise.resolve({
+    result
+  })),
+  getMemoryUsage: jest.fn(() => Promise.resolve({
+    result
+  })),
+  getGPUMemoryUsage: jest.fn(() => Promise.resolve({
+    result
+  })),
 }
 
+
+
+
+
+// below is the old format
+// above new code is more succinctly
+
+  // getDiskUsage: jest.fn().mockImplementation(() => {
+  //     return new Promise((resolve, reject) => {
+  //       resolve(result)
+  //     })
+  //   }),
+
+  //   getMemoryUsage: jest.fn().mockImplementation(() => {
+  //     return new Promise((resolve, reject) => {
+  //       resolve(result)
+  //     })
+  //   }),
+
+  //   getGPUMemoryUsage: jest.fn().mockImplementation(() => {
+  //     return new Promise((resolve, reject) => {
+  //       resolve(result)
+  //     })
+  //   }),
