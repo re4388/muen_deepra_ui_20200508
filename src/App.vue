@@ -45,6 +45,7 @@ export default {
   created () {
     this.initializeComponent()
     EventBus.$on('entryChanged', (entry) => {
+      this.$store.dispatch('setCurrentEntry', entry)
       this.currentEntry = entry
     })
   },

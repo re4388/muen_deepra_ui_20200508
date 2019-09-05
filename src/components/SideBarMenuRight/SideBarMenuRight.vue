@@ -203,6 +203,7 @@ export default {
   },
   methods: {
     dataInit() {
+      if (this.$store.getters['currentEntry'] !== 'project') return
       this.getModelList()
         .then(result => {
           // if (data.content === null) {
