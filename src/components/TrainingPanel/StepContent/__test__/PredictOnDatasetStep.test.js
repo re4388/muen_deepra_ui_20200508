@@ -12,20 +12,25 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 // import test file
-import ValidationStep from '../ValidationStep'
+import PredictOnDatasetStep from '../PredictOnDatasetStep'
 
-// import extenral api and mock it
+// import external api and mock it
 import validationService from '@/api/validation_service.js'
 jest.mock('@/api/validation_service.js')
 
+// import external helper and mock it
+import label_converter from '@/utils/label_converter.js'
+jest.mock('@/utils/label_converter.js')
 
-describe('ValidationStep.vue', () => {
+
+describe('PredictOnDatasetStep.vue', () => {
 
   // mock store and its implementation before each test
-  let store;
+  let storeOptions
+  let store
 
   beforeEach(() => {
-    store = new Vuex.Store({
+    storeOptions = {
       modules: {
         Validation: {
           namespaced: true,
@@ -35,7 +40,17 @@ describe('ValidationStep.vue', () => {
           },
           mutations: {},
           actions: {
-            toggleIsValidating: jest.fn()
+            setOrderedFileList: jest.fn(() => Promise.resolve()),
+            toggleIsValidating: jest.fn(() => Promise.resolve())
+          },
+        },
+        Testing: {
+          namespaced: true,
+          state: {},
+          getters: {},
+          mutations: {},
+          actions: {
+            setPredictedLabels: jest.fn(() => Promise.resolve())
           },
         },
         Training: {
@@ -44,18 +59,19 @@ describe('ValidationStep.vue', () => {
           getters: {},
           mutations: {},
           actions: {
-            unlockStage: jest.fn(),
-            setCompletedStageIndex: jest.fn()
+            unlockStage: jest.fn(() => Promise.resolve()),
+            setCompletedStageIndex: jest.fn(() => Promise.resolve())
           },
         }
       }
-    })
+    }
+    // reassign for each test to avoid pollute from test to test
+    store = new Vuex.Store(storeOptions)
   })
 
 
-
   it('is a Vue instance', () => {
-    const wrapper = shallowMount(ValidationStep, {
+    const wrapper = shallowMount(PredictOnDatasetStep, {
       store,
       localVue,
       propsData: {
@@ -73,7 +89,7 @@ describe('ValidationStep.vue', () => {
       progressValueMin: 0,
       progressValueMax: 0
     }
-    expect(ValidationStep.methods.setProgressRange.call(localThis, 10, 20)).toBeTruthy
+    expect(PredictOnDatasetStep.methods.setProgressRange.call(localThis, 10, 20)).toBeTruthy
   })
 
 
@@ -83,30 +99,39 @@ describe('ValidationStep.vue', () => {
     const localThis = {
       progressValueMax: 1
     }
-    expect(ValidationStep.methods.updateProgressBar.call(localThis, val)).toBeTruthy
+    expect(PredictOnDatasetStep.methods.updateProgressBar.call(localThis, val)).toBeTruthy
 
     const val2 = 3
     const localThis2 = {
       progressValueMax: 4
     }
-    expect(ValidationStep.methods.updateProgressBar.call(localThis2, val2)).toBeTruthy
+    expect(PredictOnDatasetStep.methods.updateProgressBar.call(localThis2, val2)).toBeTruthy
   })
 
-  it('methods: finishValidation work properly', () => {
+  it('methods: finishValidation  work properly', () => {
 
     const toggleIsValidating = jest.fn()
     const $store = {
-      getters: 'Project/currentProject'
+      getters: 'Project/currentProject',
+      dispatch: 'Testing/setPredictedLabels'
     }
+
+    
+
     const $emit = jest.fn()
+    const labelConverter = {
+      convertAll: jest.fn()
+    }
 
     const localThis = {
       toggleIsValidating,
       $store,
-      $emit
+      $emit,
+      labelConverter,
+
     }
 
-    expect(ValidationStep.methods.finishValidation.call(localThis)).toBeTruthy
+    expect(PredictOnDatasetStep.methods.finishValidation.call(localThis)).toBeTruthy
   })
 
 
@@ -120,7 +145,12 @@ describe('ValidationStep.vue', () => {
         id: 42
       }
     }
-    expect(ValidationStep.methods.checkContent.call(localThis)).toBeTruthy
+    expect(PredictOnDatasetStep.methods.checkContent.call(localThis)).toBeTruthy
+
+  })
+
+  // FIXME: how to test .$store.dispatch('Testing/setPredictedLabels' and other dispatch
+  it('store.dispatch', () => {
 
   })
 

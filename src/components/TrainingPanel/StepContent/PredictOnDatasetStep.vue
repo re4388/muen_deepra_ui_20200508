@@ -85,7 +85,7 @@ export default {
           this.$store.dispatch('Validation/setOrderedFileList', result)
           this.$emit('onProgressFinished', true)
         })
-      })
+      }).catch(()=>{})
     },
     checkContent () {
       if (this.isValidating) return
