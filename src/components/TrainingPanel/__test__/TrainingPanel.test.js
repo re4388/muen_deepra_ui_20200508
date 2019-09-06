@@ -212,19 +212,6 @@ describe('TrainingPanel.vue', () => {
     wrapper.find(StepPipeline).vm.$emit('onStepChanged')
     expect(updateStep).toHaveBeenCalled()
 
-
-    expect(wrapper.find(TrainingProgress)).toEqual({
-      "selector": "Component"
-    });
-    expect(wrapper.find(ValidationStep)).toEqual({
-      "selector": "Component"
-    });
-    expect(wrapper.find(PredictOnDatasetStep)).toEqual({
-      "selector": "Component"
-    });
-    expect(wrapper.find(PredictOnDatasetStep)).toEqual({
-      "selector": "Component"
-    });
   })
 
   it('component-is in-place', () => {
