@@ -19,7 +19,7 @@ class LabelConverter {
 
 class BinaryLabelConverter extends LabelConverter {
   toLabel (index) {
-    return this.labels[argMax(this.probArray[index])]
+    return this.labels[this.probArray[index] >= 0.5 ? 1 : 0]
   }
 }
 
