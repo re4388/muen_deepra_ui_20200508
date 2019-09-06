@@ -91,7 +91,7 @@ describe('TrainingProgress.vue', () => {
   })
 
 
-  it('methods: startTraining  work properly', () => {
+  it('methods: startTraining work properly', () => {
     const handlerProgress = jest.fn()
     const handlerEnd = jest.fn()
     const finishTraining = jest.fn()

@@ -61,6 +61,7 @@ describe('EvaluationPanel.vue', () => {
 
 
 
+  // Note: emit and call method, this is more like a test for implementation
   it('communicate: receive the model-data from Tabs and invoke method properly', () => {
     // need to mock a method called and mount with component
     let modelInfo = jest.fn()

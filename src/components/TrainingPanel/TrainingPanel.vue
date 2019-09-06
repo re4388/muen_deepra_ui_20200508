@@ -19,11 +19,11 @@
       <div class="control-section">
         <a class="btn-flow-control" id="btn-flow-control" @click="progressToNextStep">
           <div class="content">
-            <p v-if="this.currentStep == this.stepContent.length-1">Done</p>
+            <p v-if="iSButtonDone()">Done</p>
             <p v-else>Next</p>
           </div>
         </a>
-        <p v-if="this.currentStep == this.stepOfTraining">
+        <p v-if="onTraining()">
           <a class="btn-flow-control" id="btn-stop-training">
             <div class="content">
               <p>Stop</p>
@@ -64,6 +64,12 @@ export default {
     ...mapActions({
       resetStageLock: 'Training/resetStageLock'
     }),
+    iSButtonDone(){
+      return this.currentStep == this.stepContent.length-1
+    },
+    onTraining(){
+      return this.currentStep === this.stepOfTraining
+    },
     initializeComponent () {
       this.$store.dispatch('Training/resetAllState')
     },
@@ -72,6 +78,7 @@ export default {
       // this.currentStep = stepId
     },
     progressToNextStep () {
+      // console.log(this.$refs.stepContent.checkContent())
       let call = this.$refs.stepContent.checkContent()
       if (call === undefined) return
 
@@ -88,6 +95,7 @@ export default {
       })
     },
     toggleBtnFlowControl () {
+      // console.log(document.getElementById('btn-flow-control'))
       let el = document.getElementById('btn-flow-control').getElementsByClassName('content')[0]
       el.style.backgroundColor = this.isTraining ? 'rgb(175, 175, 175)' : 'rgba(0, 150, 150, 0.75)'
     }
