@@ -18,7 +18,7 @@
         Labels: {{ labelSummary }}
       </p>
       <p class="text-content label-report">
-        Labeled file counts (exists in annotaion file and folder): {{ normalFiles }}
+        Labeled file counts (exists in annotation file and folder): {{ normalFiles }}
         <br />
         Unlabeled file counts (exists in folder but not listed in annotation file): {{ unlabeledFiles }}
         <br />
