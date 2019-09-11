@@ -172,6 +172,7 @@ export default {
       unlabeledFiles: 0,
       missedFiles: 0,
       labels: [],
+      dataRecieved: false,
       datasetErrorMessages: {
         annotationWarning: 'There are unannotated files or / and files not existing in folder.',
         singleAnnotationWarning: 'There is only one kind of annotation in given dataset.'
