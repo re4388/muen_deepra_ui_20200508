@@ -83,7 +83,7 @@ export default {
       validationService.getValidationOutput(projectInfo).then((result) => {
         this.$store.dispatch('Validation/setValidationOutput', result)
         console.log(result)
-      })
+      }).catch(()=>{})
       this.$emit('onProgressFinished', true)
     },
     checkContent () {

@@ -51,7 +51,7 @@ describe('Tabs.vue', () => {
 
   let store;
 
-  // deal with store
+  // mock store
   beforeEach(() => {
     store = new Vuex.Store({
       modules: {

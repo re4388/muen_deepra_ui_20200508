@@ -28,17 +28,25 @@ export default {
     }),
     getDiskUsage () {
       resourceMonitor.getDiskUsage().then((result) => {
+        // console.log(result)
+        // console.log(result['free'])
         this.freeDiskSpace = result['free'].toFixed(2)
+      }).catch((result) => {
+        // console.log('Do that');
       })
     },
     getMemoryUsage () {
       resourceMonitor.getMemoryUsage().then((result) => {
         this.freeMemory = result['free'].toFixed(2)
+      }).catch((result) => {
+        // console.log('Do that');
       })
     },
     getGPUMemoryUsage () {
       resourceMonitor.getGPUMemoryUsage().then((result) => {
         this.freeGPUMemory = result['free'].toFixed(2)
+      }).catch((result) => {
+        // console.log('Do that');
       })
     },
     checkContent () {

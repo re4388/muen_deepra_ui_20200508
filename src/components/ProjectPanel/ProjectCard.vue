@@ -5,16 +5,16 @@
       <div class="dropdown-wrapper">
         <b-dropdown class="dropdown-list" right size="sm">
           <b-dropdown-item
-            class="dropdown-item-delete"
-            variant="danger"
-            @click="showModalDeleteProject"
-          >Delete</b-dropdown-item>
-          <b-dropdown-item
             class="dropdown-item-edit"
             variant="danger"
             :name="projectName"
             @click="showModalEditProject"
           >Edit</b-dropdown-item>
+          <b-dropdown-item
+            class="dropdown-item-delete"
+            variant="danger"
+            @click="showModalDeleteProject"
+          >Delete</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -133,10 +133,10 @@ export default {
       this.$store.dispatch("Project/setCurrentProject", this.details);
       console.log("---- saved project info : ");
       console.log(this.$store.getters["Project/currentProject"]);
-      EventBus.$emit("pageChanged", {
-        pages: [`Project: ${this.details.name}`],
-        keepRoot: false
-      });
+      // EventBus.$emit("pageChanged", {
+      //   pages: [`Project: ${this.details.name}`],
+      //   keepRoot: false
+      // });
       EventBus.$emit("entryChanged", "project");
       this.$store.dispatch("setCurrentEntry", "project");
       this.$router.push("/project-profile");
