@@ -33,11 +33,34 @@ class ProgressInfo {
   }
 }
 
-function startTraining (projectInfo, handlerProgress, handlerEnd) {
+function startTraining(projectInfo, handlerProgress, handlerEnd) {
   let trainingService = protoUtils.getServicer(
     protoPath, protoPackageName, 'TrainingService'
   )
-  let call = trainingService.StartTraining({'project_info_json': JSON.stringify(projectInfo)})
+
+  let call = trainingService.StartTraining({
+    'project_info_json': JSON.stringify(projectInfo)
+  })
+
+  call.on('data', (resp) => {
+    handlerProgress(new ProgressInfo(resp))
+  })
+
+  call.on('end', (resp) => {
+    handlerEnd(resp)
+  })
+
+  return call
+
+}
+
+function runMNIST(projectInfo, handlerProgress, handlerEnd) {
+  let trainingService = protoUtils.getServicer(
+    protoPath, protoPackageName, 'TrainingService'
+  )
+  let call = trainingService.RunMNIST({
+    'project_info': projectInfo
+  })
   call.on('data', (resp) => {
     handlerProgress(new ProgressInfo(resp))
   })
@@ -47,21 +70,7 @@ function startTraining (projectInfo, handlerProgress, handlerEnd) {
   return call
 }
 
-function runMNIST (projectInfo, handlerProgress, handlerEnd) {
-  let trainingService = protoUtils.getServicer(
-    protoPath, protoPackageName, 'TrainingService'
-  )
-  let call = trainingService.RunMNIST({'project_info': projectInfo})
-  call.on('data', (resp) => {
-    handlerProgress(new ProgressInfo(resp))
-  })
-  call.on('end', (resp) => {
-    handlerEnd(resp)
-  })
-  return call
-}
-
-function getTrainingOutput (projectInfo) {
+function getTrainingOutput(projectInfo) {
   let trainingService = protoUtils.getServicer(
     protoPath, protoPackageName, 'TrainingService'
   )

@@ -61,16 +61,22 @@ export default {
     console.log(this.$store.getters['Project/currentProject'])
   },
   methods: {
+    // you need to dispatch the store action and then you can use it
     ...mapActions({
       resetStageLock: 'Training/resetStageLock'
     }),
     iSButtonDone(){
-      return this.currentStep == this.stepContent.length-1
+      // when all step over, the currentStep will be the final step, and 
+      // we don't show the NEXT button
+      return this.currentStep === this.stepContent.length - 1
     },
     onTraining(){
+      // show STOP when "onTraining", and when this.currentStep equate to StepOfTraining, which is 1
+      // we show STOP
       return this.currentStep === this.stepOfTraining
     },
     initializeComponent () {
+      // this will reset all state
       this.$store.dispatch('Training/resetAllState')
     },
     updateStep (stepId) {
@@ -78,19 +84,28 @@ export default {
       // this.currentStep = stepId
     },
     progressToNextStep () {
-      // console.log(this.$refs.stepContent.checkContent())
+      // console.log(this.$refs.stepContent.checkContent()) // => Promise {<resolved>: true}
+      // we will use $ref to invoke stepContent component's checkContent moethod and got the returned val
       let call = this.$refs.stepContent.checkContent()
+
+      //  I think this is just a error handling, you shall got the Promise back,
+      // and if not, we do nothing
       if (call === undefined) return
+
 
       call.then((result) => {
         if (this.isCurrentStageLocked) return
 
         console.log('--- step info')
         console.log(this.currentStep, this.stepContent.length)
+        // we will go to evaluation panel if the we go thru all steps
         if (this.currentStep == this.stepContent.length - 1) {
           this.$router.push('/evaluation')
         }
+        // increase one step
         this.currentStep += 1
+
+        // lock the step
         this.resetStageLock()
       })
     },
@@ -101,6 +116,7 @@ export default {
     }
   },
   computed: {
+    // need to use store getter in computed first and then can use call it
     ...mapGetters('Training', {
       isCurrentStageLocked: 'isCurrentStageLocked',
       isTraining: 'isTraining'

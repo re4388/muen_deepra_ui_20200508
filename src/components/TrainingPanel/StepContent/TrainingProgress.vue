@@ -2,16 +2,19 @@
   <div class="training-progress d-flex flex-column">
     <div class="title text-content">{{ content.title }}</div>
     <div class="progress">
-      <div class="progress-bar" role="progressbar"
+      <div
+        class="progress-bar"
+        role="progressbar"
         :style="{width: progressValue + '%'}"
-        v-bind:aria-valuenow=progressValue
-        v-bind:aria-valuemin=progressValueMin
-        v-bind:aria-valuemax=progressValueMax>
+        v-bind:aria-valuenow="progressValue"
+        v-bind:aria-valuemin="progressValueMin"
+        v-bind:aria-valuemax="progressValueMax"
+      >
         <div class="progress-text">{{ progressValue }}%</div>
       </div>
     </div>
     <div class="estimated-time text-content">Estimated time of completion:</div>
-    <log-display class="flex-fill" id="log-display" :content="log"/>
+    <log-display class="flex-fill" id="log-display" :content="log" />
   </div>
 </template>
 
@@ -33,11 +36,22 @@ export default {
     this.startTraining()
   },
   methods: {
+
+      handlerProgress(resp){
+        this.log = LogFormatter.fromTraining(resp)
+        this.updateProgressBar(resp.currentProgress)
+      },
+
+      handlerEnd(resp){
+        this.finishTraining()
+      },
+
     ...mapActions('Training', {
       unlockStage: 'unlockStage',
       setCompletedStageIndex: 'setCompletedStageIndex',
       toggleIsTraining: 'toggleIsTraining'
     }),
+    
     setProgressRange (rngMin, rngMax) {
       this.progressValueMin = rngMin
       this.progressValueMax = rngMax
@@ -52,13 +66,15 @@ export default {
       // Prevent retriggering
       if (this.isTraining) return
 
-      this.handlerProgress = (resp) => {
-        this.log = LogFormatter.fromTraining(resp)
-        this.updateProgressBar(resp.currentProgress)
-      }
-      this.handlerEnd = (resp) => {
-        this.finishTraining()
-      }
+      // this.handlerProgress = (resp) => {
+      //   this.log = LogFormatter.fromTraining(resp)
+      //   this.updateProgressBar(resp.currentProgress)
+      // }
+      
+      
+      // this.handlerEnd = (resp) => {
+      //   this.finishTraining()
+      // }
 
       this.toggleIsTraining()
       let projectInfo = this.$store.getters['Project/currentProject']
@@ -97,8 +113,8 @@ export default {
       progressValue: 0,
       progressValueMin: 0,
       progressValueMax: 100,
-      handlerProgress: null,
-      handlerEnd: null,
+      // handlerProgress: null,
+      // handlerEnd: null,
       log: ''
     }
   }
