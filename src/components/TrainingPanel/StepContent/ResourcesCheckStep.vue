@@ -20,6 +20,9 @@ export default {
     this.getDiskUsage()
     this.getMemoryUsage()
     this.getGPUMemoryUsage()
+    // NOTE: this event should be fired only when we are able to check that
+    // there is enought computing resource for training
+    this.$emit('onProgressFinished', true)
   },
   methods: {
     ...mapActions('Training', {

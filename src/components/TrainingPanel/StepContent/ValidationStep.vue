@@ -82,9 +82,8 @@ export default {
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
         this.$store.dispatch('Validation/setValidationOutput', result)
-        console.log(result)
+        this.$emit('onProgressFinished', true)
       }).catch(()=>{})
-      this.$emit('onProgressFinished', true)
     },
     checkContent () {
       if (this.isValidating) return
