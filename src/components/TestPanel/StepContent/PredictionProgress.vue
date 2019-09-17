@@ -82,9 +82,9 @@ export default {
         let labelConverter = new converterDict[taskType](result.prediction, result.labels.map(String))
         let predictedLabels = labelConverter.convertAll()
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
+        this.$emit('onProgressFinished', true)
+        this.toggleIsTesting()
       })
-      this.toggleIsTesting()
-      this.$emit('onProgressFinished', true)
     },
     checkContent () {
       if (this.isTesting) return

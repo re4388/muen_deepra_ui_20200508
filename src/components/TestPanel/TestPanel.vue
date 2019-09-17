@@ -13,6 +13,7 @@
           ref="stepContent"
           :is="stepContent[currentStep]['contentType']"
           :content="stepContent[currentStep]"
+          @onProgressFinished="changeBtnFlowControlState"
         />
       </div>
       <div class="control-section">
@@ -95,9 +96,9 @@ export default {
       // TODO: reset status
       this.$router.push('/model-profile')
     },
-    toggleBtnFlowControl () {
+    changeBtnFlowControlState (state) {
       let el = this.$refs['btnFlowControl'].getElementsByClassName('content')[0]
-      el.style.backgroundColor = this.isTesting ? 'rgb(175, 175, 175)' : 'rgba(0, 150, 150, 0.75)'
+      el.style.backgroundColor = state ? 'rgba(0, 150, 150, 0.75)' : 'rgb(175, 175, 175)'
     }
   },
   computed: {
@@ -107,8 +108,8 @@ export default {
     })
   },
   watch: {
-    isTesting () {
-      this.toggleBtnFlowControl()
+    isTesting (newVal) {
+      this.changeBtnFlowControlState(!newVal)
     }
   },
   data () {

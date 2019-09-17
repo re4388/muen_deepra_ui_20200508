@@ -73,6 +73,7 @@ export default {
   },
   mounted: function () {
     this.initializeContent()
+    this.$emit('onProgressFinished', true)
   },
   methods: {
     initializeContent () {
