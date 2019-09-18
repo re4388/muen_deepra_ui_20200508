@@ -136,16 +136,16 @@ describe('TrainingPanel.vue', () => {
   })
 
 
-  it('methods: toggleBtnFlowControl work properly', () => {
+  it('methods: changeBtnFlowControlState work properly', () => {
     const wrapper = shallowMount(TrainingPanel, {
       mocks,
       store,
       localVue,
       attachToDocument: true
     })
-    wrapper.vm.toggleBtnFlowControl()
+    wrapper.vm.changeBtnFlowControlState()
     let style = wrapper.find('div.content').attributes('style')
-    expect(style).toBe('background-color: rgba(0, 150, 150, 0.75);')
+    expect(style).toBe('background-color: rgb(175, 175, 175);')
 
   })
 
