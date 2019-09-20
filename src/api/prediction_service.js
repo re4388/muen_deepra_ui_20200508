@@ -23,6 +23,9 @@ function startPrediction (modelUuid, datasetUuid, handlerProgress, handlerEnd) {
     console.log(resp)
     handlerEnd(resp)
   })
+  call.on('error', (resp) => {
+    handlerEnd(resp)
+  })
   return call
 }
 

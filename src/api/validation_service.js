@@ -27,6 +27,9 @@ function startValidation (
     console.log(resp)
     handlerEnd(resp)
   })
+  call.on('error', (resp) => {
+    handlerEnd(resp)
+  })
   return call
 }
 
@@ -39,6 +42,9 @@ function getValidationOutput (projectInfo) {
     validationService.GetValidationOutput({
       project_info_json: JSON.stringify(projectInfo)
     }, (err, resp) => {
+      if (err !== null) {
+        reject(err)
+      }
       let result = JSON.parse(resp.output_json)
       console.log(result)
       resolve(result)
@@ -57,7 +63,9 @@ function exportFiles (projectInfo, location, traied_model_loc) {
       project_info_json: JSON.stringify(projectInfo),
       location: location
     }, (err, resp) => {
-      // let result = resp.files
+      if (err !== null) {
+        reject(err)
+      }
       console.log(resp)
       resolve(resp)
     })
@@ -75,6 +83,9 @@ function getOrderedFileList (projectInfo, datasetType, sortBy) {
       dataset_type: datasetType,
       sort_by: sortBy
     }, (err, resp) => {
+      if (err !== null) {
+        reject(err)
+      }
       let result = JSON.parse(resp['ordered_list_json'])
       resolve(result)
     })
