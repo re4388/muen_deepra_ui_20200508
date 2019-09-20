@@ -1,11 +1,22 @@
 <template>
   <div id="top-navbar" class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap">
-    <div class="page-indicator-container">
-      <router-link :to="{path: '/'}"  >
-        <a @click="onClick" id="brand">{{ brandText }}</a>
-      </router-link>
-      <a id="page-indicator">{{ pageIndicatorDisplay }}</a>
-      <a id="page-indicator">{{ showPojectName }}</a>
+    <div class="draggable-region">
+      <div class="page-indicator-container">
+        <router-link :to="{path: '/'}"  >
+          <a @click="onClick" id="brand">{{ brandText }}</a>
+        </router-link>
+        <a id="page-indicator">{{ pageIndicatorDisplay }}</a>
+        <a id="page-indicator">{{ showPojectName }}</a>
+      </div>
+    </div>
+    <div class="control-minimize control-button" @click="minimizeApp">
+      <img class="control-icon" src="../assets/titlebar_minimize.png">
+    </div>
+    <div class="control-maximize control-button" @click="maximizeApp">
+      <img class="control-icon" src="../assets/titlebar_maximize.png">
+    </div>
+    <div class="control-close control-button" @click="closeApp">
+      <img class="control-icon" src="../assets/titlebar_close.png">
     </div>
   </div>
 </template>
@@ -42,6 +53,22 @@ export default {
   methods: {
     onClick() {
       EventBus.$emit('showProjectName', 'notInsideProject')
+    },
+    minimizeApp () {
+      const { remote } = require('electron')
+      remote.BrowserWindow.getFocusedWindow().minimize()
+    },
+    maximizeApp () {
+      const { remote, BrowserWindow } = require('electron')
+      if (remote.BrowserWindow.getFocusedWindow().isMaximized()) {
+        remote.BrowserWindow.getFocusedWindow().unmaximize()
+      } else {
+        remote.BrowserWindow.getFocusedWindow().maximize()
+      }
+    },
+    closeApp () {
+      const { remote } = require('electron')
+      remote.BrowserWindow.getFocusedWindow().close()
     }
   },
   computed: {
@@ -65,7 +92,8 @@ export default {
       pageIndicatorInfo: {
         pages: [],
         keepRoot: true
-      }
+      },
+      isMaximized: true,
     };
   }
 };
@@ -73,20 +101,49 @@ export default {
 
 <style lang="scss" scoped>
 $navbar-height: 56px;
+$resizable-border: 2px;
 
 #top-navbar {
   min-height: $navbar-height;
+  padding: $resizable-border;
+}
+.draggable-region {
+  height: $navbar-height - 2*$resizable-border;
+  width: 100%;
+  -webkit-app-region: drag;
 }
 #brand {
   color: white;
   position: relative;
   width: 136px;
-  left: 0px;
+  left: 10px;
   margin: 20px;
   font-size: 18px;
+}
+.page-indicator-container {
+  position: relative;
+  float: left;
+  height: 100%;
+  text-align: center;
+  line-height: $navbar-height;
+  left: 0px;
+  -webkit-app-region: no-drag;
 }
 #page-indicator {
   color: white;
   font: bold;
+  padding: 10px;
+}
+.control-button {
+  height: $navbar-height;
+  margin: auto;
+  align-content: center;
+}
+.control-icon {
+  width: 32px;
+  padding: 10px;
+  &:hover {
+    background-color: rgb(175, 175, 175);
+  }
 }
 </style>
