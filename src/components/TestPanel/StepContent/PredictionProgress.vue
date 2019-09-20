@@ -18,6 +18,7 @@
 <script>
 import predictionService from '@/api/prediction_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { LogFormatter } from '@/utils/log_formatter.js'
 import { converterDict } from '@/utils/label_converter.js'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -29,7 +30,7 @@ export default {
   props: {
     content: Object
   },
-  created: function () {
+  mounted () {
     this.startPrediction()
   },
   methods: {
@@ -55,7 +56,8 @@ export default {
       let datasetInfo = this.$store.getters['DataImport/datasetInfo']
 
       let handlerProgress = (resp) =>{
-        this.updateProgressBar(resp)
+        this.log = LogFormatter.fromPrediction(resp)
+        this.updateProgressBar(resp.currentProgress)
       }
       let handlerEnd = (resp) =>{
         if (resp !== undefined) {
@@ -73,6 +75,7 @@ export default {
         handlerProgress,
         handlerEnd
       )
+      this.log = 'Preparing to start prediction, it might take a few moment...'
     },
     finishPrediction () {
       predictionService.getPredictionOutput().then((result) => {

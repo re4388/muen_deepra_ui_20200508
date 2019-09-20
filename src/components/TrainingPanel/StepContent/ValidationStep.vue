@@ -18,6 +18,7 @@
 <script>
 import validationService from '@/api/validation_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { LogFormatter } from '@/utils/log_formatter.js'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -53,13 +54,15 @@ export default {
       if (this.isValidating) return
 
       let handlerProgress = (resp) => {
-        this.updateProgressBar(resp)
+        this.log = LogFormatter.fromValidation(resp)
+        this.updateProgressBar(resp.currentProgress)
       }
       let handlerEnd = (resp) => {
         if (resp !== undefined) {
           // An error occured
           alert(resp)
         } else {
+          console.log('---- handlerEnd')
           this.finishValidation()
         }
       }
@@ -78,9 +81,11 @@ export default {
           datasetType: 'valid_set'
         }
       )
+      this.log = 'Preparing to start validation, it might take a few moment...'
     },
     finishValidation () {
       console.log('Validation is finished')
+      this.log = 'Validation is finished'
       this.toggleIsValidating()
 
       // Get validation output (e.g. output directory)
