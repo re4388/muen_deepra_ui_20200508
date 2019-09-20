@@ -111,8 +111,11 @@ export default {
       })
     },
     changeBtnFlowControlState (state) {
-      let el = document.getElementById('btn-flow-control').getElementsByClassName('content')[0]
-      el.style.backgroundColor = state ? 'rgba(0, 150, 150, 0.75)' : 'rgb(175, 175, 175)'
+      let btn = document.getElementById('btn-flow-control')
+      if (btn !== null) {
+        let el = btn.getElementsByClassName('content')[0]
+        el.style.backgroundColor = state ? 'rgba(0, 150, 150, 0.75)' : 'rgb(175, 175, 175)'
+      }
     }
   },
   computed: {
