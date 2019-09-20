@@ -102,7 +102,7 @@ export default {
           this.$store.dispatch('Viewer/setCurrentDataset', result.content)
           this.dataset = this.$store.getters['Viewer/currentDataset']
           parseDataProcess(result)
-        })
+        }).catch((err) => {alert(err)})
       } else if (dataset.uuid !== undefined) {
         // XXX: We have to fire event `viewerDatasetChanged` in async operation. Otherwise,
         //   the order of instantiating component will make `SideBarMenuRight` unable to catch
@@ -147,7 +147,7 @@ export default {
         this.$store.dispatch('Label/resetAllState')  // TODO: remove this line
         this.fetchData()  // fetch modified data to refresh the content in this page
         console.log(modifiedSamples)
-      })
+      }).catch((err) => {alert(err)})
     },
     discardModifiedSamples () {
       this.$store.dispatch('Label/resetAllState')

@@ -58,7 +58,12 @@ export default {
         this.updateProgressBar(resp)
       }
       let handlerEnd = (resp) =>{
-        this.finishPrediction()
+        if (resp !== undefined) {
+          // An error occured
+          alert(resp)
+        } else {
+          this.finishPrediction()
+        }
       }
 
       this.toggleIsTesting()
@@ -84,7 +89,7 @@ export default {
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
         this.$emit('onProgressFinished', true)
         this.toggleIsTesting()
-      })
+      }).catch((err) => {alert(err)})
     },
     checkContent () {
       if (this.isTesting) return

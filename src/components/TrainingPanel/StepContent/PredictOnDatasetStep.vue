@@ -57,7 +57,12 @@ export default {
         this.updateProgressBar(resp)
       }
       let handlerEnd = (resp) => {
-        this.finishValidation()
+        if (resp !== undefined) {
+          // An error occured
+          alert(resp)
+        } else {
+          this.finishValidation()
+        }
       }
       let projectInfo = this.$store.getters['Project/currentProject']
       let trainingOutput = this.$store.getters['Training/trainingOutput']
@@ -85,7 +90,7 @@ export default {
           this.$store.dispatch('Validation/setOrderedFileList', result)
           this.$emit('onProgressFinished', true)
         })
-      }).catch(()=>{})
+      }).catch((err) => {alert(err)})
     },
     checkContent () {
       if (this.isValidating) return

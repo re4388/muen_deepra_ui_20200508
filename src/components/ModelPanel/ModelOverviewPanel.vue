@@ -47,7 +47,7 @@ export default {
         // TODO: sort by created timestamp
         this.models = result.model_list
         console.log(this.models)
-      })
+      }).catch((err) => {alert(err)})
     }
   },
   data () {

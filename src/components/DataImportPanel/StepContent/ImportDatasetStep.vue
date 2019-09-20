@@ -123,7 +123,7 @@ export default {
       this.$store.dispatch('DataImport/setSelectedLabelFile', this.selectedLabelFile)
       datasetService.parseLabelFile(pathInfo.path).then((result) => {
         this.labelHeader = result.header
-      })
+      }).catch((err) => {alert(err)})
     },
     checkContent () {
       if (this.selectedFolder === '' || this.selectedFolder === null) return

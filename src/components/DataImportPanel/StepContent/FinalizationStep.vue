@@ -83,7 +83,7 @@ export default {
         ).then((result) => {
           this.newProjectInfo = result
           resolve(true)
-        })
+        }).catch((err) => {reject(err)})
       })
     },
     checkContent () {
@@ -98,7 +98,7 @@ export default {
           this.$store.dispatch('DataImport/setCompletedStageIndex', this.content.id)
 
           resolve(true)
-        })
+        }).catch((err) => {reject(err)})
       })
     }
   },
