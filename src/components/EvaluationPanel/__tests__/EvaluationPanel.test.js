@@ -9,7 +9,7 @@ localVue.use(VueRouter)
 import EvaluationPanel from '@/components/EvaluationPanel/EvaluationPanel.vue'
 import Tabs from '@/components/EvaluationPanel/TabsInfo/Tabs.vue'
 
-
+// test purpose
 describe('EvaluationPanel.vue', () => {
 
   let mocks;
