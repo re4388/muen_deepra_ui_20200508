@@ -18,6 +18,7 @@
 <script>
 import validationService from '@/api/validation_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { LogFormatter } from '@/utils/log_formatter.js'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -53,10 +54,17 @@ export default {
       if (this.isValidating) return
 
       let handlerProgress = (resp) => {
-        this.updateProgressBar(resp)
+        this.log = LogFormatter.fromValidation(resp)
+        this.updateProgressBar(resp.currentProgress)
       }
       let handlerEnd = (resp) => {
-        this.finishValidation()
+        if (resp !== undefined) {
+          // An error occured
+          alert(resp)
+        } else {
+          console.log('---- handlerEnd')
+          this.finishValidation()
+        }
       }
       let projectInfo = this.$store.getters['Project/currentProject']
       let trainingOutput = this.$store.getters['Training/trainingOutput']
@@ -73,18 +81,19 @@ export default {
           datasetType: 'valid_set'
         }
       )
+      this.log = 'Preparing to start validation, it might take a few moment...'
     },
     finishValidation () {
       console.log('Validation is finished')
+      this.log = 'Validation is finished'
       this.toggleIsValidating()
 
       // Get validation output (e.g. output directory)
       let projectInfo = this.$store.getters['Project/currentProject']
       validationService.getValidationOutput(projectInfo).then((result) => {
         this.$store.dispatch('Validation/setValidationOutput', result)
-        console.log(result)
-      }).catch(()=>{})
-      this.$emit('onProgressFinished', true)
+        this.$emit('onProgressFinished', true)
+      }).catch((err) => {alert(err)})
     },
     checkContent () {
       if (this.isValidating) return

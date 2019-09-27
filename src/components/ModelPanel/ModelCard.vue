@@ -88,7 +88,7 @@ export default {
       // TODO: ask for deleting validation result?
       modelService.deleteModel(this.details.uuid).then((result) => {
         EventBus.$emit('modelDeleted')
-      })
+      }).catch((err) => {alert(err)})
     }
   },
   data () {

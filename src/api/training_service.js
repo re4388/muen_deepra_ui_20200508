@@ -50,6 +50,10 @@ function startTraining(projectInfo, handlerProgress, handlerEnd) {
     handlerEnd(resp)
   })
 
+  call.on('error', (resp) => {
+    handlerEnd(resp)
+  })
+
   return call
 
 }
@@ -78,6 +82,9 @@ function getTrainingOutput(projectInfo) {
     trainingService.GetTrainingOutput({
       'project_info_json': JSON.stringify(projectInfo)
     }, (err, resp) => {
+      if (err !== null) {
+        reject(err)
+      }
       console.log(resp.output_json)
       let result = JSON.parse(resp.output_json)
       console.log(result)

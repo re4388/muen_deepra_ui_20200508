@@ -52,7 +52,7 @@ def main():
     git_credential = '{}:{}'.format(git_user, git_pwd)
     install_in_dev_mode = query_yes_no('Install in development mode?')
 
-    deepra_option = '--install-option=--mode={}'.format('dev' if install_in_dev_mode else 'dist')
+    deepra_option = '--global-option=--dev' if install_in_dev_mode else ''
 
     cwd = osp.normpath(osp.join(osp.dirname(__file__), '..'))
     wd_autodl = osp.join(cwd, 'autodl')

@@ -36,16 +36,18 @@ export default {
     this.startTraining()
   },
   methods: {
-
-      handlerProgress(resp){
-        this.log = LogFormatter.fromTraining(resp)
-        this.updateProgressBar(resp.currentProgress)
-      },
-
-      handlerEnd(resp){
+    handlerProgress(resp){
+      this.log = LogFormatter.fromTraining(resp)
+      this.updateProgressBar(resp.currentProgress)
+    },
+    handlerEnd(resp){
+      if (resp !== undefined) {
+        // An error occured
+        alert(resp)
+      } else {
         this.finishTraining()
-      },
-
+      }
+    },
     ...mapActions('Training', {
       unlockStage: 'unlockStage',
       setCompletedStageIndex: 'setCompletedStageIndex',
@@ -90,8 +92,8 @@ export default {
       let projectInfo = this.$store.getters['Project/currentProject']
       trainingService.getTrainingOutput(projectInfo).then((result) => {
         this.$store.dispatch('Training/setTrainingOutput', result)
-      }).catch((result)=> {})
-      this.$emit('onProgressFinished', true)
+        this.$emit('onProgressFinished', true)
+      }).catch((err) => {alert(err)})
     },
     checkContent () {
       if (this.isTraining) return

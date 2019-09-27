@@ -9,7 +9,14 @@ class LogFormatter {
       ` - ${metricString}`
   }
 
+  static fromValidation (resp) {
+    return `Iteration [${resp.iterationInfo.current + 1}/${resp.iterationInfo.total}]` + 
+      ` - TTA [${resp.ttaInfo.current + 1}/${resp.ttaInfo.total}]`
+  }
+
   static fromPrediction (resp) {
+    return `Iteration [${resp.iterationInfo.current + 1}/${resp.iterationInfo.total}]` + 
+      ` - TTA [${resp.ttaInfo.current + 1}/${resp.ttaInfo.total}]`
   }
 }
 

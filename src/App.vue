@@ -103,9 +103,9 @@ export default {
 
 <style lang="scss">
 // Syntax for prevent dragging HTML element, this is disabled currently.
-// *, *::after, *::before {
-//   -webkit-user-select: none;
-// 	-webkit-user-drag: none;
-// 	-webkit-app-region: no-drag;
-// }
+a, a::after, a::before, img, img::after, img::before, {
+  -webkit-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-app-region: no-drag;
+}
 </style>

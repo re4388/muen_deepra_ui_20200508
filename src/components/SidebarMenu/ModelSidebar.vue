@@ -35,7 +35,7 @@
             icon: {
               element: 'font-awesome-icon',
               attributes: {
-                icon: 'folder'
+                icon: 'file-alt'
               }
             }
           },
@@ -45,7 +45,7 @@
             icon: {
               element: 'font-awesome-icon',
               attributes: {
-                icon: 'cube'
+                icon: 'spinner'
               }
             }
           },
@@ -55,7 +55,7 @@
             icon: {
               element: 'font-awesome-icon',
               attributes: {
-                icon: 'folder'
+                icon: 'x-ray'
               }
             }
           }

@@ -71,7 +71,7 @@ export default {
         modelManager.getModel(this.model.uuid).then((result) => {
           this.model = result.model
           resolve(result)
-        })
+        }).catch((err) => {alert(err)})
       })
     },
     redirectToPage () {

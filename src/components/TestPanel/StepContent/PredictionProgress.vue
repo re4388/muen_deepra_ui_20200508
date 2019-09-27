@@ -18,6 +18,7 @@
 <script>
 import predictionService from '@/api/prediction_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { LogFormatter } from '@/utils/log_formatter.js'
 import { converterDict } from '@/utils/label_converter.js'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -29,7 +30,7 @@ export default {
   props: {
     content: Object
   },
-  created: function () {
+  mounted () {
     this.startPrediction()
   },
   methods: {
@@ -55,10 +56,16 @@ export default {
       let datasetInfo = this.$store.getters['DataImport/datasetInfo']
 
       let handlerProgress = (resp) =>{
-        this.updateProgressBar(resp)
+        this.log = LogFormatter.fromPrediction(resp)
+        this.updateProgressBar(resp.currentProgress)
       }
       let handlerEnd = (resp) =>{
-        this.finishPrediction()
+        if (resp !== undefined) {
+          // An error occured
+          alert(resp)
+        } else {
+          this.finishPrediction()
+        }
       }
 
       this.toggleIsTesting()
@@ -68,6 +75,7 @@ export default {
         handlerProgress,
         handlerEnd
       )
+      this.log = 'Preparing to start prediction, it might take a few moment...'
     },
     finishPrediction () {
       predictionService.getPredictionOutput().then((result) => {
@@ -82,9 +90,9 @@ export default {
         let labelConverter = new converterDict[taskType](result.prediction, result.labels.map(String))
         let predictedLabels = labelConverter.convertAll()
         this.$store.dispatch('Testing/setPredictedLabels', predictedLabels)
-      })
-      this.toggleIsTesting()
-      this.$emit('onProgressFinished', true)
+        this.$emit('onProgressFinished', true)
+        this.toggleIsTesting()
+      }).catch((err) => {alert(err)})
     },
     checkContent () {
       if (this.isTesting) return

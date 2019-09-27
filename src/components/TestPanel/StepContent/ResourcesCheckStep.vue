@@ -19,6 +19,7 @@ export default {
     this.getDiskUsage()
     this.getMemoryUsage()
     this.getGPUMemoryUsage()
+    this.$emit('onProgressFinished', true)
   },
   methods: {
     getDiskUsage () {

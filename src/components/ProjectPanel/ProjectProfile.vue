@@ -97,7 +97,7 @@ export default {
         let currLabelFileUuid = JSON.parse(this.dataset['details_json'])['label_file_uuid']
         let idx = this.labelFileList.map(item => item.value).indexOf(currLabelFileUuid)
         this.selectedLabelFileUuid = this.labelFileList[idx].value
-      })
+      }).catch((err) => {alert(err)})
     })
   },
   methods: {
@@ -123,7 +123,7 @@ export default {
           //   to be refactored
           this.$store.dispatch('Project/setTaskType', this.dataset['task_type'])
           resolve(result)
-        })
+        }).catch((err) => {alert(err)})
       })
     },
     redirectToPage () {
@@ -136,7 +136,7 @@ export default {
       ).then((result) => {
         // refresh cached metadata
         this.fetechProjectData()
-      })
+      }).catch((err) => {alert(err)})
     }
   },
   computed: {

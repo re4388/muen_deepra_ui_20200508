@@ -61,7 +61,7 @@ export default {
         }
         this.projects = result.project_list
         console.log(this.projects)
-      })
+      }).catch((err) => {alert(err)})
     }
   },
   data () {

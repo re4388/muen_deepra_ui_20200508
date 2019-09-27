@@ -14,13 +14,21 @@ import {
 } from '@fortawesome/fontawesome-svg-core';
 import {
   faFolder,
-  faCube
+  faCube,
+  faFileAlt,
+  faChartLine,
+  faSpinner,
+  faXRay
 } from '@fortawesome/free-solid-svg-icons';
 import {
   FontAwesomeIcon
 } from '@fortawesome/vue-fontawesome';
 library.add(faFolder);
 library.add(faCube);
+library.add(faFileAlt);
+library.add(faChartLine);
+library.add(faSpinner);
+library.add(faXRay);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 

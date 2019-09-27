@@ -13,7 +13,7 @@
           ref="stepContent"
           :is="stepContent[currentStep]['contentType']"
           :content="stepContent[currentStep]"
-          @onProgressFinished="toggleBtnFlowControl"
+          @onProgressFinished="changeBtnFlowControlState"
         />
       </div>
       <div class="control-section">
@@ -95,6 +95,7 @@ export default {
 
       call.then((result) => {
         if (this.isCurrentStageLocked) return
+        this.changeBtnFlowControlState(false)
 
         console.log('--- step info')
         console.log(this.currentStep, this.stepContent.length)
@@ -109,10 +110,12 @@ export default {
         this.resetStageLock()
       })
     },
-    toggleBtnFlowControl () {
-      // console.log(document.getElementById('btn-flow-control'))
-      let el = document.getElementById('btn-flow-control').getElementsByClassName('content')[0]
-      el.style.backgroundColor = this.isTraining ? 'rgb(175, 175, 175)' : 'rgba(0, 150, 150, 0.75)'
+    changeBtnFlowControlState (state) {
+      let btn = document.getElementById('btn-flow-control')
+      if (btn !== null) {
+        let el = btn.getElementsByClassName('content')[0]
+        el.style.backgroundColor = state ? 'rgba(0, 150, 150, 0.75)' : 'rgb(175, 175, 175)'
+      }
     }
   },
   computed: {
@@ -124,7 +127,7 @@ export default {
   },
   watch: {
     isTraining () {
-      this.toggleBtnFlowControl()
+      this.changeBtnFlowControlState(false)
     }
   },
   data () {

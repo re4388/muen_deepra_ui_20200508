@@ -104,5 +104,13 @@
   & .vsm-item.mobile-item>.vsm-link {
     color: orange;
   }
+
+  & .vsm-item.first-item>.vsm-link>.vsm-icon {
+    background-color: transparent;
+  }
+
+  & .vsm-item.first-item.active-item>.vsm-link>.vsm-icon {
+    background-color: transparent;
+  }
 }
 </style>

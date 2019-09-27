@@ -18,6 +18,7 @@
 <script>
 import validationService from '@/api/validation_service.js'
 import logDisplay from '@/components/LogDisplay/LogDisplay.vue'
+import { LogFormatter } from '@/utils/log_formatter.js'
 import { converterDict } from '@/utils/label_converter.js'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -54,10 +55,16 @@ export default {
       if (this.isValidating) return
 
       let handlerProgress = (resp) => {
-        this.updateProgressBar(resp)
+        this.log = LogFormatter.fromValidation(resp)
+        this.updateProgressBar(resp.currentProgress)
       }
       let handlerEnd = (resp) => {
-        this.finishValidation()
+        if (resp !== undefined) {
+          // An error occured
+          alert(resp)
+        } else {
+          this.finishValidation()
+        }
       }
       let projectInfo = this.$store.getters['Project/currentProject']
       let trainingOutput = this.$store.getters['Training/trainingOutput']
@@ -70,8 +77,10 @@ export default {
         handlerEnd,
         {datasetType: 'all'}
       )
+      this.log = 'Preparing to start validation (for the whole dataset), it might take a few moment...'
     },
     finishValidation () {
+      this.log = 'Validation is finished'
       this.toggleIsValidating()
 
       let projectInfo = this.$store.getters['Project/currentProject']
@@ -85,7 +94,7 @@ export default {
           this.$store.dispatch('Validation/setOrderedFileList', result)
           this.$emit('onProgressFinished', true)
         })
-      }).catch(()=>{})
+      }).catch((err) => {alert(err)})
     },
     checkContent () {
       if (this.isValidating) return
