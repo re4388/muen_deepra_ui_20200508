@@ -74,7 +74,7 @@ export default {
   computed: {
     pageIndicatorDisplay: function() {
       if (this.pageIndicatorInfo.pages.length === 0) {
-        return "Welcome to DeepRA";
+        return "Welcome to MAIA"
       } else {
         let indicator = [""];
         indicator.push(...this.pageIndicatorInfo.pages);

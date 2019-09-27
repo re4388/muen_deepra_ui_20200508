@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <top-navbar brandText="DeepRA"/>
+    <top-navbar brandText="MAIA"/>
     <div id="display-panel" class="d-flex flex-row">
       <component
         class="sidebar"

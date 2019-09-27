@@ -42,6 +42,7 @@ export default {
     // console.log(this.graphData)
   },
   mounted() {
+    console.log(this.graphData)
     this.initData(); // must to initdata first, then init C3 options
     this.handler.$emit("init", this.options); // init C3 options
     // console.table(this.dataColumn[1])
@@ -49,27 +50,38 @@ export default {
   },
   computed: {
     chartTitle() {
-      if (this.graphData.modelType === "multiType") {
+      if (this.graphData.modelType === "multiType" && this.graphData.ChartTitle === "ROC Chart") {
         return "ROC Chart";
-      } else if (this.graphData.modelType === "binaryModel") {
+      } else if (this.graphData.modelType === "multiType" && this.graphData.ChartTitle === "Precision Recall Curve") {
+        return "Precision Recall Curve";
+      }
+        else if (this.graphData.modelType === "binaryModel") {
         return "ROC Chart";
       } else if (this.graphData.modelType === "regression") {
         return "Regression Line";
       }
     },
     xAxisLabel() {
-      if (this.graphData.modelType === "multiType") {
+      if (this.graphData.modelType === "multiType" && this.graphData.ChartTitle === "ROC Chart") {
         return "1 - Specificity (False Positive Rate)";
-      } else if (this.graphData.modelType === "binaryModel") {
+      }  
+      else if (this.graphData.modelType === "multiType" && this.graphData.ChartTitle === "Precision Recall Curve") {
+        return "Threshold";
+      }
+      else if (this.graphData.modelType === "binaryModel") {
         return "1 - Specificity (False Positive Rate)";
       } else if (this.graphData.modelType === "regression") {
         return "independent variable";
       }
     },
     yAxisLabel() {
-      if (this.graphData.modelType === "multiType") {
+      if (this.graphData.modelType === "multiType" && this.graphData.ChartTitle === "ROC Chart") {
         return "Sensitivity (True Positive Rate)";
-      } else if (this.graphData.modelType === "binaryModel") {
+      } 
+      else if (this.graphData.modelType === "multiType" && this.graphData.ChartTitle === "Precision Recall Curve") {
+        return "";
+      }
+      else if (this.graphData.modelType === "binaryModel") {
         return "Sensitivity (True Positive Rate)";
       } else if (this.graphData.modelType === "regression") {
         return "dependent variable";

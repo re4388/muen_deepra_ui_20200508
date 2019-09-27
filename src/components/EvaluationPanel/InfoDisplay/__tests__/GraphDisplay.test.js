@@ -119,21 +119,21 @@ describe('GraphDisplay', function () {
       }
     }
 
-    // test chartTitle
-    expect(GraphDisplay.computed.chartTitle.call(localThis_1)).toBe('ROC Chart')
-    expect(GraphDisplay.computed.chartTitle.call(localThis_2)).toBe('ROC Chart')
-    expect(GraphDisplay.computed.chartTitle.call(localThis_3)).toBe('Regression Line')
+    // // test chartTitle
+    // expect(GraphDisplay.computed.chartTitle.call(localThis_1)).toBe('ROC Chart')
+    // expect(GraphDisplay.computed.chartTitle.call(localThis_2)).toBe('ROC Chart')
+    // expect(GraphDisplay.computed.chartTitle.call(localThis_3)).toBe('Regression Line')
 
-    // test xAxisLabel
-    expect(GraphDisplay.computed.xAxisLabel.call(localThis_1)).toBe("1 - Specificity (False Positive Rate)")
-    expect(GraphDisplay.computed.xAxisLabel.call(localThis_2)).toBe("1 - Specificity (False Positive Rate)")
-    expect(GraphDisplay.computed.xAxisLabel.call(localThis_3)).toBe("independent variable")
+    // // test xAxisLabel
+    // expect(GraphDisplay.computed.xAxisLabel.call(localThis_1)).toBe("1 - Specificity (False Positive Rate)")
+    // expect(GraphDisplay.computed.xAxisLabel.call(localThis_2)).toBe("1 - Specificity (False Positive Rate)")
+    // expect(GraphDisplay.computed.xAxisLabel.call(localThis_3)).toBe("independent variable")
 
 
-    //test yAxisLabel
-    expect(GraphDisplay.computed.yAxisLabel.call(localThis_1)).toBe("Sensitivity (True Positive Rate)")
-    expect(GraphDisplay.computed.yAxisLabel.call(localThis_2)).toBe("Sensitivity (True Positive Rate)")
-    expect(GraphDisplay.computed.yAxisLabel.call(localThis_3)).toBe("dependent variable")
+    // //test yAxisLabel
+    // expect(GraphDisplay.computed.yAxisLabel.call(localThis_1)).toBe("Sensitivity (True Positive Rate)")
+    // expect(GraphDisplay.computed.yAxisLabel.call(localThis_2)).toBe("Sensitivity (True Positive Rate)")
+    // expect(GraphDisplay.computed.yAxisLabel.call(localThis_3)).toBe("dependent variable")
 
 
     //test AxisYMax
