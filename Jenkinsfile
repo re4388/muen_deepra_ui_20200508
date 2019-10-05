@@ -7,7 +7,8 @@ pipeline {
 	}
 	agent {
 		docker {
-			image '172.18.0.5:5000/nodejs10_ui:10.15.3'
+			// image '172.18.0.5:5000/nodejs10_ui:10.15.3'
+            image '172.18.0.5:5000/nodejs10_ui:10.15.3-d1'
 			registryUrl 'http://172.18.0.5:5000'
 			args '-u root:root'
 		}
